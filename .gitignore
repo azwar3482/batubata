@@ -1,0 +1,54 @@
+*.log
+*.stackdump
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.gemini
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+Thumbs.db
+
+# Temporary / dev files
+/tmp_check_users.php
+/uji_coba_antigravity.py
+/instal antigravity.txt
+/logo_new_png_*.png
+
+# Flutter
+/flutter/.dart_tool/
+/flutter/.packages
+/flutter/build/
+/flutter/.flutter-plugins
+/flutter/.flutter-plugins-dependencies
+/flutter/pubspec.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# AI / SDK temp
+/antigravity-sdk-python/
+/ai-module/
+
+# Database
+/database/
