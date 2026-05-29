@@ -28,10 +28,10 @@
             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            class="relative inline-block w-full max-w-2xl p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl z-10">
+            class="relative inline-block w-full max-w-2xl p-6 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 shadow-2xl rounded-2xl z-10 border border-slate-200 dark:border-slate-700">
 
             <!-- Header -->
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-slate-700">
                 <div class="flex items-center gap-3">
                     <div
                         class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white">
@@ -42,12 +42,12 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900">Undang Anggota Tim</h3>
-                        <p class="text-sm text-gray-500">Tambahkan rekan untuk membantu proses rekrutmen</p>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Undang Anggota Tim</h3>
+                        <p class="text-sm text-gray-500 dark:text-slate-400">Tambahkan rekan untuk membantu proses rekrutmen</p>
                     </div>
                 </div>
                 <button @click="inviteModal = false"
-                    class="text-gray-400 hover:text-gray-600 transition p-2 hover:bg-gray-100 rounded-lg">
+                    class="text-gray-400 hover:text-gray-600 dark:text-slate-400 dark:hover:text-slate-200 transition p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                         </path>
@@ -66,127 +66,149 @@
                         <div
                             class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
                             1</div>
-                        <span class="text-sm font-medium text-gray-900">Identitas</span>
+                        <span class="text-sm font-medium text-gray-900 dark:text-white">Identitas</span>
                     </div>
-                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                    <div class="flex-1 h-1 bg-gray-200 dark:bg-slate-700 mx-4"></div>
                     <div class="flex items-center gap-2">
                         <div
-                            class="w-8 h-8 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-sm">
+                            class="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-400 flex items-center justify-center font-bold text-sm transition-colors"
+                            :class="{ 'bg-blue-600 text-white dark:bg-blue-600 dark:text-white': email && name }">
                             2</div>
-                        <span class="text-sm font-medium text-gray-400">Akses</span>
+                        <span class="text-sm font-medium text-gray-400 dark:text-slate-400 transition-colors"
+                            :class="{ 'text-gray-900 dark:text-white': email && name }">Akses</span>
                     </div>
-                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                    <div class="flex-1 h-1 bg-gray-200 dark:bg-slate-700 mx-4"></div>
                     <div class="flex items-center gap-2">
                         <div
-                            class="w-8 h-8 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-sm">
+                            class="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-400 flex items-center justify-center font-bold text-sm transition-colors"
+                            :class="{ 'bg-blue-600 text-white dark:bg-blue-600 dark:text-white': selectedRole && email && name }">
                             3</div>
-                        <span class="text-sm font-medium text-gray-400">Kirim</span>
+                        <span class="text-sm font-medium text-gray-400 dark:text-slate-400 transition-colors"
+                            :class="{ 'text-gray-900 dark:text-white': selectedRole && email && name }">Kirim</span>
                     </div>
                 </div>
 
                 <!-- Section 1: Member Identity -->
                 <div class="space-y-4">
-                    <h4 class="font-semibold text-gray-900 flex items-center gap-2">
+                    <h4 class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                         <span
-                            class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">1</span>
+                            class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">1</span>
                         Informasi Anggota
                     </h4>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                 Nama Lengkap <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="name" x-model="name" required placeholder="Contoh: Budi Santoso"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500 transition"
                                 @input="generateEmailPreview()">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                 Email Kerja <span class="text-red-500">*</span>
                             </label>
                             <input type="email" name="email" x-model="email" required placeholder="nama@perusahaan.com"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500 transition">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                             Pesan Undangan (Opsional)
                         </label>
                         <textarea name="message" x-model="message" rows="3" placeholder="Tambahkan pesan personal untuk undangan ini..."
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
-                        <p class="text-xs text-gray-500 mt-1">Pesan ini akan disertakan dalam email undangan</p>
+                            class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500 transition"></textarea>
+                        <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Pesan ini akan disertakan dalam email undangan</p>
                     </div>
                 </div>
 
                 <!-- Section 2: Role & Permissions -->
-                <div class="space-y-4 pt-4 border-t">
-                    <h4 class="font-semibold text-gray-900 flex items-center gap-2">
+                <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-slate-700">
+                    <h4 class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                         <span
-                            class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">2</span>
-                        1Role & Hak Akses
+                            class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">2</span>
+                        Role & Hak Akses
                     </h4>
 
                     <!-- Role Selection -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-3">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">
                             Pilih Role <span class="text-red-500">*</span>
                         </label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             @php
                             $roles = [
-                            'staf_hr_manager' => [
-                            'label' => 'Staf HR Manager',
-                            'desc' => 'Akses penuh ke semua fitur rekrutmen',
-                            'permissions' => [
-                            'post_jobs',
-                            'view_candidates',
-                            'manage_applications',
-                            'schedule_interview',
-                            'view_reports',
-                            ],
-                            'classes' => 'peer-checked:border-blue-600 peer-checked:bg-blue-50',
-                            'circle' => 'peer-checked:border-blue-600 peer-checked:bg-blue-600',
-                            ],
-                            'staf_recruiter' => [
-                            'label' => 'Staf Recruiter',
-                            'desc' => 'Dapat melihat kandidat dan menjadwalkan interview',
-                            'permissions' => ['view_candidates', 'schedule_interview', 'submit_feedback'],
-                            'classes' => 'peer-checked:border-purple-600 peer-checked:bg-purple-50',
-                            'circle' => 'peer-checked:border-purple-600 peer-checked:bg-purple-600',
-                            ],
-                            'staf_talent_sourcer' => [
-                            'label' => 'Staf Talent Sourcer',
-                            'desc' => 'Hanya dapat melihat profil kandidat',
-                            'permissions' => ['view_candidates'],
-                            'classes' => 'peer-checked:border-green-600 peer-checked:bg-green-50',
-                            'circle' => 'peer-checked:border-green-600 peer-checked:bg-green-600',
-                            ],
-                            'staf_interviewer' => [
-                            'label' => 'Staf Interviewer',
-                            'desc' => 'Dapat melihat kandidat yang diassign dan memberi feedback',
-                            'permissions' => ['view_candidates', 'submit_feedback'],
-                            'classes' => 'peer-checked:border-orange-600 peer-checked:bg-orange-50',
-                            'circle' => 'peer-checked:border-orange-600 peer-checked:bg-orange-600',
-                            ],
+                                'staf_hr_manager' => [
+                                    'label' => 'Staf HR Manager',
+                                    'desc' => 'Akses penuh ke semua fitur rekrutmen',
+                                    'permissions' => [
+                                        'post_jobs',
+                                        'view_candidates',
+                                        'manage_applications',
+                                        'schedule_interview',
+                                        'view_reports',
+                                    ],
+                                    'active_box' => 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-400',
+                                    'active_text' => 'text-blue-800 dark:text-blue-200',
+                                    'active_circle' => 'border-blue-500 bg-blue-500 dark:border-blue-400 dark:bg-blue-400',
+                                ],
+                                'staf_recruiter' => [
+                                    'label' => 'Staf Recruiter',
+                                    'desc' => 'Dapat melihat kandidat dan menjadwalkan interview',
+                                    'permissions' => ['view_candidates', 'schedule_interview', 'submit_feedback'],
+                                    'active_box' => 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 dark:border-purple-400',
+                                    'active_text' => 'text-purple-800 dark:text-purple-200',
+                                    'active_circle' => 'border-purple-500 bg-purple-500 dark:border-purple-400 dark:bg-purple-400',
+                                ],
+                                'staf_talent_sourcer' => [
+                                    'label' => 'Staf Talent Sourcer',
+                                    'desc' => 'Hanya dapat melihat profil kandidat',
+                                    'permissions' => ['view_candidates'],
+                                    'active_box' => 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 dark:border-emerald-400',
+                                    'active_text' => 'text-emerald-800 dark:text-emerald-200',
+                                    'active_circle' => 'border-emerald-500 bg-emerald-500 dark:border-emerald-400 dark:bg-emerald-400',
+                                ],
+                                'staf_interviewer' => [
+                                    'label' => 'Staf Interviewer',
+                                    'desc' => 'Dapat melihat kandidat yang diassign dan memberi feedback',
+                                    'permissions' => ['view_candidates', 'submit_feedback'],
+                                    'active_box' => 'border-orange-500 bg-orange-50 dark:bg-orange-900/30 dark:border-orange-400',
+                                    'active_text' => 'text-orange-800 dark:text-orange-200',
+                                    'active_circle' => 'border-orange-500 bg-orange-500 dark:border-orange-400 dark:bg-orange-400',
+                                ],
                             ];
                             @endphp
                             @foreach ($roles as $roleName => $roleData)
-                            <label class="relative cursor-pointer">
+                            <label class="relative cursor-pointer block">
                                 <input type="radio" name="role" value="{{ $roleName }}" x-model="selectedRole"
-                                    required class="peer sr-only"
+                                    required class="sr-only"
                                     data-perms="{{ json_encode($roleData['permissions']) }}"
                                     @change="permissions = JSON.parse($el.dataset.perms)">
                                 <div
-                                    class="p-4 border-2 border-gray-200 rounded-xl {{ $roleData['classes'] }} hover:border-gray-300 transition">
+                                    class="p-4 border-2 rounded-xl transition-all duration-200"
+                                    :class="selectedRole === '{{ $roleName }}' 
+                                        ? '{{ $roleData['active_box'] }} shadow-sm' 
+                                        : 'border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-gray-300 dark:hover:border-slate-500'">
+                                    
                                     <div class="flex items-center justify-between mb-2">
-                                        <span class="font-semibold text-gray-900">{{ $roleData['label'] }}</span>
+                                        <span class="font-semibold transition-colors"
+                                              :class="selectedRole === '{{ $roleName }}' ? '{{ $roleData['active_text'] }}' : 'text-gray-900 dark:text-white'">
+                                            {{ $roleData['label'] }}
+                                        </span>
+                                        
                                         <div
-                                            class="w-4 h-4 rounded-full border-2 border-gray-300 {{ $roleData['circle'] }} transition">
+                                            class="w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center"
+                                            :class="selectedRole === '{{ $roleName }}' ? '{{ $roleData['active_circle'] }}' : 'border-gray-300 dark:border-slate-500 bg-transparent'">
+                                            <div class="w-2 h-2 rounded-full bg-white dark:bg-slate-900" x-show="selectedRole === '{{ $roleName }}'" style="display: none;"></div>
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-600">{{ $roleData['desc'] }}</p>
+                                    
+                                    <p class="text-xs transition-colors"
+                                       :class="selectedRole === '{{ $roleName }}' ? '{{ $roleData['active_text'] }} opacity-80' : 'text-gray-600 dark:text-slate-400'">
+                                       {{ $roleData['desc'] }}
+                                    </p>
                                 </div>
                             </label>
                             @endforeach
@@ -194,13 +216,13 @@
                     </div>
 
                     <!-- Permissions Preview -->
-                    <div x-show="selectedRole" class="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <p class="text-sm font-medium text-gray-700 mb-3">Hak Akses yang Diberikan:</p>
+                    <div x-show="selectedRole" class="p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl border border-gray-200 dark:border-slate-600">
+                        <p class="text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Hak Akses yang Diberikan:</p>
                         <div class="flex flex-wrap gap-2">
                             <template x-for="perm in permissions" :key="perm">
                                 <span
-                                    class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-700 flex items-center gap-1.5">
-                                    <svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor"
+                                    class="px-3 py-1.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-lg text-xs font-medium text-gray-700 dark:text-slate-300 flex items-center gap-1.5 shadow-sm">
+                                    <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 13l4 4L19 7"></path>
@@ -213,7 +235,7 @@
                 </div>
 
                 <!-- Section 3: Preview & Submit -->
-                <div class="space-y-4 pt-4 border-t dark:border-slate-700">
+                <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-slate-700">
                     <h4 class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                         <span
                             class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">3</span>
@@ -244,13 +266,13 @@
                 </div>
 
                 <!-- Actions -->
-                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t">
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-slate-700">
                     <button type="button" @click="inviteModal = false"
-                        class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-center">
+                        class="flex-1 px-4 py-3 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition font-medium text-center focus:outline-none focus:ring-2 focus:ring-slate-500">
                         Batal
                     </button>
                     <button type="submit"
-                        class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-800 transition font-medium text-center flex items-center justify-center gap-2">
+                        class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-800 transition font-medium text-center flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
