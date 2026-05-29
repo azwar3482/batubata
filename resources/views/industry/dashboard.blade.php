@@ -10,7 +10,14 @@
                         Kelola lowongan kerja, temukan kandidat berkualitas, dan pantau proses rekrutmen Anda.
                     </p>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-3 flex-wrap">
+                    <button type="button" id="start-tour-btn"
+                        class="animate-pulse inline-flex items-center px-4 py-2 border border-blue-300 dark:border-blue-700 rounded-lg text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition shadow-sm">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Mulai Tour Panduan
+                    </button>
                     <a href="{{ route('industry.candidates') }}"
                         class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition shadow-sm">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -663,3 +670,141 @@ return $parsed[$component] ?? $url;
 }
 }
 @endphp
+
+<!-- Driver.js for Tour -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+<script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const driver = window.driver.js.driver;
+        const tourConfig = {
+            showProgress: true,
+            nextBtnText: 'Lanjut ➔',
+            prevBtnText: '⬅ Kembali',
+            doneBtnText: 'Selesai',
+            popoverClass: 'driverjs-theme',
+            steps: [
+                {
+                    popover: {
+                        title: '👋 Selamat Datang di Panel Industri',
+                        description: 'Mari kita kenali berbagai fitur di dashboard ini yang akan membantu Anda menemukan talenta terbaik.',
+                        align: 'center'
+                    }
+                },
+                {
+                    element: 'header',
+                    popover: {
+                        title: '🌐 Top Navbar',
+                        description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
+                        side: "bottom",
+                        align: 'center'
+                    }
+                },
+                {
+                    element: 'a[href*="industry/dashboard"]',
+                    popover: {
+                        title: '📊 Dashboard',
+                        description: 'Menu ini membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik rekrutmen perusahaan Anda.',
+                        side: "right",
+                        align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="industry/jobs"]',
+                    popover: {
+                        title: '📢 Pasang Lowongan',
+                        description: 'Gunakan menu ini untuk mempublikasikan lowongan kerja baru, mengatur detail pekerjaan, dan melihat lowongan yang sedang aktif.',
+                        side: "right",
+                        align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="industry/candidates"]',
+                    popover: {
+                        title: '🔍 Cari Kandidat',
+                        description: 'Ingin mencari talent secara proaktif? Menu ini memungkinkan Anda mencari dan memfilter kandidat berdasarkan skill dan fit score.',
+                        side: "right",
+                        align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="industry/team"]',
+                    popover: {
+                        title: '👥 Kelola Tim',
+                        description: 'Tambahkan atau atur hak akses staf HRD lainnya dalam mengelola lowongan dan rekrutmen perusahaan Anda di sini.',
+                        side: "right",
+                        align: 'start'
+                    }
+                }
+            ]
+        };
+
+        const startTourBtn = document.getElementById('start-tour-btn');
+        if (startTourBtn) {
+            startTourBtn.addEventListener('click', () => {
+                driver(tourConfig).drive();
+            });
+        }
+
+        // Auto play saat halaman terbuka
+        const autoDriver = driver(tourConfig);
+        autoDriver.drive();
+    });
+</script>
+<style>
+    /* Driver.js Custom Styling */
+    .driverjs-theme {
+        font-family: inherit;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    .driver-popover-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1f2937; /* text-gray-900 */
+    }
+    .driver-popover-description {
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: #4b5563; /* text-gray-600 */
+    }
+    .driver-popover-footer {
+        margin-top: 12px;
+    }
+    .driver-popover-progress-text {
+        font-size: 12px;
+        color: #6b7280;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        html.dark .driverjs-theme {
+            background-color: #1e293b; /* bg-slate-800 */
+            color: #e2e8f0;
+        }
+        html.dark .driver-popover-title {
+            color: #f8fafc;
+        }
+        html.dark .driver-popover-description {
+            color: #cbd5e1; /* text-slate-300 */
+        }
+        html.dark .driver-popover-progress-text {
+            color: #94a3b8;
+        }
+        html.dark .driver-popover-footer .driver-popover-btn {
+            background-color: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            text-shadow: none;
+        }
+        html.dark .driver-popover-footer .driver-popover-btn:hover {
+            background-color: #475569;
+        }
+        html.dark .driver-popover-arrow {
+            border-color: #1e293b;
+        }
+    }
+</style>
