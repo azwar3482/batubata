@@ -438,6 +438,125 @@
                     driverObj.drive();
                 });
             }
+            
+            // Auto play saat halaman terbuka
+            const driver = window.driver.js.driver;
+            const autoDriver = driver({
+                showProgress: true,
+                nextBtnText: 'Lanjut ➔',
+                prevBtnText: '⬅ Kembali',
+                doneBtnText: 'Selesai',
+                popoverClass: 'driverjs-theme',
+                steps: [
+                    {
+                        popover: {
+                            title: '👋 Selamat Datang di Panel Admin',
+                            description: 'Mari kita kenali berbagai fitur dan kontrol utama yang ada di dashboard Administrator ini.',
+                            align: 'center'
+                        }
+                    },
+                    {
+                        element: 'header',
+                        popover: {
+                            title: '🌐 Top Navbar',
+                            description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengedit profil, dan Log Out.',
+                            side: "bottom",
+                            align: 'center'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/dashboard"]',
+                        popover: {
+                            title: '📊 Dashboard Utama',
+                            description: 'Menu ini membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik (total pengguna, asesmen, lowongan, dan gap skill).',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/users"]',
+                        popover: {
+                            title: '👥 Kelola Pengguna',
+                            description: 'Pusat kendali akun pengguna. Di sini Anda dapat melihat, memfilter, dan mengatur akun semua Job Seeker, Perusahaan, dan Institusi Pendidikan.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/competencies"]',
+                        popover: {
+                            title: '🎯 Kompetensi (Skills)',
+                            description: 'Master data kompetensi platform. Anda bisa menambah, mengedit, atau menghapus daftar skill/kompetensi yang berlaku di sistem.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/reports"]',
+                        popover: {
+                            title: '📈 Laporan (Reports)',
+                            description: 'Halaman ini menyediakan laporan analitik komprehensif terkait aktivitas platform, gap skill rata-rata, dan tren rekrutmen.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/categories"]',
+                        popover: {
+                            title: '🗂️ Kategori Master Data',
+                            description: 'Menu ini untuk mengatur master kategori yang digunakan perusahaan untuk mengelompokkan lowongan (misal: IT, Finance, dll).',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/positions"]',
+                        popover: {
+                            title: '💼 Posisi Karir (Positions)',
+                            description: 'Database posisi jabatan/pekerjaan. Digunakan untuk roadmap karir pengguna dan standar profil jabatan di perusahaan.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/courses"]',
+                        popover: {
+                            title: '📚 Manajemen Kursus',
+                            description: 'Pusat pengelolaan materi belajar atau kursus yang nantinya direkomendasikan AI kepada kandidat untuk menutupi kelemahan skill mereka.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/document-weights"]',
+                        popover: {
+                            title: '⚖️ Bobot Dokumen AI',
+                            description: 'Pengaturan sangat krusial! Atur persentase pengaruh CV, Portofolio, dan Tes Assessment terhadap skor kecocokan total (Fit Score).',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/ai-workflow"]',
+                        popover: {
+                            title: '🤖 Alur Kerja AI',
+                            description: 'Halaman pemantauan sistem kecerdasan buatan backend. Anda dapat mengecek status microservice AI (Python) dan proses background jobs di sini.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="admin/skill-keywords"]',
+                        popover: {
+                            title: '📖 Kamus AI (Keywords)',
+                            description: 'Kamus pintar untuk AI. Jika AI gagal mengenali singkatan skill di CV kandidat (misal: "JS" = "JavaScript"), Anda bisa menambahkannya di sini.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    }
+                ]
+            });
+            autoDriver.drive();
         });
     </script>
     <style>

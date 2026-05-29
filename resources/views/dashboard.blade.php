@@ -10,8 +10,15 @@
 
             <!-- Welcome Card -->
             <div class="bg-white dark:bg-slate-900 overflow-hidden shadow-sm sm:rounded-lg mb-6 p-6 border border-slate-100 dark:border-slate-800">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Halo, {{ $user->name }}! 👋</h3>
-                <p class="text-gray-600 dark:text-slate-400 mt-2">Siap untuk menutup kesenjangan skill kamu hari ini?</p>
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Halo, {{ $user->name }}! 👋</h3>
+                        <p class="text-gray-600 dark:text-slate-400 mt-2">Siap untuk menutup kesenjangan skill kamu hari ini?</p>
+                    </div>
+                    <button type="button" id="start-seeker-tour" class="shrink-0 animate-pulse bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold shadow-md hover:bg-blue-700 transition-all">
+                        Mulai Tour Panduan
+                    </button>
+                </div>
             </div>
 
             <!-- Stats Grid -->
@@ -172,4 +179,151 @@
             });
         });
     </script>
+
+    <!-- Driver.js for Tour -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const driver = window.driver.js.driver;
+            const driverObj = driver({
+                showProgress: true,
+                nextBtnText: 'Lanjut ➔',
+                prevBtnText: '⬅ Kembali',
+                doneBtnText: 'Selesai',
+                popoverClass: 'driverjs-theme',
+                steps: [
+                    {
+                        popover: {
+                            title: '👋 Selamat Datang Job Seeker!',
+                            description: 'Mari kita kenali berbagai fitur di dashboard Job Seeker ini untuk membantu Anda mencapai karir impian.',
+                            align: 'center'
+                        }
+                    },
+                    {
+                        element: 'header',
+                        popover: {
+                            title: '🌐 Top Navbar',
+                            description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi lowongan, dan mengatur profil.',
+                            side: "bottom",
+                            align: 'center'
+                        }
+                    },
+                    {
+                        element: 'a[href*="dashboard"]',
+                        popover: {
+                            title: '📊 Dashboard Utama',
+                            description: 'Membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik: total asesmen, gap skill, dan lowongan yang cocok.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="seeker/assessment"]',
+                        popover: {
+                            title: '📝 Asesmen Kompetensi',
+                            description: 'Fitur untuk mengikuti tes dan asesmen. AI akan mengukur level skill Anda secara akurat berdasarkan jawaban tes.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="seeker/roadmap"]',
+                        popover: {
+                            title: '🗺️ Roadmap Karir',
+                            description: 'Fitur ini menampilkan peta jalan karir Anda, berisi panduan skill apa saja yang harus dipelajari untuk mencapai target posisi.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="seeker/jobs"]',
+                        popover: {
+                            title: '💼 Lowongan Pekerjaan',
+                            description: 'Temukan berbagai lowongan pekerjaan dan lihat seberapa tinggi skor kecocokan (Fit Score) profil Anda terhadap posisi tersebut.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: 'a[href*="seeker/courses"]',
+                        popover: {
+                            title: '📚 Kursus & Pembelajaran',
+                            description: 'Akses berbagai kursus dan materi pembelajaran. AI merekomendasikan kursus khusus untuk menutupi gap skill Anda.',
+                            side: "right",
+                            align: 'start'
+                        }
+                    }
+                ]
+            });
+            
+            // Auto play saat halaman terbuka
+            driverObj.drive();
+
+            // Tambahkan tombol Mulai Tour jika mau di-play ulang
+            const startBtn = document.getElementById('start-seeker-tour');
+            if (startBtn) {
+                startBtn.addEventListener('click', () => {
+                    driverObj.drive();
+                });
+            }
+        });
+    </script>
+    <style>
+        /* Driver.js Custom Styling */
+        .driverjs-theme {
+            font-family: inherit;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .driver-popover-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937; /* text-gray-900 */
+        }
+        .driver-popover-description {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #4b5563; /* text-gray-600 */
+        }
+        .driver-popover-footer {
+            margin-top: 12px;
+        }
+        .driver-popover-progress-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            html.dark .driverjs-theme {
+                background-color: #1e293b; /* bg-slate-800 */
+                color: #e2e8f0;
+            }
+            html.dark .driver-popover-title {
+                color: #f8fafc;
+            }
+            html.dark .driver-popover-description {
+                color: #cbd5e1; /* text-slate-300 */
+            }
+            html.dark .driver-popover-progress-text {
+                color: #94a3b8;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn {
+                background-color: #334155;
+                color: #f8fafc;
+                border: 1px solid #475569;
+                text-shadow: none;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn:hover {
+                background-color: #475569;
+            }
+            html.dark .driver-popover-arrow {
+                border-color: #1e293b;
+            }
+        }
+    </style>
 </x-app-layout>

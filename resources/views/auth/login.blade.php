@@ -360,6 +360,54 @@
                     driverObj.drive();
                 });
             }
+
+            const driver = window.driver.js.driver;
+            const autoDriver = driver({
+                showProgress: true,
+                nextBtnText: 'Lanjut ➔',
+                prevBtnText: '⬅ Kembali',
+                doneBtnText: 'Selesai',
+                popoverClass: 'driverjs-theme',
+                steps: [
+                    {
+                        element: '#demo-admin',
+                        popover: {
+                            title: '👨‍💼 Portal Admin',
+                            description: 'Akses khusus untuk administrator mengelola seluruh sistem, melihat statistik platform, dan mengatur pengguna.',
+                            side: "bottom",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#demo-seeker',
+                        popover: {
+                            title: '👨‍🎓 Pencari Kerja',
+                            description: 'Gunakan peran ini jika Anda adalah kandidat yang ingin mencari lowongan, mengirim lamaran, dan membuat profil karir.',
+                            side: "bottom",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#demo-industry',
+                        popover: {
+                            title: '🏢 Perusahaan / Industri',
+                            description: 'Peran untuk HRD atau perwakilan perusahaan yang ingin memasang lowongan kerja dan mencari kandidat terbaik.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#demo-education',
+                        popover: {
+                            title: '🏫 Institusi Pendidikan',
+                            description: 'Akses bagi universitas/sekolah untuk memantau perkembangan karir alumni dan menjalin kerja sama industri.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    }
+                ]
+            });
+            autoDriver.drive();
         });
     </script>
     <style>

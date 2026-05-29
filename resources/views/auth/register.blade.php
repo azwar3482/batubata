@@ -291,6 +291,64 @@
                     driverObj.drive();
                 });
             }
+
+            // Auto play saat halaman terbuka
+            const driver = window.driver.js.driver;
+            const autoDriver = driver({
+                showProgress: true,
+                nextBtnText: 'Lanjut ➔',
+                prevBtnText: '⬅ Kembali',
+                doneBtnText: 'Selesai',
+                popoverClass: 'driverjs-theme',
+                steps: [
+                    {
+                        element: '#role',
+                        popover: {
+                            title: '🤔 Memilih Peran yang Tepat',
+                            description: 'Platform ini melayani berbagai jenis pengguna. Mari kita pelajari perbedaan masing-masing peran agar Anda tidak salah pilih!',
+                            side: "top",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#role',
+                        popover: {
+                            title: '👤 Pencari Kerja (Job Seeker)',
+                            description: '<b>Untuk Individu:</b> Pilih ini jika Anda ingin mencari lowongan kerja, mengikuti tes asesmen keahlian, dan melamar pekerjaan ke berbagai perusahaan impian Anda.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#role',
+                        popover: {
+                            title: '🏢 Perusahaan (Industry)',
+                            description: '<b>Untuk Rekruter/HRD:</b> Pilih ini jika Anda mewakili perusahaan yang ingin memasang iklan lowongan, menyeleksi kandidat, dan melihat skor analisis keahlian pelamar.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#role',
+                        popover: {
+                            title: '🎓 Institusi Pendidikan',
+                            description: '<b>Untuk Universitas/Sekolah:</b> Pilih ini jika Anda dari pihak akademis yang ingin memantau keterserapan kerja alumni dan melihat tren keahlian yang sedang dicari industri.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#role',
+                        popover: {
+                            title: '⚙️ Administrator',
+                            description: '<b>Untuk Pengelola Sistem:</b> Ini adalah akun khusus untuk mengatur master data sistem, melihat laporan keseluruhan, dan mengawasi jalannya platform.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    }
+                ]
+            });
+            autoDriver.drive();
         });
     </script>
     <style>
