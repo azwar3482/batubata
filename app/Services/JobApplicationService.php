@@ -128,7 +128,10 @@ class JobApplicationService
             return ['success' => false, 'message' => 'Lamaran tidak ditemukan.'];
         }
 
+        $applicationClone = clone $application;
         $application->delete();
+
+        event(new \App\Events\JobApplicationWithdrawn($applicationClone));
 
         return ['success' => true, 'message' => 'Lamaran berhasil ditarik!'];
     }

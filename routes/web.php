@@ -57,10 +57,7 @@ Route::prefix('education')->name('education.')->group(function () {
 
 
 
-Route::put('/notifications/read-all', function () {
-    auth()->user()->unreadNotifications->markAsRead();
-    return back();
-})->name('notifications.read-all')->middleware('auth');
+
 // Group Industri
 Route::prefix('industry')->name('industry.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [IndustryDashboard::class, 'index'])->name('dashboard');
@@ -223,9 +220,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/extract-ijazah', [ProfileController::class, 'extractIjazahData'])->name('profile.extract.ijazah');
 
-    // Notifications
-    Route::put('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
-    Route::put('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
 
 
 
@@ -291,8 +285,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
     Route::put('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
 
 // Google Auth

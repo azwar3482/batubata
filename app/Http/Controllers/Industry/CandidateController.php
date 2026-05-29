@@ -67,6 +67,8 @@ class CandidateController extends Controller
             'status' => $request->status,
         ]);
 
+        event(new \App\Events\JobApplicationStatusChanged($application));
+
         $statusTranslations = [
             'applied' => 'Dikirim',
             'reviewed' => 'Direview',

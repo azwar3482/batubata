@@ -42,10 +42,13 @@ class NewJobMatchNotification extends Notification
     {
         return [
             'job_id' => $this->job->id,
-            'title' => $this->job->title,
+            'title' => 'Lowongan Baru Cocok Untukmu!',
             'company' => $this->job->company_name,
             'match_percentage' => $this->matchPercentage,
-            'message' => 'Lowongan baru cocok dengan profil Anda (' . $this->matchPercentage . '%)',
+            'message' => 'Posisi ' . $this->job->title . ' di ' . $this->job->company_name . ' cocok dengan profilmu (' . $this->matchPercentage . '% match).',
+            'url' => route('seeker.jobs.detail', $this->job->id),
+            'type' => 'job_match',
+            'icon' => 'briefcase'
         ];
     }
 }

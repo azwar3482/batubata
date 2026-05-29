@@ -3,34 +3,31 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <!-- Header Section -->
-            <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="mb-8 flex items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900">Dashboard Institusi Pendidikan</h2>
-                    <p class="mt-2 text-gray-600">
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Dashboard Institusi Pendidikan</h2>
+                    <p class="mt-2 text-gray-600 dark:text-slate-400">
                         Pantau kompetensi lulusan, analisis skill gap, dan tingkatkan kolaborasi dengan industri.
                     </p>
                 </div>
-                <div class="flex gap-3 flex-wrap">
+                <div class="flex items-center gap-3">
                     <button
-                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition shadow-sm">
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Export Data
                     </button>
-                    {{-- <button
-                        class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
+                    <!-- Tombol Tambah Program -->
+                    <a href="{{ route('seeker.education.programs.create') }}"
+                        class="inline-flex items-center px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 dark:hover:bg-indigo-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg> --}}
-                    <!-- Ganti tombol "Tambah Program" -->
-                    <a href="{{ route('seeker.education.programs.create') }}"
-                        class="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition">
-                        + Tambah Program
+                        </svg>
+                        Tambah Program
                     </a>
-                    {{-- </button> --}}
                 </div>
             </div>
 
@@ -119,6 +116,76 @@
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
                                 </path>
                             </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Lamaran Kerja Siswa -->
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 border-b pb-2">Status Lamaran Kerja Lulusan</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Total Lamaran -->
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Aplikasi</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['total_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 mt-1">Lamaran terkirim</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diproses -->
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500 hover:shadow-lg transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Sedang Diproses</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['processing_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 mt-1">Dalam tahap seleksi</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diterima -->
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Diterima Kerja</p>
+                                <p class="text-3xl font-bold text-green-600 mt-2">{{ $stats['accepted_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 mt-1">Berhasil mendapat penawaran</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ditolak -->
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500 hover:shadow-lg transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Belum Berhasil</p>
+                                <p class="text-3xl font-bold text-red-600 mt-2">{{ $stats['rejected_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 mt-1">Ditolak oleh industri</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -615,7 +682,7 @@
                 chart.options.plugins.tooltip.titleColor = tooltipText;
                 chart.options.plugins.tooltip.bodyColor = tooltipText;
             }
-            
+
             if (chart.options.scales.x) {
                 if (chart.options.scales.x.ticks) chart.options.scales.x.ticks.color = textColor;
                 if (!chart.options.scales.x.grid) chart.options.scales.x.grid = {};
@@ -642,13 +709,15 @@
                 }
             });
         });
-        
-        observer.observe(document.documentElement, { attributes: true });
+
+        observer.observe(document.documentElement, {
+            attributes: true
+        });
     });
 </script>
 
 <!-- Driver.js for Tour -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
 <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
 
 <script>
@@ -660,8 +729,7 @@
             prevBtnText: '⬅ Kembali',
             doneBtnText: 'Selesai',
             popoverClass: 'driverjs-theme',
-            steps: [
-                {
+            steps: [{
                     popover: {
                         title: '👋 Selamat Datang di Panel Edukasi',
                         description: 'Mari kita kenali berbagai fitur di dashboard ini yang membantu Anda memantau kompetensi lulusan dan menganalisis skill gap.',
@@ -727,49 +795,63 @@
         padding: 16px;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     }
+
     .driver-popover-title {
         font-size: 16px;
         font-weight: 700;
         margin-bottom: 8px;
-        color: #1f2937; /* text-gray-900 */
+        color: #1f2937;
+        /* text-gray-900 */
     }
+
     .driver-popover-description {
         font-size: 13.5px;
         line-height: 1.5;
-        color: #4b5563; /* text-gray-600 */
+        color: #4b5563;
+        /* text-gray-600 */
     }
+
     .driver-popover-footer {
         margin-top: 12px;
     }
+
     .driver-popover-progress-text {
         font-size: 12px;
         color: #6b7280;
     }
-    
+
     /* Dark mode support */
     @media (prefers-color-scheme: dark) {
         html.dark .driverjs-theme {
-            background-color: #1e293b; /* bg-slate-800 */
+            background-color: #1e293b;
+            /* bg-slate-800 */
             color: #e2e8f0;
         }
+
         html.dark .driver-popover-title {
             color: #f8fafc;
         }
+
         html.dark .driver-popover-description {
-            color: #cbd5e1; /* text-slate-300 */
+            color: #cbd5e1;
+            /* text-slate-300 */
         }
+
         html.dark .driver-popover-progress-text {
             color: #94a3b8;
         }
+
         html.dark .driver-popover-footer .driver-popover-btn {
             background-color: #334155;
             color: #f8fafc;
             border: 1px solid #475569;
             text-shadow: none;
         }
+
         html.dark .driver-popover-footer .driver-popover-btn:hover {
             background-color: #475569;
         }
+
         html.dark .driver-popover-arrow {
             border-color: #1e293b;
         }

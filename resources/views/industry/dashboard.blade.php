@@ -3,16 +3,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <!-- Header Section -->
-            <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="mb-8 flex items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900">Dashboard Industri</h2>
-                    <p class="mt-2 text-gray-600">
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Dashboard Industri</h2>
+                    <p class="mt-2 text-gray-600 dark:text-slate-400">
                         Kelola lowongan kerja, temukan kandidat berkualitas, dan pantau proses rekrutmen Anda.
                     </p>
                 </div>
-                <div class="flex gap-3 flex-wrap">
+                <div class="flex items-center gap-3">
                     <a href="{{ route('industry.candidates') }}"
-                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition shadow-sm">
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -20,7 +20,7 @@
                         Cari Kandidat
                     </a>
                     <a href="{{ route('industry.jobs.create') }}"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition shadow-sm">
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
                             </path>
