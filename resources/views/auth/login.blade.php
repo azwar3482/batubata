@@ -157,11 +157,20 @@
 
             <!-- Quick Login (Demo) -->
             <div class="mt-8 border-t border-gray-100 dark:border-slate-700 pt-6">
-                <p class="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4 text-center">
-                    Akses Cepat (Demo)
-                </p>
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+                        Akses Cepat (Demo)
+                    </p>
+                    <button type="button" id="start-tour-btn"
+                        class="animate-pulse flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-colors border border-blue-200 dark:border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Mulai Tour
+                    </button>
+                </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <button type="button" 
+                    <button type="button" id="demo-admin"
                         onclick="fillLogin('admin@kompaskarir.id', 'password')"
                         class="flex items-center p-3 text-left border border-gray-200 dark:border-slate-600 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-200 dark:hover:border-blue-500/50 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <div class="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
@@ -175,7 +184,7 @@
                         </div>
                     </button>
 
-                    <button type="button" 
+                    <button type="button" id="demo-seeker"
                         onclick="fillLogin('budi@seeker.com', 'password')"
                         class="flex items-center p-3 text-left border border-gray-200 dark:border-slate-600 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:border-emerald-200 dark:hover:border-emerald-500/50 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-emerald-500">
                         <div class="p-2 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/50 transition-colors">
@@ -189,7 +198,7 @@
                         </div>
                     </button>
 
-                    <button type="button" 
+                    <button type="button" id="demo-industry"
                         onclick="fillLogin('hrd@techcorp.com', 'password')"
                         class="flex items-center p-3 text-left border border-gray-200 dark:border-slate-600 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:border-indigo-200 dark:hover:border-indigo-500/50 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <div class="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/50 transition-colors">
@@ -203,7 +212,7 @@
                         </div>
                     </button>
 
-                    <button type="button" 
+                    <button type="button" id="demo-education"
                         onclick="fillLogin('info@univdigital.ac.id', 'password')"
                         class="flex items-center p-3 text-left border border-gray-200 dark:border-slate-600 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:border-amber-200 dark:hover:border-amber-500/50 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-amber-500">
                         <div class="p-2 bg-amber-100 dark:bg-amber-900/50 rounded-lg group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50 transition-colors">
@@ -264,31 +273,149 @@
             const iconEye = document.getElementById('icon-eye');
             const iconEyeOff = document.getElementById('icon-eye-off');
 
-            if (!passwordInput || !toggleBtn) return;
+            if (passwordInput && toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const isPasswordHidden = passwordInput.type === 'password';
+                    passwordInput.type = isPasswordHidden ? 'text' : 'password';
 
-            toggleBtn.addEventListener('click', () => {
-                const isPasswordHidden = passwordInput.type === 'password';
-                passwordInput.type = isPasswordHidden ? 'text' : 'password';
+                    // Update accessibility attributes
+                    toggleBtn.setAttribute('aria-pressed', String(!isPasswordHidden));
+                    toggleBtn.setAttribute('aria-label', isPasswordHidden ? 'Hide password' : 'Show password');
 
-                // Update accessibility attributes
-                toggleBtn.setAttribute('aria-pressed', String(!isPasswordHidden));
-                toggleBtn.setAttribute('aria-label', isPasswordHidden ? 'Hide password' : 'Show password');
+                    // Update visual feedback
+                    if (isPasswordHidden) {
+                        toggleBtn.classList.add('text-blue-600', 'bg-blue-50');
+                        toggleBtn.classList.remove('text-gray-400');
 
-                // Update visual feedback
-                if (isPasswordHidden) {
-                    toggleBtn.classList.add('text-blue-600', 'bg-blue-50');
-                    toggleBtn.classList.remove('text-gray-400');
+                        iconEye.classList.add('opacity-0', 'scale-75');
+                        iconEyeOff.classList.remove('opacity-0', 'scale-75');
+                    } else {
+                        toggleBtn.classList.remove('text-blue-600', 'bg-blue-50');
+                        toggleBtn.classList.add('text-gray-400');
 
-                    iconEye.classList.add('opacity-0', 'scale-75');
-                    iconEyeOff.classList.remove('opacity-0', 'scale-75');
-                } else {
-                    toggleBtn.classList.remove('text-blue-600', 'bg-blue-50');
-                    toggleBtn.classList.add('text-gray-400');
-
-                    iconEye.classList.remove('opacity-0', 'scale-75');
-                    iconEyeOff.classList.add('opacity-0', 'scale-75');
-                }
-            });
+                        iconEye.classList.remove('opacity-0', 'scale-75');
+                        iconEyeOff.classList.add('opacity-0', 'scale-75');
+                    }
+                });
+            }
         });
     </script>
+
+    <!-- Driver.js for Tour -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startTourBtn = document.getElementById('start-tour-btn');
+            if (startTourBtn) {
+                startTourBtn.addEventListener('click', () => {
+                    const driver = window.driver.js.driver;
+                    const driverObj = driver({
+                        showProgress: true,
+                        nextBtnText: 'Lanjut ➔',
+                        prevBtnText: '⬅ Kembali',
+                        doneBtnText: 'Selesai',
+                        popoverClass: 'driverjs-theme',
+                        steps: [
+                            {
+                                element: '#demo-admin',
+                                popover: {
+                                    title: '👨‍💼 Portal Admin',
+                                    description: 'Akses khusus untuk administrator mengelola seluruh sistem, melihat statistik platform, dan mengatur pengguna.',
+                                    side: "bottom",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#demo-seeker',
+                                popover: {
+                                    title: '👨‍🎓 Pencari Kerja',
+                                    description: 'Gunakan peran ini jika Anda adalah kandidat yang ingin mencari lowongan, mengirim lamaran, dan membuat profil karir.',
+                                    side: "bottom",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#demo-industry',
+                                popover: {
+                                    title: '🏢 Perusahaan / Industri',
+                                    description: 'Peran untuk HRD atau perwakilan perusahaan yang ingin memasang lowongan kerja dan mencari kandidat terbaik.',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#demo-education',
+                                popover: {
+                                    title: '🏫 Institusi Pendidikan',
+                                    description: 'Akses bagi universitas/sekolah untuk memantau perkembangan karir alumni dan menjalin kerja sama industri.',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            }
+                        ]
+                    });
+                    
+                    driverObj.drive();
+                });
+            }
+        });
+    </script>
+    <style>
+        /* Driver.js Custom Styling */
+        .driverjs-theme {
+            font-family: inherit;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .driver-popover-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937; /* text-gray-900 */
+        }
+        .driver-popover-description {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #4b5563; /* text-gray-600 */
+        }
+        .driver-popover-footer {
+            margin-top: 12px;
+        }
+        .driver-popover-progress-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* Dark mode support - these will apply if your body/html has a dark class or via prefers-color-scheme */
+        @media (prefers-color-scheme: dark) {
+            html.dark .driverjs-theme {
+                background-color: #1e293b; /* bg-slate-800 */
+                color: #e2e8f0;
+            }
+            html.dark .driver-popover-title {
+                color: #f8fafc;
+            }
+            html.dark .driver-popover-description {
+                color: #cbd5e1; /* text-slate-300 */
+            }
+            html.dark .driver-popover-progress-text {
+                color: #94a3b8;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn {
+                background-color: #334155;
+                color: #f8fafc;
+                border: 1px solid #475569;
+                text-shadow: none;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn:hover {
+                background-color: #475569;
+            }
+            html.dark .driver-popover-arrow {
+                border-color: #1e293b;
+            }
+        }
+    </style>
 </x-guest-layout>
