@@ -5,11 +5,19 @@
             <!-- Welcome Header -->
             <div
                 class="relative overflow-hidden bg-gradient-to-r from-indigo-700 to-purple-800 rounded-3xl shadow-2xl p-8 text-white">
-                <div class="relative z-10">
-                    <h2 class="text-3xl font-extrabold tracking-tight">Selamat Datang, Administrator</h2>
-                    <p class="mt-2 text-indigo-100 text-lg max-w-2xl">Kendalikan ekosistem KompasKarir. Pantau
-                        pertumbuhan pengguna, kualitas kompetensi, dan efisiensi sistem dalam satu panel kendali
-                        terpadu.</p>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-3xl font-extrabold tracking-tight">Selamat Datang, Administrator</h2>
+                        <p class="mt-2 text-indigo-100 text-lg max-w-2xl">Kendalikan ekosistem KompasKarir. Pantau
+                            pertumbuhan pengguna, kualitas kompetensi, dan efisiensi sistem dalam satu panel kendali
+                            terpadu.</p>
+                    </div>
+                    <button type="button" id="start-admin-tour" class="shrink-0 animate-pulse flex items-center gap-2 bg-white text-indigo-700 px-5 py-2.5 rounded-xl font-bold shadow-lg hover:bg-indigo-50 transition-all focus:outline-none focus:ring-2 focus:ring-white/50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Mulai Tour Panduan
+                    </button>
                 </div>
                 <!-- Abstract Background Shapes -->
                 <div class="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-white dark:bg-slate-800/10 rounded-full blur-3xl"></div>
@@ -299,4 +307,193 @@
 
         </div>
     </div>
+
+    <!-- Driver.js for Tour -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startAdminTourBtn = document.getElementById('start-admin-tour');
+            if (startAdminTourBtn) {
+                startAdminTourBtn.addEventListener('click', () => {
+                    
+                    const driver = window.driver.js.driver;
+                    const driverObj = driver({
+                        showProgress: true,
+                        nextBtnText: 'Lanjut ➔',
+                        prevBtnText: '⬅ Kembali',
+                        doneBtnText: 'Selesai',
+                        popoverClass: 'driverjs-theme',
+                        steps: [
+                            {
+                                popover: {
+                                    title: '👋 Selamat Datang di Panel Admin',
+                                    description: 'Mari kita kenali berbagai fitur dan kontrol utama yang ada di dashboard Administrator ini.',
+                                    align: 'center'
+                                }
+                            },
+                            {
+                                element: 'header',
+                                popover: {
+                                    title: '🌐 Top Navbar',
+                                    description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengedit profil, dan Log Out.',
+                                    side: "bottom",
+                                    align: 'center'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/dashboard"]',
+                                popover: {
+                                    title: '📊 Dashboard Utama',
+                                    description: 'Menu ini membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik (total pengguna, asesmen, lowongan, dan gap skill).',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/users"]',
+                                popover: {
+                                    title: '👥 Kelola Pengguna',
+                                    description: 'Pusat kendali akun pengguna. Di sini Anda dapat melihat, memfilter, dan mengatur akun semua Job Seeker, Perusahaan, dan Institusi Pendidikan.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/competencies"]',
+                                popover: {
+                                    title: '🎯 Kompetensi (Skills)',
+                                    description: 'Master data kompetensi platform. Anda bisa menambah, mengedit, atau menghapus daftar skill/kompetensi yang berlaku di sistem.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/reports"]',
+                                popover: {
+                                    title: '📈 Laporan (Reports)',
+                                    description: 'Halaman ini menyediakan laporan analitik komprehensif terkait aktivitas platform, gap skill rata-rata, dan tren rekrutmen.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/categories"]',
+                                popover: {
+                                    title: '🗂️ Kategori Master Data',
+                                    description: 'Menu ini untuk mengatur master kategori yang digunakan perusahaan untuk mengelompokkan lowongan (misal: IT, Finance, dll).',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/positions"]',
+                                popover: {
+                                    title: '💼 Posisi Karir (Positions)',
+                                    description: 'Database posisi jabatan/pekerjaan. Digunakan untuk roadmap karir pengguna dan standar profil jabatan di perusahaan.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/courses"]',
+                                popover: {
+                                    title: '📚 Manajemen Kursus',
+                                    description: 'Pusat pengelolaan materi belajar atau kursus yang nantinya direkomendasikan AI kepada kandidat untuk menutupi kelemahan skill mereka.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/document-weights"]',
+                                popover: {
+                                    title: '⚖️ Bobot Dokumen AI',
+                                    description: 'Pengaturan sangat krusial! Atur persentase pengaruh CV, Portofolio, dan Tes Assessment terhadap skor kecocokan total (Fit Score).',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/ai-workflow"]',
+                                popover: {
+                                    title: '🤖 Alur Kerja AI',
+                                    description: 'Halaman pemantauan sistem kecerdasan buatan backend. Anda dapat mengecek status microservice AI (Python) dan proses background jobs di sini.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: 'a[href*="admin/skill-keywords"]',
+                                popover: {
+                                    title: '📖 Kamus AI (Keywords)',
+                                    description: 'Kamus pintar untuk AI. Jika AI gagal mengenali singkatan skill di CV kandidat (misal: "JS" = "JavaScript"), Anda bisa menambahkannya di sini.',
+                                    side: "right",
+                                    align: 'start'
+                                }
+                            }
+                        ]
+                    });
+                    
+                    driverObj.drive();
+                });
+            }
+        });
+    </script>
+    <style>
+        /* Driver.js Custom Styling */
+        .driverjs-theme {
+            font-family: inherit;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .driver-popover-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937; /* text-gray-900 */
+        }
+        .driver-popover-description {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #4b5563; /* text-gray-600 */
+        }
+        .driver-popover-footer {
+            margin-top: 12px;
+        }
+        .driver-popover-progress-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            html.dark .driverjs-theme {
+                background-color: #1e293b; /* bg-slate-800 */
+                color: #e2e8f0;
+            }
+            html.dark .driver-popover-title {
+                color: #f8fafc;
+            }
+            html.dark .driver-popover-description {
+                color: #cbd5e1; /* text-slate-300 */
+            }
+            html.dark .driver-popover-progress-text {
+                color: #94a3b8;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn {
+                background-color: #334155;
+                color: #f8fafc;
+                border: 1px solid #475569;
+                text-shadow: none;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn:hover {
+                background-color: #475569;
+            }
+            html.dark .driver-popover-arrow {
+                border-color: #1e293b;
+            }
+        }
+    </style>
 </x-app-layout>
