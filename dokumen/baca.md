@@ -1,6 +1,9 @@
 # scan
+
  php artisan brain:scan
+
 # Select2
+
 "Buatkan searchable dropdown (ala Select2) menggunakan Alpine.js untuk input [Nama Input], lengkap dengan styling Tailwind dan dukungan dark mode."
 
 "Tolong jalankan perintah php artisan brain:export-context dan analisa masalah yang paling kritis."
@@ -97,3 +100,9 @@ Undefined variable $user
 - Get competency standards
 - Verify certification schemes
 - Update skill database
+
+git pull origin main
+git add .
+git commit -m "tambah fungsi kali"
+git push origin main
+git status

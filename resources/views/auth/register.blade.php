@@ -63,9 +63,18 @@
 
                     <!-- Role Selection -->
                     <div class="md:col-span-2">
-                        <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                            Daftar Sebagai
-                        </label>
+                        <div class="flex items-center justify-between mb-2">
+                            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Daftar Sebagai
+                            </label>
+                            <button type="button" id="start-role-tour"
+                                class="animate-pulse flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-colors border border-blue-200 dark:border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Penjelasan Peran
+                            </button>
+                        </div>
                         <select id="role" name="role" required
                             class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition @error('role') border-red-500 @enderror">
                             <option value="">-- Pilih Peran Anda --</option>
@@ -213,4 +222,137 @@
             window.location.href = "{{ route('auth.google') }}?role=" + role.value;
         }
     </script>
+
+    <!-- Driver.js for Tour -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startRoleTourBtn = document.getElementById('start-role-tour');
+            if (startRoleTourBtn) {
+                startRoleTourBtn.addEventListener('click', () => {
+                    const driver = window.driver.js.driver;
+                    const driverObj = driver({
+                        showProgress: true,
+                        nextBtnText: 'Lanjut ➔',
+                        prevBtnText: '⬅ Kembali',
+                        doneBtnText: 'Selesai',
+                        popoverClass: 'driverjs-theme',
+                        steps: [
+                            {
+                                element: '#role',
+                                popover: {
+                                    title: '🤔 Memilih Peran yang Tepat',
+                                    description: 'Platform ini melayani berbagai jenis pengguna. Mari kita pelajari perbedaan masing-masing peran agar Anda tidak salah pilih!',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#role',
+                                popover: {
+                                    title: '👤 Pencari Kerja (Job Seeker)',
+                                    description: '<b>Untuk Individu:</b> Pilih ini jika Anda ingin mencari lowongan kerja, mengikuti tes asesmen keahlian, dan melamar pekerjaan ke berbagai perusahaan impian Anda.',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#role',
+                                popover: {
+                                    title: '🏢 Perusahaan (Industry)',
+                                    description: '<b>Untuk Rekruter/HRD:</b> Pilih ini jika Anda mewakili perusahaan yang ingin memasang iklan lowongan, menyeleksi kandidat, dan melihat skor analisis keahlian pelamar.',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#role',
+                                popover: {
+                                    title: '🎓 Institusi Pendidikan',
+                                    description: '<b>Untuk Universitas/Sekolah:</b> Pilih ini jika Anda dari pihak akademis yang ingin memantau keterserapan kerja alumni dan melihat tren keahlian yang sedang dicari industri.',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            },
+                            {
+                                element: '#role',
+                                popover: {
+                                    title: '⚙️ Administrator',
+                                    description: '<b>Untuk Pengelola Sistem:</b> Ini adalah akun khusus untuk mengatur master data sistem, melihat laporan keseluruhan, dan mengawasi jalannya platform.',
+                                    side: "top",
+                                    align: 'start'
+                                }
+                            }
+                        ]
+                    });
+                    
+                    driverObj.drive();
+                });
+            }
+        });
+    </script>
+    <style>
+        /* Driver.js Custom Styling - consistent with login page */
+        .driverjs-theme {
+            font-family: inherit;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .driver-popover-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937; /* text-gray-900 */
+        }
+        .driver-popover-description {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #4b5563; /* text-gray-600 */
+        }
+        .driver-popover-description b {
+            color: #1f2937;
+        }
+        .driver-popover-footer {
+            margin-top: 12px;
+        }
+        .driver-popover-progress-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            html.dark .driverjs-theme {
+                background-color: #1e293b; /* bg-slate-800 */
+                color: #e2e8f0;
+            }
+            html.dark .driver-popover-title {
+                color: #f8fafc;
+            }
+            html.dark .driver-popover-description {
+                color: #cbd5e1; /* text-slate-300 */
+            }
+            html.dark .driver-popover-description b {
+                color: #f8fafc;
+            }
+            html.dark .driver-popover-progress-text {
+                color: #94a3b8;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn {
+                background-color: #334155;
+                color: #f8fafc;
+                border: 1px solid #475569;
+                text-shadow: none;
+            }
+            html.dark .driver-popover-footer .driver-popover-btn:hover {
+                background-color: #475569;
+            }
+            html.dark .driver-popover-arrow {
+                border-color: #1e293b;
+            }
+        }
+    </style>
 </x-guest-layout>
