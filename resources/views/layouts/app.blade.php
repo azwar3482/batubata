@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'KOMPASKARIR') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="icon" href="{{ asset('logo.JPG') }}" type="image/png" class="h-8 w-auto mr-2 rounded-lg">
+    <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/png" class="h-8 w-auto mr-2 rounded-lg">
 
     <!-- Google Fonts - Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -527,7 +527,7 @@
                 <!-- Logo & Close Button (Mobile) -->
                 <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-700 text-white font-extrabold text-lg tracking-wider shadow-sm logo-container transition-all duration-300">
                     <div class="flex items-center">
-                        <img src="{{ asset('logo.JPG') }}" alt="Logo" class="h-9 w-auto mr-3 rounded-lg ring-2 ring-white/20 transition-all duration-300 hover:rotate-6 sidebar-icon">
+                        <img src="{{ asset('logo.jpg') }}" alt="Logo" class="h-9 w-auto mr-3 rounded-lg ring-2 ring-white/20 transition-all duration-300 hover:rotate-6 sidebar-icon">
                         <span class="logo-text transition-all duration-300">KOMPASKARIR</span>
                     </div>
                     <button @click="sidebarOpen = false" class="text-white/80 hover:text-white focus:outline-none lg:hidden p-1 rounded-lg hover:bg-white/10 transition-colors" aria-label="Close Sidebar">
