@@ -15,9 +15,6 @@
                         <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Halo, {{ $user->name }}! 👋</h3>
                         <p class="text-gray-600 dark:text-slate-400 mt-2">Siap untuk menutup kesenjangan skill kamu hari ini?</p>
                     </div>
-                    <button type="button" id="start-seeker-tour" class="shrink-0 animate-pulse bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold shadow-md hover:bg-blue-700 transition-all">
-                        Mulai Tour Panduan
-                    </button>
                 </div>
             </div>
 
@@ -187,7 +184,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const driver = window.driver.js.driver;
-            const driverObj = driver({
+
+            const tourConfig = {
                 showProgress: true,
                 nextBtnText: 'Lanjut ➔',
                 prevBtnText: '⬅ Kembali',
@@ -256,15 +254,16 @@
                         }
                     }
                 ]
-            });
+            };
+
+            const driverObj = driver(tourConfig);
             
             // Auto play saat halaman terbuka
             driverObj.drive();
 
-            // Tambahkan tombol Mulai Tour jika mau di-play ulang
-            const startBtn = document.getElementById('start-seeker-tour');
-            if (startBtn) {
-                startBtn.addEventListener('click', () => {
+            const startTourBtn = document.getElementById('start-tour-btn');
+            if (startTourBtn) {
+                startTourBtn.addEventListener('click', () => {
                     driverObj.drive();
                 });
             }

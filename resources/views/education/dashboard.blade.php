@@ -10,7 +10,7 @@
                         Pantau kompetensi lulusan, analisis skill gap, dan tingkatkan kolaborasi dengan industri.
                     </p>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-3 flex-wrap">
                     <button
                         class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition shadow-sm">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -646,3 +646,132 @@
         observer.observe(document.documentElement, { attributes: true });
     });
 </script>
+
+<!-- Driver.js for Tour -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+<script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const driver = window.driver.js.driver;
+        const tourConfig = {
+            showProgress: true,
+            nextBtnText: 'Lanjut ➔',
+            prevBtnText: '⬅ Kembali',
+            doneBtnText: 'Selesai',
+            popoverClass: 'driverjs-theme',
+            steps: [
+                {
+                    popover: {
+                        title: '👋 Selamat Datang di Panel Edukasi',
+                        description: 'Mari kita kenali berbagai fitur di dashboard ini yang membantu Anda memantau kompetensi lulusan dan menganalisis skill gap.',
+                        align: 'center'
+                    }
+                },
+                {
+                    element: 'header',
+                    popover: {
+                        title: '🌐 Top Navbar',
+                        description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
+                        side: "bottom",
+                        align: 'center'
+                    }
+                },
+                {
+                    element: 'a[href*="education/dashboard"]',
+                    popover: {
+                        title: '📊 Dashboard',
+                        description: 'Menu ini menampilkan ringkasan performa lulusan, analisis skill gap rata-rata per jurusan, dan peluang kolaborasi dengan industri.',
+                        side: "right",
+                        align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="education/analytics"]',
+                    popover: {
+                        title: '📈 Analitik Lulusan',
+                        description: 'Lihat laporan analitik mendalam terkait kompetensi apa yang paling kurang dari lulusan agar dapat menyesuaikan kurikulum.',
+                        side: "right",
+                        align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="education/students"]',
+                    popover: {
+                        title: '👩‍🎓 Data Siswa / Lulusan',
+                        description: 'Kelola data siswa atau alumni Anda. Lihat progress belajar dan skor asesmen masing-masing individu secara detail.',
+                        side: "right",
+                        align: 'start'
+                    }
+                }
+            ]
+        };
+
+        const startTourBtn = document.getElementById('start-tour-btn');
+        if (startTourBtn) {
+            startTourBtn.addEventListener('click', () => {
+                driver(tourConfig).drive();
+            });
+        }
+
+        // Auto play saat halaman terbuka
+        const autoDriver = driver(tourConfig);
+        autoDriver.drive();
+    });
+</script>
+<style>
+    /* Driver.js Custom Styling */
+    .driverjs-theme {
+        font-family: inherit;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    .driver-popover-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1f2937; /* text-gray-900 */
+    }
+    .driver-popover-description {
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: #4b5563; /* text-gray-600 */
+    }
+    .driver-popover-footer {
+        margin-top: 12px;
+    }
+    .driver-popover-progress-text {
+        font-size: 12px;
+        color: #6b7280;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        html.dark .driverjs-theme {
+            background-color: #1e293b; /* bg-slate-800 */
+            color: #e2e8f0;
+        }
+        html.dark .driver-popover-title {
+            color: #f8fafc;
+        }
+        html.dark .driver-popover-description {
+            color: #cbd5e1; /* text-slate-300 */
+        }
+        html.dark .driver-popover-progress-text {
+            color: #94a3b8;
+        }
+        html.dark .driver-popover-footer .driver-popover-btn {
+            background-color: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            text-shadow: none;
+        }
+        html.dark .driver-popover-footer .driver-popover-btn:hover {
+            background-color: #475569;
+        }
+        html.dark .driver-popover-arrow {
+            border-color: #1e293b;
+        }
+    }
+</style>

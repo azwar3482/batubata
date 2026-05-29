@@ -12,12 +12,6 @@
                             pertumbuhan pengguna, kualitas kompetensi, dan efisiensi sistem dalam satu panel kendali
                             terpadu.</p>
                     </div>
-                    <button type="button" id="start-admin-tour" class="shrink-0 animate-pulse flex items-center gap-2 bg-white text-indigo-700 px-5 py-2.5 rounded-xl font-bold shadow-lg hover:bg-indigo-50 transition-all focus:outline-none focus:ring-2 focus:ring-white/50">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Mulai Tour Panduan
-                    </button>
                 </div>
                 <!-- Abstract Background Shapes -->
                 <div class="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-white dark:bg-slate-800/10 rounded-full blur-3xl"></div>
@@ -557,6 +551,13 @@
                 ]
             });
             autoDriver.drive();
+
+            const startTourBtn = document.getElementById('start-tour-btn');
+            if (startTourBtn) {
+                startTourBtn.addEventListener('click', () => {
+                    autoDriver.drive();
+                });
+            }
         });
     </script>
     <style>
