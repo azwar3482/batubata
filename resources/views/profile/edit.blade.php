@@ -332,6 +332,25 @@
                             @csrf
                             @method('PATCH')
 
+                            @if($errors->any() && !$errors->hasAny(['documents', 'documents.*', 'current_password', 'password']))
+                            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r shadow-sm">
+                                <div class="flex items-center text-red-800 font-bold mb-2 text-sm">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    Terdapat kesalahan pada isian form:
+                                </div>
+                                <ul class="list-disc list-inside text-sm text-red-700">
+                                    @foreach($errors->all() as $error)
+                                        @if(!str_contains($error, 'Dokumen') && !str_contains($error, 'sandi') && !str_contains($error, 'password'))
+                                            <li>{{ $error }}</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
+
                             <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
                                 <div class="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg text-blue-600 dark:text-blue-400 mr-3">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -344,9 +363,10 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <!-- Nama -->
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
                                     <input type="text" name="name" value="{{ Auth::user()->name }}" required
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                    @error('name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
 
                                 <!-- Email (Disabled) -->
@@ -366,13 +386,26 @@
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Tanggal Lahir</label>
                                     <input type="date" name="birth_date" value="{{ Auth::user()->birth_date }}"
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                    @error('birth_date') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
 
                                 <!-- Telepon -->
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">No. Telepon</label>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">No. Telepon <span class="text-red-500">*</span></label>
                                     <input type="text" name="phone" value="{{ Auth::user()->phone }}" placeholder="Contoh: 08123456789"
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                    @error('phone') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                </div>
+
+                                <!-- Jenis Kelamin -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Jenis Kelamin <span class="text-red-500">*</span></label>
+                                    <select name="gender" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                        <option value="" disabled {{ empty(Auth::user()->gender) ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
+                                        <option value="L" {{ Auth::user()->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="P" {{ Auth::user()->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                    </select>
+                                    @error('gender') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
 
                                 <!-- Pengalaman -->
@@ -384,6 +417,7 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
                                         <span class="absolute right-4 top-3.5 text-xs text-slate-400 dark:text-slate-500 font-medium">Tahun</span>
                                     </div>
+                                    @error('experience_years') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
                                 @endif
                             </div>
@@ -404,13 +438,13 @@
                                 <!-- Pendidikan -->
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
-                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Pendidikan Terakhir</label>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Pendidikan Terakhir <span class="text-red-500">*</span></label>
                                         <button type="button" @click="extractIjazah" :disabled="isExtracting" class="text-xs bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900/30 font-semibold transition-colors disabled:opacity-50">
                                             <span x-show="!isExtracting">✨ Isi Otomatis dari Ijazah</span>
                                             <span x-show="isExtracting">Sedang memproses...</span>
                                         </button>
                                     </div>
-                                    <select name="education_level" x-model="education_level" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
+                                    <select name="education_level" x-model="education_level" @change="if(education_level === 'Tidak Sekolah') major = ''" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
                                         <option value="" disabled>Pilih Tingkat Pendidikan</option>
                                         <option value="Tidak Sekolah">Tidak Sekolah</option>
                                         <option value="SMA/SMK">SMA/SMK</option>
@@ -421,13 +455,16 @@
                                         <option value="Prof">Profesor (Prof)</option>
                                         <option value="Gelar Non Akademik">Gelar Non Akademik</option>
                                     </select>
+                                    @error('education_level') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
 
                                 <!-- Jurusan -->
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Program Studi / Jurusan</label>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Program Studi / Jurusan <span class="text-red-500" x-show="education_level !== 'Tidak Sekolah'">*</span></label>
                                     <input type="text" name="major" x-model="major" placeholder="Contoh: Teknik Informatika"
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
+                                        :disabled="education_level === 'Tidak Sekolah'"
+                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200 disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800">
+                                    @error('major') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
 
                                 <!-- LinkedIn -->
@@ -691,9 +728,10 @@
 
                             <div class="grid grid-cols-1 gap-6 mb-8">
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Lengkap</label>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
                                     <textarea name="address" rows="2" placeholder="Contoh: Jl. Sudirman No. 1, Jakarta Pusat"
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">{{ Auth::user()->address ?? '' }}</textarea>
+                                    @error('address') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>

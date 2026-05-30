@@ -188,7 +188,7 @@ class User extends Authenticatable
         }
 
         // major (15%)
-        if (!empty($this->major)) {
+        if (!empty($this->major) || $this->education_level === 'Tidak Sekolah') {
             $percentage += 15;
         }
 
