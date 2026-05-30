@@ -18,6 +18,125 @@
                 </div>
             </div>
 
+            @if(session('error'))
+                <div class="mb-6 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30 text-red-800 dark:text-red-400 px-4 py-3 rounded-xl flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <p class="font-semibold text-sm">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="mb-6 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/30 text-green-800 dark:text-green-400 px-4 py-3 rounded-xl flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <p class="font-semibold text-sm">{{ session('success') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            @if(!$user->hasCompletedProfile())
+                <!-- Onboarding Widget (Opsi A) -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl p-6 mb-6 transition-all duration-300">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <span class="px-3 py-1 text-xs font-bold text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-800">
+                                ⚠️ Profil Belum Lengkap
+                            </span>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mt-3">Langkah Terakhir Sebelum Mulai Karirmu!</h3>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Lengkapi profil Anda untuk membuka fitur pencarian kerja dan rekomendasi kursus otomatis.</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="text-right">
+                                <span class="text-2xl font-black text-blue-600 dark:text-blue-400">{{ $user->profile_completion_percentage }}%</span>
+                                <p class="text-xs text-gray-400">Kekuatan Profil</p>
+                            </div>
+                            <div class="w-32 bg-gray-100 dark:bg-slate-800 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full" style="width: {{ $user->profile_completion_percentage }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Checklist -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Step 1: Data Diri (Name, Photo, Phone, Gender, Address) -->
+                        @php
+                            $step1Complete = !empty($user->name) && !empty($user->photo) && !empty($user->phone) && !empty($user->gender) && !empty($user->address);
+                        @endphp
+                        @if($step1Complete)
+                            <div class="p-4 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-start gap-3">
+                                <div class="p-1 bg-green-500 text-white rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">1. Data Diri Lengkap</h4>
+                                    <p class="text-xs text-gray-500">Selesai diisi</p>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('profile.edit') }}" class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 flex items-start gap-3 hover:border-blue-300 dark:hover:border-blue-800 transition cursor-pointer bg-white dark:bg-slate-900">
+                                <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0">1</div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">1. Isi Data Diri</h4>
+                                    <p class="text-xs text-gray-500">Nama, Foto, Telepon, Jenis Kelamin, Alamat</p>
+                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-1 inline-block">Isi Sekarang →</span>
+                                </div>
+                            </a>
+                        @endif
+
+                        <!-- Step 2: Pendidikan & Jurusan -->
+                        @php
+                            $step2Complete = !empty($user->education_level) && !empty($user->major);
+                        @endphp
+                        @if($step2Complete)
+                            <div class="p-4 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-start gap-3">
+                                <div class="p-1 bg-green-500 text-white rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">2. Riwayat Pendidikan</h4>
+                                    <p class="text-xs text-gray-500">Selesai diisi</p>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('profile.edit') }}" class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 flex items-start gap-3 hover:border-blue-300 dark:hover:border-blue-800 transition cursor-pointer bg-white dark:bg-slate-900">
+                                <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0">2</div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">2. Riwayat Pendidikan</h4>
+                                    <p class="text-xs text-gray-500">Tingkat Pendidikan, Jurusan</p>
+                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-1 inline-block">Isi Sekarang →</span>
+                                </div>
+                            </a>
+                        @endif
+
+                        <!-- Step 3: Unggah CV -->
+                        @php
+                            $step3Complete = !empty($user->cv_path);
+                        @endphp
+                        @if($step3Complete)
+                            <div class="p-4 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-start gap-3">
+                                <div class="p-1 bg-green-500 text-white rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">3. Unggah Dokumen CV</h4>
+                                    <p class="text-xs text-gray-500">Selesai diunggah</p>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('profile.edit') }}" class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 flex items-start gap-3 hover:border-blue-300 dark:hover:border-blue-800 transition cursor-pointer bg-white dark:bg-slate-900">
+                                <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0">3</div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">3. Unggah CV Anda</h4>
+                                    <p class="text-xs text-gray-500">File CV format PDF</p>
+                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-1 inline-block">Unggah Sekarang →</span>
+                                </div>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                 <div class="bg-white dark:bg-slate-900 p-6 rounded-lg shadow border-l-4 border-blue-500">

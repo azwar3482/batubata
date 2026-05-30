@@ -36,7 +36,7 @@
                         <!-- Pilih Posisi -->
                         <div>
                             <label for="position_id" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Posisi Target Karir</label>
-                            
+
                             <!-- Searchable Dropdown Alpine.js -->
                             <div x-data="{
                                 search: '',
@@ -61,24 +61,26 @@
                             }" class="relative">
                                 <!-- Hidden input for form submission -->
                                 <input type="hidden" name="position_id" :value="selected" required>
-                                
+
                                 <!-- Trigger Button -->
-                                <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())" @click.away="open = false" 
-                                     class="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition shadow-sm cursor-pointer flex justify-between items-center">
+                                <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())" @click.away="open = false"
+                                    class="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition shadow-sm cursor-pointer flex justify-between items-center">
                                     <span x-text="selectedName" :class="selected === '' ? 'text-gray-500 dark:text-slate-400' : 'text-gray-900 dark:text-white'"></span>
-                                    <svg class="w-5 h-5 text-gray-400 dark:text-slate-500 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-5 h-5 text-gray-400 dark:text-slate-500 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
                                 </div>
-                                
+
                                 <!-- Dropdown Menu -->
-                                <div x-show="open" 
-                                     x-transition:enter="transition ease-out duration-200"
-                                     x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
-                                     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                     x-transition:leave="transition ease-in duration-150"
-                                     x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                                     x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
-                                     class="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-xl max-h-60 flex flex-col overflow-hidden">
-                                    
+                                <div x-show="open"
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
+                                    class="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-xl max-h-60 flex flex-col overflow-hidden">
+
                                     <!-- Search Input -->
                                     <div class="p-3 bg-slate-50 dark:bg-slate-800/80 border-b border-gray-100 dark:border-slate-700">
                                         <div class="relative">
@@ -88,19 +90,21 @@
                                                 </svg>
                                             </div>
                                             <input x-model="search" type="text" x-ref="searchInput"
-                                                class="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-900 text-gray-900 dark:text-white text-sm transition-shadow" 
+                                                class="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-900 text-gray-900 dark:text-white text-sm transition-shadow"
                                                 placeholder="Cari posisi..." @keydown.escape="open = false">
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Options List -->
                                     <ul class="flex-1 overflow-y-auto py-2">
                                         <template x-for="option in filteredOptions" :key="option.id">
-                                            <li @click="selectOption(option)" 
+                                            <li @click="selectOption(option)"
                                                 class="px-4 py-2.5 hover:bg-blue-50 dark:hover:bg-slate-700/50 cursor-pointer text-gray-700 dark:text-slate-200 text-sm flex items-center transition-colors"
                                                 :class="selected === option.id ? 'bg-blue-50/50 dark:bg-slate-700/30 font-medium text-blue-700 dark:text-blue-400' : ''">
                                                 <span x-text="option.name"></span>
-                                                <svg x-show="selected === option.id" class="w-4 h-4 ml-auto text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                <svg x-show="selected === option.id" class="w-4 h-4 ml-auto text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
                                             </li>
                                         </template>
                                         <li x-show="filteredOptions.length === 0" class="px-4 py-3 text-center text-gray-500 dark:text-slate-400 text-sm">
@@ -110,7 +114,7 @@
                                 </div>
                             </div>
                             <!-- End Alpine.js Dropdown -->
-                            
+
                             @error('position_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -136,10 +140,31 @@
                     </div>
 
                     <div class="mt-8">
-                        <button type="submit"
-                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition transform hover:-translate-y-0.5">
-                            Lanjut ke Penilaian Skill
-                        </button>
+                        @if(Auth::user()->hasCompletedProfile())
+                            <button type="submit"
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition transform hover:-translate-y-0.5">
+                                Lanjut ke Penilaian Skill
+                            </button>
+                        @else
+                            <div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4 flex items-start shadow-sm">
+                                <svg class="w-5 h-5 text-amber-500 mt-0.5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-amber-800 dark:text-amber-300">Profil Anda Belum Lengkap</h4>
+                                    <p class="text-sm text-amber-700 dark:text-amber-400 mt-1">
+                                        Anda harus melengkapi profil 100% untuk dapat memulai asesmen skill. Saat ini profil Anda baru <span class="font-bold">{{ Auth::user()->profile_completion_percentage }}%</span> lengkap.
+                                    </p>
+                                    <a href="{{ route('profile.edit') }}" class="inline-block mt-3 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 transition-colors">
+                                        Lengkapi Profil Sekarang &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                            <button type="button" disabled
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gray-400 dark:bg-slate-700 text-gray-200 dark:text-slate-400 cursor-not-allowed transition">
+                                Lanjut ke Penilaian Skill (Profil Belum Lengkap)
+                            </button>
+                        @endif
                     </div>
                 </form>
             </div>

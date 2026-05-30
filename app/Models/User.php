@@ -148,4 +148,60 @@ class User extends Authenticatable
 
         return in_array($permission, $rolePermissions[$this->role] ?? []);
     }
+
+    public function getProfileCompletionPercentageAttribute()
+    {
+        if (!$this->isJobSeeker()) {
+            return 100;
+        }
+
+        $percentage = 0;
+
+        // name (10%)
+        if (!empty($this->name)) {
+            $percentage += 10;
+        }
+
+        // photo (10%)
+        if (!empty($this->photo)) {
+            $percentage += 10;
+        }
+
+        // phone (10%)
+        if (!empty($this->phone)) {
+            $percentage += 10;
+        }
+
+        // gender (10%)
+        if (!empty($this->gender)) {
+            $percentage += 10;
+        }
+
+        // address (10%)
+        if (!empty($this->address) || (!empty($this->latitude) && !empty($this->longitude))) {
+            $percentage += 10;
+        }
+
+        // education_level (10%)
+        if (!empty($this->education_level)) {
+            $percentage += 10;
+        }
+
+        // major (15%)
+        if (!empty($this->major)) {
+            $percentage += 15;
+        }
+
+        // cv_path (25%)
+        if (!empty($this->cv_path)) {
+            $percentage += 25;
+        }
+
+        return $percentage;
+    }
+
+    public function hasCompletedProfile()
+    {
+        return $this->profile_completion_percentage === 100;
+    }
 }

@@ -142,7 +142,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Jobs
         Route::get('/jobs', [DashboardController::class, 'jobs'])->name('jobs.index');
-        Route::post('/jobs/{id}/apply', [DashboardController::class, 'applyJob'])->name('jobs.apply');
+        Route::post('/jobs/{id}/apply', [DashboardController::class, 'applyJob'])->middleware('profile.complete')->name('jobs.apply');
         Route::post('/jobs/{id}/save', [DashboardController::class, 'saveJob'])->name('jobs.save');
         Route::delete('/jobs/{id}/withdraw', [DashboardController::class, 'withdrawApplication'])->name('jobs.withdraw');
         // Courses

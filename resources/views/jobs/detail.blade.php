@@ -233,55 +233,89 @@
                             Lihat Status Lamaran
                         </a>
                     </div>
+                    @elseif (!Auth::user()->hasCompletedProfile())
+                    <div class="text-center py-4">
+                        <div class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center mb-4 border border-amber-200">
+                            <svg class="w-8 h-8 text-amber-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-amber-900 mb-2">Profil Belum Lengkap</h3>
+                        <p class="text-xs text-amber-700 mb-5 leading-relaxed">Profil Anda baru lengkap {{ Auth::user()->profile_completion_percentage }}%. Lengkapi profil Anda hingga 100% terlebih dahulu untuk melamar.</p>
+                        <a href="{{ route('dashboard') }}"
+                            class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl transition font-semibold shadow-md transform hover:-translate-y-0.5">
+                            Lengkapi Profil di Dashboard →
+                        </a>
+                    </div>
                     @else
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Tertarik dengan posisi ini?</h3>
+                        @php
+                            $latestAssessment = \App\Models\UserAssessment::where('user_id', Auth::id())->latest()->first();
+                            $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
+                        @endphp
+                        @if ($avgGap > 30)
+                        <div class="text-center py-4">
+                            <div class="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4 border border-red-200">
+                                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-red-950 mb-2">Celah Keahlian Terlalu Tinggi</h3>
+                            <p class="text-xs text-red-700 mb-5 leading-relaxed">Maaf, celah keahlian (Skill Gap) Anda sebesar <strong>{{ number_format($avgGap, 1) }}%</strong> melebihi batas 30%. Selesaikan kursus yang direkomendasikan terlebih dahulu.</p>
+                            <a href="{{ route('seeker.courses.index') }}"
+                                class="block w-full text-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition font-semibold shadow-md transform hover:-translate-y-0.5">
+                                Belajar Lewat Kursus Rekomendasi →
+                            </a>
+                        </div>
+                        @else
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Tertarik dengan posisi ini?</h3>
 
-                    <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="space-y-4" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < 75) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
-                        @csrf
+                        <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="space-y-4" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < 75) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
+                            @csrf
 
-                        <!-- CV Preview -->
-                        <div class="p-3 bg-gray-50 rounded-lg">
-                            <p class="text-xs text-gray-500 mb-2">CV yang akan dikirim:</p>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor"
+                            <!-- CV Preview -->
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-2">CV yang akan dikirim:</p>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                        </path>
+                                    </svg>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                            CV_{{ Auth::user()->name }}.pdf</p>
+                                        <p class="text-xs text-gray-500">2.4 MB • Updated 2 days ago</p>
+                                    </div>
+                                    <a href="{{ route('profile.edit') }}"
+                                        class="text-xs text-blue-600 hover:underline ml-auto">Ganti</a>
+                                </div>
+                            </div>
+
+                            <!-- Note (Optional) -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Catatan untuk
+                                    Recruiter (Opsional)</label>
+                                <textarea name="note" rows="3" placeholder="Tulis pesan singkat mengapa Anda cocok..."
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full flex justify-center items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-800 transition shadow-lg transform hover:-translate-y-0.5">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                    </path>
+                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                 </svg>
-                                <div class="min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate">
-                                        CV_{{ Auth::user()->name }}.pdf</p>
-                                    <p class="text-xs text-gray-500">2.4 MB • Updated 2 days ago</p>
-                                </div>
-                                <a href="{{ route('profile.edit') }}"
-                                    class="text-xs text-blue-600 hover:underline ml-auto">Ganti</a>
-                            </div>
-                        </div>
+                                Kirim Lamaran Sekarang
+                            </button>
+                        </form>
 
-                        <!-- Note (Optional) -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Catatan untuk
-                                Recruiter (Opsional)</label>
-                            <textarea name="note" rows="3" placeholder="Tulis pesan singkat mengapa Anda cocok..."
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full flex justify-center items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-800 transition shadow-lg transform hover:-translate-y-0.5">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                            </svg>
-                            Kirim Lamaran Sekarang
-                        </button>
-                    </form>
-
-                    <p class="text-xs text-gray-500 text-center mt-4">
-                        Dengan mengirim lamaran, Anda menyetujui <a href="#"
-                            class="text-blue-600 hover:underline">Syarat & Ketentuan</a> KOMPASKARIR
-                    </p>
+                        <p class="text-xs text-gray-500 text-center mt-4">
+                            Dengan mengirim lamaran, Anda menyetujui <a href="#"
+                                class="text-blue-600 hover:underline">Syarat & Ketentuan</a> KOMPASKARIR
+                        </p>
+                        @endif
                     @endif
                 </div>
 

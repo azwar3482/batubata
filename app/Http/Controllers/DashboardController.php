@@ -87,6 +87,17 @@ class DashboardController extends Controller
     public function applyJob($id, JobApplicationService $applicationService)
     {
         $user = Auth::user();
+
+        if (!$user->hasCompletedProfile()) {
+            return back()->with('error', 'Profil Anda belum lengkap (' . $user->profile_completion_percentage . '%). Silakan lengkapi profil dan unggah CV Anda terlebih dahulu.');
+        }
+
+        $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest()->first();
+        $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
+        if ($avgGap > 30) {
+            return back()->with('error', 'Maaf, celah keahlian (Skill Gap) Anda sebesar ' . number_format($avgGap, 1) . '% melebihi batas maksimal 30%. Silakan ikuti kursus rekomendasi terlebih dahulu.');
+        }
+
         $result = $applicationService->applyForJob($user, $id);
 
         if (!$result['success']) {
