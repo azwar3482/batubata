@@ -43,8 +43,78 @@
 
                             <div class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="md:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Judul Posisi (Role) <span class="text-red-500">*</span></label>
+                                    <!-- Searchable Dropdown for Position Category -->
+                                    <div x-data="{
+                                        open: false,
+                                        search: '',
+                                        selected: '{{ old('position_id', $job->position_id) }}',
+                                        selectedName: 'Pilih Kategori Posisi...',
+                                        options: [
+                                            @foreach($positions as $position)
+                                                { id: '{{ $position->id }}', name: '{{ addslashes($position->name) }}' },
+                                            @endforeach
+                                        ],
+                                        get filteredOptions() {
+                                            if (this.search === '') return this.options;
+                                            return this.options.filter(i => i.name.toLowerCase().includes(this.search.toLowerCase()));
+                                        },
+                                        selectOption(opt) {
+                                            this.selected = opt.id;
+                                            this.selectedName = opt.name;
+                                            this.open = false;
+                                            this.search = '';
+                                        },
+                                        init() {
+                                            if (this.selected) {
+                                                const opt = this.options.find(o => o.id == this.selected);
+                                                if (opt) this.selectedName = opt.name;
+                                            }
+                                        }
+                                    }" class="relative w-full" @click.away="open = false" x-init="init()">
+                                        
+                                        <input type="hidden" name="position_id" :value="selected">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Kategori Posisi <span class="text-red-500">*</span></label>
+                                        
+                                        <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())" 
+                                            class="flex items-center justify-between w-full rounded-xl border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm sm:text-sm p-3 transition-colors cursor-pointer focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+                                            :class="{'border-blue-500 ring-1 ring-blue-500': open}">
+                                            <span x-text="selectedName" :class="{'text-gray-400 dark:text-gray-500': !selected}"></span>
+                                            <svg class="w-4 h-4 text-gray-400 transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+
+                                        <div x-show="open" style="display: none;"
+                                            x-transition:enter="transition ease-out duration-100"
+                                            x-transition:enter-start="transform opacity-0 scale-95"
+                                            x-transition:enter-end="transform opacity-100 scale-100"
+                                            x-transition:leave="transition ease-in duration-75"
+                                            x-transition:leave-start="transform opacity-100 scale-100"
+                                            x-transition:leave-end="transform opacity-0 scale-95"
+                                            class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg">
+                                            
+                                            <div class="p-2 border-b border-gray-100 dark:border-slate-700">
+                                                <input type="text" x-model="search" placeholder="Cari kategori..." 
+                                                    class="w-full text-sm rounded-lg border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                    @keydown.escape="open = false" 
+                                                    x-ref="searchInput">
+                                            </div>
+
+                                            <ul class="max-h-60 overflow-y-auto p-1 custom-scrollbar">
+                                                <template x-for="option in filteredOptions" :key="option.id">
+                                                    <li @click="selectOption(option)"
+                                                        class="cursor-pointer px-3 py-2 rounded-lg text-sm transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-slate-700 dark:hover:text-blue-400"
+                                                        :class="{'bg-blue-50 text-blue-600 dark:bg-slate-700 dark:text-blue-400 font-semibold': selected == option.id, 'text-gray-700 dark:text-slate-200': selected != option.id}">
+                                                        <span x-text="option.name"></span>
+                                                    </li>
+                                                </template>
+                                                <li x-show="filteredOptions.length === 0" class="px-3 py-2 text-sm text-gray-500 dark:text-slate-400 text-center">
+                                                    Kategori tidak ditemukan
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Judul Spesifik Lowongan <span class="text-red-500">*</span></label>
                                         <input type="text" name="title" value="{{ old('title', $job->title) }}" required class="block w-full rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 transition-colors" placeholder="Contoh: Senior UI/UX Designer">
                                     </div>
 

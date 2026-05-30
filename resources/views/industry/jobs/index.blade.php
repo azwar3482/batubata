@@ -45,7 +45,12 @@
                                         {{ $loop->iteration + ($jobs->currentPage() - 1) * $jobs->perPage() }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $job->title }}</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                            {{ $job->title }}
+                                            @if($job->position)
+                                                <span class="ml-1 px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold whitespace-nowrap">{{ $job->position->name }}</span>
+                                            @endif
+                                        </div>
                                         <div class="text-sm text-gray-500">{{ $job->company_name ?? 'Perusahaan' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">

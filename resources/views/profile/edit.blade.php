@@ -412,10 +412,14 @@
                                     </div>
                                     <select name="education_level" x-model="education_level" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
                                         <option value="" disabled>Pilih Tingkat Pendidikan</option>
+                                        <option value="Tidak Sekolah">Tidak Sekolah</option>
                                         <option value="SMA/SMK">SMA/SMK</option>
                                         <option value="D3">Diploma 3 (D3)</option>
                                         <option value="S1">Strata 1 (S1)</option>
                                         <option value="S2">Strata 2 (S2)</option>
+                                        <option value="S3">Strata 3 (S3)</option>
+                                        <option value="Prof">Profesor (Prof)</option>
+                                        <option value="Gelar Non Akademik">Gelar Non Akademik</option>
                                     </select>
                                 </div>
 
@@ -467,19 +471,45 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <!-- Keahlian -->
-                                <div>
+                                <div x-data="{
+                                        showSuggestions: false,
+                                        suggestions: ['PHP', 'Laravel', 'JavaScript', 'Python', 'Java', 'C++', 'Go', 'HTML', 'CSS', 'React', 'Vue', 'Node.js', 'SQL', 'Git', 'Docker', 'AWS', 'UI/UX', 'Project Management', 'Data Analysis', 'Machine Learning', 'Flutter', 'Android', 'iOS', 'Kotlin', 'Swift', 'TailwindCSS', 'Bootstrap', 'Figma', 'SEO', 'Digital Marketing'],
+                                        get filteredSuggestions() {
+                                            if (this.new_skill === '') return [];
+                                            return this.suggestions.filter(s => s.toLowerCase().includes(this.new_skill.toLowerCase()) && !this.skills.includes(s)).slice(0, 5);
+                                        },
+                                        selectSuggestion(suggestion) {
+                                            this.new_skill = suggestion;
+                                            this.addSkill(new Event('click'));
+                                            this.showSuggestions = false;
+                                        }
+                                    }">
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Keahlian (Skills)</label>
-                                    <div class="flex items-center mb-3">
-                                        <input type="text" x-model="new_skill" @keydown.enter="addSkill($event)" placeholder="Ketik keahlian (contoh: PHP) lalu Enter"
+                                    <div class="flex items-center mb-3 relative">
+                                        <input type="text" x-model="new_skill" @keydown.enter.prevent="addSkill($event)" @focus="showSuggestions = true" @click.away="showSuggestions = false" placeholder="Ketik skill (cth: PHP)"
                                             class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-l-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 block p-3 transition-all duration-200">
                                         <button type="button" @click="addSkill" class="px-4 py-3 bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-600 text-white rounded-r-xl text-sm font-semibold transition-colors">Tambah</button>
+                                        
+                                        <!-- Suggestions Dropdown -->
+                                        <div x-show="showSuggestions && filteredSuggestions.length > 0" style="display: none;"
+                                             x-transition.opacity.duration.200ms
+                                             class="absolute z-10 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg mt-1 top-full overflow-hidden">
+                                            <ul class="py-1">
+                                                <template x-for="suggestion in filteredSuggestions" :key="suggestion">
+                                                    <li @click="selectSuggestion(suggestion)" 
+                                                        class="cursor-pointer px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                                                        <span x-text="suggestion"></span>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="flex flex-wrap gap-2">
                                         <template x-for="(skill, index) in skills" :key="index">
                                             <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800/40">
                                                 <input type="hidden" :name="'skills['+index+']'" :value="skill">
                                                 <span x-text="skill"></span>
-                                                <button type="button" @click="removeSkill(index)" class="ml-1.5 text-purple-500 hover:text-purple-700">
+                                                <button type="button" @click="removeSkill(index)" class="ml-1.5 text-purple-500 hover:text-purple-700 focus:outline-none">
                                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                                     </svg>
@@ -577,19 +607,69 @@
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div>
+                                <div x-data="{
+                                        open: false,
+                                        search: '{{ Auth::user()->expected_job_type ?? '' }}',
+                                        options: [
+                                            @foreach($positions ?? [] as $position)
+                                            '{{ addslashes($position->name) }}',
+                                            @endforeach
+                                        ],
+                                        get filteredOptions() {
+                                            if (this.search === '') return this.options;
+                                            return this.options.filter(i => i.toLowerCase().includes(this.search.toLowerCase()));
+                                        },
+                                        selectOption(opt) {
+                                            this.search = opt;
+                                            this.open = false;
+                                        }
+                                    }">
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Jenis Pekerjaan yang Diharapkan</label>
-                                    <select name="expected_job_type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">
-                                        <option value="" disabled {{ !Auth::user()->expected_job_type ? 'selected' : '' }}>Pilih Jenis Pekerjaan</option>
-                                        @foreach($positions ?? [] as $position)
-                                        <option value="{{ $position->name }}" {{ Auth::user()->expected_job_type == $position->name ? 'selected' : '' }}>{{ $position->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="relative w-full">
+                                        <input type="text" name="expected_job_type" x-model="search" @focus="open = true" @click.away="open = false" autocomplete="off" placeholder="Pilih atau ketik pekerjaan"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">
+                                        <!-- Dropdown Indicator -->
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                        
+                                        <div x-show="open && filteredOptions.length > 0" style="display: none;" class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                                            <ul class="py-1">
+                                                <template x-for="opt in filteredOptions" :key="opt">
+                                                    <li @click="selectOption(opt)" class="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 dark:hover:text-teal-300 cursor-pointer">
+                                                        <span x-text="opt"></span>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gaji yang Diharapkan (IDR)</label>
-                                    <input type="number" name="expected_salary" value="{{ Auth::user()->expected_salary }}" placeholder="Contoh: 8000000" min="0" step="100000"
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">
+                                <div x-data="{ 
+                                        raw: '{{ Auth::user()->expected_salary ?? '' }}',
+                                        formatRupiah(value) {
+                                            if(!value) return '';
+                                            let number_string = value.toString().replace(/[^,\d]/g, ''),
+                                                split = number_string.split(','),
+                                                sisa = split[0].length % 3,
+                                                rupiah = split[0].substr(0, sisa),
+                                                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+                                            
+                                            if (ribuan) {
+                                                let separator = sisa ? '.' : '';
+                                                rupiah += separator + ribuan.join('.');
+                                            }
+                                            return rupiah;
+                                        }
+                                    }">
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gaji yang Diharapkan</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-slate-500 dark:text-slate-400 sm:text-sm font-semibold">Rp</span>
+                                        </div>
+                                        <input type="hidden" name="expected_salary" x-model="raw">
+                                        <input type="text" :value="formatRupiah(raw)" @input="raw = $event.target.value.replace(/\D/g, '')" placeholder="8.000.000"
+                                            class="w-full pl-10 pr-3 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block transition-all duration-200">
+                                    </div>
                                 </div>
                                 <div class="md:col-span-2">
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Catatan Preferensi Pekerjaan</label>

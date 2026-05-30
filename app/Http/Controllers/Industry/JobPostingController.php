@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Position;
 use App\Notifications\NewJobMatchNotification;
 use App\Services\JobMatchingService;
 
@@ -33,12 +34,14 @@ class JobPostingController extends Controller
     public function create()
     {
         $defaultWeight = \App\Models\CompanyDocumentWeight::default()->first();
-        return view('industry.jobs.create', compact('defaultWeight'));
+        $positions = Position::orderBy('name')->get();
+        return view('industry.jobs.create', compact('defaultWeight', 'positions'));
     }
 
     public function store(Request $request, JobMatchingService $matchingService)
     {
         $request->validate([
+            'position_id' => 'required|exists:positions,id',
             'title' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
             'location' => 'required|string',
@@ -83,6 +86,7 @@ class JobPostingController extends Controller
 
         $job = JobListing::create([
             'user_id' => Auth::id(),
+            'position_id' => $request->position_id,
             'external_id' => 'INT-' . uniqid(),
             'source_platform' => 'Internal',
             'title' => $request->title,
@@ -161,7 +165,8 @@ class JobPostingController extends Controller
     public function edit($id)
     {
         $job = JobListing::where('user_id', Auth::id())->findOrFail($id);
-        return view('industry.jobs.edit', compact('job'));
+        $positions = Position::orderBy('name')->get();
+        return view('industry.jobs.edit', compact('job', 'positions'));
     }
 
     public function update(Request $request, $id)
@@ -169,6 +174,7 @@ class JobPostingController extends Controller
         $job = JobListing::where('user_id', Auth::id())->findOrFail($id);
 
         $request->validate([
+            'position_id' => 'required|exists:positions,id',
             'title' => 'required|string|max:255',
             'location' => 'required|string',
             'work_type' => 'required|in:remote,hybrid,onsite',
@@ -198,6 +204,7 @@ class JobPostingController extends Controller
         }
 
         $job->update([
+            'position_id' => $request->position_id,
             'title' => $request->title,
             'location' => $request->location,
             'work_type' => $request->work_type,

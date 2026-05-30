@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class JobListing extends Model
 {
     protected $fillable = [
-        'company_id', 'user_id', 'external_id', 'source_platform', 'title', 'company_name', 'location', 
+        'company_id', 'user_id', 'position_id', 'external_id', 'source_platform', 'title', 'company_name', 'location', 
         'latitude', 'longitude',
         'work_type', 'salary_min', 'salary_max', 'experience_required', 
         'description', 'required_skills', 'application_url', 'posted_date', 
@@ -30,4 +30,5 @@ class JobListing extends Model
     ];
 
     public function applications() { return $this->hasMany(UserJobApplication::class); }
+    public function position() { return $this->belongsTo(Position::class); }
 }

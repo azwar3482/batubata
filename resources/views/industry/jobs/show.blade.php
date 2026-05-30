@@ -28,7 +28,12 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $job->title }}</h3>
+                            <div class="mb-2 flex flex-wrap items-center gap-2">
+                                <h3 class="text-2xl font-bold text-gray-900">{{ $job->title }}</h3>
+                                @if($job->position)
+                                    <span class="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold whitespace-nowrap">{{ $job->position->name }}</span>
+                                @endif
+                            </div>
                             <p class="text-lg text-gray-600 mb-4">{{ $job->company_name }} &bull; {{ $job->location }}</p>
                             
                             <div class="flex flex-wrap gap-2 mb-6">
