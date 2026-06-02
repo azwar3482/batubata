@@ -10,12 +10,14 @@ class JobListing extends Model
         'company_id', 'user_id', 'position_id', 'external_id', 'source_platform', 'title', 'company_name', 'location', 
         'latitude', 'longitude',
         'work_type', 'salary_min', 'salary_max', 'experience_required', 
+        'blood_type', 'gender', 'max_age', 'languages',
         'description', 'required_skills', 'application_url', 'posted_date', 
         'expires_date', 'is_active',
         'use_custom_weight', 'cv_weight', 'ijazah_weight', 'transkrip_weight', 'sertifikat_weight', 'portofolio_weight', 'banner_image'
     ];
     protected $casts = [
         'required_skills' => 'array',
+        'languages' => 'array',
         'posted_date' => 'date',
         'expires_date' => 'date',
         'is_active' => 'boolean',

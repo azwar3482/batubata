@@ -41,13 +41,17 @@ class JobPostingController extends Controller
     public function store(Request $request, JobMatchingService $matchingService)
     {
         $request->validate([
-            'position_id' => 'required|exists:positions,id',
+            'position_id' => 'required',
             'title' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
             'location' => 'required|string',
             'work_type' => 'required|in:remote,hybrid,onsite',
             'description' => 'required|string',
             'required_skills' => 'required|string',
+            'blood_type' => 'nullable|string',
+            'gender' => 'nullable|string',
+            'max_age' => 'nullable|integer|min:17',
+            'languages' => 'nullable|array',
             'salary_min' => 'nullable|numeric',
             'salary_max' => 'nullable|numeric|gte:salary_min',
             'weight_option' => 'required|in:default,custom',
@@ -84,9 +88,18 @@ class JobPostingController extends Controller
             $bannerPath = $request->file('banner_image')->store('job_banners', 'public');
         }
 
+        $positionId = $request->position_id;
+        if (!is_numeric($positionId) || !Position::find($positionId)) {
+            $newPosition = Position::firstOrCreate(
+                ['name' => $positionId],
+                ['description' => 'Ditambahkan secara otomatis oleh sistem', 'category' => 'Lainnya']
+            );
+            $positionId = $newPosition->id;
+        }
+
         $job = JobListing::create([
             'user_id' => Auth::id(),
-            'position_id' => $request->position_id,
+            'position_id' => $positionId,
             'external_id' => 'INT-' . uniqid(),
             'source_platform' => 'Internal',
             'title' => $request->title,
@@ -94,6 +107,10 @@ class JobPostingController extends Controller
             'location' => $request->location,
             'work_type' => $request->work_type,
             'experience_level' => $request->experience_level,
+            'blood_type' => $request->blood_type ?? 'Semua Golongan Darah',
+            'gender' => $request->gender ?? 'Semua Jenis Kelamin',
+            'max_age' => $request->max_age,
+            'languages' => $request->languages ?? [],
             'salary_min' => $request->salary_min,
             'salary_max' => $request->salary_max,
             'experience_required' => $request->experience_required ?? 'Fresh Graduate',
@@ -174,12 +191,16 @@ class JobPostingController extends Controller
         $job = JobListing::where('user_id', Auth::id())->findOrFail($id);
 
         $request->validate([
-            'position_id' => 'required|exists:positions,id',
+            'position_id' => 'required',
             'title' => 'required|string|max:255',
             'location' => 'required|string',
             'work_type' => 'required|in:remote,hybrid,onsite',
             'description' => 'required|string',
             'required_skills' => 'required|string',
+            'blood_type' => 'nullable|string',
+            'gender' => 'nullable|string',
+            'max_age' => 'nullable|integer|min:17',
+            'languages' => 'nullable|array',
             'salary_min' => 'nullable|numeric',
             'salary_max' => 'nullable|numeric|gte:salary_min',
             'is_active' => 'required|boolean',
@@ -203,12 +224,25 @@ class JobPostingController extends Controller
             $bannerPath = $request->file('banner_image')->store('job_banners', 'public');
         }
 
+        $positionId = $request->position_id;
+        if (!is_numeric($positionId) || !Position::find($positionId)) {
+            $newPosition = Position::firstOrCreate(
+                ['name' => $positionId],
+                ['description' => 'Ditambahkan secara otomatis oleh sistem', 'category' => 'Lainnya']
+            );
+            $positionId = $newPosition->id;
+        }
+
         $job->update([
-            'position_id' => $request->position_id,
+            'position_id' => $positionId,
             'title' => $request->title,
             'location' => $request->location,
             'work_type' => $request->work_type,
             'experience_level' => $request->experience_level,
+            'blood_type' => $request->blood_type ?? 'Semua Golongan Darah',
+            'gender' => $request->gender ?? 'Semua Jenis Kelamin',
+            'max_age' => $request->max_age,
+            'languages' => $request->languages ?? [],
             'salary_min' => $request->salary_min,
             'salary_max' => $request->salary_max,
             'description' => $request->description,
