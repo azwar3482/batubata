@@ -5,7 +5,7 @@
             <!-- Header & Filter -->
             <div class="mb-8">
                 <div class="mb-4">
-                    <h2 class="text-3xl font-extrabold text-gray-900">1Lowongan Kerja</h2>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Lowongan Kerja</h2>
                     <p class="mt-1 text-gray-600">Ditemukan {{ $jobs->total() ?? count($jobs) }} lowongan yang cocok dengan profil Anda.</p>
                 </div>
 

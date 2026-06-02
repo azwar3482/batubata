@@ -19,6 +19,7 @@ class User extends Authenticatable
         'password',
         'role',
         'gender',
+        'blood_type',
         'phone',
         'photo',
         'cv_path',

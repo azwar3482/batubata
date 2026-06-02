@@ -18,6 +18,7 @@ class UpdateProfileRequest extends FormRequest
             'email' => 'required|string|lowercase|email|max:255|unique:users,email,' . $this->user()->id,
             'phone' => 'nullable|string|max:20',
             'gender' => 'nullable|in:L,P',
+            'blood_type' => 'nullable|in:A,B,AB,O',
             'education_level' => 'nullable|string',
             'major' => 'nullable|string|max:255',
             'experience_years' => 'nullable|integer|min:0',

@@ -408,6 +408,19 @@
                                     @error('gender') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                 </div>
 
+                                <!-- Golongan Darah -->
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Golongan Darah</label>
+                                    <select name="blood_type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                        <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Belum Diketahui</option>
+                                        <option value="A" {{ Auth::user()->blood_type == 'A' ? 'selected' : '' }}>A</option>
+                                        <option value="B" {{ Auth::user()->blood_type == 'B' ? 'selected' : '' }}>B</option>
+                                        <option value="AB" {{ Auth::user()->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
+                                        <option value="O" {{ Auth::user()->blood_type == 'O' ? 'selected' : '' }}>O</option>
+                                    </select>
+                                    @error('blood_type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                </div>
+
                                 <!-- Pengalaman -->
                                 @if(Auth::user()->role === 'job_seeker')
                                 <div>

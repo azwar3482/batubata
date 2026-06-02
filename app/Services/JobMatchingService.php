@@ -123,6 +123,49 @@ class JobMatchingService
 
         $jobs = $query->get();
 
+        if ($user) {
+            $userAge = null;
+            if ($user->birth_date) {
+                $userAge = \Carbon\Carbon::parse($user->birth_date)->age;
+            }
+            $userGenderMap = ['L' => 'Laki-laki', 'P' => 'Perempuan'];
+            $userGender = $userGenderMap[$user->gender] ?? null;
+
+            $jobs = $jobs->filter(function ($job) use ($user, $userAge, $userGender) {
+                // 1. Gender Filter
+                if (!empty($job->gender) && $job->gender !== 'Semua Jenis Kelamin') {
+                    if ($userGender !== $job->gender) return false;
+                }
+
+                // 2. Blood Type Filter
+                if (!empty($job->blood_type) && $job->blood_type !== 'Semua Golongan Darah') {
+                    if ($user->blood_type !== $job->blood_type) return false;
+                }
+
+                // 3. Max Age Filter
+                if ($job->max_age !== null && $userAge !== null) {
+                    if ($userAge > $job->max_age) return false;
+                }
+
+                // 4. Expected Salary Filter
+                if ($user->expected_salary !== null) {
+                    if ($job->salary_max !== null && $job->salary_max < $user->expected_salary) return false;
+                }
+
+                // 5. Languages Filter
+                if (!empty($job->languages)) {
+                    $userLangs = array_map('strtolower', $user->languages ?? []);
+                    $jobLangs = array_map('strtolower', $job->languages);
+                    // Check if user has ALL required languages
+                    foreach ($jobLangs as $jl) {
+                        if (!in_array($jl, $userLangs)) return false;
+                    }
+                }
+
+                return true;
+            });
+        }
+
         $matchedJobs = $jobs->map(function ($job) use ($user, $userApplications) {
             $job->matching_percentage = $this->calculateMatch($user, $job);
             $job->user_status = $userApplications->get($job->id);
