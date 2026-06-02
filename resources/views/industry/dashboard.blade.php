@@ -132,19 +132,32 @@
                         <div
                             class="p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <h3 class="text-lg font-bold text-gray-900">Lowongan Terbaru</h3>
-                            <div class="flex gap-2">
-                                <a href="{{ route('industry.jobs.create') }}"
-                                    class="text-sm text-blue-600 hover:text-blue-800 font-medium">
-                                    + Tambah Lowongan
-                                </a>
-                                <span class="text-gray-300">|</span>
-                                <a href="{{ route('industry.jobs.index') }}" class="text-sm text-gray-600 hover:text-gray-800">Lihat Semua</a>
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="searchTable" placeholder="Cari lowongan..." class="pl-9 pr-4 py-1.5 border-gray-300 bg-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full transition">
+                                </div>
+                                <div class="flex gap-2 items-center">
+                                    <a href="{{ route('industry.jobs.create') }}"
+                                        class="text-sm text-blue-600 hover:text-blue-800 font-medium whitespace-nowrap">
+                                        + Tambah
+                                    </a>
+                                    <span class="text-gray-300">|</span>
+                                    <a href="{{ route('industry.jobs.index') }}" class="text-sm text-gray-600 hover:text-gray-800 whitespace-nowrap">Lihat Semua</a>
+                                </div>
                             </div>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
+                                            No</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Posisi</th>
@@ -164,7 +177,10 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @forelse($recentJobs ?? [] as $job)
-                                    <tr class="hover:bg-gray-50 transition">
+                                    <tr class="hover:bg-gray-50 transition job-row">
+                                        <td class="px-6 py-4 text-sm text-gray-500">
+                                            {{ $loop->iteration }}
+                                        </td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $job->title }}
                                             </div>
@@ -232,8 +248,11 @@
                                         </td>
                                     </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center">
+                                    <tr id="emptySearchRow" style="display: none;">
+                                        <td colspan="6" class="px-6 py-12 text-center text-gray-500 text-sm">Pencarian tidak ditemukan</td>
+                                    </tr>
+                                    <tr class="empty-state">
+                                        <td colspan="6" class="px-6 py-12 text-center">
                                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -650,6 +669,36 @@
         observer.observe(document.documentElement, {
             attributes: true
         });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchTable');
+        const emptySearchRow = document.getElementById('emptySearchRow');
+        
+        if(searchInput) {
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const tableRows = document.querySelectorAll('tr.job-row');
+                let hasVisibleRow = false;
+                
+                tableRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if(text.includes(searchTerm)) {
+                        row.style.display = '';
+                        hasVisibleRow = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                if (emptySearchRow) {
+                    if (!hasVisibleRow && tableRows.length > 0) {
+                        emptySearchRow.style.display = '';
+                    } else {
+                        emptySearchRow.style.display = 'none';
+                    }
+                }
+            });
+        }
     });
 </script>
 

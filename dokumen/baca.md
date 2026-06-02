@@ -106,3 +106,17 @@ git add .
 git commit -m "tambah fungsi kali"
 git push origin main
 git status
+
+app
+resouce
+router
+
+Saya adalah asisten software engineering yang bisa membantu:
+
+- Menulis & mengedit kode - membuat fitur baru, memperbaiki bug, refactoring
+- Mencari di codebase - mencari file, fungsi, pola kode tertentu
+- Menjalankan command - git, npm, testing, build, dll.
+- Membaca & menjelaskan kode - memahami alur program, dokumentasi
+- Manajemen file - membuat, mengedit, menghapus file
+- Debugging - menganalisis error, mencari akar masalah
+- Web fetch - mengambil konten dari URL untuk referensi
