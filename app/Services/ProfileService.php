@@ -94,6 +94,18 @@ class ProfileService
                 continue;
             }
 
+            // Hapus dokumen lama jika ada
+            $oldDocs = UserDocument::where('user_id', $user->id)
+                ->where('document_type', $docType)
+                ->get();
+                
+            foreach ($oldDocs as $oldDoc) {
+                if (Storage::disk('public')->exists($oldDoc->file_path)) {
+                    Storage::disk('public')->delete($oldDoc->file_path);
+                }
+                $oldDoc->delete();
+            }
+
             // Simpan file ke storage
             $path = $file->store("documents/{$docType}", 'public');
 

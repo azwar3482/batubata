@@ -38,8 +38,7 @@ class User extends Authenticatable
         'address',
         'skills',
         'languages',
-        'expected_job_type',
-        'expected_salary',
+        'expected_jobs',
         'job_preferences',
         'birth_date',
         'company_id',
@@ -55,6 +54,7 @@ class User extends Authenticatable
         'password' => 'hashed',
         'skills' => 'array',
         'languages' => 'array',
+        'expected_jobs' => 'array',
         'custom_permissions' => 'array',
     ];
 

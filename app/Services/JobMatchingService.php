@@ -147,9 +147,34 @@ class JobMatchingService
                     if ($userAge > $job->max_age) return false;
                 }
 
-                // 4. Expected Salary Filter
-                if ($user->expected_salary !== null) {
-                    if ($job->salary_max !== null && $job->salary_max < $user->expected_salary) return false;
+                // 4. Expected Jobs & Salary Filter
+                if (!empty($user->expected_jobs) && is_array($user->expected_jobs)) {
+                    $jobMatchedPreference = false;
+                    $jobPositionName = optional($job->position)->name;
+                    
+                    foreach ($user->expected_jobs as $pref) {
+                        $prefPosition = $pref['position'] ?? null;
+                        $prefSalaryMin = isset($pref['salary_min']) && $pref['salary_min'] !== '' ? (float)$pref['salary_min'] : null;
+                        
+                        if ($prefPosition && strcasecmp($prefPosition, $jobPositionName) === 0) {
+                            // Jika posisi cocok, periksa gajinya.
+                            // Lowongan disembunyikan HANYA JIKA salary_max lowongan < salary_min user.
+                            // Artinya, selama salary_max >= salary_min user, atau salary_max belum diisi (null), maka tampilkan.
+                            if ($prefSalaryMin !== null && $job->salary_max !== null) {
+                                if ($job->salary_max >= $prefSalaryMin) {
+                                    $jobMatchedPreference = true;
+                                    break;
+                                }
+                            } else {
+                                $jobMatchedPreference = true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (!$jobMatchedPreference) {
+                        return false;
+                    }
                 }
 
                 // 5. Languages Filter

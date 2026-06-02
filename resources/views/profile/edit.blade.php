@@ -1,4 +1,69 @@
 <x-app-layout>
+    <!-- Trix Editor -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        .trix-button-group {
+            background: white;
+        }
+
+        .dark .trix-button-group {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .dark trix-toolbar [data-trix-button] {
+            color: #cbd5e1;
+            border-color: #334155;
+        }
+
+        .dark trix-toolbar [data-trix-button]:hover {
+            background: #334155;
+        }
+
+        .dark trix-toolbar [data-trix-button].trix-active {
+            background: #475569;
+            color: white;
+        }
+
+        trix-editor {
+            min-height: 200px;
+        }
+
+        .dark trix-editor {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+
+        .trix-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .trix-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .trix-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .trix-content strong {
+            font-weight: 700;
+        }
+
+        .trix-content h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
@@ -49,6 +114,82 @@
                             </div>
                         </div>
                     </div>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
+                        <div class="flex items-center mb-6">
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg text-indigo-600 dark:text-indigo-400 mr-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Latar Belakang & Tautan</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6 mb-8">
+                            <!-- Pendidikan -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Pendidikan Terakhir <span class="text-red-500">*</span></label>
+                                    <button type="button" @click="extractIjazah" :disabled="isExtracting" class="text-xs bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900/30 font-semibold transition-colors disabled:opacity-50">
+                                        <span x-show="!isExtracting">✨ Isi Otomatis dari Ijazah</span>
+                                        <span x-show="isExtracting">Sedang memproses...</span>
+                                    </button>
+                                </div>
+                                <select name="education_level" x-model="education_level" @change="if(education_level === 'Tidak Sekolah') major = ''" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
+                                    <option value="" disabled>Pilih Tingkat Pendidikan</option>
+                                    <option value="Tidak Sekolah">Tidak Sekolah</option>
+                                    <option value="SMA/SMK">SMA/SMK</option>
+                                    <option value="D3">Diploma 3 (D3)</option>
+                                    <option value="S1">Strata 1 (S1)</option>
+                                    <option value="S2">Strata 2 (S2)</option>
+                                    <option value="S3">Strata 3 (S3)</option>
+                                    <option value="Prof">Profesor (Prof)</option>
+                                    <option value="Gelar Non Akademik">Gelar Non Akademik</option>
+                                </select>
+                                @error('education_level') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+
+                            <!-- Jurusan -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Program Studi / Jurusan <span class="text-red-500" x-show="education_level !== 'Tidak Sekolah'">*</span></label>
+                                <input type="text" name="major" x-model="major" placeholder="Contoh: Teknik Informatika"
+                                    :disabled="education_level === 'Tidak Sekolah'"
+                                    class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200 disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800">
+                                @error('major') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+
+                            <!-- LinkedIn -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Profil LinkedIn</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                        </svg>
+                                    </div>
+                                    <input type="url" name="linkedin_url" value="{{ Auth::user()->linkedin_url ?? '' }}" placeholder="https://linkedin.com/in/..."
+                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block pl-10 p-3 transition-all duration-200">
+                                </div>
+                            </div>
+
+                            <!-- Portfolio/Github -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Portfolio / GitHub</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                        </svg>
+                                    </div>
+                                    <input type="url" name="portfolio_url" value="{{ Auth::user()->portfolio_url ?? '' }}" placeholder="https://github.com/..."
+                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-slate-500/20 focus:border-slate-500 block pl-10 p-3 transition-all duration-200">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Keahlian & Bahasa -->
+                    </div>
 
                     <!-- Update Password Card -->
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
@@ -74,13 +215,18 @@
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 block p-3 pr-10 transition-all duration-200">
                                     <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors focus:outline-none">
                                         <!-- Eye Icon (Show) -->
-                                        <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" /></svg>
+                                        <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                                        </svg>
                                         <!-- Eye Off Icon (Hide) -->
-                                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.978 9.978 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.978 9.978 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
                                     </button>
                                 </div>
                                 @if($errors->updatePassword->has('current_password'))
-                                    <p class="mt-1 text-xs text-red-500">{{ $errors->updatePassword->first('current_password') }}</p>
+                                <p class="mt-1 text-xs text-red-500">{{ $errors->updatePassword->first('current_password') }}</p>
                                 @endif
                             </div>
 
@@ -90,12 +236,17 @@
                                     <input :type="show ? 'text' : 'password'" name="password" required
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 block p-3 pr-10 transition-all duration-200">
                                     <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors focus:outline-none">
-                                        <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" /></svg>
-                                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.978 9.978 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                                        <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.978 9.978 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
                                     </button>
                                 </div>
                                 @if($errors->updatePassword->has('password'))
-                                    <p class="mt-1 text-xs text-red-500">{{ $errors->updatePassword->first('password') }}</p>
+                                <p class="mt-1 text-xs text-red-500">{{ $errors->updatePassword->first('password') }}</p>
                                 @endif
                             </div>
 
@@ -105,12 +256,17 @@
                                     <input :type="show ? 'text' : 'password'" name="password_confirmation" required
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 block p-3 pr-10 transition-all duration-200">
                                     <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors focus:outline-none">
-                                        <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" /></svg>
-                                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.978 9.978 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                                        <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.978 9.978 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
                                     </button>
                                 </div>
                                 @if($errors->updatePassword->has('password_confirmation'))
-                                    <p class="mt-1 text-xs text-red-500">{{ $errors->updatePassword->first('password_confirmation') }}</p>
+                                <p class="mt-1 text-xs text-red-500">{{ $errors->updatePassword->first('password_confirmation') }}</p>
                                 @endif
                             </div>
 
@@ -119,11 +275,11 @@
                                     Simpan Kata Sandi
                                 </button>
                             </div>
-                            
+
                             @if (session('status') === 'password-updated')
-                                <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)" class="mt-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 p-2 rounded-lg text-center font-medium border border-green-200 dark:border-green-800">
-                                    Kata sandi berhasil diperbarui.
-                                </div>
+                            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)" class="mt-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 p-2 rounded-lg text-center font-medium border border-green-200 dark:border-green-800">
+                                Kata sandi berhasil diperbarui.
+                            </div>
                             @endif
                         </form>
                     </div>
@@ -213,6 +369,10 @@
                                         </div>
                                         <div class="ml-4 shrink-0 flex items-center space-x-2">
                                             @if($userDocs->has($type))
+                                            <label class="cursor-pointer text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-white dark:bg-slate-800 px-2 py-1 border border-blue-200 dark:border-blue-900/40 rounded shadow-sm transition-all">
+                                                Ubah
+                                                <input type="file" name="documents[{{ $type }}]" class="hidden" accept=".pdf" @change="selectedFiles['{{ $type }}'] = $event.target.files.length > 0 ? $event.target.files[0].name : null">
+                                            </label>
                                             <a href="{{ Storage::url($userDocs[$type]->file_path) }}" target="_blank" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 bg-white dark:bg-slate-800 px-2 py-1 border border-indigo-200 dark:border-indigo-800/40 rounded shadow-sm transition-all">
                                                 Preview
                                             </a>
@@ -261,12 +421,76 @@
                     </div>
                     @endif
 
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="p-2 bg-orange-50 dark:bg-orange-950/20 rounded-lg text-orange-600 dark:text-orange-400 mr-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Lokasi & Alamat (Geolokasi)</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6 mb-8">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Lengkap</label>
+                                <textarea form="profile-update-form" name="address" rows="2" placeholder="Contoh: Jl. Sudirman No. 1, Jakarta Pusat"
+                                    class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">{{ Auth::user()->address ?? '' }}</textarea>
+                                @error('address') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Latitude</label>
+                                    <input form="profile-update-form" type="text" id="input-lat" name="latitude" value="{{ Auth::user()->latitude ?? '' }}"
+                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Longitude</label>
+                                    <input form="profile-update-form" type="text" id="input-lng" name="longitude" value="{{ Auth::user()->longitude ?? '' }}"
+                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" onclick="getBrowserLocation()" class="px-4 py-2 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-650 text-white text-sm rounded-lg transition-colors">
+                                    📍 Ambil Koordinat Saat Ini (Browser GPS)
+                                </button>
+                                <span id="geo-status" class="ml-3 text-sm text-slate-500 dark:text-slate-400"></span>
+                            </div>
+                        </div>
+
+                        <script>
+                            function getBrowserLocation() {
+                                const status = document.getElementById('geo-status');
+                                status.textContent = "Mencari lokasi...";
+
+                                if (!navigator.geolocation) {
+                                    status.textContent = "Geolokasi tidak didukung oleh browser Anda.";
+                                    return;
+                                }
+
+                                navigator.geolocation.getCurrentPosition(
+                                    (position) => {
+                                        document.getElementById('input-lat').value = position.coords.latitude;
+                                        document.getElementById('input-lng').value = position.coords.longitude;
+                                        status.textContent = "✅ Koordinat berhasil didapatkan!";
+                                    },
+                                    (error) => {
+                                        status.textContent = "❌ Gagal mendapatkan lokasi: " + error.message;
+                                    }
+                                );
+                            }
+                        </script>
+
+                    </div>
+
+
                 </div>
 
                 <!-- Right Content: Profile Form (lg:col-span-8) -->
                 <div class="lg:col-span-8">
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-8">
-                        <form action="{{ route('profile.update') }}" method="POST" x-data="{
+                    <div>
+                        <form id="profile-update-form" action="{{ route('profile.update') }}" method="POST" class="space-y-6" x-data="{
                             isExtracting: false,
                             education_level: '{{ old('education_level', Auth::user()->education_level) }}',
                             major: '{{ old('major', Auth::user()->major) }}',
@@ -329,8 +553,10 @@
                                 this.isExtracting = false;
                             }
                         }">
-                            @csrf
-                            @method('PATCH')
+                            <div hidden>
+                                @csrf
+                                @method('PATCH')
+                            </div>
 
                             @if($errors->any() && !$errors->hasAny(['documents', 'documents.*', 'current_password', 'password']))
                             <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r shadow-sm">
@@ -342,186 +568,124 @@
                                 </div>
                                 <ul class="list-disc list-inside text-sm text-red-700">
                                     @foreach($errors->all() as $error)
-                                        @if(!str_contains($error, 'Dokumen') && !str_contains($error, 'sandi') && !str_contains($error, 'password'))
-                                            <li>{{ $error }}</li>
-                                        @endif
+                                    @if(!str_contains($error, 'Dokumen') && !str_contains($error, 'sandi') && !str_contains($error, 'password'))
+                                    <li>{{ $error }}</li>
+                                    @endif
                                     @endforeach
                                 </ul>
                             </div>
                             @endif
 
 
-                            <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
-                                <div class="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg text-blue-600 dark:text-blue-400 mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Informasi Dasar</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <!-- Nama -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-                                    <input type="text" name="name" value="{{ Auth::user()->name }}" required
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                    @error('name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-
-                                <!-- Email (Disabled) -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Email</label>
-                                    <div class="relative">
-                                        <input type="email" value="{{ Auth::user()->email }}" disabled
-                                            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-750 text-slate-500 dark:text-slate-450 text-sm rounded-xl block p-3 cursor-not-allowed">
-                                        <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                                <div class="flex items-center mb-6">
+                                    <div class="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg text-blue-600 dark:text-blue-400 mr-3">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                         </svg>
                                     </div>
+                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Informasi Dasar</h3>
                                 </div>
 
-                                <!-- Tanggal Lahir -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Tanggal Lahir</label>
-                                    <input type="date" name="birth_date" value="{{ Auth::user()->birth_date }}"
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                    @error('birth_date') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-
-                                <!-- Telepon -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">No. Telepon <span class="text-red-500">*</span></label>
-                                    <input type="text" name="phone" value="{{ Auth::user()->phone }}" placeholder="Contoh: 08123456789"
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                    @error('phone') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-
-                                <!-- Jenis Kelamin -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Jenis Kelamin <span class="text-red-500">*</span></label>
-                                    <select name="gender" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                        <option value="" disabled {{ empty(Auth::user()->gender) ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
-                                        <option value="L" {{ Auth::user()->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                        <option value="P" {{ Auth::user()->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
-                                    </select>
-                                    @error('gender') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-
-                                <!-- Golongan Darah -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Golongan Darah</label>
-                                    <select name="blood_type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                        <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Belum Diketahui</option>
-                                        <option value="A" {{ Auth::user()->blood_type == 'A' ? 'selected' : '' }}>A</option>
-                                        <option value="B" {{ Auth::user()->blood_type == 'B' ? 'selected' : '' }}>B</option>
-                                        <option value="AB" {{ Auth::user()->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
-                                        <option value="O" {{ Auth::user()->blood_type == 'O' ? 'selected' : '' }}>O</option>
-                                    </select>
-                                    @error('blood_type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-
-                                <!-- Pengalaman -->
-                                @if(Auth::user()->role === 'job_seeker')
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Pengalaman Kerja</label>
-                                    <div class="relative">
-                                        <input type="number" name="experience_years" value="{{ Auth::user()->experience_years }}" min="0" placeholder="0"
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <!-- Nama -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                        <input type="text" name="name" value="{{ Auth::user()->name }}"
                                             class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                        <span class="absolute right-4 top-3.5 text-xs text-slate-400 dark:text-slate-500 font-medium">Tahun</span>
+                                        @error('name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                     </div>
-                                    @error('experience_years') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+
+                                    <!-- Email (Disabled) -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Email</label>
+                                        <div class="relative">
+                                            <input type="email" value="{{ Auth::user()->email }}" disabled
+                                                class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-750 text-slate-500 dark:text-slate-450 text-sm rounded-xl block p-3 cursor-not-allowed">
+                                            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tanggal Lahir -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Tanggal Lahir</label>
+                                        <input type="date" name="birth_date" value="{{ Auth::user()->birth_date }}"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                        @error('birth_date') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    </div>
+
+                                    <!-- Telepon -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">No. Telepon</label>
+                                        <input type="text" name="phone" value="{{ Auth::user()->phone }}" placeholder="Contoh: 08123456789"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                        @error('phone') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    </div>
+
+                                    <!-- Jenis Kelamin -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Jenis Kelamin</label>
+                                        <select name="gender" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                            <option value="" disabled {{ empty(Auth::user()->gender) ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
+                                            <option value="male" {{ Auth::user()->gender == 'male' ? 'selected' : '' }}>Laki-laki</option>
+                                            <option value="female" {{ Auth::user()->gender == 'female' ? 'selected' : '' }}>Perempuan</option>
+                                        </select>
+                                        @error('gender') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    </div>
+
+                                    <!-- Golongan Darah -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Golongan Darah</label>
+                                        <select name="blood_type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                            <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Belum Diketahui</option>
+                                            <option value="A" {{ Auth::user()->blood_type == 'A' ? 'selected' : '' }}>A</option>
+                                            <option value="B" {{ Auth::user()->blood_type == 'B' ? 'selected' : '' }}>B</option>
+                                            <option value="AB" {{ Auth::user()->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
+                                            <option value="O" {{ Auth::user()->blood_type == 'O' ? 'selected' : '' }}>O</option>
+                                        </select>
+                                        @error('blood_type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    </div>
+
+                                    <!-- Pengalaman -->
+                                    @if(Auth::user()->role === 'job_seeker')
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Pengalaman Kerja</label>
+                                        <div class="relative">
+                                            <input type="number" name="experience_years" value="{{ Auth::user()->experience_years }}" min="0" placeholder="0"
+                                                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                            <span class="absolute right-4 top-3.5 text-xs text-slate-400 dark:text-slate-500 font-medium">Tahun</span>
+                                        </div>
+                                        @error('experience_years') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    </div>
+                                    @endif
                                 </div>
-                                @endif
+                            </div>
+
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                                <div class="mb-2">
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Ringkasan Pribadi</label>
+                                    <input id="bio" type="hidden" name="bio" form="profile-update-form" value="{{ Auth::user()->bio ?? '' }}">
+                                    <trix-editor input="bio" class="trix-content bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block transition-all duration-200" placeholder="Ceritakan singkat tentang diri Anda, keahlian, dan tujuan karir..."></trix-editor>
+                                    <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2 text-right">Tuliskan profil/ringkasan yang menarik untuk memikat perekrut.</p>
+                                </div>
                             </div>
 
                             @if(Auth::user()->role === 'job_seeker')
-                            <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
-                                <div class="p-2 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg text-indigo-600 dark:text-indigo-400 mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Latar Belakang & Tautan</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <!-- Pendidikan -->
-                                <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Pendidikan Terakhir <span class="text-red-500">*</span></label>
-                                        <button type="button" @click="extractIjazah" :disabled="isExtracting" class="text-xs bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900/30 font-semibold transition-colors disabled:opacity-50">
-                                            <span x-show="!isExtracting">✨ Isi Otomatis dari Ijazah</span>
-                                            <span x-show="isExtracting">Sedang memproses...</span>
-                                        </button>
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                                <div class="flex items-center mb-6">
+                                    <div class="p-2 bg-purple-50 dark:bg-purple-950/20 rounded-lg text-purple-600 dark:text-purple-400 mr-3">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                                        </svg>
                                     </div>
-                                    <select name="education_level" x-model="education_level" @change="if(education_level === 'Tidak Sekolah') major = ''" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
-                                        <option value="" disabled>Pilih Tingkat Pendidikan</option>
-                                        <option value="Tidak Sekolah">Tidak Sekolah</option>
-                                        <option value="SMA/SMK">SMA/SMK</option>
-                                        <option value="D3">Diploma 3 (D3)</option>
-                                        <option value="S1">Strata 1 (S1)</option>
-                                        <option value="S2">Strata 2 (S2)</option>
-                                        <option value="S3">Strata 3 (S3)</option>
-                                        <option value="Prof">Profesor (Prof)</option>
-                                        <option value="Gelar Non Akademik">Gelar Non Akademik</option>
-                                    </select>
-                                    @error('education_level') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Keahlian & Bahasa</h3>
                                 </div>
 
-                                <!-- Jurusan -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Program Studi / Jurusan <span class="text-red-500" x-show="education_level !== 'Tidak Sekolah'">*</span></label>
-                                    <input type="text" name="major" x-model="major" placeholder="Contoh: Teknik Informatika"
-                                        :disabled="education_level === 'Tidak Sekolah'"
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200 disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800">
-                                    @error('major') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-
-                                <!-- LinkedIn -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Profil LinkedIn</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
-                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                            </svg>
-                                        </div>
-                                        <input type="url" name="linkedin_url" value="{{ Auth::user()->linkedin_url ?? '' }}" placeholder="https://linkedin.com/in/..."
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block pl-10 p-3 transition-all duration-200">
-                                    </div>
-                                </div>
-
-                                <!-- Portfolio/Github -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Portfolio / GitHub</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 dark:text-slate-500">
-                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                                            </svg>
-                                        </div>
-                                        <input type="url" name="portfolio_url" value="{{ Auth::user()->portfolio_url ?? '' }}" placeholder="https://github.com/..."
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-slate-500/20 focus:border-slate-500 block pl-10 p-3 transition-all duration-200">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Keahlian & Bahasa -->
-                            <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800 mt-8">
-                                <div class="p-2 bg-purple-50 dark:bg-purple-950/20 rounded-lg text-purple-600 dark:text-purple-400 mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Keahlian & Bahasa</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <!-- Keahlian -->
-                                <div x-data="{
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <!-- Keahlian -->
+                                    <div x-data="{
                                         showSuggestions: false,
                                         suggestions: ['PHP', 'Laravel', 'JavaScript', 'Python', 'Java', 'C++', 'Go', 'HTML', 'CSS', 'React', 'Vue', 'Node.js', 'SQL', 'Git', 'Docker', 'AWS', 'UI/UX', 'Project Management', 'Data Analysis', 'Machine Learning', 'Flutter', 'Android', 'iOS', 'Kotlin', 'Swift', 'TailwindCSS', 'Bootstrap', 'Figma', 'SEO', 'Digital Marketing'],
                                         get filteredSuggestions() {
@@ -534,193 +698,226 @@
                                             this.showSuggestions = false;
                                         }
                                     }">
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Keahlian (Skills)</label>
-                                    <div class="flex items-center mb-3 relative">
-                                        <input type="text" x-model="new_skill" @keydown.enter.prevent="addSkill($event)" @focus="showSuggestions = true" @click.away="showSuggestions = false" placeholder="Ketik skill (cth: PHP)"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-l-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 block p-3 transition-all duration-200">
-                                        <button type="button" @click="addSkill" class="px-4 py-3 bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-600 text-white rounded-r-xl text-sm font-semibold transition-colors">Tambah</button>
-                                        
-                                        <!-- Suggestions Dropdown -->
-                                        <div x-show="showSuggestions && filteredSuggestions.length > 0" style="display: none;"
-                                             x-transition.opacity.duration.200ms
-                                             class="absolute z-10 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg mt-1 top-full overflow-hidden">
-                                            <ul class="py-1">
-                                                <template x-for="suggestion in filteredSuggestions" :key="suggestion">
-                                                    <li @click="selectSuggestion(suggestion)" 
-                                                        class="cursor-pointer px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
-                                                        <span x-text="suggestion"></span>
-                                                    </li>
-                                                </template>
-                                            </ul>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Keahlian (Skills)</label>
+                                        <div class="flex items-center mb-3 relative">
+                                            <input type="text" x-model="new_skill" @keydown.enter.prevent="addSkill($event)" @focus="showSuggestions = true" @click.away="showSuggestions = false" placeholder="Ketik skill (cth: PHP)"
+                                                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-l-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 block p-3 transition-all duration-200">
+                                            <button type="button" @click="addSkill" class="px-4 py-3 bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-600 text-white rounded-r-xl text-sm font-semibold transition-colors">Tambah</button>
+
+                                            <!-- Suggestions Dropdown -->
+                                            <div x-show="showSuggestions && filteredSuggestions.length > 0" style="display: none;"
+                                                x-transition.opacity.duration.200ms
+                                                class="absolute z-10 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg mt-1 top-full overflow-hidden">
+                                                <ul class="py-1">
+                                                    <template x-for="suggestion in filteredSuggestions" :key="suggestion">
+                                                        <li @click="selectSuggestion(suggestion)"
+                                                            class="cursor-pointer px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                                                            <span x-text="suggestion"></span>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            <template x-for="(skill, index) in skills" :key="index">
+                                                <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800/40">
+                                                    <input type="hidden" :name="'skills['+index+']'" :value="skill">
+                                                    <span x-text="skill"></span>
+                                                    <button type="button" @click="removeSkill(index)" class="ml-1.5 text-purple-500 hover:text-purple-700 focus:outline-none">
+                                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">Tambahkan lebih dari 1 keahlian teknis/non-teknis.</p>
+                                    </div>
+
+                                    <!-- Bahasa -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Bahasa yang Dikuasai</label>
+                                        <div class="flex items-center mb-3">
+                                            <input type="text" x-model="new_language" @keydown.enter="addLanguage($event)" placeholder="Ketik bahasa (contoh: Indonesia) lalu Enter"
+                                                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-l-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 block p-3 transition-all duration-200">
+                                            <button type="button" @click="addLanguage" class="px-4 py-3 bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-600 text-white rounded-r-xl text-sm font-semibold transition-colors">Tambah</button>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            <template x-for="(lang, index) in languages" :key="index">
+                                                <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-950/30 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800/40">
+                                                    <input type="hidden" :name="'languages['+index+']'" :value="lang">
+                                                    <span x-text="lang"></span>
+                                                    <button type="button" @click="removeLanguage(index)" class="ml-1.5 text-blue-500 hover:text-blue-700">
+                                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </template>
                                         </div>
                                     </div>
-                                    <div class="flex flex-wrap gap-2">
-                                        <template x-for="(skill, index) in skills" :key="index">
-                                            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800/40">
-                                                <input type="hidden" :name="'skills['+index+']'" :value="skill">
-                                                <span x-text="skill"></span>
-                                                <button type="button" @click="removeSkill(index)" class="ml-1.5 text-purple-500 hover:text-purple-700 focus:outline-none">
-                                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </template>
-                                    </div>
-                                    <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">Tambahkan lebih dari 1 keahlian teknis/non-teknis.</p>
                                 </div>
 
-                                <!-- Bahasa -->
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Bahasa yang Dikuasai</label>
-                                    <div class="flex items-center mb-3">
-                                        <input type="text" x-model="new_language" @keydown.enter="addLanguage($event)" placeholder="Ketik bahasa (contoh: Inggris) lalu Enter"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-l-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 block p-3 transition-all duration-200">
-                                        <button type="button" @click="addLanguage" class="px-4 py-3 bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-600 text-white rounded-r-xl text-sm font-semibold transition-colors">Tambah</button>
+                                <!-- Riwayat Karier -->
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                                <div class="flex items-center mb-6">
+                                    <div class="p-2 bg-green-50 dark:bg-green-950/20 rounded-lg text-green-600 dark:text-green-400 mr-3">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                        </svg>
                                     </div>
-                                    <div class="flex flex-wrap gap-2">
-                                        <template x-for="(lang, index) in languages" :key="index">
-                                            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-950/30 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800/40">
-                                                <input type="hidden" :name="'languages['+index+']'" :value="lang">
-                                                <span x-text="lang"></span>
-                                                <button type="button" @click="removeLanguage(index)" class="ml-1.5 text-blue-500 hover:text-blue-700">
-                                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                                    </svg>
-                                                </button>
+                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Riwayat Karier</h3>
+                                    <button type="button" @click="addCareerHistory" class="ml-auto px-4 py-1.5 text-xs font-semibold bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg border border-green-200 dark:border-green-800/50 transition-colors">
+                                        + Tambah Pengalaman
+                                    </button>
+                                </div>
+                                <div class="space-y-6 mb-8">
+                                    <template x-for="(history, index) in career_histories" :key="index">
+                                        <div class="p-5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900/60 relative group">
+                                            <button type="button" @click="removeCareerHistory(index)" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Riwayat">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nama Perusahaan / Organisasi</label>
+                                                    <input type="text" x-model="history.company_name" :name="'career_histories['+index+'][company_name]'" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Posisi / Jabatan</label>
+                                                    <input type="text" x-model="history.position" :name="'career_histories['+index+'][position]'" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Tanggal Mulai</label>
+                                                    <input type="date" x-model="history.start_date" :name="'career_histories['+index+'][start_date]'" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Tanggal Berakhir</label>
+                                                    <input type="date" x-model="history.end_date" :name="'career_histories['+index+'][end_date]'" :disabled="history.is_current" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 disabled:bg-slate-100 dark:disabled:bg-slate-850">
+                                                    <div class="mt-2 flex items-center">
+                                                        <input type="checkbox" x-model="history.is_current" :name="'career_histories['+index+'][is_current]'" value="1" class="rounded text-green-600 focus:ring-green-500 mr-2">
+                                                        <span class="text-xs text-slate-600 dark:text-slate-400">Saat ini masih bekerja di sini</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </template>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Deskripsi Pekerjaan (Opsional)</label>
+                                                <textarea x-model="history.description" :name="'career_histories['+index+'][description]'" rows="2" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500"></textarea>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <div x-show="career_histories.length === 0" class="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900/40">
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">Belum ada riwayat karier yang ditambahkan.</p>
                                     </div>
                                 </div>
+                                <!-- Preferensi Pekerjaan -->
                             </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                                <div class="flex items-center mb-6">
+                                    <div class="p-2 bg-teal-50 dark:bg-teal-950/20 rounded-lg text-teal-600 dark:text-teal-400 mr-3">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Preferensi Pekerjaan</h3>
+                                </div>
 
-                            <!-- Riwayat Karier -->
-                            <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800 mt-8">
-                                <div class="p-2 bg-green-50 dark:bg-green-950/20 rounded-lg text-green-600 dark:text-green-400 mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Riwayat Karier</h3>
-                                <button type="button" @click="addCareerHistory" class="ml-auto px-4 py-1.5 text-xs font-semibold bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg border border-green-200 dark:border-green-800/50 transition-colors">
-                                    + Tambah Pengalaman
-                                </button>
-                            </div>
-                            <div class="space-y-6 mb-8">
-                                <template x-for="(history, index) in career_histories" :key="index">
-                                    <div class="p-5 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900/60 relative group">
-                                        <button type="button" @click="removeCareerHistory(index)" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Riwayat">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
-                                        </button>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                            <div>
-                                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nama Perusahaan / Organisasi</label>
-                                                <input type="text" x-model="history.company_name" :name="'career_histories['+index+'][company_name]'" required class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Posisi / Jabatan</label>
-                                                <input type="text" x-model="history.position" :name="'career_histories['+index+'][position]'" required class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Tanggal Mulai</label>
-                                                <input type="date" x-model="history.start_date" :name="'career_histories['+index+'][start_date]'" required class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Tanggal Berakhir</label>
-                                                <input type="date" x-model="history.end_date" :name="'career_histories['+index+'][end_date]'" :disabled="history.is_current" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 disabled:bg-slate-100 dark:disabled:bg-slate-850">
-                                                <div class="mt-2 flex items-center">
-                                                    <input type="checkbox" x-model="history.is_current" :name="'career_histories['+index+'][is_current]'" value="1" class="rounded text-green-600 focus:ring-green-500 mr-2">
-                                                    <span class="text-xs text-slate-600 dark:text-slate-400">Saat ini masih bekerja di sini</span>
+                                <div class="mb-8" x-data="{
+                                    expected_jobs: {{ json_encode(old('expected_jobs', Auth::user()->expected_jobs ?? [])) }},
+                                    positions: [
+                                        @foreach($positions ?? [] as $position)
+                                        '{{ addslashes($position->name) }}',
+                                        @endforeach
+                                    ],
+                                    addJob() {
+                                        this.expected_jobs.push({ position: '', salary_min: '' });
+                                    },
+                                    removeJob(index) {
+                                        this.expected_jobs.splice(index, 1);
+                                    },
+                                    formatRupiah(value) {
+                                        if(!value) return '';
+                                        let number_string = value.toString().replace(/[^,\d]/g, ''),
+                                            split = number_string.split(','),
+                                            sisa = split[0].length % 3,
+                                            rupiah = split[0].substr(0, sisa),
+                                            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+                                        
+                                        if (ribuan) {
+                                            let separator = sisa ? '.' : '';
+                                            rupiah += separator + ribuan.join('.');
+                                        }
+                                        return rupiah;
+                                    }
+                                }"
+                                    x-init="if (expected_jobs.length === 0) addJob()">
+
+                                    <template x-for="(job, index) in expected_jobs" :key="index">
+                                        <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 mb-4 relative">
+                                            <button type="button" @click="removeJob(index)" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <!-- Position -->
+                                                <div x-data="{
+                                                    open: false,
+                                                    get filteredOptions() {
+                                                        if (!job.position) return positions;
+                                                        return positions.filter(i => i.toLowerCase().includes(job.position.toLowerCase()));
+                                                    },
+                                                    selectOption(opt) {
+                                                        job.position = opt;
+                                                        this.open = false;
+                                                    }
+                                                }">
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Jenis Pekerjaan</label>
+                                                    <div class="relative w-full">
+                                                        <input type="text" :name="'expected_jobs['+index+'][position]'" x-model="job.position" @focus="open = true" @click.away="open = false" autocomplete="off" placeholder="Pilih / ketik pekerjaan"
+                                                            class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">
+                                                        <!-- Dropdown Indicator -->
+                                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <div x-show="open && filteredOptions.length > 0" style="display: none;" class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                                                            <ul class="py-1">
+                                                                <template x-for="opt in filteredOptions" :key="opt">
+                                                                    <li @click="selectOption(opt)" class="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 dark:hover:text-teal-300 cursor-pointer">
+                                                                        <span x-text="opt"></span>
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Salary Min -->
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gaji Minimal</label>
+                                                    <div class="relative">
+                                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                            <span class="text-slate-500 dark:text-slate-400 sm:text-sm font-semibold">Rp</span>
+                                                        </div>
+                                                        <input type="hidden" :name="'expected_jobs['+index+'][salary_min]'" x-model="job.salary_min">
+                                                        <input type="text" :value="formatRupiah(job.salary_min)" @input="job.salary_min = $event.target.value.replace(/\D/g, '')" placeholder="5.000.000"
+                                                            class="w-full pl-10 pr-3 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block transition-all duration-200">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Deskripsi Pekerjaan (Opsional)</label>
-                                            <textarea x-model="history.description" :name="'career_histories['+index+'][description]'" rows="2" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500"></textarea>
-                                        </div>
-                                    </div>
+                                </div>
                                 </template>
-                                <div x-show="career_histories.length === 0" class="text-center py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900/40">
-                                    <p class="text-sm text-slate-500 dark:text-slate-400">Belum ada riwayat karier yang ditambahkan.</p>
-                                </div>
-                            </div>
-                            <!-- Preferensi Pekerjaan -->
-                            <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800 mt-8">
-                                <div class="p-2 bg-teal-50 dark:bg-teal-950/20 rounded-lg text-teal-600 dark:text-teal-400 mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Preferensi Pekerjaan</h3>
-                            </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div x-data="{
-                                        open: false,
-                                        search: '{{ Auth::user()->expected_job_type ?? '' }}',
-                                        options: [
-                                            @foreach($positions ?? [] as $position)
-                                            '{{ addslashes($position->name) }}',
-                                            @endforeach
-                                        ],
-                                        get filteredOptions() {
-                                            if (this.search === '') return this.options;
-                                            return this.options.filter(i => i.toLowerCase().includes(this.search.toLowerCase()));
-                                        },
-                                        selectOption(opt) {
-                                            this.search = opt;
-                                            this.open = false;
-                                        }
-                                    }">
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Jenis Pekerjaan yang Diharapkan</label>
-                                    <div class="relative w-full">
-                                        <input type="text" name="expected_job_type" x-model="search" @focus="open = true" @click.away="open = false" autocomplete="off" placeholder="Pilih atau ketik pekerjaan"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">
-                                        <!-- Dropdown Indicator -->
-                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                        </div>
-                                        
-                                        <div x-show="open && filteredOptions.length > 0" style="display: none;" class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg max-h-60 overflow-y-auto">
-                                            <ul class="py-1">
-                                                <template x-for="opt in filteredOptions" :key="opt">
-                                                    <li @click="selectOption(opt)" class="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 dark:hover:text-teal-300 cursor-pointer">
-                                                        <span x-text="opt"></span>
-                                                    </li>
-                                                </template>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div x-data="{ 
-                                        raw: '{{ Auth::user()->expected_salary ?? '' }}',
-                                        formatRupiah(value) {
-                                            if(!value) return '';
-                                            let number_string = value.toString().replace(/[^,\d]/g, ''),
-                                                split = number_string.split(','),
-                                                sisa = split[0].length % 3,
-                                                rupiah = split[0].substr(0, sisa),
-                                                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-                                            
-                                            if (ribuan) {
-                                                let separator = sisa ? '.' : '';
-                                                rupiah += separator + ribuan.join('.');
-                                            }
-                                            return rupiah;
-                                        }
-                                    }">
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gaji yang Diharapkan</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span class="text-slate-500 dark:text-slate-400 sm:text-sm font-semibold">Rp</span>
-                                        </div>
-                                        <input type="hidden" name="expected_salary" x-model="raw">
-                                        <input type="text" :value="formatRupiah(raw)" @input="raw = $event.target.value.replace(/\D/g, '')" placeholder="8.000.000"
-                                            class="w-full pl-10 pr-3 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block transition-all duration-200">
-                                    </div>
-                                </div>
+                                <button type="button" @click="addJob" class="flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 transition-colors mb-4">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Tambah Preferensi Pekerjaan
+                                </button>
                                 <div class="md:col-span-2">
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Catatan Preferensi Pekerjaan</label>
                                     <textarea name="job_preferences" rows="2" placeholder="Contoh: Bersedia ditempatkan di luar kota, preferensi WFH, dll..."
@@ -729,88 +926,24 @@
                             </div>
                             @endif
 
-                            <div class="flex items-center mb-6 pb-4 border-b border-slate-100 dark:border-slate-800 mt-8">
-                                <div class="p-2 bg-orange-50 dark:bg-orange-950/20 rounded-lg text-orange-600 dark:text-orange-400 mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Lokasi & Alamat (Geolokasi)</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 gap-6 mb-8">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
-                                    <textarea name="address" rows="2" placeholder="Contoh: Jl. Sudirman No. 1, Jakarta Pusat"
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">{{ Auth::user()->address ?? '' }}</textarea>
-                                    @error('address') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Latitude</label>
-                                        <input type="text" id="input-lat" name="latitude" value="{{ Auth::user()->latitude ?? '' }}"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Longitude</label>
-                                        <input type="text" id="input-lng" name="longitude" value="{{ Auth::user()->longitude ?? '' }}"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
-                                    </div>
-                                </div>
-                                <div>
-                                    <button type="button" onclick="getBrowserLocation()" class="px-4 py-2 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-650 text-white text-sm rounded-lg transition-colors">
-                                        📍 Ambil Koordinat Saat Ini (Browser GPS)
-                                    </button>
-                                    <span id="geo-status" class="ml-3 text-sm text-slate-500 dark:text-slate-400"></span>
-                                </div>
-                            </div>
-
-                            <script>
-                                function getBrowserLocation() {
-                                    const status = document.getElementById('geo-status');
-                                    status.textContent = "Mencari lokasi...";
-
-                                    if (!navigator.geolocation) {
-                                        status.textContent = "Geolokasi tidak didukung oleh browser Anda.";
-                                        return;
-                                    }
-
-                                    navigator.geolocation.getCurrentPosition(
-                                        (position) => {
-                                            document.getElementById('input-lat').value = position.coords.latitude;
-                                            document.getElementById('input-lng').value = position.coords.longitude;
-                                            status.textContent = "✅ Koordinat berhasil didapatkan!";
-                                        },
-                                        (error) => {
-                                            status.textContent = "❌ Gagal mendapatkan lokasi: " + error.message;
-                                        }
-                                    );
-                                }
-                            </script>
-
-                            <div class="mb-8 mt-8 border-t border-slate-100 dark:border-slate-800 pt-8">
-                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Ringkasan Pribadi</label>
-                                <textarea name="bio" rows="4" placeholder="Ceritakan singkat tentang diri Anda, keahlian, dan tujuan karir..."
-                                    class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">{{ Auth::user()->bio ?? '' }}</textarea>
-                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2 text-right">Tuliskan profil/ringkasan yang menarik untuk memikat perekrut.</p>
-                            </div>
-
-                            <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
-                                <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
-                                    Batal
-                                </a>
-                                <button type="submit" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200">
-                                    Simpan Perubahan
-                                </button>
-                            </div>
                     </div>
 
-                    </form>
-                </div>
-            </div>
 
+                    <div class="flex items-center justify-end gap-3 pt-6">
+                        <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
+                            Batal
+                        </a>
+                        <button type="submit" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+
+                </form>
+            </div>
         </div>
+
+    </div>
     </div>
     </div>
 </x-app-layout>

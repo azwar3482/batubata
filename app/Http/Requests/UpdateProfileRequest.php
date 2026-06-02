@@ -14,10 +14,10 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:users,email,' . $this->user()->id,
+            'name' => 'nullable|string|max:255',
+            'email' => 'sometimes|nullable|string|lowercase|email|max:255|unique:users,email,' . $this->user()->id,
             'phone' => 'nullable|string|max:20',
-            'gender' => 'nullable|in:L,P',
+            'gender' => 'nullable|in:male,female',
             'blood_type' => 'nullable|in:A,B,AB,O',
             'education_level' => 'nullable|string',
             'major' => 'nullable|string|max:255',
@@ -30,20 +30,26 @@ class UpdateProfileRequest extends FormRequest
             'cv' => 'nullable|file|mimes:pdf|max:5120',
             'birth_date' => 'nullable|date',
             
+            // Geolokasi
+            'address' => 'nullable|string|max:1000',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            
             // New fields
             'skills' => 'nullable|array',
             'skills.*' => 'string|max:100',
             'languages' => 'nullable|array',
             'languages.*' => 'string|max:100',
-            'expected_job_type' => 'nullable|string|max:255',
-            'expected_salary' => 'nullable|numeric|min:0',
+            'expected_jobs' => 'nullable|array',
+            'expected_jobs.*.position' => 'nullable|string|max:255',
+            'expected_jobs.*.salary_min' => 'nullable|numeric|min:0',
             'job_preferences' => 'nullable|string|max:1000',
             
             // Career history
             'career_histories' => 'nullable|array',
-            'career_histories.*.company_name' => 'required_with:career_histories|string|max:255',
-            'career_histories.*.position' => 'required_with:career_histories|string|max:255',
-            'career_histories.*.start_date' => 'required_with:career_histories|date',
+            'career_histories.*.company_name' => 'nullable|string|max:255',
+            'career_histories.*.position' => 'nullable|string|max:255',
+            'career_histories.*.start_date' => 'nullable|date',
             'career_histories.*.end_date' => 'nullable|date|after_or_equal:career_histories.*.start_date',
             'career_histories.*.is_current' => 'nullable|boolean',
             'career_histories.*.description' => 'nullable|string|max:1000',
