@@ -36,15 +36,23 @@
 
             <!-- Tabs -->
             <div class="mb-6 border-b border-gray-200">
-                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                <nav class="-mb-px flex space-x-4 md:space-x-8 overflow-x-auto whitespace-nowrap" aria-label="Tabs">
                     <a href="{{ request()->fullUrlWithQuery(['tab' => 'all', 'sort' => request('sort', 'terbaru')]) }}" 
-                       class="{{ request('tab', 'all') == 'all' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                       class="{{ request('tab', 'all') == 'all' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
                         Semua Lowongan
                     </a>
                     <a href="{{ request()->fullUrlWithQuery(['tab' => 'matched', 'sort' => 'kecocokan']) }}" 
-                       class="{{ request('tab') == 'matched' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center gap-2">
+                       class="{{ request('tab') == 'matched' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center gap-2">
                         Sesuai Kriteria
                         <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Rekomendasi AI</span>
+                    </a>
+                    <a href="{{ request()->fullUrlWithQuery(['tab' => 'applying', 'sort' => request('sort', 'terbaru')]) }}" 
+                       class="{{ request('tab') == 'applying' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                        Sedang Dilamar
+                    </a>
+                    <a href="{{ request()->fullUrlWithQuery(['tab' => 'applied', 'sort' => request('sort', 'terbaru')]) }}" 
+                       class="{{ request('tab') == 'applied' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                        Sudah Dilamar
                     </a>
                 </nav>
             </div>

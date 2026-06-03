@@ -192,6 +192,24 @@ class JobMatchingService
             });
         }
 
+        // Terapkan filter untuk tab 'applying' (Sedang Dilamar) dan 'applied' (Sudah Dilamar)
+        if ($user && in_array($tab, ['applying', 'applied'])) {
+            $jobs = $jobs->filter(function ($job) use ($userApplications, $tab) {
+                $status = $userApplications->get($job->id);
+                if (!$status) return false;
+                
+                if ($tab === 'applying') {
+                    return in_array($status, ['applied', 'reviewed', 'interviewed']);
+                }
+                
+                if ($tab === 'applied') {
+                    return in_array($status, ['applied', 'reviewed', 'interviewed', 'offered', 'rejected']);
+                }
+                
+                return false;
+            });
+        }
+
         $matchedJobs = $jobs->map(function ($job) use ($user, $userApplications) {
             $job->matching_percentage = $this->calculateMatch($user, $job);
             $job->user_status = $userApplications->get($job->id);
@@ -203,16 +221,25 @@ class JobMatchingService
             return $job;
         });
 
-        if ($sort === 'kecocokan') {
-            $matchedJobs = $matchedJobs->sortBy([
-                ['matching_percentage', 'desc'],
-                ['created_at', 'desc'],
-            ]);
-        } elseif ($sort === 'gaji') {
-            $matchedJobs = $matchedJobs->sortByDesc('salary_max');
-        } else {
-            $matchedJobs = $matchedJobs->sortByDesc('created_at');
+        $sortCriteria = [];
+        
+        if ($tab === 'applied') {
+            $sortCriteria[] = [function($job) {
+                return in_array($job->user_status, ['applied', 'reviewed', 'interviewed']) ? 1 : 0;
+            }, 'desc'];
         }
+
+        if ($sort === 'kecocokan') {
+            $sortCriteria[] = ['matching_percentage', 'desc'];
+            $sortCriteria[] = ['created_at', 'desc'];
+        } elseif ($sort === 'gaji') {
+            $sortCriteria[] = ['salary_max', 'desc'];
+            $sortCriteria[] = ['created_at', 'desc'];
+        } else {
+            $sortCriteria[] = ['created_at', 'desc'];
+        }
+
+        $matchedJobs = $matchedJobs->sortBy($sortCriteria);
 
         $currentPage = Paginator::resolveCurrentPage() ?: 1;
         $currentItems = $matchedJobs->slice(($currentPage - 1) * $perPage, $perPage)->all();

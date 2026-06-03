@@ -376,7 +376,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-3 flex gap-2">
-                                    <a href="{{ route('industry.candidate-profile', $candidate->user_id) }}"
+                                    <a href="{{ route('industry.candidates.show', $candidate->user_id) }}"
                                         class="flex-1 px-3 py-1.5 text-xs font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition text-center">
                                         Lihat Profil
                                     </a>
