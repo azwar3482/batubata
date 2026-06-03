@@ -16,9 +16,13 @@
                     </div>
                     <div class="flex-1 text-white">
                         <h3 class="text-xl md:text-2xl font-bold mb-2">Strategi Melamar Cerdas</h3>
-                        <p class="text-blue-100 text-sm md:text-base leading-relaxed">
+                        <p class="text-blue-100 text-sm md:text-base leading-relaxed mb-3">
                             Gunakan tab <strong class="text-white bg-white/20 px-1.5 py-0.5 rounded">Sesuai Kriteria</strong> untuk memprioritaskan lowongan yang paling relevan dengan profil dan keahlian Anda. Sistem AI kami telah menganalisis dan memberikan skor kecocokan khusus untuk Anda.
                         </p>
+                        <div class="inline-flex items-start md:items-center gap-2 bg-indigo-800/40 border border-indigo-500/30 px-3 py-2 rounded-lg text-xs md:text-sm">
+                            <svg class="w-5 h-5 text-yellow-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span><strong class="text-white">Penting:</strong> Pastikan <strong>Rata-rata Skill Gap maksimal 30%</strong> (berdasarkan Asesmen Anda) agar Anda diizinkan untuk melamar sebuah lowongan.</span>
+                        </div>
                     </div>
                 </div>
             </div>

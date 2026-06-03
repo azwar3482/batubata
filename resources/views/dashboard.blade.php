@@ -46,6 +46,12 @@
                             </span>
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mt-3">Profil Anda Sudah Sempurna!</h3>
                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Kini fitur pencarian kerja dan rekomendasi telah optimal.</p>
+                            <div class="mt-4">
+                                <a href="{{ url('/seeker/assessment') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                                    Ukur Skill Sekarang
+                                </a>
+                            </div>
                             @else
                             <span class="px-3 py-1 text-xs font-bold text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-800">
                                 ⚠️ Profil Belum Lengkap
@@ -65,6 +71,7 @@
                         </div>
                     </div>
                     <!-- Checklist -->
+                    @if(!$user->hasCompletedProfile())
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Step 1: Data Diri (Name, Photo, Phone, Gender, Address) -->
                         @php
@@ -165,6 +172,7 @@
                             </div>
                         @endif
                     </div>
+                    @endif
                 </div>
 
             <!-- Stats Grid -->
@@ -173,9 +181,23 @@
                     <div class="text-gray-500 dark:text-slate-400 text-sm">Total Asesmen</div>
                     <div class="text-2xl font-bold dark:text-white">{{ $totalAssessments }}</div>
                 </div>
-                <div class="bg-white dark:bg-slate-900 p-6 rounded-lg shadow border-l-4 border-red-500">
-                    <div class="text-gray-500 dark:text-slate-400 text-sm">Rata-rata Skill Gap</div>
-                    <div class="text-2xl font-bold dark:text-white">{{ number_format($avgGap, 1) }}%</div>
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-lg shadow border-l-4 {{ $avgGap > 30 ? 'border-red-500' : 'border-green-500' }} flex flex-col justify-between transition-colors">
+                    <div>
+                        <div class="text-gray-500 dark:text-slate-400 text-sm">Rata-rata Skill Gap</div>
+                        <div class="text-2xl font-bold dark:text-white">{{ number_format($avgGap, 1) }}%</div>
+                        @if($avgGap > 30)
+                        <p class="text-xs text-red-500 mt-2">Skill gap di atas batas maksimal (30%). Upskill sekarang untuk memperbaiki skill Anda dan meningkatkan peluang diterima kerja.</p>
+                        @else
+                        <p class="text-xs text-green-600 mt-2">Skill gap Anda aman (di bawah batas maksimal 30%). Terus pertahankan!</p>
+                        @endif
+                    </div>
+                    @if($avgGap > 30)
+                    <div class="mt-4">
+                        <a href="{{ url('/seeker/courses') }}" class="inline-flex items-center justify-center w-full px-3 py-2 border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 rounded-md text-xs font-semibold transition">
+                            Mulai Upskill
+                        </a>
+                    </div>
+                    @endif
                 </div>
                 <div class="bg-white dark:bg-slate-900 p-6 rounded-lg shadow border-l-4 border-green-500">
                     <div class="text-gray-500 dark:text-slate-400 text-sm">Kursus Berjalan</div>
