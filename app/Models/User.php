@@ -194,7 +194,8 @@ class User extends Authenticatable
         }
 
         // cv_path (25%)
-        if (!empty($this->cv_path)) {
+        $hasCv = !empty($this->cv_path) || \App\Models\UserDocument::where('user_id', $this->id)->where('document_type', 'cv')->exists();
+        if ($hasCv) {
             $percentage += 25;
         }
 

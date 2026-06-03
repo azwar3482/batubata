@@ -102,7 +102,7 @@ class JobMatchingService
     /**
      * Dapatkan daftar lowongan dengan pagination manual
      */
-    public function getMatchedJobsPaginated(User $user, int $perPage = 10, $search = null, $sort = 'terbaru')
+    public function getMatchedJobsPaginated(User $user, int $perPage = 10, $search = null, $sort = 'terbaru', $tab = 'all')
     {
         $query = JobListing::where('is_active', true)
             ->where('expires_date', '>', now());
@@ -123,7 +123,8 @@ class JobMatchingService
 
         $jobs = $query->get();
 
-        if ($user) {
+        // Terapkan filter ketat HANYA jika tab 'matched' (Sesuai Kriteria) dipilih
+        if ($user && $tab === 'matched') {
             $userAge = null;
             if ($user->birth_date) {
                 $userAge = \Carbon\Carbon::parse($user->birth_date)->age;
@@ -194,6 +195,11 @@ class JobMatchingService
         $matchedJobs = $jobs->map(function ($job) use ($user, $userApplications) {
             $job->matching_percentage = $this->calculateMatch($user, $job);
             $job->user_status = $userApplications->get($job->id);
+            if ($user) {
+                $job->shortcomings = $this->getJobShortcomings($user, $job);
+            } else {
+                $job->shortcomings = [];
+            }
             return $job;
         });
 
@@ -218,5 +224,96 @@ class JobMatchingService
             $currentPage,
             ['path' => Paginator::resolveCurrentPath()]
         );
+    }
+
+    /**
+     * Hitung kekurangan profil user terhadap syarat lowongan
+     */
+    public function getJobShortcomings(User $user, JobListing $job): array
+    {
+        $shortcomings = [];
+        $userAge = null;
+        if ($user->birth_date) {
+            $userAge = \Carbon\Carbon::parse($user->birth_date)->age;
+        }
+        $userGenderMap = ['L' => 'Laki-laki', 'P' => 'Perempuan'];
+        $userGender = $userGenderMap[$user->gender] ?? null;
+
+        if (!empty($job->gender) && $job->gender !== 'Semua Jenis Kelamin') {
+            if ($userGender !== $job->gender) {
+                $shortcomings[] = "Gender ({$job->gender})";
+            }
+        }
+
+        if (!empty($job->blood_type) && $job->blood_type !== 'Semua Golongan Darah') {
+            if ($user->blood_type !== $job->blood_type) {
+                $shortcomings[] = "Gol. Darah ({$job->blood_type})";
+            }
+        }
+
+        if ($job->max_age !== null && $userAge !== null) {
+            if ($userAge > $job->max_age) {
+                $shortcomings[] = "Batas Usia (Maks {$job->max_age}th)";
+            }
+        }
+
+        if (!empty($user->expected_jobs) && is_array($user->expected_jobs)) {
+            $jobMatchedPreference = false;
+            $jobPositionName = optional($job->position)->name;
+            
+            foreach ($user->expected_jobs as $pref) {
+                $prefPosition = $pref['position'] ?? null;
+                $prefSalaryMin = isset($pref['salary_min']) && $pref['salary_min'] !== '' ? (float)$pref['salary_min'] : null;
+                
+                if ($prefPosition && strcasecmp($prefPosition, $jobPositionName) === 0) {
+                    if ($prefSalaryMin !== null && $job->salary_max !== null) {
+                        if ($job->salary_max >= $prefSalaryMin) {
+                            $jobMatchedPreference = true;
+                            break;
+                        }
+                    } else {
+                        $jobMatchedPreference = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!$jobMatchedPreference) {
+                $positionFound = false;
+                foreach ($user->expected_jobs as $pref) {
+                    if (strcasecmp($pref['position'] ?? '', $jobPositionName) === 0) {
+                        $positionFound = true;
+                        break;
+                    }
+                }
+                if ($positionFound) {
+                    $shortcomings[] = "Gaji di bawah ekspektasi";
+                } else {
+                    $shortcomings[] = "Posisi tidak diminati";
+                }
+            }
+        } else {
+            $shortcomings[] = "Minat pekerjaan belum diatur";
+        }
+
+        if (!empty($job->languages)) {
+            $userLangs = array_map('strtolower', $user->languages ?? []);
+            $jobLangs = array_map('strtolower', $job->languages);
+            $missingLangs = [];
+            foreach ($jobLangs as $jl) {
+                if (!in_array($jl, $userLangs)) {
+                    $missingLangs[] = ucfirst($jl);
+                }
+            }
+            if (!empty($missingLangs)) {
+                $shortcomings[] = "Bahasa (" . implode(', ', $missingLangs) . ")";
+            }
+        }
+
+        if ($job->matching_percentage < 50) {
+            $shortcomings[] = "Skill Gap terlalu jauh";
+        }
+
+        return $shortcomings;
     }
 }

@@ -2,14 +2,51 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            <!-- Banner Penjelasan -->
+            <div class="mb-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-lg overflow-hidden relative">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                <div class="px-6 py-6 sm:px-8 sm:py-8 flex flex-col md:flex-row items-center gap-6 relative z-10">
+                    <div class="shrink-0 hidden md:block">
+                        <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm border border-white/30 shadow-inner">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 text-white">
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">Strategi Melamar Cerdas</h3>
+                        <p class="text-blue-100 text-sm md:text-base leading-relaxed">
+                            Gunakan tab <strong class="text-white bg-white/20 px-1.5 py-0.5 rounded">Sesuai Kriteria</strong> untuk memprioritaskan lowongan yang paling relevan dengan profil dan keahlian Anda. Sistem AI kami telah menganalisis dan memberikan skor kecocokan khusus untuk Anda.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="mb-6 border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <a href="{{ request()->fullUrlWithQuery(['tab' => 'all', 'sort' => request('sort', 'terbaru')]) }}" 
+                       class="{{ request('tab', 'all') == 'all' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                        Semua Lowongan
+                    </a>
+                    <a href="{{ request()->fullUrlWithQuery(['tab' => 'matched', 'sort' => 'kecocokan']) }}" 
+                       class="{{ request('tab') == 'matched' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center gap-2">
+                        Sesuai Kriteria
+                        <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Rekomendasi AI</span>
+                    </a>
+                </nav>
+            </div>
+
             <!-- Header & Filter -->
             <div class="mb-8">
                 <div class="mb-4">
                     <h2 class="text-3xl font-extrabold text-gray-900">Lowongan Kerja</h2>
-                    <p class="mt-1 text-gray-600">Ditemukan {{ $jobs->total() ?? count($jobs) }} lowongan yang cocok dengan profil Anda.</p>
+                    <p class="mt-1 text-gray-600">Ditemukan {{ $jobs->total() ?? count($jobs) }} lowongan yang tersedia.</p>
                 </div>
 
                 <form method="GET" action="{{ route('seeker.jobs.index') }}" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 items-end">
+                    <input type="hidden" name="tab" value="{{ request('tab', 'all') }}">
                     <div class="flex-1 w-full">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Cari Lowongan</label>
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Posisi, Perusahaan, atau Lokasi" class="w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
@@ -47,6 +84,9 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lowongan</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gaji</th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kecocokan</th>
+                                @if(request('tab', 'all') === 'all')
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kekurangan</th>
+                                @endif
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
@@ -113,6 +153,23 @@
                                     <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-800">Perlu Upskill</span>
                                     @endif
                                 </td>
+                                @if(request('tab', 'all') === 'all')
+                                <td class="px-6 py-4">
+                                    @if(!empty($job->shortcomings))
+                                        <div class="flex flex-wrap gap-1 max-w-[200px]">
+                                            @foreach($job->shortcomings as $shortcoming)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-red-700 border border-red-100">
+                                                    {{ $shortcoming }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-50 text-green-700 border border-green-100">
+                                            Memenuhi Syarat
+                                        </span>
+                                    @endif
+                                </td>
+                                @endif
                                 <td class="px-6 py-4 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end gap-2">
                                         <a href="{{ route('seeker.jobs.detail', $job->id) }}" class="inline-flex items-center px-3 py-1.5 border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-medium rounded-md transition">
@@ -166,7 +223,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-12 text-center bg-white rounded-b-xl">
+                                <td colspan="{{ request('tab', 'all') === 'all' ? 6 : 5 }}" class="px-6 py-12 text-center bg-white rounded-b-xl">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>

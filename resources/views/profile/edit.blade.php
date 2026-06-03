@@ -78,7 +78,7 @@
                 <div class="lg:col-span-4 space-y-6">
 
                     <!-- Profile Photo Card -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden group hover:shadow-md transition-all duration-300">
+                    <div x-data="webcamUpload()" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden group hover:shadow-md transition-all duration-300">
                         <div class="h-24 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500"></div>
                         <div class="px-6 pb-6 relative text-center">
 
@@ -96,21 +96,49 @@
                                 <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">{{ Auth::user()->name }}</h3>
                                 <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 capitalize">{{ str_replace('_', ' ', Auth::user()->role) }}</p>
 
-                                <form action="{{ route('profile.photo.upload') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('profile.photo.upload') }}" method="POST" enctype="multipart/form-data" id="photoForm">
                                     @csrf
 
-                                    <div class="mt-2 flex justify-center">
-                                        <label class="relative cursor-pointer bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 rounded-xl px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center shadow-sm w-full justify-center">
+                                    <div class="mt-2 flex justify-center gap-2">
+                                        <label class="relative cursor-pointer bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 rounded-xl px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center shadow-sm justify-center flex-1">
                                             <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             </svg>
-                                            Ganti Foto
-                                            <input type="file" name="photo" accept="image/*" class="sr-only" onchange="this.form.submit()">
+                                            Pilih File
+                                            <input type="file" name="photo" accept="image/*" class="sr-only" onchange="this.form.submit()" id="photoInput">
                                         </label>
+
+                                        <button type="button" @click="openCamera()" class="bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-800/50 transition-all duration-200 rounded-xl px-4 py-2 text-sm font-medium text-indigo-700 dark:text-indigo-300 flex items-center shadow-sm justify-center flex-1">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                            Kamera
+                                        </button>
                                     </div>
                                     <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">JPG, GIF, atau PNG. Maks 2MB.</p>
                                 </form>
+
+                                <!-- Webcam Modal -->
+                                <div x-show="showWebcam" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm">
+                                    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-2xl w-full max-w-md relative">
+                                        <button @click="closeCamera()" type="button" class="absolute top-4 right-4 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                        <h3 class="text-lg font-bold mb-4 text-slate-900 dark:text-white text-left">Ambil Foto</h3>
+                                        <div class="relative bg-black rounded-lg overflow-hidden aspect-square mb-4">
+                                            <video x-ref="video" class="w-full h-full object-cover transform -scale-x-100" autoplay playsinline muted></video>
+                                        </div>
+                                        <div class="flex justify-center gap-4">
+                                            <button @click="takeSnapshot()" type="button" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl flex items-center shadow-md transition-all w-full justify-center">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                                </svg>
+                                                Jepret & Simpan
+                                            </button>
+                                        </div>
+                                        <canvas x-ref="canvas" style="display: none;"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -946,4 +974,94 @@
     </div>
     </div>
     </div>
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('webcamUpload', () => ({
+        showWebcam: false,
+        stream: null,
+        openCamera() {
+            this.showWebcam = true;
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(stream => {
+                    this.stream = stream;
+                    this.$refs.video.srcObject = stream;
+                })
+                .catch(err => {
+                    alert("Kamera tidak dapat diakses. Pastikan Anda memberikan izin akses kamera.");
+                    this.showWebcam = false;
+                });
+        },
+        closeCamera() {
+            this.showWebcam = false;
+            if (this.stream) {
+                this.stream.getTracks().forEach(track => track.stop());
+                this.stream = null;
+            }
+        },
+        takeSnapshot() {
+            const video = this.$refs.video;
+            const canvas = this.$refs.canvas;
+            
+            // Set canvas size to video's actual size with fallbacks
+            const width = video.videoWidth || video.clientWidth || 640;
+            const height = video.videoHeight || video.clientHeight || 480;
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            
+            // Flip the image if facing user to act like a mirror
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob(blob => {
+                if (!blob || blob.size === 0) {
+                    alert("Gagal mengambil gambar. Pastikan kamera menyala dan terlihat.");
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('photo', blob, 'webcam_capture.jpg');
+                formData.append('_token', document.querySelector('input[name="_token"]').value);
+                
+                this.closeCamera();
+                
+                // Show loading state (optional, or just wait for reload)
+                document.body.style.cursor = 'wait';
+                
+                fetch(document.getElementById('photoForm').action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        document.body.style.cursor = 'default';
+                        response.json().then(data => {
+                            let errorMsg = "Gagal mengunggah foto.";
+                            if (data.errors && data.errors.photo) {
+                                errorMsg = data.errors.photo.join('\n');
+                            } else if (data.message) {
+                                errorMsg = data.message;
+                            }
+                            alert(errorMsg);
+                        }).catch(() => {
+                            alert("Gagal mengunggah foto. Terjadi kesalahan server.");
+                        });
+                    }
+                })
+                .catch(err => {
+                    document.body.style.cursor = 'default';
+                    alert("Terjadi kesalahan jaringan: " + err);
+                });
+            }, "image/jpeg", 0.9);
+        }
+    }));
+});
+</script>
 </x-app-layout>

@@ -36,16 +36,23 @@
                 </div>
             @endif
 
-            @if(!$user->hasCompletedProfile())
                 <!-- Onboarding Widget (Opsi A) -->
                 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl p-6 mb-6 transition-all duration-300">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                         <div>
+                            @if($user->hasCompletedProfile())
+                            <span class="px-3 py-1 text-xs font-bold text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/30 rounded-full border border-green-200 dark:border-green-800">
+                                ✅ Profil Lengkap
+                            </span>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mt-3">Profil Anda Sudah Sempurna!</h3>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Kini fitur pencarian kerja dan rekomendasi telah optimal.</p>
+                            @else
                             <span class="px-3 py-1 text-xs font-bold text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-800">
                                 ⚠️ Profil Belum Lengkap
                             </span>
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mt-3">Langkah Terakhir Sebelum Mulai Karirmu!</h3>
                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Lengkapi profil Anda untuk membuka fitur pencarian kerja dan rekomendasi kursus otomatis.</p>
+                            @endif
                         </div>
                         <div class="flex items-center gap-4">
                             <div class="text-right">
@@ -58,7 +65,7 @@
                         </div>
                     </div>
                     <!-- Checklist -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Step 1: Data Diri (Name, Photo, Phone, Gender, Address) -->
                         @php
                             $step1Complete = !empty($user->name) && !empty($user->photo) && !empty($user->phone) && !empty($user->gender) && !empty($user->address);
@@ -111,7 +118,7 @@
 
                         <!-- Step 3: Unggah CV -->
                         @php
-                            $step3Complete = !empty($user->cv_path);
+                            $step3Complete = !empty($user->cv_path) || \App\Models\UserDocument::where('user_id', $user->id)->where('document_type', 'cv')->exists();
                         @endphp
                         @if($step3Complete)
                             <div class="p-4 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-start gap-3">
@@ -133,9 +140,32 @@
                                 </div>
                             </a>
                         @endif
+
+                        <!-- Step 4: Profil Lengkap (Kolom Wajib) -->
+                        @php
+                            $step4Complete = $user->profile_completion_percentage === 100;
+                        @endphp
+                        @if($step4Complete)
+                            <div class="p-4 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-start gap-3">
+                                <div class="p-1 bg-green-500 text-white rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">4. Profil 100%</h4>
+                                    <p class="text-xs text-gray-500">Semua kolom wajib (*) telah diisi</p>
+                                </div>
+                            </div>
+                        @else
+                            <div class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 flex items-start gap-3 bg-white dark:bg-slate-900 opacity-75">
+                                <div class="w-6 h-6 flex items-center justify-center border-2 border-gray-400 text-gray-400 rounded-full font-bold text-xs shrink-0">4</div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-sm text-gray-900 dark:text-white">4. Profil 100%</h4>
+                                    <p class="text-xs text-gray-500">Isi semua kolom wajib (*)</p>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
-            @endif
 
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">

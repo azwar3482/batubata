@@ -29,10 +29,11 @@ class DashboardController extends Controller
         $user = Auth::user();
         
         $search = $request->input('search');
-        $sort = $request->input('sort', 'kecocokan');
+        $sort = $request->input('sort', 'terbaru');
         $perPage = $request->input('per_page', 10);
+        $tab = $request->input('tab', 'all');
         
-        $jobs = $matchingService->getMatchedJobsPaginated($user, $perPage, $search, $sort);
+        $jobs = $matchingService->getMatchedJobsPaginated($user, $perPage, $search, $sort, $tab);
         
         return view('jobs.index', compact('jobs'));
     }
