@@ -83,7 +83,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <section x-data="{ showVideo: false }" class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Left Content -->
@@ -111,7 +111,7 @@
                                     d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                             </svg>
                         </a>
-                        <a href="#fitur"
+                        <a href="#" @click.prevent="showVideo = true"
                             class="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 font-semibold rounded-xl hover:border-blue-600 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition bg-white dark:bg-slate-800">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -189,6 +189,38 @@
                             🎯 Rekomendasi Personal
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Modal -->
+        <div x-show="showVideo" style="display: none;" class="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-75 backdrop-blur-sm transition-opacity">
+            <div @click.away="showVideo = false" x-show="showVideo"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                class="relative w-full max-w-4xl p-4 mx-auto">
+                
+                <!-- Close Button -->
+                <button @click="showVideo = false" class="absolute -top-12 right-4 md:-right-12 md:top-0 text-white hover:text-gray-300 focus:outline-none transition">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                
+                <!-- 16:9 Aspect Ratio Container -->
+                <div class="relative w-full overflow-hidden bg-black rounded-2xl shadow-2xl" style="padding-top: 56.25%;">
+                    <template x-if="showVideo">
+                        <iframe class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/I_P2Nypoii8?start=67&autoplay=1&cc_load_policy=1&hl=id&cc_lang_pref=id" 
+                            title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </template>
                 </div>
             </div>
         </div>
