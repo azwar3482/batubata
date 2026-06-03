@@ -34,6 +34,8 @@
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">No</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Kategori</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tipe</th>
+                                <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Posisi</th>
+                                <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Kompetensi</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Keterangan</th>
                                 <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
@@ -48,9 +50,15 @@
                                         <div class="text-sm font-semibold text-gray-900">{{ $category->name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 text-xs font-bold rounded-full bg-indigo-50 text-indigo-600">
+                                        <span class="px-3 py-1 text-xs font-bold rounded-full {{ $category->type === 'position' ? 'bg-blue-50 text-blue-600' : 'bg-purple-50 text-purple-600' }}">
                                             {{ ucfirst($category->type) }}
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="text-sm font-bold text-gray-900">{{ $category->positions_count }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="text-sm font-bold text-gray-900">{{ $category->competencies_count }}</span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm text-gray-500 max-w-xs truncate">{{ $category->description ?? '-' }}</div>

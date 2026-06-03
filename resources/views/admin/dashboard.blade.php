@@ -550,7 +550,7 @@
                     }
                 ]
             });
-            autoDriver.drive();
+            // autoDriver.drive();
 
             const startTourBtn = document.getElementById('start-tour-btn');
             if (startTourBtn) {

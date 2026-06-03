@@ -450,7 +450,7 @@
                     }
                 ]
             });
-            autoDriver.drive();
+            // autoDriver.drive();
         });
     </script>
     <style>

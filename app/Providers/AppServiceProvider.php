@@ -30,6 +30,6 @@ class AppServiceProvider extends ServiceProvider
             });
         }
 
-        URL::forceScheme('https');
+        // URL::forceScheme('https'); // Disabled for local development
     }
 }

@@ -86,26 +86,40 @@ class DocumentScoringService
     }
 
     /**
-     * Buat skor awal dummy saat Python AI tidak tersedia (fallback).
-     * Skor awal menggunakan heuristik sederhana berdasarkan jenis dokumen.
+     * Buat skor awal saat Python AI tidak tersedia (fallback).
+     * Skor menggunakan heuristik berdasarkan jenis dokumen dan kelengkapan data.
      */
     public function createInitialDummyScore(UserDocument $document): void
     {
-        $defaultScores = [
-            'cv'          => 65.0,
-            'ijazah'      => 70.0,
-            'transkrip'   => 68.0,
-            'sertifikat'  => 75.0,
-            'portofolio'  => 60.0,
+        // Heuristik berdasarkan jenis dokumen
+        $baseScores = [
+            'cv'          => 50.0,
+            'ijazah'      => 60.0,
+            'transkrip'   => 55.0,
+            'sertifikat'  => 65.0,
+            'portofolio'  => 50.0,
         ];
+
+        $baseScore = $baseScores[$document->document_type] ?? 50.0;
+
+        // Bonus jika file ada dan ukurannya wajar
+        if ($document->file_path && \Storage::disk('public')->exists($document->file_path)) {
+            $fileSize = \Storage::disk('public')->size($document->file_path);
+            if ($fileSize > 1024 && $fileSize < 10 * 1024 * 1024) { // 1KB - 10MB
+                $baseScore += 10.0;
+            }
+        }
+
+        // Cap di 80 untuk fallback (tidak boleh lebih tinggi tanpa AI)
+        $score = min(80.0, $baseScore);
 
         UserDocumentScore::updateOrCreate(
             ['document_id' => $document->id],
             [
                 'user_id'                => $document->user_id,
-                'extracted_data'         => [],
+                'extracted_data'         => ['status' => 'pending_ai_review'],
                 'skill_embedding_vector' => json_encode([]),
-                'overall_score'          => $defaultScores[$document->document_type] ?? 60.0,
+                'overall_score'          => $score,
                 'processed_at'           => now(),
             ]
         );

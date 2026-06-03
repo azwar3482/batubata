@@ -25,8 +25,13 @@
                     
                     <div>
                         <label for="category" class="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">Kategori Bidang</label>
-                        <input type="text" name="category" id="category" required value="{{ $position->category }}" 
-                               class="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition px-4 py-3 bg-gray-50/50">
+                        <select name="category" id="category" required 
+                                class="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition px-4 py-3 bg-gray-50/50">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->name }}" {{ $position->category === $cat->name ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div>

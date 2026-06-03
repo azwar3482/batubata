@@ -172,9 +172,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard/report', [IndustryDashboardController::class, 'downloadReport'])->name('dashboard.report');
         Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create');
         Route::post('/jobs/store', [JobPostingController::class, 'store'])->name('jobs.store');
-        Route::get('/candidates', function () {
-            return view('industry.candidates');
-        })->name('candidates');
+        Route::get('/candidates', [App\Http\Controllers\Industry\CandidateController::class, 'index'])->name('candidates');
         Route::get('/candidates/{id}', [App\Http\Controllers\Industry\CandidateController::class, 'show'])->name('candidates.show');
         Route::put('/applications/{id}/status', [App\Http\Controllers\Industry\CandidateController::class, 'updateStatus'])->name('applications.update-status');
         Route::get('/guide', function () {

@@ -57,121 +57,64 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-750">
-                            <!-- Candidate 1 -->
+                            @forelse($candidates as $index => $application)
+                            @php
+                                $user = $application->user;
+                                $initials = strtoupper(substr($user->name ?? 'U', 0, 1));
+                                $match = round($application->matching_percentage ?? 0);
+                                $matchColor = $match >= 80 ? 'emerald' : ($match >= 60 ? 'yellow' : 'orange');
+                                $latestAssessment = $user->assessments->sortByDesc('assessment_date')->first();
+                                $skills = $latestAssessment ? $latestAssessment->scores->take(3)->pluck('competency.name') : collect();
+                            @endphp
                             <tr class="hover:bg-slate-50 dark:hover:bg-slate-750/50 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-slate-500 dark:text-slate-400">1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-slate-500 dark:text-slate-400">{{ $candidates->firstItem() + $index }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-4">
                                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold shadow-sm">
-                                            BS
+                                            {{ $initials }}
                                         </div>
                                         <div>
-                                            <div class="font-bold text-slate-900 dark:text-white text-sm">Budi Santoso</div>
-                                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">S1 Teknik Informatika • 1 Thn Pengalaman</div>
+                                            <div class="font-bold text-slate-900 dark:text-white text-sm">{{ $user->name }}</div>
+                                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ $user->education_level ?? '-' }} {{ $user->major ?? '' }} • {{ $user->experience_years ?? 0 }} Thn Pengalaman</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap gap-1.5">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Google Analytics</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">SEO</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Content Marketing</span>
+                                        @foreach($skills as $skill)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">{{ $skill }}</span>
+                                        @endforeach
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex flex-col items-center justify-center">
-                                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">85%</span>
+                                        <span class="text-sm font-bold text-{{ $matchColor }}-600 dark:text-{{ $matchColor }}-400">{{ $match }}%</span>
                                         <div class="w-20 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full mt-1 overflow-hidden">
-                                            <div class="h-full bg-emerald-500 rounded-full" style="width: 85%"></div>
+                                            <div class="h-full bg-{{ $matchColor }}-500 rounded-full" style="width: {{ $match }}%"></div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('industry.candidates.show', 1) }}" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
+                                    <a href="{{ route('industry.candidates.show', $user->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
                                         Lihat Profil
                                     </a>
                                 </td>
                             </tr>
-
-                            <!-- Candidate 2 -->
-                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-750/50 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-slate-500 dark:text-slate-400">2</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold shadow-sm">
-                                            AS
-                                        </div>
-                                        <div>
-                                            <div class="font-bold text-slate-900 dark:text-white text-sm">Andi Saputra</div>
-                                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">D3 Manajemen Informatika • 2 Thn Pengalaman</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Python</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">SQL</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Data Visualization</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <span class="text-sm font-bold text-yellow-600 dark:text-yellow-400">72%</span>
-                                        <div class="w-20 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full mt-1 overflow-hidden">
-                                            <div class="h-full bg-yellow-500 rounded-full" style="width: 72%"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('industry.candidates.show', 2) }}" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
-                                        Lihat Profil
-                                    </a>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-sm text-slate-500 dark:text-slate-400">
+                                    Belum ada kandidat yang melamar.
                                 </td>
                             </tr>
-
-                            <!-- Candidate 3 -->
-                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-750/50 transition-colors duration-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-slate-500 dark:text-slate-400">3</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold shadow-sm">
-                                            DP
-                                        </div>
-                                        <div>
-                                            <div class="font-bold text-slate-900 dark:text-white text-sm">Dewi Putri</div>
-                                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">S1 Komunikasi • Fresh Graduate</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Social Media</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Copywriting</span>
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">Communication</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <span class="text-sm font-bold text-orange-600 dark:text-orange-400">65%</span>
-                                        <div class="w-20 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full mt-1 overflow-hidden">
-                                            <div class="h-full bg-orange-500 rounded-full" style="width: 65%"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('industry.candidates.show', 3) }}" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
-                                        Lihat Profil
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
                 
-                <!-- Pagination (Optional Layout Element) -->
+                <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
                     <div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
-                        <span>Menampilkan 1 sampai 3 dari 3 kandidat</span>
+                        <span>Menampilkan {{ $candidates->firstItem() ?? 0 }} sampai {{ $candidates->lastItem() ?? 0 }} dari {{ $candidates->total() }} kandidat</span>
                     </div>
                 </div>
             </div>
@@ -179,17 +122,7 @@
             <!-- Pagination -->
             <div class="mt-8">
                 <div class="flex justify-center">
-                    <nav class="flex items-center gap-2">
-                        <button
-                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50">Previous</button>
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded-md">1</button>
-                        <button
-                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">2</button>
-                        <button
-                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">3</button>
-                        <button
-                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50">Next</button>
-                    </nav>
+                    {{ $candidates->links() }}
                 </div>
             </div>
         </div>

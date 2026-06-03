@@ -288,15 +288,15 @@
                         </div>
                         <div class="mt-4 grid grid-cols-3 gap-4 text-center">
                             <div>
-                                <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">85%</p>
+                                <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $funnelPercentages['applied'] ?? 0 }}%</p>
                                 <p class="text-xs text-gray-500 dark:text-slate-400">Resume Screened</p>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">42%</p>
+                                <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $funnelPercentages['interview'] ?? 0 }}%</p>
                                 <p class="text-xs text-gray-500 dark:text-slate-400">Interview Completed</p>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-green-600 dark:text-green-400">18%</p>
+                                <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $funnelPercentages['accepted'] ?? 0 }}%</p>
                                 <p class="text-xs text-gray-500 dark:text-slate-400">Offer Accepted</p>
                             </div>
                         </div>
@@ -348,11 +348,53 @@
                     </div>
 
                     <!-- Top Matching Candidates -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                        <div class="p-6 border-b border-gray-200">
-                            <h3 class="text-lg font-bold text-gray-900">Kandidat Match Tinggi</h3>
-                            <p class="text-xs text-gray-500 mt-1">Berdasarkan lowongan aktif Anda</p>
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-slate-100 dark:border-slate-800">
+                        <div class="p-6 border-b border-gray-200 dark:border-slate-700">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Kandidat Match Tinggi</h3>
+                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Berdasarkan lowongan aktif Anda</p>
                         </div>
+                        <div class="divide-y divide-gray-200 dark:divide-slate-700">
+                            @forelse($recentCandidates as $candidate)
+                            @php
+                                $initials = strtoupper(substr($candidate->user->name ?? 'U', 0, 1));
+                                $match = round($candidate->matching_percentage ?? 0);
+                                $badgeColor = $match >= 80 ? 'green' : ($match >= 60 ? 'yellow' : 'red');
+                            @endphp
+                            <div class="p-4 hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                        {{ $initials }}
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $candidate->user->name ?? 'Unknown' }}</p>
+                                            <span class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-{{ $badgeColor }}-100 text-{{ $badgeColor }}-800 flex-shrink-0">
+                                                {{ $match }}%
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5">{{ $candidate->jobListing->title ?? '-' }}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-3 flex gap-2">
+                                    <a href="{{ route('industry.candidate-profile', $candidate->user_id) }}"
+                                        class="flex-1 px-3 py-1.5 text-xs font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition text-center">
+                                        Lihat Profil
+                                    </a>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="p-8 text-center">
+                                <p class="text-sm text-gray-500 dark:text-slate-400">Belum ada kandidat</p>
+                            </div>
+                            @endforelse
+                        </div>
+                        <div class="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-center">
+                            <a href="{{ route('industry.candidates') }}"
+                                class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                Lihat Semua Kandidat →
+                            </a>
+                        </div>
+                    </div>
                         <div class="divide-y divide-gray-200">
 
                             <!-- Candidate 1 -->
@@ -501,7 +543,7 @@
                                 <span class="text-gray-500">Website</span>
                                 <a href="{{ Auth::user()->company->website ?? '#' }}" target="_blank"
                                     class="font-medium text-blue-600 hover:underline">
-                                    {{ parse_url(Auth::user()->company->website ?? 'https://example.com', PHP_URL_HOST) }}
+                                    {{ Auth::user()->company->website ? parse_url(Auth::user()->company->website, PHP_URL_HOST) : 'Belum diatur' }}
                                 </a>
                             </div>
                             <div class="flex justify-between">
@@ -791,7 +833,7 @@ return $parsed[$component] ?? $url;
 
         // Auto play saat halaman terbuka
         const autoDriver = driver(tourConfig);
-        autoDriver.drive();
+        // autoDriver.drive();
     });
 </script>
 <style>

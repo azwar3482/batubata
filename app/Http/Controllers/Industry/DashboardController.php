@@ -5,41 +5,67 @@ namespace App\Http\Controllers\Industry;
 use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use App\Models\User;
+use App\Models\UserJobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('company');
 
-        // Statistik untuk HRD
-        // Asumsi job listing terhubung ke company user ini, atau sederhana saja filter by creator jika ada kolom user_id di job_listing
-        // Untuk simplifikasi, kita asumsikan HRD bisa melihat semua job yang mereka buat (nanti tambah kolom user_id di job_listing)
+        $totalJobs = JobListing::where('user_id', $user->id)->where('is_active', true)->count();
 
-        $totalJobs = JobListing::where('user_id', $user->id)->count();
+        $totalApplicants = UserJobApplication::whereHas('jobListing', fn($q) => $q->where('user_id', $user->id))->count();
 
-        // Kita butuh relasi jobs di model Company atau User. 
-        // Mari tambahkan kolom user_id di tabel job_listings agar mudah tracking siapa yang post.
-        // (Akan kita handle di migrasi tambahan bawah)
+        // Kandidat dengan match > 80%
+        $highMatchCandidates = UserJobApplication::whereHas('jobListing', fn($q) => $q->where('user_id', $user->id))
+            ->where('matching_percentage', '>=', 80)
+            ->count();
 
-        $recentJobs = JobListing::where('user_id', $user->id)->latest()->take(5)->get();
-        $totalApplicants = 0; // Nanti dihitung dari relasi applications
+        // Rata-rata hari hiring (dari apply sampai diterima)
+        $avgHiringDays = UserJobApplication::whereHas('jobListing', fn($q) => $q->where('user_id', $user->id))
+            ->where('status', 'accepted')
+            ->whereNotNull('applied_at')
+            ->selectRaw('AVG(DATEDIFF(updated_at, applied_at)) as avg_days')
+            ->value('avg_days');
+        $avgHiringDays = $avgHiringDays ? round($avgHiringDays) : 0;
 
-        // return view('industry.dashboard', compact('totalJobs', 'recentJobs', 'totalApplicants'));
-        return view('industry.dashboard', [
-            'totalJobs' => \App\Models\JobListing::where('user_id', $user->id)->where('is_active', true)->count(),
-            'totalApplicants' => \App\Models\UserJobApplication::whereHas('jobListing', fn($q) => $q->where('user_id', $user->id))->count(),
-            'highMatchCandidates' => 12, // Hitung dari logic matching > 80%
-            'avgHiringDays' => 14,
-            'recentJobs' => \App\Models\JobListing::where('user_id', $user->id)
-                ->withCount('applications')
-                ->latest()
-                ->take(5)
-                ->get(),
-        ]);
+        $recentJobs = JobListing::where('user_id', $user->id)
+            ->withCount('applications')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Ambil kandidat terbaru untuk ditampilkan
+        $recentCandidates = UserJobApplication::whereHas('jobListing', fn($q) => $q->where('user_id', $user->id))
+            ->with(['user', 'jobListing'])
+            ->orderByDesc('matching_percentage')
+            ->take(5)
+            ->get();
+
+        // Funnel rekrutmen
+        $jobIds = JobListing::where('user_id', $user->id)->pluck('id');
+        $funnelData = UserJobApplication::whereIn('job_listing_id', $jobIds)
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
+        $totalFunnel = $funnelData->sum();
+        $funnelPercentages = [
+            'applied' => $totalFunnel > 0 ? round(($funnelData->get('applied', 0) / $totalFunnel) * 100) : 0,
+            'reviewed' => $totalFunnel > 0 ? round(($funnelData->get('reviewed', 0) / $totalFunnel) * 100) : 0,
+            'interview' => $totalFunnel > 0 ? round(($funnelData->get('interview', 0) / $totalFunnel) * 100) : 0,
+            'accepted' => $totalFunnel > 0 ? round(($funnelData->get('accepted', 0) / $totalFunnel) * 100) : 0,
+        ];
+
+        return view('industry.dashboard', compact(
+            'totalJobs', 'totalApplicants', 'highMatchCandidates', 'avgHiringDays',
+            'recentJobs', 'recentCandidates', 'funnelPercentages'
+        ));
     }
+
     public function downloadReport()
     {
         return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\RecruitmentReportExport, 'laporan-rekrutmen.xlsx');

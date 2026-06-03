@@ -27,11 +27,19 @@ class UserController extends Controller
 
         $users = $query->paginate(5)->withQueryString();
 
+        // Single query untuk semua stats
+        $statData = User::selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN role = 'job_seeker' THEN 1 ELSE 0 END) as job_seeker,
+            SUM(CASE WHEN role = 'industry' THEN 1 ELSE 0 END) as industry,
+            SUM(CASE WHEN role = 'education' THEN 1 ELSE 0 END) as education
+        ")->first();
+
         $stats = [
-            'total' => User::count(),
-            'job_seeker' => User::where('role', 'job_seeker')->count(),
-            'industry' => User::where('role', 'industry')->count(),
-            'education' => User::where('role', 'education')->count(),
+            'total' => $statData->total,
+            'job_seeker' => $statData->job_seeker,
+            'industry' => $statData->industry,
+            'education' => $statData->education,
         ];
 
         return view('admin.users', compact('users', 'stats'));

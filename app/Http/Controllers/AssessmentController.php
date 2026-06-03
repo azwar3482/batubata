@@ -18,7 +18,17 @@ class AssessmentController extends Controller
 {
     public function create()
     {
-        $positions = Position::all();
+        // Hanya tampilkan posisi yang punya minimal 1 teknis DAN 1 soft skill
+        $positions = Position::whereHas('competencies', function ($q) {
+            $q->where('category', 'technical');
+        })->whereHas('competencies', function ($q) {
+            $q->where('category', 'soft_skill');
+        })->withCount(['competencies as technical_count' => function ($q) {
+            $q->where('category', 'technical');
+        }, 'competencies as soft_count' => function ($q) {
+            $q->where('category', 'soft_skill');
+        }])->get();
+
         return view('assessment.create', compact('positions'));
     }
 
@@ -86,11 +96,25 @@ class AssessmentController extends Controller
 
         $position = Position::with('competencies')->find($data['position_id']);
 
-        // Kelompokkan kompetensi berdasarkan kategori untuk tampilan yang lebih rapi
+        if (!$position || $position->competencies->isEmpty()) {
+            return redirect()->route('seeker.assessment.create')->with('error', 'Posisi ini belum memiliki kompetensi yang terdaftar. Silakan pilih posisi lain.');
+        }
+
+        // Kelompokkan kompetensi berdasarkan kategori
         $technicalSkills = $position->competencies->where('category', 'technical');
         $softSkills = $position->competencies->where('category', 'soft_skill');
 
-        return view('assessment.questions', compact('position', 'technicalSkills', 'softSkills'));
+        // Hitung steps dinamis
+        $steps = [];
+        if ($technicalSkills->isNotEmpty()) $steps[] = 'technical';
+        if ($softSkills->isNotEmpty()) $steps[] = 'soft_skill';
+        $totalSteps = count($steps);
+
+        if ($totalSteps === 0) {
+            return redirect()->route('seeker.assessment.create')->with('error', 'Posisi ini belum memiliki kompetensi. Silakan hubungi admin.');
+        }
+
+        return view('assessment.questions', compact('position', 'technicalSkills', 'softSkills', 'steps', 'totalSteps'));
     }
 
     public function submit(Request $request, \App\Services\AssessmentScoringService $scoringService)
@@ -195,6 +219,44 @@ class AssessmentController extends Controller
                 ->get();
         }
 
+        // Generate radar data dari assessment scores (sudah eager loaded)
+        $radarData = [];
+        $scores = $assessment->scores; // Gunakan yang sudah eager loaded
+
+        if ($scores->isNotEmpty()) {
+            $technicalScores = $scores->where('competency.category', 'technical');
+            $softScores = $scores->where('competency.category', 'soft_skill');
+
+            if ($technicalScores->isNotEmpty()) {
+                $radarData[] = [
+                    'label' => 'Skill Teknis',
+                    'current' => round($technicalScores->avg('self_assessed_level'), 1),
+                    'target' => round($technicalScores->avg(fn($s) => $s->competency->min_level_required), 1),
+                ];
+            }
+            if ($softScores->isNotEmpty()) {
+                $radarData[] = [
+                    'label' => 'Soft Skill',
+                    'current' => round($softScores->avg('self_assessed_level'), 1),
+                    'target' => round($softScores->avg(fn($s) => $s->competency->min_level_required), 1),
+                ];
+            }
+
+            // Top 5 skills by gap
+            $topGaps = $scores->sortByDesc(fn($s) => $s->competency->min_level_required > 0
+                ? max(0, (($s->competency->min_level_required - $s->self_assessed_level) / $s->competency->min_level_required) * 100)
+                : 0
+            )->take(5);
+
+            foreach ($topGaps as $score) {
+                $radarData[] = [
+                    'label' => $score->competency->name,
+                    'current' => (float) $score->self_assessed_level,
+                    'target' => (float) $score->competency->min_level_required,
+                ];
+            }
+        }
+
         if (request()->wantsJson() || request()->is('api/*')) {
             return response()->json([
                 'success' => true,
@@ -202,12 +264,13 @@ class AssessmentController extends Controller
                     'assessment' => $assessment,
                     'recommendations' => $recommendations,
                     'roadmap_exists' => $roadmapExists,
-                    'roadmap_milestones' => $roadmapMilestones
+                    'roadmap_milestones' => $roadmapMilestones,
+                    'radar_data' => $radarData,
                 ]
             ]);
         }
 
-        return view('assessment.result', compact('assessment', 'recommendations', 'roadmapExists', 'roadmapMilestones'));
+        return view('assessment.result', compact('assessment', 'recommendations', 'roadmapExists', 'roadmapMilestones', 'radarData'));
     }
     public function history()
     {

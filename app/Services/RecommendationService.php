@@ -17,16 +17,23 @@ class RecommendationService
             ->orderByDesc('gap_percentage')
             ->get();
 
+        if ($scores->isEmpty()) {
+            return collect([]);
+        }
+
+        // Ambil semua kursus sekaligus untuk semua competency_id (HINDARI N+1)
+        $competencyIds = $scores->pluck('competency_id')->unique();
+        $coursesByCompetency = Course::whereIn('competency_id', $competencyIds)
+            ->orderBy('level', 'asc')
+            ->get()
+            ->groupBy('competency_id');
+
         $recommendations = collect([]);
 
         foreach ($scores as $score) {
-            // Cari kursus yang berhubungan dengan kompetensi ini
-            $courses = Course::where('competency_id', $score->competency_id)
-                ->orderBy('level', 'asc') // Mulai dari level beginner dulu
-                ->limit(2) // Ambil maksimal 2 kursus per skill
-                ->get();
+            $matchingCourses = ($coursesByCompetency->get($score->competency_id) ?? collect())->take(2);
 
-            foreach ($courses as $course) {
+            foreach ($matchingCourses as $course) {
                 $recommendations->push([
                     'course' => $course,
                     'competency_name' => $score->competency->name,
@@ -37,7 +44,6 @@ class RecommendationService
             }
         }
 
-        // Batasi jumlah total rekomendasi
         return $recommendations->take($limit);
     }
 }

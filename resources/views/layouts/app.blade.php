@@ -562,6 +562,7 @@
 
                     @if (Auth::user()->role === 'job_seeker')
                     <!-- Menu Job Seeker -->
+                    <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
                     <a href="{{ route('dashboard') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -573,6 +574,7 @@
                         <div class="menu-tooltip">{{ __('messages.dashboard') }}</div>
                     </a>
 
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Eksplorasi Karir</div>
                     <a href="{{ route('seeker.assessment.start') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.assessment.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.assessment.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -595,6 +597,7 @@
                         <div class="menu-tooltip">{{ __('messages.career_roadmap') }}</div>
                     </a>
 
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Peluang & Pengembangan</div>
                     <a href="{{ route('seeker.jobs.index') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.jobs.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.jobs.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -623,6 +626,7 @@
                     </a>
                     @elseif(Auth::user()->isIndustryOrStaff())
                     <!-- Menu Industry/HRD -->
+                    <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
                     <a href="{{ route('industry.dashboard') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -634,6 +638,7 @@
                         <div class="menu-tooltip">{{ __('messages.dashboard') }}</div>
                     </a>
 
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Rekrutmen</div>
                     @can('post_jobs')
                     <a href="{{ route('industry.jobs.index') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.jobs.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
@@ -659,6 +664,7 @@
                     </a>
                     @endcan
 
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Internal</div>
                     @if(Auth::user()->isIndustry() || Auth::user()->role === 'staf_hr_manager')
                     <a href="{{ route('industry.team') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.team*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
@@ -673,6 +679,7 @@
                     @endif
                     @elseif(Auth::user()->role === 'education')
                     <!-- Menu Education -->
+                    <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
                     <a href="{{ route('education.dashboard') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -695,6 +702,7 @@
                         <div class="menu-tooltip">{{ __('messages.graduate_analytics') }}</div>
                     </a>
 
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Data</div>
                     <a href="{{ route('education.students') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.students*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.students*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -708,6 +716,8 @@
 
                     @elseif(Auth::user()->role === 'admin')
                     <!-- Menu Admin -->
+                    <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
+
                     <a href="{{ route('admin.dashboard') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -718,6 +728,19 @@
                         <span class="sidebar-text transition-all duration-300">{{ __('messages.dashboard') }}</span>
                         <div class="menu-tooltip">{{ __('messages.dashboard') }}</div>
                     </a>
+
+                    <a href="{{ route('admin.reports') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.reports*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.reports*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Laporan</span>
+                        <div class="menu-tooltip">Laporan</div>
+                    </a>
+
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Utama</div>
 
                     <a href="{{ route('admin.users') }}"
                         class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.users*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
@@ -741,15 +764,13 @@
                         <div class="menu-tooltip">Kompetensi</div>
                     </a>
 
-                    <a href="{{ route('admin.reports') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.reports*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
-                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.reports*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
+                    <a href="{{ route('admin.courses.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.courses*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
-                        <span class="sidebar-text transition-all duration-300">Laporan</span>
-                        <div class="menu-tooltip">Laporan</div>
+                        <span class="sidebar-text transition-all duration-300">{{ __('messages.course_management') }}</span>
+                        <div class="menu-tooltip">{{ __('messages.course_management') }}</div>
                     </a>
 
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Master Data</div>
@@ -776,13 +797,15 @@
                         <div class="menu-tooltip">{{ __('messages.positions') }}</div>
                     </a>
 
-                    <a href="{{ route('admin.courses.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
-                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.courses*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Sistem AI</div>
+
+                    <a href="{{ route('admin.ai-workflow') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.ai-workflow*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.ai-workflow*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                         </svg>
-                        <span class="sidebar-text transition-all duration-300">{{ __('messages.course_management') }}</span>
-                        <div class="menu-tooltip">{{ __('messages.course_management') }}</div>
+                        <span class="sidebar-text transition-all duration-300">{{ __('messages.ai_workflow') }}</span>
+                        <div class="menu-tooltip">{{ __('messages.ai_workflow') }}</div>
                     </a>
 
                     <a href="{{ route('admin.document-weights.index') }}"
@@ -792,15 +815,6 @@
                         </svg>
                         <span class="sidebar-text transition-all duration-300">{{ __('messages.ai_document_weights') }}</span>
                         <div class="menu-tooltip">{{ __('messages.ai_document_weights') }}</div>
-                    </a>
-
-                    <a href="{{ route('admin.ai-workflow') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.ai-workflow*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
-                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.ai-workflow*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                        </svg>
-                        <span class="sidebar-text transition-all duration-300">{{ __('messages.ai_workflow') }}</span>
-                        <div class="menu-tooltip">{{ __('messages.ai_workflow') }}</div>
                     </a>
 
                     <a href="{{ route('admin.skill-keywords.index') }}"

@@ -42,43 +42,68 @@ class JobSeekerDashboardService
     {
         if (!$latestAssessment) {
             return [
-                ['label' => 'Teknis', 'current' => 0, 'target' => 4],
+                ['label' => 'Skill Teknis', 'current' => 0, 'target' => 4],
                 ['label' => 'Soft Skill', 'current' => 0, 'target' => 4],
-                ['label' => 'Digital', 'current' => 0, 'target' => 4],
-                ['label' => 'Leadership', 'current' => 0, 'target' => 4],
-                ['label' => 'Bahasa', 'current' => 0, 'target' => 4],
             ];
         }
 
         $scores = $latestAssessment->scores()->with('competency')->get();
-        $categories = ['Komunikasi', 'Teknis', 'Digital', 'Leadership', 'Bahasa'];
+
+        if ($scores->isEmpty()) {
+            return [
+                ['label' => 'Skill Teknis', 'current' => 0, 'target' => 4],
+                ['label' => 'Soft Skill', 'current' => 0, 'target' => 4],
+            ];
+        }
+
+        // Group by actual competency category (technical / soft_skill)
+        $technicalScores = $scores->where('competency.category', 'technical');
+        $softScores = $scores->where('competency.category', 'soft_skill');
 
         $radarData = [];
 
-        foreach ($categories as $cat) {
-            $currentScore = 0;
-            $targetScore = 0;
-
-            $relatedScores = $scores->filter(function ($s) use ($cat) {
-                return stripos($s->competency->name, $cat) !== false ||
-                    ($cat == 'Teknis' && $s->competency->category == 'technical') ||
-                    ($cat == 'Soft Skill' && $s->competency->category == 'soft_skill');
-            });
-
-            if ($relatedScores->isNotEmpty()) {
-                $currentScore = $relatedScores->avg('self_assessed_level');
-                $targetScore = $relatedScores->avg(function ($s) {
-                    return $s->competency->min_level_required;
-                });
-            } else {
-                $currentScore = $cat == 'Teknis' ? 2 : 3;
-                $targetScore = 4;
-            }
-
+        // Technical skills
+        if ($technicalScores->isNotEmpty()) {
             $radarData[] = [
-                'label' => $cat,
-                'current' => round($currentScore, 1),
-                'target' => round($targetScore, 1)
+                'label' => 'Skill Teknis',
+                'current' => round($technicalScores->avg('self_assessed_level'), 1),
+                'target' => round($technicalScores->avg(function ($s) {
+                    return $s->competency->min_level_required;
+                }), 1),
+            ];
+        }
+
+        // Soft skills
+        if ($softScores->isNotEmpty()) {
+            $radarData[] = [
+                'label' => 'Soft Skill',
+                'current' => round($softScores->avg('self_assessed_level'), 1),
+                'target' => round($softScores->avg(function ($s) {
+                    return $s->competency->min_level_required;
+                }), 1),
+            ];
+        }
+
+        // Per-competency detail (top 5 by gap, untuk radar lebih informatif)
+        $topGaps = $scores->sortByDesc(function ($s) {
+            return $s->competency->min_level_required > 0
+                ? max(0, (($s->competency->min_level_required - $s->self_assessed_level) / $s->competency->min_level_required) * 100)
+                : 0;
+        })->take(5);
+
+        foreach ($topGaps as $score) {
+            $radarData[] = [
+                'label' => $score->competency->name,
+                'current' => (float) $score->self_assessed_level,
+                'target' => (float) $score->competency->min_level_required,
+            ];
+        }
+
+        // Fallback jika tidak ada data
+        if (empty($radarData)) {
+            $radarData = [
+                ['label' => 'Skill Teknis', 'current' => 0, 'target' => 4],
+                ['label' => 'Soft Skill', 'current' => 0, 'target' => 4],
             ];
         }
 

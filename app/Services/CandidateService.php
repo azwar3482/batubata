@@ -2,31 +2,30 @@
 
 namespace App\Services;
 
+use App\Models\User;
+use App\Models\UserAssessment;
+use App\Models\UserJobApplication;
+
 class CandidateService
 {
     public function getCandidateDetail($candidateId)
     {
-        // In production, fetch from database with proper authorization
-        $candidate = (object) [
-            'id' => $candidateId,
-            'name' => 'Budi Santoso',
-            'email' => 'budi.santoso@email.com',
-            'phone' => '0812-3456-7890',
-            'location' => 'Jakarta Selatan',
-            'target_position' => 'Digital Marketing Specialist',
-            'experience_years' => 3,
-            'education' => 'S1 Teknik Informatika',
-            'bio' => 'Profesional digital marketing dengan pengalaman 3+ tahun...',
-            'linkedin_url' => 'https://linkedin.com/in/budisantoso',
-            'portfolio_url' => 'https://budisantoso.dev',
-            'cv_path' => 'cvs/cv_budi_santoso.pdf',
-            'is_verified' => true,
-            'last_active' => now()->subDay(),
-            'last_assessment_date' => now()->subWeek(),
-        ];
+        $candidate = User::with(['assessments.scores.competency', 'documents'])
+            ->findOrFail($candidateId);
 
-        $matchPercentage = 85; // Calculate based on job requirements
+        // Ambil assessment terbaru
+        $latestAssessment = UserAssessment::where('user_id', $candidate->id)
+            ->with('scores.competency')
+            ->latest()
+            ->first();
 
-        return compact('candidate', 'matchPercentage');
+        // Hitung match percentage dari data assessment
+        $matchPercentage = 0;
+        if ($latestAssessment && $latestAssessment->scores->isNotEmpty()) {
+            $totalGap = $latestAssessment->scores->avg('gap_percentage');
+            $matchPercentage = round(max(0, 100 - $totalGap), 1);
+        }
+
+        return compact('candidate', 'matchPercentage', 'latestAssessment');
     }
 }

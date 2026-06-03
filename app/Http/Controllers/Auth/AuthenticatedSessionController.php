@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $route = 'dashboard'; // Default untuk job_seeker
         if ($user->isAdmin()) {
-            $route = 'admin.dashboard';
+            return redirect()->route('admin.dashboard');
         } elseif ($user->isIndustryOrStaff()) {
             $route = 'industry.dashboard';
         } elseif ($user->isEducation()) {

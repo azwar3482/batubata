@@ -42,7 +42,7 @@ class CompetencyController extends Controller
         $validated = $request->validate([
             'code' => 'required|unique:competencies,code',
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category' => 'required|in:technical,soft_skill',
             'position_id' => 'required|exists:positions,id',
             'min_level_required' => 'required|integer|min:1|max:5',
             'source_reference' => 'nullable|string',
@@ -65,7 +65,7 @@ class CompetencyController extends Controller
         $validated = $request->validate([
             'code' => 'required|unique:competencies,code,' . $competency->id,
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category' => 'required|in:technical,soft_skill',
             'position_id' => 'required|exists:positions,id',
             'min_level_required' => 'required|integer|min:1|max:5',
         ]);

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\Position;
+use App\Models\Category;
 
 class PositionController extends Controller
 {
@@ -21,7 +21,8 @@ class PositionController extends Controller
 
     public function create()
     {
-        return view('admin.positions.create');
+        $categories = Category::where('type', 'position')->orderBy('name')->get();
+        return view('admin.positions.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -38,7 +39,8 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
-        return view('admin.positions.edit', compact('position'));
+        $categories = Category::where('type', 'position')->orderBy('name')->get();
+        return view('admin.positions.edit', compact('position', 'categories'));
     }
 
     public function update(Request $request, Position $position)

@@ -35,12 +35,15 @@ class DashboardController extends Controller
         
         $jobs = $matchingService->getMatchedJobsPaginated($user, $perPage, $search, $sort, $tab);
         
-        return view('jobs.index', compact('jobs'));
+        $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest()->first();
+        $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
+        
+        return view('jobs.index', compact('jobs', 'avgGap'));
     }
 
     public function jobDetail($id, JobMatchingService $matchingService)
     {
-        $job = JobListing::findOrFail($id);
+        $job = JobListing::with('position')->findOrFail($id);
         $user = Auth::user();
         if ($user) {
             $job->matching_percentage = $matchingService->calculateMatch($user, $job);

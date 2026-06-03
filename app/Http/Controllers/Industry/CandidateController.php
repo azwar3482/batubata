@@ -19,11 +19,23 @@ class CandidateController extends Controller
         $this->candidateService = $candidateService;
     }
 
+    public function index()
+    {
+        $user = Auth::user();
+        $jobIds = JobListing::where('user_id', $user->id)->pluck('id');
+
+        $candidates = UserJobApplication::whereIn('job_listing_id', $jobIds)
+            ->with(['user', 'jobListing', 'user.assessments.scores.competency'])
+            ->orderByDesc('matching_percentage')
+            ->paginate(15);
+
+        return view('industry.candidates', compact('candidates'));
+    }
+
     public function show(Request $request, $candidateId)
     {
         $jobId = $request->query('job_id');
         
-        // Find the application
         $application = null;
         if ($jobId) {
             $application = UserJobApplication::where('user_id', $candidateId)
@@ -35,18 +47,22 @@ class CandidateController extends Controller
                 ->first();
         }
 
-        $candidate = User::find($candidateId);
+        $candidate = User::with(['assessments.scores.competency', 'documents'])->find($candidateId);
         
-        // Fallback to Mock Data if user is not in database
         if (!$candidate) {
-            $data = $this->candidateService->getCandidateDetail($candidateId);
-            $candidate = (object) $data['candidate'];
-            $matchPercentage = $data['matchPercentage'];
-        } else {
-            $matchPercentage = $application ? $application->matching_percentage : 75;
+            abort(404, 'Kandidat tidak ditemukan');
         }
 
-        return view('industry.candidate-profile', compact('candidate', 'application', 'matchPercentage', 'jobId'));
+        // Hitung match percentage dari assessment terbaru (gunakan eager loaded data)
+        $latestAssessment = $candidate->assessments->sortByDesc('assessment_date')->first();
+        $matchPercentage = $application ? $application->matching_percentage : 0;
+        
+        if (!$matchPercentage && $latestAssessment) {
+            $totalGap = $latestAssessment->scores->avg('gap_percentage');
+            $matchPercentage = round(max(0, 100 - $totalGap), 1);
+        }
+
+        return view('industry.candidate-profile', compact('candidate', 'application', 'matchPercentage', 'jobId', 'latestAssessment'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -57,7 +73,6 @@ class CandidateController extends Controller
 
         $application = UserJobApplication::findOrFail($id);
         
-        // Ensure the current industry user owns the job listing associated with this application
         $job = JobListing::findOrFail($application->job_listing_id);
         if ($job->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');

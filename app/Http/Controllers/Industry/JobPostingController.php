@@ -20,6 +20,8 @@ class JobPostingController extends Controller
         $search = $request->input('search');
 
         $jobs = JobListing::where('user_id', Auth::id())
+            ->with('position')
+            ->withCount('applications')
             ->when($search, function ($query, $search) {
                 return $query->where('title', 'like', "%{$search}%")
                              ->orWhere('location', 'like', "%{$search}%")
@@ -94,6 +96,19 @@ class JobPostingController extends Controller
                 ['name' => $positionId],
                 ['description' => 'Ditambahkan secara otomatis oleh sistem', 'category' => 'Lainnya']
             );
+
+            // Tambahkan default kompetensi jika posisi baru belum punya
+            if ($newPosition->competencies()->count() === 0) {
+                $baseCode = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $positionId), 0, 5));
+                $newPosition->competencies()->createMany([
+                    ['code' => $baseCode . '-TECH1', 'name' => 'Pengetahuan Teknis Dasar', 'category' => 'technical', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-TECH2', 'name' => 'Kemampuan Analitis', 'category' => 'technical', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-TECH3', 'name' => 'Penguasaan Tools/Software', 'category' => 'technical', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-SOFT1', 'name' => 'Komunikasi', 'category' => 'soft_skill', 'min_level_required' => 4, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-SOFT2', 'name' => 'Kerja Tim', 'category' => 'soft_skill', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                ]);
+            }
+
             $positionId = $newPosition->id;
         }
 
@@ -148,7 +163,9 @@ class JobPostingController extends Controller
 
     public function show(Request $request, $id)
     {
-        $job = JobListing::where('user_id', Auth::id())->findOrFail($id);
+        $job = JobListing::where('user_id', Auth::id())
+            ->with(['position', 'applications.user'])
+            ->findOrFail($id);
         
         $status = $request->query('status', 'all');
         
@@ -230,6 +247,19 @@ class JobPostingController extends Controller
                 ['name' => $positionId],
                 ['description' => 'Ditambahkan secara otomatis oleh sistem', 'category' => 'Lainnya']
             );
+
+            // Tambahkan default kompetensi jika posisi baru belum punya
+            if ($newPosition->competencies()->count() === 0) {
+                $baseCode = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $positionId), 0, 5));
+                $newPosition->competencies()->createMany([
+                    ['code' => $baseCode . '-TECH1', 'name' => 'Pengetahuan Teknis Dasar', 'category' => 'technical', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-TECH2', 'name' => 'Kemampuan Analitis', 'category' => 'technical', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-TECH3', 'name' => 'Penguasaan Tools/Software', 'category' => 'technical', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-SOFT1', 'name' => 'Komunikasi', 'category' => 'soft_skill', 'min_level_required' => 4, 'source_reference' => 'Auto-generated'],
+                    ['code' => $baseCode . '-SOFT2', 'name' => 'Kerja Tim', 'category' => 'soft_skill', 'min_level_required' => 3, 'source_reference' => 'Auto-generated'],
+                ]);
+            }
+
             $positionId = $newPosition->id;
         }
 
