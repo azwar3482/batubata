@@ -190,22 +190,22 @@
                                 </td>
                                 @endif
                                 <td class="px-6 py-4 text-right whitespace-nowrap">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('seeker.jobs.detail', $job->id) }}" class="inline-flex items-center px-3 py-1.5 border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-medium rounded-md transition">
+                                    <div class="flex flex-col items-end gap-2 w-full max-w-[140px] ml-auto">
+                                        <a href="{{ route('seeker.jobs.detail', $job->id) }}" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-medium rounded-md transition">
                                             Detail
                                         </a>
                                         @if(!$job->user_status || $job->user_status === 'saved')
-                                        <form action="{{ route('seeker.jobs.save', $job->id) }}" method="POST" class="inline">
+                                        <form action="{{ route('seeker.jobs.save', $job->id) }}" method="POST" class="w-full">
                                             @csrf
                                             @if($job->user_status === 'saved')
-                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100 text-xs font-semibold rounded-md transition shadow-xs" title="Batal Simpan">
+                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100 text-xs font-semibold rounded-md transition shadow-xs" title="Batal Simpan">
                                                 <svg class="w-3.5 h-3.5 mr-1 text-yellow-600 fill-current" viewBox="0 0 20 20" fill="currentColor">
                                                     <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                                                 </svg>
                                                 Tersimpan
                                             </button>
                                             @else
-                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-medium rounded-md transition shadow-xs" title="Simpan Lowongan">
+                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-medium rounded-md transition shadow-xs" title="Simpan Lowongan">
                                                 <svg class="w-3.5 h-3.5 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                 </svg>
@@ -213,26 +213,26 @@
                                             </button>
                                             @endif
                                         </form>
-                                        <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="inline" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < -5) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
+                                        <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="w-full" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < -5) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
                                             @csrf
-                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold rounded-md shadow-sm transition">
+                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold rounded-md shadow-sm transition">
                                                 Lamar Sekarang
                                             </button>
                                         </form>
                                         @else
                                         @if(in_array($job->user_status, ['applied', 'reviewed', 'interviewed']))
-                                        <button disabled class="inline-flex items-center px-3 py-1.5 bg-gray-50 border border-gray-200 text-gray-400 text-xs font-medium rounded-md cursor-not-allowed">
+                                        <button disabled class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-gray-50 border border-gray-200 text-gray-400 text-xs font-medium rounded-md cursor-not-allowed">
                                             <svg class="w-3.5 h-3.5 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             Sudah Melamar
                                         </button>
                                         @elseif($job->user_status === 'offered')
-                                        <button disabled class="inline-flex items-center px-3 py-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold rounded-md cursor-not-allowed animate-pulse">
+                                        <button disabled class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold rounded-md cursor-not-allowed animate-pulse">
                                             Diterima 🎉
                                         </button>
                                         @elseif($job->user_status === 'rejected')
-                                        <button disabled class="inline-flex items-center px-3 py-1.5 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-md cursor-not-allowed">
+                                        <button disabled class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-md cursor-not-allowed">
                                             Ditolak
                                         </button>
                                         @endif

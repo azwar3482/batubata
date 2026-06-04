@@ -101,9 +101,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/settings/sync', [App\Http\Controllers\Admin\SettingsController::class, 'syncCompetencies'])->name('admin.settings.sync');
 
         // Tambahkan di dalam education group
-        Route::get('/programs', [App\Http\Controllers\Education\ProgramController::class, 'index'])->name('education.programs');
-        Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('education.programs.create');
-        Route::post('/programs', [App\Http\Controllers\Education\ProgramController::class, 'store'])->name('education.programs.store');
+        // Route programs dipindahkan ke education group
 
         // Education Program Create Route (inside education group)
         // Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('education.programs.create');
@@ -145,10 +143,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/jobs/{id}/apply', [DashboardController::class, 'applyJob'])->middleware('profile.complete')->name('jobs.apply');
         Route::post('/jobs/{id}/save', [DashboardController::class, 'saveJob'])->name('jobs.save');
         Route::delete('/jobs/{id}/withdraw', [DashboardController::class, 'withdrawApplication'])->name('jobs.withdraw');
+        Route::post('/jobs/{id}/offer-response', [DashboardController::class, 'respondToOffer'])->name('jobs.offer-response');
         // Courses
         Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/my-progress', [CourseController::class, 'myProgress'])->name('courses.my-progress');
         Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
         Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
+        Route::put('/courses/{id}/progress', [CourseController::class, 'updateProgress'])->name('courses.update-progress');
+        Route::post('/courses/{id}/complete', [CourseController::class, 'complete'])->name('courses.complete');
 
         // Reports
         Route::get('/reports/assessment/{id}/pdf', [ReportController::class, 'downloadAssessment'])->name('reports.assessment.pdf');
@@ -175,6 +177,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/candidates', [App\Http\Controllers\Industry\CandidateController::class, 'index'])->name('candidates');
         Route::get('/candidates/{id}', [App\Http\Controllers\Industry\CandidateController::class, 'show'])->name('candidates.show');
         Route::put('/applications/{id}/status', [App\Http\Controllers\Industry\CandidateController::class, 'updateStatus'])->name('applications.update-status');
+        Route::get('/jobs/{id}/talent', [JobPostingController::class, 'findTalent'])->name('jobs.talent');
+        Route::post('/jobs/{id}/offer/{userId}', [JobPostingController::class, 'offerJob'])->name('jobs.offer');
         Route::get('/guide', function () {
             return view('industry.guide');
         })->name('guide');
@@ -196,6 +200,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('analytics');
         Route::get('/students', [\App\Http\Controllers\Education\StudentController::class, 'index'])->name('students');
 
+        // Course Management (Education role)
+        Route::get('/courses', [\App\Http\Controllers\Education\CourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/create', [\App\Http\Controllers\Education\CourseController::class, 'create'])->name('courses.create');
+        Route::post('/courses', [\App\Http\Controllers\Education\CourseController::class, 'store'])->name('courses.store');
+        Route::get('/courses/{course}/edit', [\App\Http\Controllers\Education\CourseController::class, 'edit'])->name('courses.edit');
+        Route::put('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'update'])->name('courses.update');
+        Route::delete('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'destroy'])->name('courses.destroy');
+
+        // Program Management (Education role)
+        Route::get('/programs', [App\Http\Controllers\Education\ProgramController::class, 'index'])->name('programs');
+        Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('programs.create');
+        Route::post('/programs', [App\Http\Controllers\Education\ProgramController::class, 'store'])->name('programs.store');
 
         // ⭐ Partners & Collaboration Routes ⭐
         Route::get('/partners', [\App\Http\Controllers\Education\PartnersController::class, 'index'])->name('partners');
@@ -222,7 +238,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // Admin Routes (Update yang sebelumnya)
-    Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
 

@@ -8,6 +8,19 @@
                         class="font-bold text-blue-600">{{ $latestAssessment->position->name }}</span></p>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-8 p-5 bg-gradient-to-r from-purple-50 to-fuchsia-50 dark:from-purple-900/20 dark:to-fuchsia-900/20 border border-purple-100 dark:border-purple-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-purple-900 dark:text-purple-200 mb-1">Tentang Roadmap Karir</h4>
+                        <p class="text-sm text-purple-700 dark:text-purple-300 leading-relaxed">Roadmap karir adalah rencana aksi personal selama <strong>6 bulan</strong> menuju posisi target Anda. Setiap tahap berisi <strong>langkah konkret</strong> seperti mengambil kursus, membangun portofolio, dan melamar pekerjaan. Centang setiap langkah yang sudah selesai untuk melacak progres Anda.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Container Timeline -->
             <div class="relative pl-8 md:pl-0">
                 <!-- Garis Vertikal Tengah (Desktop) / Kiri (Mobile) -->

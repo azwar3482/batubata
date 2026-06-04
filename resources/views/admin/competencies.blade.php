@@ -16,6 +16,19 @@
                 </a>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200 mb-1">Tentang Kelola Kompetensi</h4>
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">Kompetensi adalah standar keahlian yang diukur dalam asesmen. Setiap kompetensi terkait dengan <strong>posisi kerja</strong> dan memiliki <strong>level minimum</strong> yang dibutuhkan (1-5). Data ini digunakan untuk menghitung <strong>skill gap</strong> dan merekomendasikan kursus yang sesuai.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Search and Filter -->
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <form action="{{ route('admin.competencies') }}" method="GET" class="flex gap-4">

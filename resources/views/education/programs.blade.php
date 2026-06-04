@@ -21,6 +21,26 @@
                 </div>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 border border-green-100 dark:border-green-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">Tentang Program</h4>
+                        <p class="text-sm text-green-700 dark:text-green-300 leading-relaxed">
+                            <strong>Program</strong> adalah pembelajaran terstruktur yang dibuat oleh institusi dengan jadwal dan kapasitas peserta tertentu. 
+                            Contoh: <strong>Bootcamp, Sertifikasi, Workshop, Magang</strong>. 
+                            Setiap program memiliki <strong>tanggal mulai & selesai</strong>, <strong>kuota peserta</strong>, dan bisa dilengkapi dengan <strong>file kurikulum</strong>. 
+                            Berbeda dengan <strong>Kursus</strong> yang bersifat individual dan self-paced melalui platform eksternal.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-xl p-4 shadow border-l-4 border-green-500">
@@ -127,7 +147,7 @@
                                     Laporan
                                 </button>
                                 <button
-                                    class="px-4 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition">
+                                    class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 border border-red-200 rounded-lg transition-colors" title="Hapus">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">

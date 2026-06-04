@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\JobListing;
 use App\Models\UserAssessment;
+use App\Models\UserCompetencyScore;
 use App\Models\Competency;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Services\ReportExportService;
 use App\Jobs\SendDashboardReportJob;
 
@@ -66,19 +68,30 @@ class DashboardController extends Controller
 
         // Skill Gap Average
         $avgSkillGap = UserAssessment::avg('total_gap_percentage') ?? 0;
-        
-        // Dummy data for top skills and user growth (simulating database query)
-        $topSkills = [
-            ['name' => 'Python', 'count' => 450],
-            ['name' => 'SEO', 'count' => 380],
-            ['name' => 'Google Analytics', 'count' => 350],
-            ['name' => 'SQL', 'count' => 320],
-            ['name' => 'Communication', 'count' => 300],
-        ];
+
+        // Top Skills berdasarkan jumlah asesmen kompetensi
+        $topSkills = UserCompetencyScore::join('competencies', 'user_competency_scores.competency_id', '=', 'competencies.id')
+            ->select('competencies.name', DB::raw('COUNT(*) as count'))
+            ->groupBy('competencies.id', 'competencies.name')
+            ->orderByDesc('count')
+            ->take(5)
+            ->get()
+            ->toArray();
+
+        // Pertumbuhan pengguna per bulan (6 bulan terakhir)
+        $monthlyGrowth = collect(range(5, 0))->map(function ($monthsAgo) {
+            $date = now()->subMonths($monthsAgo);
+            return [
+                'label' => $date->format('M'),
+                'count' => User::whereYear('created_at', $date->year)
+                    ->whereMonth('created_at', $date->month)
+                    ->count(),
+            ];
+        })->toArray();
 
         $monthlyGrowth = [
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            'data' => [120, 190, 300, 250, 280, 350]
+            'labels' => array_column($monthlyGrowth, 'label'),
+            'data' => array_column($monthlyGrowth, 'count'),
         ];
 
         $data = compact('totalUsers', 'totalAssessments', 'userGrowth', 'assessmentGrowth', 'avgSkillGap', 'topSkills', 'startDate', 'endDate', 'monthlyGrowth');
@@ -189,10 +202,11 @@ class DashboardController extends Controller
 
             case 'nlp':
                 $cvText = $request->input('cv_text', '');
-                $docType = strtolower($request->input('document_type', 'cv')); // Default to cv for existing UI
+                $docType = strtolower($request->input('document_type', 'cv'));
+                $targetPosition = $request->input('target_position', 'General');
                 $payload = [
                     'text' => $cvText,
-                    'target_position' => 'Web Developer',
+                    'target_position' => $targetPosition,
                     'user_id' => auth()->id(),
                     'document_type' => $docType
                 ];
@@ -215,7 +229,7 @@ class DashboardController extends Controller
                         throw new \Exception("Flask returned status: " . $response->status() . " with body: " . $response->body());
                     }
                 } catch (\Exception $e) {
-                    // Fallback Simulation Mode
+                    // Fallback Simulation Mode - ambil kompetensi dari database
                     $extracted = [];
                     $skillsToCheck = ['python', 'laravel', 'sql', 'seo', 'communication', 'php', 'javascript', 'css', 'html', 'react', 'git'];
                     foreach ($skillsToCheck as $skill) {
@@ -228,6 +242,47 @@ class DashboardController extends Controller
                         }
                     }
 
+                    // Ambil target skills dari database berdasarkan posisi
+                    $targetPosition = $request->input('target_position', 'General');
+                    $position = \App\Models\Position::where('name', 'like', "%{$targetPosition}%")->first();
+                    $targetSkillsFromDb = $position
+                        ? \App\Models\Competency::where('position_id', $position->id)
+                            ->select('name', 'min_level_required', 'category')
+                            ->get()
+                            ->map(fn($c) => [
+                                'skill_name' => $c->name,
+                                'required_level' => $c->min_level_required / 5,
+                                'category' => $c->category === 'soft_skill' ? 'soft_skills' : 'programming',
+                            ])
+                            ->toArray()
+                        : [];
+
+                    // Fallback jika tidak ada kompetensi di DB
+                    if (empty($targetSkillsFromDb)) {
+                        $targetSkillsFromDb = [
+                            ['skill_name' => 'Python', 'required_level' => 1.0, 'category' => 'programming'],
+                            ['skill_name' => 'SQL', 'required_level' => 0.8, 'category' => 'database'],
+                            ['skill_name' => 'Laravel', 'required_level' => 0.9, 'category' => 'web_development'],
+                        ];
+                    }
+
+                    // Hitung detailed_gap berdasarkan extracted skills
+                    $detailedGap = [];
+                    foreach ($targetSkillsFromDb as $ts) {
+                        $skillLower = strtolower($ts['skill_name']);
+                        $found = collect($extracted)->first(fn($e) => strtolower($e['skill_name']) === $skillLower);
+                        $userLevel = $found ? $found['confidence'] : 0.0;
+                        $targetLevel = $ts['required_level'];
+                        $gap = max(0, $targetLevel - $userLevel);
+                        $detailedGap[$skillLower] = [
+                            'target_level' => $targetLevel,
+                            'user_level' => $userLevel,
+                            'gap' => $gap,
+                            'gap_percentage' => round($gap * 100, 1),
+                            'priority' => $gap > 0.3 ? 'HIGH' : 'LOW',
+                        ];
+                    }
+
                     return response()->json([
                         'mode' => 'simulation',
                         'endpoint' => $url,
@@ -236,19 +291,11 @@ class DashboardController extends Controller
                         'input_payload' => $payload,
                         'output_response' => [
                             'extracted_skills' => $extracted,
-                            'target_skills' => [
-                                ['skill_name' => 'Python', 'required_level' => 1.0, 'category' => 'programming'],
-                                ['skill_name' => 'SQL', 'required_level' => 0.8, 'category' => 'database'],
-                                ['skill_name' => 'Laravel', 'required_level' => 0.9, 'category' => 'web_development'],
-                            ],
+                            'target_skills' => $targetSkillsFromDb,
                             'skill_gap' => [
                                 'cosine_similarity' => empty($extracted) ? 0.0 : round(0.6 + (rand(0, 30) / 100), 2),
                                 'overall_match_percentage' => empty($extracted) ? 0.0 : round(60 + rand(0, 30), 1),
-                                'detailed_gap' => [
-                                    'python' => ['target_level' => 1.0, 'user_level' => str_contains(strtolower($cvText), 'python') ? 0.85 : 0.0, 'gap' => str_contains(strtolower($cvText), 'python') ? 0.15 : 1.0, 'gap_percentage' => str_contains(strtolower($cvText), 'python') ? 15.0 : 100.0, 'priority' => str_contains(strtolower($cvText), 'python') ? 'LOW' : 'HIGH'],
-                                    'laravel' => ['target_level' => 0.9, 'user_level' => str_contains(strtolower($cvText), 'laravel') ? 0.9 : 0.0, 'gap' => str_contains(strtolower($cvText), 'laravel') ? 0.0 : 0.9, 'gap_percentage' => str_contains(strtolower($cvText), 'laravel') ? 0.0 : 100.0, 'priority' => str_contains(strtolower($cvText), 'laravel') ? 'LOW' : 'HIGH'],
-                                    'sql' => ['target_level' => 0.8, 'user_level' => str_contains(strtolower($cvText), 'sql') ? 0.7 : 0.0, 'gap' => str_contains(strtolower($cvText), 'sql') ? 0.1 : 0.8, 'gap_percentage' => str_contains(strtolower($cvText), 'sql') ? 12.5 : 100.0, 'priority' => str_contains(strtolower($cvText), 'sql') ? 'LOW' : 'HIGH'],
-                                ]
+                                'detailed_gap' => $detailedGap,
                             ]
                         ],
                         'success' => true
@@ -256,8 +303,8 @@ class DashboardController extends Controller
                 }
 
             case 'cosine':
-                $userSkillsRaw = $request->input('user_skills', 'Python:0.8, SQL:0.5, Laravel:0.9');
-                $targetSkillsRaw = $request->input('target_skills', 'Python:0.9, SQL:0.8, Laravel:0.8, React:0.7');
+                $userSkillsRaw = $request->input('user_skills', '');
+                $targetSkillsRaw = $request->input('target_skills', '');
 
                 $userSkills = [];
                 foreach (explode(',', $userSkillsRaw) as $item) {

@@ -24,6 +24,19 @@
                     </div>
                 </div>
 
+                <!-- Info Card -->
+                <div class="mb-6 p-5 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 border border-rose-100 dark:border-rose-800/50 rounded-xl">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-rose-100 dark:bg-rose-900/50 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-rose-900 dark:text-rose-200 mb-1">Tentang Bobot Dokumen AI</h4>
+                            <p class="text-sm text-rose-700 dark:text-rose-300 leading-relaxed">Konfigurasi bobot menentukan <strong>prioritas setiap jenis dokumen</strong> (CV, Ijazah, Transkrip, Sertifikat, Portofolio) dalam perhitungan kecocokan kandidat. Bobot bisa diatur <strong>per perusahaan</strong> atau menggunakan <strong>default sistem</strong>. Semakin tinggi bobot, semakin besar pengaruh dokumen tersebut terhadap skor akhir.</p>
+                        </div>
+                    </div>
+                </div>
+
                 @if(session('success'))
                     <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
                         {{ session('success') }}
@@ -72,15 +85,25 @@
                                         <span class="px-2 py-1 text-xs bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 rounded-full">Tidak Aktif</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-3 text-right space-x-2">
-                                    <button type="button" onclick="openEditModal({{ $weight->toJson() }})" class="text-blue-600 hover:text-blue-800">Edit</button>
-                                    @if(!is_null($weight->company_id))
-                                        <form action="{{ route('admin.document-weights.destroy', $weight) }}" method="POST" class="inline" onsubmit="return confirm('Hapus konfigurasi ini?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800">Hapus</button>
-                                        </form>
-                                    @endif
+                                <td class="px-4 py-3 text-right">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <button type="button" onclick="openEditModal({{ $weight->toJson() }})" class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </button>
+                                        @if(!is_null($weight->company_id))
+                                            <form action="{{ route('admin.document-weights.destroy', $weight) }}" method="POST" class="inline" onsubmit="return confirm('Hapus konfigurasi ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

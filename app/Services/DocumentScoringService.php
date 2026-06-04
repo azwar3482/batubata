@@ -91,27 +91,32 @@ class DocumentScoringService
      */
     public function createInitialDummyScore(UserDocument $document): void
     {
-        // Heuristik berdasarkan jenis dokumen
-        $baseScores = [
+        // Skor dasar dari konfigurasi atau default
+        $baseScores = config('scoring.fallback_scores', [
             'cv'          => 50.0,
             'ijazah'      => 60.0,
             'transkrip'   => 55.0,
             'sertifikat'  => 65.0,
             'portofolio'  => 50.0,
-        ];
+        ]);
 
-        $baseScore = $baseScores[$document->document_type] ?? 50.0;
+        $baseScore = $baseScores[$document->document_type] ?? config('scoring.fallback_default', 50.0);
 
         // Bonus jika file ada dan ukurannya wajar
         if ($document->file_path && \Storage::disk('public')->exists($document->file_path)) {
             $fileSize = \Storage::disk('public')->size($document->file_path);
-            if ($fileSize > 1024 && $fileSize < 10 * 1024 * 1024) { // 1KB - 10MB
-                $baseScore += 10.0;
+            $minSize = config('scoring.fallback_min_file_size', 1024); // 1KB
+            $maxSize = config('scoring.fallback_max_file_size', 10 * 1024 * 1024); // 10MB
+            $bonus = config('scoring.fallback_file_bonus', 10.0);
+
+            if ($fileSize > $minSize && $fileSize < $maxSize) {
+                $baseScore += $bonus;
             }
         }
 
-        // Cap di 80 untuk fallback (tidak boleh lebih tinggi tanpa AI)
-        $score = min(80.0, $baseScore);
+        // Cap berdasarkan konfigurasi
+        $maxScore = config('scoring.fallback_max_score', 80.0);
+        $score = min($maxScore, $baseScore);
 
         UserDocumentScore::updateOrCreate(
             ['document_id' => $document->id],

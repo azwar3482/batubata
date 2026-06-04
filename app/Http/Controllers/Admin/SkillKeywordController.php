@@ -14,16 +14,28 @@ class SkillKeywordController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where('keyword', 'like', "%{$search}%")
+            $query->where(function($q) use ($search) {
+                $q->where('keyword', 'like', "%{$search}%")
                   ->orWhere('category', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status === 'active' ? 1 : 0);
         }
 
         $skillKeywords = $query->orderBy('category')
                                ->orderBy('keyword')
-                               ->paginate(15)
+                               ->paginate(10)
                                ->withQueryString();
 
-        return view('admin.skill_keywords.index', compact('skillKeywords'));
+        $categories = SkillKeyword::select('category')->distinct()->orderBy('category')->pluck('category');
+
+        return view('admin.skill_keywords.index', compact('skillKeywords', 'categories'));
     }
 
     public function create()

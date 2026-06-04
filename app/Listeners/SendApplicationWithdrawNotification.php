@@ -6,8 +6,10 @@ use App\Events\JobApplicationWithdrawn;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendApplicationWithdrawNotification
+class SendApplicationWithdrawNotification implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      */

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Education;
 
 use App\Http\Controllers\Controller;
 use App\Models\Institution;
+use App\Models\Company;
+use App\Models\CollaborationProposal;
 use App\Http\Requests\StoreCollaborationRequest;
 use App\Services\CollaborationService;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +15,20 @@ class CollaborationController extends Controller
     {
         $institution = Auth::user()->institution;
 
-        // Data mitra untuk dropdown
-        $partners = [
-            ['id' => 1, 'name' => 'Tech Corp Indonesia', 'industry' => 'Software House', 'logo' => 'TC', 'contact_email' => 'partnership@techcorp.id'],
-            ['id' => 2, 'name' => 'Digital Innovation Hub', 'industry' => 'Startup Incubator', 'logo' => 'DIH', 'contact_email' => 'collab@dihub.id'],
-            ['id' => 3, 'name' => 'FinTech Nusantara', 'industry' => 'Financial Technology', 'logo' => 'FTN', 'contact_email' => 'campus@fintnus.com'],
-            ['id' => 4, 'name' => 'Creative Media Group', 'industry' => 'Digital Marketing & Media', 'logo' => 'CMG', 'contact_email' => 'hello@creativemedia.id'],
-            ['id' => 5, 'name' => 'Data Analytics Pro', 'industry' => 'Data & AI Consulting', 'logo' => 'DAP', 'contact_email' => 'partnership@dataanalyticspro.id'],
-        ];
+        // Data mitra dari database (perusahaan yang sudah terdaftar)
+        $partners = Company::select('id', 'name', 'industry')
+            ->withCount('user as employees_count')
+            ->get()
+            ->map(function ($company) {
+                return [
+                    'id' => $company->id,
+                    'name' => $company->name,
+                    'industry' => $company->industry ?? 'Umum',
+                    'logo' => strtoupper(substr($company->name, 0, 2)),
+                    'contact_email' => $company->user->email ?? '-',
+                ];
+            })
+            ->toArray();
 
         $collaborationTypes = [
             'magang' => 'Program Magang / Internship',
@@ -56,34 +64,21 @@ class CollaborationController extends Controller
 
     public function history()
     {
-        // Riwayat proposal kolaborasi user ini
-        $proposals = collect([
-            [
-                'id' => 1,
-                'partner_name' => 'Tech Corp Indonesia',
-                'type' => 'Program Magang',
-                'status' => 'approved',
-                'submitted_at' => now()->subDays(15),
-                'response_at' => now()->subDays(10),
-            ],
-            [
-                'id' => 2,
-                'partner_name' => 'Digital Innovation Hub',
-                'type' => 'Guest Lecture',
-                'status' => 'pending',
-                'submitted_at' => now()->subDays(3),
-                'response_at' => null,
-            ],
-            [
-                'id' => 3,
-                'partner_name' => 'FinTech Nusantara',
-                'type' => 'Curriculum Review',
-                'status' => 'rejected',
-                'submitted_at' => now()->subMonths(1),
-                'response_at' => now()->subDays(20),
-                'rejection_reason' => 'Jadwal tidak sesuai dengan timeline perusahaan',
-            ],
-        ]);
+        // Riwayat proposal kolaborasi user ini dari database
+        $proposals = CollaborationProposal::where('user_id', Auth::id())
+            ->select('id', 'partner_name', 'title', 'status', 'created_at as submitted_at', 'response_at')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($proposal) {
+                return [
+                    'id' => $proposal->id,
+                    'partner_name' => $proposal->partner_name,
+                    'type' => $proposal->title,
+                    'status' => $proposal->status,
+                    'submitted_at' => $proposal->submitted_at,
+                    'response_at' => $proposal->response_at,
+                ];
+            });
 
         return view('education.collaboration-history', compact('proposals'));
     }

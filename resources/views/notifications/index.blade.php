@@ -21,6 +21,19 @@
             @endif
         </div>
 
+        <!-- Info Card -->
+        <div class="mb-6 p-5 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/50 dark:to-gray-900/50 border border-slate-200 dark:border-slate-700/50 rounded-xl">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 dark:text-slate-200 mb-1">Tentang Notifikasi</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Semua pemberitahuan penting ada di sini. Anda akan menerima notifikasi saat <strong>lowongan baru cocok</strong> dengan profil Anda, <strong>status lamaran berubah</strong>, atau ada <strong>informasi penting</strong> lainnya. Klik notifikasi untuk langsung menuju halaman terkait.</p>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
             @if($notifications->count() > 0)
                 <ul class="divide-y divide-slate-100 dark:divide-slate-700">

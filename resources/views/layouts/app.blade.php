@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'KOMPASKARIR') }}</title>
+    <title>{{ config('app.name', 'KOMPASKARIR INDONESIA') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/png" class="h-8 w-auto mr-2 rounded-lg">
+    <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg" class="h-8 w-auto mr-2 rounded-lg">
 
     <!-- Google Fonts - Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -527,7 +527,7 @@
                 <!-- Logo & Close Button (Mobile) -->
                 <div class="flex items-center justify-between px-6 h-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-700 text-white font-extrabold text-lg tracking-wider shadow-sm logo-container transition-all duration-300">
                     <div class="flex items-center">
-                        <img src="{{ asset('logo.jpg') }}" alt="Logo" class="h-9 w-auto mr-3 rounded-lg ring-2 ring-white/20 transition-all duration-300 hover:rotate-6 sidebar-icon">
+                        <img src="{{ asset('logo.jpg') }}" alt="Logo" class="h-9 w-auto mr-3 rounded-lg ring-2 ring-white/20 transition-all duration-300 hover:rotate-6 sidebar-icon dark:bg-white dark:p-1">
                         <span class="logo-text transition-all duration-300">KOMPASKARIR</span>
                     </div>
                     <button @click="sidebarOpen = false" class="text-white/80 hover:text-white focus:outline-none lg:hidden p-1 rounded-lg hover:bg-white/10 transition-colors" aria-label="Close Sidebar">
@@ -714,6 +714,28 @@
                         <div class="menu-tooltip">Data Siswa/Lulusan</div>
                     </a>
 
+                    <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Pembelajaran</div>
+                    <a href="{{ route('education.courses.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.courses*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Kelola Kursus</span>
+                        <div class="menu-tooltip">Kelola Kursus</div>
+                    </a>
+                        <a href="{{ route('education.programs') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.programs*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.programs*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Program</span>
+                        <div class="menu-tooltip">Program</div>
+                    </a>
+
                     @elseif(Auth::user()->role === 'admin')
                     <!-- Menu Admin -->
                     <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
@@ -866,7 +888,7 @@
 
                     <!-- Mobile Logo -->
                     <div class="lg:hidden flex items-center ml-3">
-                        <img src="{{ asset('logo.JPG') }}" alt="Logo" class="h-8 w-auto rounded-lg shadow-sm">
+                        <img src="{{ asset('logo.JPG') }}" alt="Logo" class="h-8 w-auto rounded-lg shadow-sm dark:bg-white dark:p-1">
                         <span class="ml-2 font-bold text-slate-800 dark:text-slate-100 tracking-wide text-sm">KOMPASKARIR</span>
                     </div>
                 </div>
@@ -947,8 +969,8 @@
 
                             <div class="max-h-60 overflow-y-auto">
                                 @forelse(Auth::user()->notifications()->latest()->take(5)->get() as $notif)
-                                <a href="#"
-                                    class="block px-4 py-3 hover:bg-slate-50/80 dark:hover:bg-slate-700/40 border-b border-slate-50 dark:border-slate-750/40 last:border-0 transition-colors duration-200">
+                                <a href="{{ $notif->data['url'] ?? '#' }}"
+                                    class="block px-4 py-3 hover:bg-slate-50/80 dark:hover:bg-slate-700/40 border-b border-slate-50 dark:border-slate-750/40 last:border-0 transition-colors duration-200 {{ $notif->read_at ? '' : 'bg-blue-50/50 dark:bg-blue-900/10' }}">
                                     <p class="text-xs font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
                                         {{ $notif->data['message'] ?? 'Notifikasi baru' }}
                                     </p>

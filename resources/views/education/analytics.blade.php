@@ -7,6 +7,19 @@
                 <p class="mt-2 text-gray-600">Dashboard monitoring kompetensi dan skill gap rata-rata lulusan.</p>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-violet-100 dark:bg-violet-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-violet-900 dark:text-violet-200 mb-1">Tentang Analitik Kompetensi</h4>
+                        <p class="text-sm text-violet-700 dark:text-violet-300 leading-relaxed">Analisis mendalam tentang kompetensi lulusan institusi Anda. Lihat <strong>distribusi skill gap per jurusan</strong>, <strong>kompetensi dengan gap tertinggi</strong>, dan <strong>rekomendasi</strong> untuk peningkatan kurikulum. Data ini berasal dari <strong>asesmen kompetensi</strong> yang diambil oleh siswa.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">

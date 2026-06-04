@@ -12,6 +12,8 @@ use App\Mail\ReportMail;
 use App\Services\ReportExportService;
 use App\Models\User;
 use App\Models\UserAssessment;
+use App\Models\UserCompetencyScore;
+use Illuminate\Support\Facades\DB;
 
 class SendDashboardReportJob implements ShouldQueue
 {
@@ -41,17 +43,29 @@ class SendDashboardReportJob implements ShouldQueue
         $lastMonthAssessments = UserAssessment::where('created_at', '<', now()->subMonth())->count();
         $assessmentGrowth = $lastMonthAssessments > 0 ? (($totalAssessments - $lastMonthAssessments) / $lastMonthAssessments) * 100 : 0;
 
-        $topSkills = [
-            ['name' => 'Python', 'count' => 450],
-            ['name' => 'SEO', 'count' => 380],
-            ['name' => 'Google Analytics', 'count' => 350],
-            ['name' => 'SQL', 'count' => 320],
-            ['name' => 'Communication', 'count' => 300],
-        ];
+        // Top Skills berdasarkan jumlah asesmen kompetensi
+        $topSkills = UserCompetencyScore::join('competencies', 'user_competency_scores.competency_id', '=', 'competencies.id')
+            ->select('competencies.name', DB::raw('COUNT(*) as count'))
+            ->groupBy('competencies.id', 'competencies.name')
+            ->orderByDesc('count')
+            ->take(5)
+            ->get()
+            ->toArray();
+
+        // Pertumbuhan pengguna per bulan (6 bulan terakhir)
+        $monthlyGrowthData = collect(range(5, 0))->map(function ($monthsAgo) {
+            $date = now()->subMonths($monthsAgo);
+            return [
+                'label' => $date->format('M'),
+                'count' => User::whereYear('created_at', $date->year)
+                    ->whereMonth('created_at', $date->month)
+                    ->count(),
+            ];
+        })->toArray();
 
         $monthlyGrowth = [
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            'data' => [120, 190, 300, 250, 280, 350]
+            'labels' => array_column($monthlyGrowthData, 'label'),
+            'data' => array_column($monthlyGrowthData, 'count'),
         ];
 
         $data = [

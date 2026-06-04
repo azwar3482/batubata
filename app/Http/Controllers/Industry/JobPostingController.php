@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Position;
-use App\Notifications\NewJobMatchNotification;
+use App\Events\JobVacancyCreated;
 use App\Services\JobMatchingService;
 
 
@@ -144,19 +144,8 @@ class JobPostingController extends Controller
             'banner_image' => $bannerPath,
         ]);
 
-        // Kirim notifikasi ke job seeker yang match
-        $seekers = User::where('role', 'job_seeker')->get();
-        
-        foreach ($seekers as $seeker) {
-            try {
-                $matchScore = $matchingService->calculateMatch($seeker, $job);
-                if ($matchScore >= 70) {
-                    $seeker->notify(new NewJobMatchNotification($job, $matchScore));
-                }
-            } catch (\Exception $e) {
-                // log error if needed
-            }
-        }
+        // Dispatch event untuk notifikasi ke job seeker yang match
+        event(new JobVacancyCreated($job));
 
         return redirect()->route('industry.dashboard')->with('success', 'Lowongan berhasil diposting dengan pengaturan bobot AI!');
     }
@@ -350,5 +339,76 @@ class JobPostingController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function findTalent($id, JobMatchingService $matchingService)
+    {
+        $job = JobListing::where('user_id', Auth::id())
+            ->with('position')
+            ->findOrFail($id);
+
+        // Ambil semua job seeker
+        $allJobSeekers = User::where('role', 'job_seeker')->get();
+
+        // Filter: HANYA job seeker yang memiliki profil lengkap 100%
+        $jobSeekers = $allJobSeekers->filter(function ($user) {
+            return $user->hasCompletedProfile();
+        });
+
+        // Ambil status lamaran/penawaran yang sudah ada untuk lowongan ini
+        $existingApplications = \App\Models\UserJobApplication::where('job_listing_id', $job->id)
+            ->get()
+            ->keyBy('user_id');
+
+        $talents = $jobSeekers->map(function ($user) use ($job, $matchingService, $existingApplications) {
+            $matchPercentage = $matchingService->calculateMatch($user, $job);
+            $shortcomings = $matchingService->getJobShortcomings($user, $job);
+            
+            $existingApp = $existingApplications->get($user->id);
+            
+            return [
+                'user' => $user,
+                'match_percentage' => $matchPercentage,
+                'shortcomings' => $shortcomings,
+                'existing_app' => $existingApp,
+            ];
+        })
+        ->sortByDesc('match_percentage')
+        ->values();
+
+        return view('industry.jobs.talent', compact('job', 'talents'));
+    }
+
+    public function offerJob(Request $request, $id, $userId, JobMatchingService $matchingService)
+    {
+        $job = JobListing::where('user_id', Auth::id())->findOrFail($id);
+        $user = User::where('role', 'job_seeker')->findOrFail($userId);
+
+        if (!$user->hasCompletedProfile()) {
+            return back()->with('error', 'Kandidat ini belum memiliki profil yang lengkap (100%).');
+        }
+
+        $request->validate([
+            'notes' => 'nullable|string|max:1000',
+        ]);
+
+        $matchPercentage = $matchingService->calculateMatch($user, $job);
+
+        $application = \App\Models\UserJobApplication::updateOrCreate(
+            ['user_id' => $user->id, 'job_listing_id' => $job->id],
+            [
+                'matching_percentage' => $matchPercentage,
+                'applied_at' => now(),
+                'status' => 'offered',
+                'is_direct_offer' => true,
+                'direct_offer_status' => 'pending',
+                'notes' => $request->notes,
+            ]
+        );
+
+        // Kirim notifikasi ke Job Seeker
+        $user->notify(new \App\Notifications\JobOfferReceivedNotification($application));
+
+        return back()->with('success', 'Penawaran kerja berhasil dikirim ke ' . $user->name . '!');
     }
 }

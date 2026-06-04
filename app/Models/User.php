@@ -80,6 +80,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserJobApplication::class);
     }
+    public function documents()
+    {
+        return $this->hasMany(UserDocument::class);
+    }
     public function institution()
     {
         return $this->hasOne(Institution::class);

@@ -22,6 +22,10 @@ class CourseService
             $query->where('title', 'like', '%' . $filters['search'] . '%');
         }
 
+        if (!empty($filters['level'])) {
+            $query->where('level', $filters['level']);
+        }
+
         return $query->paginate($perPage);
     }
 
@@ -53,7 +57,7 @@ class CourseService
      */
     public function getCourseDetails($id)
     {
-        return Course::with('competency')->findOrFail($id);
+        return Course::with('competency', 'creator')->findOrFail($id);
     }
 
     /**
@@ -78,12 +82,49 @@ class CourseService
     }
 
     /**
+     * Update user's course progress.
+     */
+    public function updateProgress(int $userId, int $courseId, int $progressPercentage)
+    {
+        $progress = UserCourseProgress::where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->firstOrFail();
+
+        $progress->update([
+            'progress_percentage' => $progressPercentage,
+            'status' => $progressPercentage >= 100 ? 'completed' : 'in_progress',
+            'completed_at' => $progressPercentage >= 100 ? now() : null,
+        ]);
+
+        return $progress;
+    }
+
+    /**
+     * Mark course as completed.
+     */
+    public function completeCourse(int $userId, int $courseId)
+    {
+        $progress = UserCourseProgress::where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->firstOrFail();
+
+        $progress->update([
+            'status' => 'completed',
+            'progress_percentage' => 100,
+            'completed_at' => now(),
+        ]);
+
+        return $progress;
+    }
+
+    /**
      * Get all progress records for a user.
      */
     public function getAllUserProgress(int $userId)
     {
-        return UserCourseProgress::with('course')
+        return UserCourseProgress::with('course.competency')
             ->where('user_id', $userId)
+            ->orderByDesc('updated_at')
             ->get();
     }
 }

@@ -7,6 +7,19 @@
                 <p class="mt-2 text-gray-600">Temukan talenta yang sesuai dengan kebutuhan perusahaan Anda.</p>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border border-emerald-100 dark:border-emerald-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200 mb-1">Tentang Pencarian Kandidat</h4>
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">Cari kandidat berdasarkan <strong>skill</strong> dan <strong>posisi</strong> yang dibutuhkan. Sistem akan menampilkan kandidat dengan <strong>skor kecocokan tertinggi</strong> berdasarkan hasil asesmen mereka. Anda dapat melihat <strong>profil lengkap</strong>, <strong>skill gap analysis</strong>, dan <strong>riwayat karir</strong> setiap kandidat.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Search & Filter -->
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">

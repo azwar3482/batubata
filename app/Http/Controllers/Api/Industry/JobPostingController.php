@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Api\Industry;
 use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use App\Models\User;
-use App\Notifications\NewJobMatchNotification;
-use App\Services\JobMatchingService;
+use App\Events\JobVacancyCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -64,28 +63,14 @@ class JobPostingController extends Controller
                 'is_active' => true,
             ]);
 
-            // Notify matching candidates (Job Matching Logic)
-            $matchingService = new JobMatchingService();
-            $seekers = User::where('role', 'job_seeker')->get();
-            
-            $notifiedCount = 0;
-            foreach ($seekers as $seeker) {
-                /** @var \App\Models\User $seeker */
-                // We need to pass the actual JobListing model to the service
-                $matchScore = $matchingService->calculateMatch($seeker, $job);
-                
-                if ($matchScore >= 70) {
-                    $seeker->notify(new NewJobMatchNotification($job, $matchScore));
-                    $notifiedCount++;
-                }
-            }
+            // Dispatch event untuk notifikasi ke job seeker yang match
+            event(new JobVacancyCreated($job));
 
             return response()->json([
                 'success' => true,
                 'message' => 'Lowongan berhasil diposting!',
                 'data' => [
                     'job' => $job,
-                    'notified_candidates' => $notifiedCount
                 ]
             ], 201);
 

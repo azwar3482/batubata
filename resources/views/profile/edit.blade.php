@@ -142,6 +142,7 @@
                             </div>
                         </div>
                     </div>
+                    @if(Auth::user()->role === 'job_seeker')
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
                         <div class="flex items-center mb-6">
                             <div class="p-2 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg text-indigo-600 dark:text-indigo-400 mr-3">
@@ -218,6 +219,7 @@
 
                         <!-- Keahlian & Bahasa -->
                     </div>
+                    @endif
 
                     <!-- Update Password Card -->
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
@@ -691,6 +693,7 @@
                                 </div>
                             </div>
 
+                            @if(Auth::user()->role === 'job_seeker')
                             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
                                 <div class="mb-2">
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Ringkasan Pribadi</label>
@@ -699,6 +702,7 @@
                                     <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2 text-right">Tuliskan profil/ringkasan yang menarik untuk memikat perekrut.</p>
                                 </div>
                             </div>
+                            @endif
 
                             @if(Auth::user()->role === 'job_seeker')
                             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">

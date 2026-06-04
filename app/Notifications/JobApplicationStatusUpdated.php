@@ -45,9 +45,12 @@ class JobApplicationStatusUpdated extends Notification
             'rejected' => 'telah DITOLAK',
         ][$this->application->status] ?? $this->application->status;
 
+        $jobTitle = $this->application->jobListing->title ?? 'lowongan';
+        $companyName = $this->application->jobListing->company_name ?? 'perusahaan';
+
         return [
             'title' => 'Update Status Lamaran',
-            'message' => 'Status lamaran Anda untuk posisi ' . $this->application->jobListing->title . ' di ' . $this->application->jobListing->company_name . ' ' . $statusText . '.',
+            'message' => 'Status lamaran Anda untuk posisi ' . $jobTitle . ' di ' . $companyName . ' ' . $statusText . '.',
             'url' => route('seeker.jobs.applications'),
             'type' => 'application_status',
             'icon' => 'clipboard-check'

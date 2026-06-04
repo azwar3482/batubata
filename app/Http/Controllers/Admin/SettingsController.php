@@ -15,21 +15,29 @@ class SettingsController extends Controller
         $stats = [
             'total_competencies' => Competency::count(),
             'total_positions' => Position::count(),
-            'pending_updates' => 3,
-            'last_sync' => now()->subHours(2),
+            'pending_updates' => Competency::where('updated_at', '>', now()->subDay())->count(),
+            'last_sync' => Competency::latest('updated_at')->value('updated_at') ?? now(),
         ];
 
-        $recentChanges = collect([
-            ['action' => 'update', 'item' => 'Python Programming', 'by' => 'Admin', 'time' => now()->subMinutes(30)],
-            ['action' => 'create', 'item' => 'Cloud Security Fundamentals', 'by' => 'Admin', 'time' => now()->subHours(1)],
-            ['action' => 'delete', 'item' => 'Legacy Framework XYZ', 'by' => 'Admin', 'time' => now()->subHours(3)],
-        ]);
+        // Perubahan terbaru berdasarkan data kompetensi yang baru diupdate
+        $recentChanges = Competency::orderByDesc('updated_at')
+            ->take(5)
+            ->get()
+            ->map(function ($competency) {
+                $isNew = $competency->created_at->eq($competency->updated_at);
+                return [
+                    'action' => $isNew ? 'create' : 'update',
+                    'item' => $competency->name,
+                    'by' => 'Admin',
+                    'time' => $competency->updated_at,
+                ];
+            });
 
         $systemSettings = [
-            'ai_analysis_enabled' => true,
-            'auto_match_threshold' => 70,
-            'email_notifications' => true,
-            'maintenance_mode' => false,
+            'ai_analysis_enabled' => config('services.ai.enabled', true),
+            'auto_match_threshold' => config('services.ai.match_threshold', 70),
+            'email_notifications' => config('mail.enabled', true),
+            'maintenance_mode' => config('app.maintenance_mode', false),
         ];
 
         return view('admin.settings', compact('stats', 'recentChanges', 'systemSettings'));

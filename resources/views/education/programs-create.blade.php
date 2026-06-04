@@ -4,7 +4,7 @@
 
             <!-- Header -->
             <div class="mb-8">
-                <a href="{{ route('seeker.education.programs') }}"
+                <a href="{{ route('education.programs') }}"
                     class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('seeker.education.programs.store') }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('education.programs.store') }}" method="POST" enctype="multipart/form-data"
                 class="space-y-8">
                 @csrf
 
@@ -328,7 +328,7 @@
                     @enderror
 
                     <div class="flex flex-col sm:flex-row gap-4 justify-end">
-                        <a href="{{ route('seeker.education.programs') }}"
+                        <a href="{{ route('education.programs') }}"
                             class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-center">
                             Batal
                         </a>

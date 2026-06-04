@@ -12,6 +12,19 @@
                 </div>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-900/20 dark:to-blue-900/20 border border-sky-100 dark:border-sky-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-sky-100 dark:bg-sky-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-sky-900 dark:text-sky-200 mb-1">Tentang Data Siswa/Lulusan</h4>
+                        <p class="text-sm text-sky-700 dark:text-sky-300 leading-relaxed">Lihat daftar siswa dan lulusan dari institusi Anda. Pantau <strong>status pekerjaan</strong>, <strong>skill gap</strong>, dan <strong>progres asesmen</strong> setiap siswa. Data ini membantu Anda mengidentifikasi siswa yang membutuhkan <strong>bimbingan karir</strong> atau <strong>penyesuaian kurikulum</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border-l-4 border-blue-500">

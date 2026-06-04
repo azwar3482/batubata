@@ -20,6 +20,31 @@
                 </div>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-900/20 dark:to-blue-900/20 border border-sky-100 dark:border-sky-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-sky-100 dark:bg-sky-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-sky-900 dark:text-sky-200 mb-1">Tentang Status Lamaran</h4>
+                        <p class="text-sm text-sky-700 dark:text-sky-300 leading-relaxed">Pantau semua lamaran kerja yang sudah Anda kirim. Status lamaran meliputi: <strong>Dikirim</strong> (menunggu review), <strong>Direview</strong> (sedang dievaluasi), <strong>Interview</strong> (dipanggil wawancara), <strong>Diterima</strong> (offered), dan <strong>Ditolak</strong>. Anda juga dapat <strong>menarik lamaran</strong> jika berubah pikiran.</p>
+                    </div>
+                </div>
+            </div>
+
+            @if(session('success'))
+            <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
+                <p class="text-sm text-green-700 dark:text-green-300 font-medium">{{ session('success') }}</p>
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg">
+                <p class="text-sm text-red-700 dark:text-red-300 font-medium">{{ session('error') }}</p>
+            </div>
+            @endif
+
             <!-- Stats Overview -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-blue-500 dark:border-blue-600">
@@ -79,6 +104,12 @@
                                         </p>
 
                                         <div class="flex flex-wrap gap-2 mt-2">
+                                            @if($app->is_direct_offer)
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300">
+                                                Penawaran Langsung Industri
+                                            </span>
+                                            @endif
                                             <span
                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-200">
                                                 <svg class="w-3 h-3 mr-1 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
@@ -154,7 +185,32 @@
                                     'icon' => 'x',
                                     ],
                                     ];
-                                    $status = $statusConfig[$app->status] ?? $statusConfig['applied'];
+                                    
+                                    if ($app->is_direct_offer) {
+                                        if ($app->direct_offer_status === 'pending') {
+                                            $status = [
+                                                'label' => 'Penawaran Baru ✉️',
+                                                'class' => 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300',
+                                                'icon' => 'bell'
+                                            ];
+                                        } elseif ($app->direct_offer_status === 'accepted') {
+                                            $status = [
+                                                'label' => 'Penawaran Diterima 🎉',
+                                                'class' => 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+                                                'icon' => 'check'
+                                            ];
+                                        } elseif ($app->direct_offer_status === 'declined') {
+                                            $status = [
+                                                'label' => 'Penawaran Ditolak',
+                                                'class' => 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+                                                'icon' => 'x'
+                                            ];
+                                        } else {
+                                            $status = $statusConfig[$app->status] ?? $statusConfig['applied'];
+                                        }
+                                    } else {
+                                        $status = $statusConfig[$app->status] ?? $statusConfig['applied'];
+                                    }
                                     @endphp
                                     <span
                                         class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium {{ $status['class'] }}">
@@ -169,6 +225,12 @@
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                        @elseif($status['icon'] == 'bell')
+                                        <svg class="w-4 h-4 mr-1 animate-bounce" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                                         </svg>
                                         @endif
                                         {{ $status['label'] }}
@@ -234,7 +296,30 @@
 
                         <!-- Actions -->
                         <div class="mt-6 pt-4 border-t border-gray-100 dark:border-slate-700 flex flex-wrap gap-3">
-                            @if ($app->status === 'offered')
+                            @if ($app->is_direct_offer && $app->direct_offer_status === 'pending')
+                            <form action="{{ route('seeker.jobs.offer-response', $app->jobListing->id) }}" method="POST" class="inline">
+                                @csrf
+                                <input type="hidden" name="response" value="accepted">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition flex items-center shadow-sm">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Terima Penawaran Kerja
+                                </button>
+                            </form>
+                            <form action="{{ route('seeker.jobs.offer-response', $app->jobListing->id) }}" method="POST" class="inline">
+                                @csrf
+                                <input type="hidden" name="response" value="declined">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm font-medium transition flex items-center shadow-sm">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                    Tolak Penawaran
+                                </button>
+                            </form>
+                            @elseif ($app->status === 'offered')
                             <button
                                 class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"

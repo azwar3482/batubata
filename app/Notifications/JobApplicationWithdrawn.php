@@ -38,11 +38,13 @@ class JobApplicationWithdrawn extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $applicantName = $this->application->user ? $this->application->user->name : 'Seorang kandidat';
+        $applicantName = $this->application->user_id
+            ? (\App\Models\User::find($this->application->user_id)->name ?? 'Seorang kandidat')
+            : 'Seorang kandidat';
 
         return [
             'title' => 'Pelamar Membatalkan Lamaran',
-            'message' => $applicantName . ' telah membatalkan lamarannya untuk posisi ' . $this->application->jobListing->title . '.',
+            'message' => $applicantName . ' telah membatalkan lamarannya untuk posisi ' . ($this->application->jobListing->title ?? 'lowongan') . '.',
             'url' => route('industry.candidates'),
             'type' => 'application_withdrawn',
             'icon' => 'user-minus'

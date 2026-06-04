@@ -20,6 +20,19 @@
                 </div>
             </div>
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border border-amber-100 dark:border-amber-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-amber-900 dark:text-amber-200 mb-1">Tentang Manajemen Tim</h4>
+                        <p class="text-sm text-amber-700 dark:text-amber-300 leading-relaxed">Kelola anggota tim rekrutmen perusahaan Anda. <strong>Undang anggota baru</strong> melalui email dan atur <strong>role mereka</strong> (HR Manager, Recruiter, Talent Sourcer, Interviewer). Setiap role memiliki <strong>hak akses yang berbeda</strong> dalam mengelola lowongan dan kandidat.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-xl p-4 shadow border-l-4 border-blue-500">

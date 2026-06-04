@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\UserAssessment;
 use App\Models\UserCourseProgress;
+use App\Models\UserCompetencyScore;
+use App\Models\UserJobApplication;
 use App\Models\JobListing;
 use App\Services\JobMatchingService;
-use App\Models\UserJobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -135,17 +137,47 @@ class HomeController extends Controller
 
     private function _getEducationData($user)
     {
+        $institution = $user->institution;
+        $studentIds = $institution ? $institution->students()->pluck('id') : collect();
+
+        $totalGraduates = $studentIds->count();
+
+        // Hitung rata-rata skill gap dari asesmen mahasiswa
+        $avgInstitutionGap = $studentIds->isNotEmpty()
+            ? round(UserCompetencyScore::whereHas('assessment', fn($q) => $q->whereIn('user_id', $studentIds))->avg('gap_percentage') ?? 0, 1)
+            : 0;
+
+        // Hitung placement rate dari lamaran yang diterima
+        $totalApplications = UserJobApplication::whereIn('user_id', $studentIds)->count();
+        $acceptedApplications = UserJobApplication::whereIn('user_id', $studentIds)->where('status', 'offered')->count();
+        $placementRate = $totalApplications > 0 ? round(($acceptedApplications / $totalApplications) * 100) : 0;
+
+        $totalAssessmentsGlobal = UserAssessment::whereIn('user_id', $studentIds)->count();
+
+        // Top priority skills berdasarkan gap tertinggi
+        $prioritySkills = $studentIds->isNotEmpty()
+            ? UserCompetencyScore::whereHas('assessment', fn($q) => $q->whereIn('user_id', $studentIds))
+                ->join('competencies', 'user_competency_scores.competency_id', '=', 'competencies.id')
+                ->select('competencies.name', DB::raw('AVG(user_competency_scores.gap_percentage) as avg_gap'))
+                ->groupBy('competencies.id', 'competencies.name')
+                ->orderByDesc('avg_gap')
+                ->take(3)
+                ->get()
+                ->map(fn($c) => [
+                    'skill_name' => $c->name,
+                    'gap_percentage' => round($c->avg_gap, 1),
+                    'priority' => $c->avg_gap > 50 ? 'High' : 'Medium',
+                ])
+                ->toArray()
+            : [];
+
         return [
-            'institution_name' => $user->institution->name ?? 'N/A',
-            'total_graduates' => 1245,
-            'average_institution_gap' => 38.5,
-            'placement_rate' => 72,
-            'total_assessments_global' => 892,
-            'priority_skills' => [
-                ['skill_name' => 'Data Analysis', 'gap_percentage' => 52, 'priority' => 'High'],
-                ['skill_name' => 'Digital Marketing', 'gap_percentage' => 45, 'priority' => 'Medium'],
-                ['skill_name' => 'Agile/Scrum', 'gap_percentage' => 38, 'priority' => 'Medium'],
-            ],
+            'institution_name' => $institution->name ?? 'N/A',
+            'total_graduates' => $totalGraduates,
+            'average_institution_gap' => $avgInstitutionGap,
+            'placement_rate' => $placementRate,
+            'total_assessments_global' => $totalAssessmentsGlobal,
+            'priority_skills' => $prioritySkills,
             'recent_activities' => $this->_getRecentActivities($user),
         ];
     }

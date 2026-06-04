@@ -135,4 +135,49 @@ class JobApplicationService
 
         return ['success' => true, 'message' => 'Lamaran berhasil ditarik!'];
     }
+
+    public function respondToOffer(User $user, int $jobId, string $response)
+    {
+        $application = UserJobApplication::where('user_id', $user->id)
+            ->where('job_listing_id', $jobId)
+            ->where('is_direct_offer', true)
+            ->first();
+
+        if (!$application) {
+            return ['success' => false, 'message' => 'Penawaran tidak ditemukan.'];
+        }
+
+        if ($application->direct_offer_status !== 'pending') {
+            return ['success' => false, 'message' => 'Anda sudah merespon penawaran ini sebelumnya.'];
+        }
+
+        if ($response === 'accepted') {
+            $application->update([
+                'direct_offer_status' => 'accepted',
+            ]);
+
+            // Notify the company/industry user
+            $jobOwner = $application->jobListing->user;
+            if ($jobOwner) {
+                $jobOwner->notify(new \App\Notifications\JobOfferResponseNotification($application, 'accepted'));
+            }
+
+            return ['success' => true, 'message' => 'Penawaran kerja berhasil diterima! Selamat!'];
+        } elseif ($response === 'declined') {
+            $application->update([
+                'direct_offer_status' => 'declined',
+                'status' => 'rejected', // Mark application as rejected
+            ]);
+
+            // Notify the company/industry user
+            $jobOwner = $application->jobListing->user;
+            if ($jobOwner) {
+                $jobOwner->notify(new \App\Notifications\JobOfferResponseNotification($application, 'declined'));
+            }
+
+            return ['success' => true, 'message' => 'Penawaran kerja telah ditolak.'];
+        }
+
+        return ['success' => false, 'message' => 'Respon tidak valid.'];
+    }
 }

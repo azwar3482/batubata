@@ -110,4 +110,20 @@ class DashboardController extends Controller
 
         return back()->with('success', $result['message']);
     }
+
+    public function respondToOffer(Request $request, $id, JobApplicationService $applicationService)
+    {
+        $request->validate([
+            'response' => 'required|in:accepted,declined',
+        ]);
+
+        $user = Auth::user();
+        $result = $applicationService->respondToOffer($user, $id, $request->response);
+
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
+        }
+
+        return back()->with('success', $result['message']);
+    }
 }

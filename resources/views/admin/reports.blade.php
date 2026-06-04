@@ -14,6 +14,19 @@
             </div>
             @endif
 
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 border border-cyan-100 dark:border-cyan-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-cyan-100 dark:bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-cyan-900 dark:text-cyan-200 mb-1">Tentang Laporan & Analitik</h4>
+                        <p class="text-sm text-cyan-700 dark:text-cyan-300 leading-relaxed">Pantau performa platform secara keseluruhan. Lihat <strong>total pengguna</strong>, <strong>total asesmen</strong>, <strong>rata-rata skill gap</strong>, dan <strong>top skills</strong> yang paling diminati. Anda dapat <strong>export laporan</strong> ke PDF/Excel dan <strong>kirim via email</strong> untuk analisis lebih lanjut.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Date Range Picker -->
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <form action="{{ route('admin.reports') }}" method="GET" class="flex flex-wrap gap-4 items-end">

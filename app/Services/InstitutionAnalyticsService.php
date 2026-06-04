@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Institution;
+use App\Models\UserAssessment;
+use App\Models\UserCompetencyScore;
+use App\Models\UserJobApplication;
 use Illuminate\Support\Facades\DB;
 
 class InstitutionAnalyticsService
@@ -19,7 +22,6 @@ class InstitutionAnalyticsService
         $institution = Institution::where('user_id', $user->id)->first();
 
         if (!$institution) {
-            // Create a default institution if not exists
             $institution = Institution::create([
                 'user_id' => $user->id,
                 'name' => $user->name . ' University',
@@ -32,71 +34,84 @@ class InstitutionAnalyticsService
             $user->save();
         }
 
-        // 1. Basic Stats
-        $totalGraduates = User::where('institution_id', $institution->id)->count();
-        
-        // If no students yet, link some job seekers to this institution for demo purposes
+        // 1. Basic Stats dari database
+        $studentIds = User::where('institution_id', $institution->id)->pluck('id');
+        $totalGraduates = $studentIds->count();
+
+        // Jika belum ada mahasiswa, kaitkan job seeker yang ada untuk demo
         if ($totalGraduates == 0) {
             User::where('role', 'job_seeker')->limit(10)->update(['institution_id' => $institution->id]);
-            $totalGraduates = 10;
+            $studentIds = User::where('institution_id', $institution->id)->pluck('id');
+            $totalGraduates = $studentIds->count();
         }
 
-        $avgSkillGap = 35.5; // Default for now, could be calculated from scores
-        $placementRate = 68.0;
-        $assessmentsCompleted = DB::table('user_assessments')
-            ->join('users', 'user_assessments.user_id', '=', 'users.id')
-            ->where('users.institution_id', $institution->id)
+        // Hitung rata-rata skill gap dari asesmen mahasiswa
+        $avgSkillGap = round(
+            UserCompetencyScore::whereHas('assessment', fn($q) => $q->whereIn('user_id', $studentIds))
+                ->avg('gap_percentage') ?? 0,
+            1
+        );
+
+        // Hitung placement rate dari lamaran yang diterima
+        $totalApplications = UserJobApplication::whereIn('user_id', $studentIds)->count();
+        $acceptedApplications = UserJobApplication::whereIn('user_id', $studentIds)
+            ->where('status', 'offered')
             ->count();
+        $placementRate = $totalApplications > 0
+            ? round(($acceptedApplications / $totalApplications) * 100, 1)
+            : 0;
 
-        // 2. Skill Gap per Major (Chart Data)
-        $skillGapPerMajor = [
-            ['major' => 'Teknik Informatika', 'gap' => 38],
-            ['major' => 'Sistem Informasi', 'gap' => 42],
-            ['major' => 'Manajemen', 'gap' => 35],
-            ['major' => 'Komunikasi', 'gap' => 48],
-            ['major' => 'Akuntansi', 'gap' => 30],
-        ];
+        $assessmentsCompleted = UserAssessment::whereIn('user_id', $studentIds)->count();
 
-        // 3. Top Priority Competencies (Top 5 gaps)
-        $topGaps = [
-            ['name' => 'Data Analysis', 'gap' => 52],
-            ['name' => 'Digital Marketing', 'gap' => 45],
-            ['name' => 'Project Management', 'gap' => 38],
-            ['name' => 'Cloud Computing', 'gap' => 35],
-            ['name' => 'Cybersecurity', 'gap' => 32],
-        ];
+        // 2. Skill Gap per Major (Chart Data) dari database
+        $skillGapPerMajor = User::whereIn('id', $studentIds)
+            ->whereNotNull('major')
+            ->select('major', DB::raw('COUNT(*) as student_count'))
+            ->groupBy('major')
+            ->get()
+            ->map(function ($group) use ($studentIds) {
+                $avgGap = UserCompetencyScore::whereHas('assessment', function ($q) use ($studentIds, $group) {
+                    $q->whereIn('user_id', User::whereIn('id', $studentIds)->where('major', $group->major)->pluck('id'));
+                })->avg('gap_percentage');
+                return [
+                    'major' => $group->major,
+                    'gap' => round($avgGap ?? 0, 1),
+                ];
+            })
+            ->sortByDesc('gap')
+            ->values()
+            ->toArray();
 
-        // 4. Recommendations
-        $recommendations = [
-            [
-                'competency' => 'Data Analysis',
-                'major' => 'Teknik Informatika',
-                'gap' => '52%',
-                'recommendation' => 'Tambah mata kuliah praktis Data Analytics dengan studi kasus industri',
-                'priority' => 'Tinggi'
-            ],
-            [
-                'competency' => 'Digital Marketing',
-                'major' => 'Manajemen',
-                'gap' => '45%',
-                'recommendation' => 'Kolaborasi dengan industri untuk magang dan proyek nyata',
-                'priority' => 'Sedang'
-            ],
-            [
-                'competency' => 'Project Management',
-                'major' => 'Sistem Informasi',
-                'gap' => '38%',
-                'recommendation' => 'Integrasi metode Agile/Scrum dalam pembelajaran proyek akhir',
-                'priority' => 'Sedang'
-            ],
-            [
-                'competency' => 'Communication',
-                'major' => 'Komunikasi',
-                'gap' => '25%',
-                'recommendation' => 'Workshop presentasi dan public speaking rutin tiap semester',
-                'priority' => 'Rendah'
-            ]
-        ];
+        // 3. Top Priority Competencies (Top 5 gaps) dari database
+        $topGaps = UserCompetencyScore::whereHas('assessment', fn($q) => $q->whereIn('user_id', $studentIds))
+            ->join('competencies', 'user_competency_scores.competency_id', '=', 'competencies.id')
+            ->select('competencies.name', DB::raw('AVG(user_competency_scores.gap_percentage) as avg_gap'))
+            ->groupBy('competencies.id', 'competencies.name')
+            ->orderByDesc('avg_gap')
+            ->take(5)
+            ->get()
+            ->map(fn($c) => [
+                'name' => $c->name,
+                'gap' => round($c->avg_gap, 1),
+            ])
+            ->toArray();
+
+        // 4. Recommendations berdasarkan data riil
+        $recommendations = collect($topGaps)->map(function ($gap) {
+            $priority = $gap['gap'] > 50 ? 'Tinggi' : ($gap['gap'] > 25 ? 'Sedang' : 'Rendah');
+            $recommendation = match(true) {
+                $gap['gap'] > 50 => "Tambah mata kuliah praktis {$gap['name']} dengan studi kasus industri",
+                $gap['gap'] > 25 => "Kolaborasi dengan industri untuk magang dan proyek nyata terkait {$gap['name']}",
+                default => "Workshop dan pelatihan rutin {$gap['name']} tiap semester",
+            };
+            return [
+                'competency' => $gap['name'],
+                'major' => '-',
+                'gap' => $gap['gap'] . '%',
+                'recommendation' => $recommendation,
+                'priority' => $priority,
+            ];
+        })->toArray();
 
         return [
             'institution' => $institution->name,

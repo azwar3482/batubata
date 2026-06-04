@@ -20,7 +20,7 @@
                         Export Data
                     </button>
                     <!-- Tombol Tambah Program -->
-                    <a href="{{ route('seeker.education.programs.create') }}"
+                    <a href="{{ route('education.programs.create') }}"
                         class="inline-flex items-center px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 dark:hover:bg-indigo-600 transition shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -28,6 +28,19 @@
                         </svg>
                         Tambah Program
                     </a>
+                </div>
+            </div>
+
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 border border-teal-100 dark:border-teal-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-teal-100 dark:bg-teal-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-teal-900 dark:text-teal-200 mb-1">Tentang Dashboard Institusi</h4>
+                        <p class="text-sm text-teal-700 dark:text-teal-300 leading-relaxed">Pantau kinerja institusi pendidikan Anda secara menyeluruh. Lihat <strong>total siswa/lulusan</strong>, <strong>rata-rata skill gap</strong>, <strong>tingkat penempatan kerja</strong>, dan <strong>rekomendasi penyesuaian kurikulum</strong> berdasarkan kebutuhan industri. Dashboard ini membantu Anda mengambil keputusan strategis untuk peningkatan kualitas lulusan.</p>
+                    </div>
                 </div>
             </div>
 

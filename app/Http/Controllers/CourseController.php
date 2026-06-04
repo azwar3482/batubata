@@ -17,7 +17,7 @@ class CourseController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->only(['category', 'search']);
+        $filters = $request->only(['category', 'search', 'level']);
         $courses = $this->courseService->getCourses($filters);
         $myProgress = $this->courseService->getUserProgressIds(Auth::id());
         $activeProgress = $this->courseService->getAllUserProgress(Auth::id());
@@ -80,6 +80,40 @@ class CourseController extends Controller
         }
 
         return back()->with('success', 'Berhasil mendaftar kursus!');
+    }
+
+    public function updateProgress(Request $request, $id)
+    {
+        $request->validate([
+            'progress_percentage' => 'required|integer|min:0|max:100',
+        ]);
+
+        $progress = $this->courseService->updateProgress(Auth::id(), $id, $request->progress_percentage);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Progress berhasil diperbarui!',
+                'data' => $progress
+            ]);
+        }
+
+        return back()->with('success', 'Progress berhasil diperbarui!');
+    }
+
+    public function complete($id, Request $request)
+    {
+        $progress = $this->courseService->completeCourse(Auth::id(), $id);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Selamat! Kursus telah selesai!',
+                'data' => $progress
+            ]);
+        }
+
+        return back()->with('success', 'Selamat! Kursus telah selesai!');
     }
 
     public function myProgress(Request $request)
