@@ -607,9 +607,14 @@
                         </svg>
                         <span class="sidebar-text transition-all duration-300">{{ __('messages.job_vacancies') }}</span>
                         <div class="menu-tooltip">{{ __('messages.job_vacancies') }}</div>
-                        @if (Auth::user()->unreadNotifications->count() > 0)
+                        @php
+                            $jobNotifCount = Auth::user()->unreadNotifications()
+                                ->whereNotIn('data->type', ['tpa_invitation', 'tpa_offline_invitation'])
+                                ->count();
+                        @endphp
+                        @if ($jobNotifCount > 0)
                         <span class="ml-auto badge-pulse bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-red-100 animate-pulse">
-                            {{ Auth::user()->unreadNotifications->count() }}
+                            {{ $jobNotifCount }}
                         </span>
                         @endif
                     </a>
@@ -623,6 +628,27 @@
                         </svg>
                         <span class="sidebar-text transition-all duration-300">{{ __('messages.courses_learning') }}</span>
                         <div class="menu-tooltip">{{ __('messages.courses_learning') }}</div>
+                    </a>
+
+                    <a href="{{ route('seeker.tpa.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.tpa.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.tpa.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Tes TPA</span>
+                        <div class="menu-tooltip">Tes TPA</div>
+                        @php
+                            $tpaNotifCount = Auth::user()->unreadNotifications()
+                                ->whereIn('data->type', ['tpa_invitation', 'tpa_offline_invitation'])
+                                ->count();
+                        @endphp
+                        @if ($tpaNotifCount > 0)
+                        <span class="ml-auto badge-pulse bg-purple-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-purple-100 animate-pulse">
+                            {{ $tpaNotifCount }}
+                        </span>
+                        @endif
                     </a>
                     @elseif(Auth::user()->isIndustryOrStaff())
                     <!-- Menu Industry/HRD -->
@@ -661,6 +687,30 @@
                         </svg>
                         <span class="sidebar-text transition-all duration-300">{{ __('messages.search_candidates') }}</span>
                         <div class="menu-tooltip">{{ __('messages.search_candidates') }}</div>
+                    </a>
+                    @endcan
+
+                    @can('view_candidates')
+                    <a href="{{ route('industry.tpa.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.tpa.index') || request()->routeIs('industry.tpa.create') || request()->routeIs('industry.tpa.edit') || request()->routeIs('industry.tpa.results*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.tpa.index') || request()->routeIs('industry.tpa.create') || request()->routeIs('industry.tpa.edit') || request()->routeIs('industry.tpa.results*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Kelola Tes TPA</span>
+                        <div class="menu-tooltip">Kelola Tes TPA</div>
+                    </a>
+
+                    <a href="{{ route('industry.tpa.questions') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.tpa.questions*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.tpa.questions*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Bank Soal TPA</span>
+                        <div class="menu-tooltip">Bank Soal TPA</div>
                     </a>
                     @endcan
 
@@ -784,6 +834,17 @@
                         </svg>
                         <span class="sidebar-text transition-all duration-300">Kompetensi</span>
                         <div class="menu-tooltip">Kompetensi</div>
+                    </a>
+
+                    <a href="{{ route('admin.tpa.dashboard') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.tpa.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.tpa.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Tes TPA</span>
+                        <div class="menu-tooltip">Tes TPA</div>
                     </a>
 
                     <a href="{{ route('admin.courses.index') }}"
@@ -969,18 +1030,55 @@
 
                             <div class="max-h-60 overflow-y-auto">
                                 @forelse(Auth::user()->notifications()->latest()->take(5)->get() as $notif)
-                                <a href="{{ $notif->data['url'] ?? '#' }}"
-                                    class="block px-4 py-3 hover:bg-slate-50/80 dark:hover:bg-slate-700/40 border-b border-slate-50 dark:border-slate-750/40 last:border-0 transition-colors duration-200 {{ $notif->read_at ? '' : 'bg-blue-50/50 dark:bg-blue-900/10' }}">
-                                    <p class="text-xs font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
-                                        {{ $notif->data['message'] ?? 'Notifikasi baru' }}
-                                    </p>
-                                    <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 flex items-center">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        {{ $notif->created_at->diffForHumans() }}
-                                    </p>
-                                </a>
+                                @php
+                                    // Tentukan URL berdasarkan tipe notifikasi
+                                    $notifUrl = '#';
+                                    if (isset($notif->data['action_url'])) {
+                                        $notifUrl = $notif->data['action_url'];
+                                    } elseif (isset($notif->data['url'])) {
+                                        $notifUrl = $notif->data['url'];
+                                    } elseif (isset($notif->data['type'])) {
+                                        $notifUrl = match($notif->data['type']) {
+                                            'tpa_invitation' => route('seeker.tpa.index'),
+                                            'tpa_offline_invitation' => route('seeker.tpa.show', $notif->data['session_id'] ?? 0),
+                                            default => route('notifications.index'),
+                                        };
+                                    }
+                                @endphp
+                                <div class="flex items-start gap-2 {{ $notif->read_at ? '' : 'bg-blue-50/50 dark:bg-blue-900/10' }} border-b border-slate-50 dark:border-slate-750/40 last:border-0">
+                                    <a href="{{ $notifUrl }}" class="flex-1 block px-4 py-3 hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition-colors duration-200"
+                                       onclick="markNotifRead('{{ $notif->id }}')">
+                                        <div class="flex items-start gap-2">
+                                            @if(!$notif->read_at)
+                                            <span class="w-2 h-2 mt-1.5 rounded-full bg-blue-500 flex-shrink-0"></span>
+                                            @endif
+                                            <div class="flex-1">
+                                                @if(isset($notif->data['title']))
+                                                <p class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-0.5">{{ $notif->data['title'] }}</p>
+                                                @endif
+                                                <p class="text-xs font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
+                                                    {{ $notif->data['message'] ?? 'Notifikasi baru' }}
+                                                </p>
+                                                <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 flex items-center">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    {{ $notif->created_at->diffForHumans() }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    @if(!$notif->read_at)
+                                    <form action="{{ route('notifications.read', $notif->id) }}" method="POST" class="pr-2 pt-2">
+                                        @csrf @method('PUT')
+                                        <button type="submit" class="text-slate-400 hover:text-slate-600 p-1" title="Tandai dibaca">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
                                 @empty
                                 <div class="px-4 py-8 text-xs text-slate-400 dark:text-slate-500 text-center flex flex-col items-center justify-center space-y-2">
                                     <svg class="w-8 h-8 text-slate-200 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1153,6 +1251,29 @@
                 }
             }
         });
+
+        // Mark notification as read via AJAX
+        function markNotifRead(notifId) {
+            fetch(`/notifications/${notifId}/read`, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then(() => {
+                // Update badge count
+                const badge = document.querySelector('.notification-badge');
+                if (badge) {
+                    const count = parseInt(badge.textContent) - 1;
+                    if (count <= 0) {
+                        badge.remove();
+                    } else {
+                        badge.textContent = count;
+                    }
+                }
+            }).catch(() => {});
+        }
     </script>
 </body>
 

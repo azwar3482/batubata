@@ -8,15 +8,20 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserJobApplication;
 use App\Models\JobListing;
+use App\Models\TpaTest;
+use App\Models\TpaTestSession;
+use App\Services\TpaService;
 use Illuminate\Support\Facades\Auth;
 
 class CandidateController extends Controller
 {
     protected $candidateService;
+    protected $tpaService;
 
-    public function __construct(CandidateService $candidateService)
+    public function __construct(CandidateService $candidateService, TpaService $tpaService)
     {
         $this->candidateService = $candidateService;
+        $this->tpaService = $tpaService;
     }
 
     public function index()
@@ -63,6 +68,34 @@ class CandidateController extends Controller
         }
 
         return view('industry.candidate-profile', compact('candidate', 'application', 'matchPercentage', 'jobId', 'latestAssessment'));
+    }
+
+    public function inviteTpa(Request $request, $applicationId)
+    {
+        $request->validate([
+            'tpa_test_id' => 'required|exists:tpa_tests,id',
+        ]);
+
+        $application = UserJobApplication::findOrFail($applicationId);
+        $job = JobListing::findOrFail($application->job_listing_id);
+
+        if ($job->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $test = TpaTest::findOrFail($request->tpa_test_id);
+
+        $existingSession = TpaTestSession::where('job_application_id', $application->id)
+            ->whereIn('status', ['invited', 'in_progress'])
+            ->first();
+
+        if ($existingSession) {
+            return back()->with('error', 'Kandidat sudah memiliki undangan TPA aktif.');
+        }
+
+        $this->tpaService->inviteCandidate($application, $test);
+
+        return back()->with('success', 'Undangan TPA berhasil dikirim ke kandidat!');
     }
 
     public function updateStatus(Request $request, $id)

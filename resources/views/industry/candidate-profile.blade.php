@@ -485,6 +485,73 @@
                                     </svg>
                                     Kirim Email
                                 </button>
+
+                                @if($application && $application->tpa_status === 'not_required')
+                                @php
+                                    $availableTests = \App\Models\TpaTest::where('created_by', auth()->id())
+                                        ->orWhereHas('jobListing', fn($q) => $q->where('user_id', auth()->id()))
+                                        ->active()
+                                        ->get();
+                                @endphp
+                                @if($availableTests->count() > 0)
+                                <div x-data="{ showTpaModal: false, selectedTest: '' }">
+                                    <button @click="showTpaModal = true"
+                                        class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-lg hover:from-purple-700 hover:to-violet-800 transition font-medium">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                                            </path>
+                                        </svg>
+                                        Undang Tes TPA
+                                    </button>
+
+                                    <!-- TPA Invite Modal -->
+                                    <div x-show="showTpaModal" x-cloak
+                                        class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+                                        @click.self="showTpaModal = false">
+                                        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" @click.stop>
+                                            <h3 class="text-lg font-bold mb-4">Kirim Undangan TPA</h3>
+                                            <form action="{{ route('industry.applications.invite-tpa', $application->id) }}" method="POST">
+                                                @csrf
+                                                <div class="mb-4">
+                                                    <label class="block text-sm font-medium mb-2">Pilih Tes TPA</label>
+                                                    <select name="tpa_test_id" class="w-full border rounded-lg px-3 py-2" required>
+                                                        <option value="">-- Pilih Tes --</option>
+                                                        @foreach($availableTests as $test)
+                                                        <option value="{{ $test->id }}">{{ $test->title }} ({{ $test->total_questions }} soal, {{ $test->time_limit_minutes }}m)</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <p class="text-xs text-gray-500 mb-4">Kandidat akan menerima undangan untuk mengerjakan tes TPA secara online.</p>
+                                                <div class="flex gap-3">
+                                                    <button type="button" @click="showTpaModal = false" class="flex-1 px-4 py-2 border rounded-lg">Batal</button>
+                                                    <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Kirim</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @endif
+
+                                @if($application && in_array($application->tpa_status, ['invited', 'in_progress', 'completed', 'passed', 'failed']))
+                                <div class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium
+                                    {{ $application->tpa_status === 'passed' ? 'bg-green-50 text-green-700 border border-green-200' : '' }}
+                                    {{ $application->tpa_status === 'failed' ? 'bg-red-50 text-red-700 border border-red-200' : '' }}
+                                    {{ $application->tpa_status === 'invited' ? 'bg-yellow-50 text-yellow-700 border border-yellow-200' : '' }}
+                                    {{ $application->tpa_status === 'in_progress' ? 'bg-blue-50 text-blue-700 border border-blue-200' : '' }}
+                                    {{ $application->tpa_status === 'completed' ? 'bg-purple-50 text-purple-700 border border-purple-200' : '' }}">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                    </svg>
+                                    TPA: {{ ucfirst(str_replace('_', ' ', $application->tpa_status)) }}
+                                    @if($application->tpa_score) - {{ $application->tpa_score }}% @endif
+                                    @if($application->tpaSession && $application->tpaSession->result)
+                                        <a href="{{ route('industry.tpa.results.show', $application->tpaSession->result->id) }}" class="ml-2 text-purple-600 underline">Lihat Hasil</a>
+                                    @endif
+                                </div>
+                                @endif
+
                                 <button
                                     class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

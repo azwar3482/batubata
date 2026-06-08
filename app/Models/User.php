@@ -84,6 +84,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserDocument::class);
     }
+    public function tpaSessions()
+    {
+        return $this->hasMany(TpaTestSession::class);
+    }
+    public function tpaResults()
+    {
+        return $this->hasMany(TpaResult::class);
+    }
     public function institution()
     {
         return $this->hasOne(Institution::class);

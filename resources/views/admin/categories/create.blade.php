@@ -1,55 +1,45 @@
 <x-app-layout>
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="mb-8 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('admin.categories.index') }}" 
-                       class="p-2 text-gray-500 hover:text-blue-600 bg-white shadow rounded-xl transition rotate-180">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
-                    <div>
-                        <h2 class="text-3xl font-extrabold text-gray-900 leading-tight">Buat Kategori Baru</h2>
-                        <p class="mt-1 text-sm text-gray-500">Isi detail kategori sesuai dengan jenis master data.</p>
-                    </div>
+<style>@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}</style>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-1">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
+        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('admin.categories.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Kategori</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 dark:text-white font-medium">Tambah</span>
+    </nav>
+    <div class="mb-6 anim-1">
+        <h1 class="text-2xl font-extrabold text-gray-900 dark:text-white">Buat Kategori Baru</h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-1">Isi detail kategori sesuai dengan jenis master data.</p>
+    </div>
+    <div class="rounded-xl border border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm overflow-hidden anim-2">
+        <form action="{{ route('admin.categories.store') }}" method="POST" class="p-6 sm:p-8 space-y-6">
+            @csrf
+            <div class="space-y-5">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Kategori <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" id="name" required placeholder="Contoh: Teknis (Technical)" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
+                    @error('name')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Jenis Kategori <span class="text-red-500">*</span></label>
+                    <select name="type" id="type" required class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
+                        <option value="competency">Kompetensi</option>
+                        <option value="position">Jabatan (Position)</option>
+                        <option value="industry">Industri</option>
+                        <option value="education">Pendidikan</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Keterangan <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                    <textarea name="description" id="description" rows="4" placeholder="Jelaskan penggunaan kategori ini..." class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition"></textarea>
                 </div>
             </div>
-
-            <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-6">
-                    @csrf
-                    <div>
-                        <label for="name" class="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">Nama Kategori</label>
-                        <input type="text" name="name" id="name" required placeholder="Contoh: Teknis (Technical)" 
-                               class="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition px-4 py-3 bg-gray-50/50">
-                    </div>
-                    
-                    <div>
-                        <label for="type" class="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">Jenis Kategori</label>
-                        <select name="type" id="type" required 
-                                class="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition px-4 py-3 bg-gray-50/50">
-                            <option value="competency">Kompetensi</option>
-                            <option value="position">Jabatan (Position)</option>
-                            <option value="industry">Industri</option>
-                            <option value="education">Pendidikan</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="description" class="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">Keterangan (Opsional)</label>
-                        <textarea name="description" id="description" rows="4" placeholder="Jelaskan penggunaan kategori ini..." 
-                                  class="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition px-4 py-3 bg-gray-50/50"></textarea>
-                    </div>
-
-                    <div class="pt-4 flex justify-end gap-3">
-                        <a href="{{ route('admin.categories.index') }}" 
-                           class="px-6 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition duration-300">Batal</a>
-                        <button type="submit" 
-                                class="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition duration-300 shadow-lg hover:shadow-blue-200">
-                            Simpan Kategori
-                        </button>
-                    </div>
-                </form>
+            <div class="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-3">
+                <a href="{{ route('admin.categories.index') }}" class="px-5 py-2.5 border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-sm font-medium">Batal</a>
+                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white rounded-lg font-semibold text-sm shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5">Simpan Kategori</button>
             </div>
-        </div>
+        </form>
     </div>
+</div>
 </x-app-layout>

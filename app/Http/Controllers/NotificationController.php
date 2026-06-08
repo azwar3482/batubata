@@ -23,6 +23,11 @@ class NotificationController extends Controller
     {
         $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->markAsRead();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
         return back();
     }
 

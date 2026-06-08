@@ -8,7 +8,8 @@ class UserJobApplication extends Model
 {
     protected $fillable = [
         'user_id', 'job_listing_id', 'matching_percentage', 'applied_at', 'status', 'notes',
-        'is_direct_offer', 'direct_offer_status'
+        'is_direct_offer', 'direct_offer_status',
+        'tpa_status', 'tpa_session_id', 'tpa_score',
     ];
     protected $casts = [
         'applied_at' => 'datetime',
@@ -17,4 +18,5 @@ class UserJobApplication extends Model
 
     public function user() { return $this->belongsTo(User::class); }
     public function jobListing() { return $this->belongsTo(JobListing::class); }
+    public function tpaSession() { return $this->belongsTo(TpaTestSession::class, 'tpa_session_id'); }
 }

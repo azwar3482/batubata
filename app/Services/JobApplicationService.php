@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\JobListing;
 use App\Models\UserJobApplication;
 use App\Services\JobMatchingService;
+use App\Notifications\JobNoLongerAvailable;
+use App\Notifications\ApplicationStatusNotification;
 
 class JobApplicationService
 {
@@ -19,6 +21,13 @@ class JobApplicationService
     public function applyForJob(User $user, int $jobId)
     {
         $job = JobListing::findOrFail($jobId);
+
+        // Cek apakah lowongan masih tersedia
+        if (!$job->is_available) {
+            $reason = $job->unavailable_reason;
+            $user->notify(new JobNoLongerAvailable($job, $reason));
+            return ['success' => false, 'message' => $reason ?? 'Lowongan ini sudah tidak tersedia.'];
+        }
 
         $application = UserJobApplication::where('user_id', $user->id)
             ->where('job_listing_id', $jobId)

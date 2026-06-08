@@ -1,117 +1,63 @@
 <x-app-layout>
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            
-            <div class="mb-8">
-                <a href="{{ route('admin.competencies') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4 transition">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Kembali ke Daftar Kompetensi
-                </a>
-                <h2 class="text-3xl font-extrabold text-gray-900">Edit Kompetensi</h2>
-                <p class="mt-2 text-gray-600">Perbarui data spesifikasi kompetensi {{ $competency->name }}.</p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <form action="{{ route('admin.competencies.update', $competency) }}" method="POST" class="p-8 space-y-6">
-                    @csrf
-                    @method('PUT')
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Kode -->
-                        <div class="md:col-span-1">
-                            <label for="code" class="block text-sm font-medium text-gray-700 mb-2">Kode Kompetensi <span class="text-red-500">*</span></label>
-                            <input type="text" name="code" id="code" required value="{{ old('code', $competency->code) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition uppercase"
-                                placeholder="Misal: TECH-01">
-                            @error('code')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Nama -->
-                        <div class="md:col-span-1">
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama Kompetensi <span class="text-red-500">*</span></label>
-                            <input type="text" name="name" id="name" required value="{{ old('name', $competency->name) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                placeholder="Contoh: Pemrograman Python">
-                            @error('name')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Kategori -->
-                        <div class="md:col-span-1">
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Kategori <span class="text-red-500">*</span></label>
-                            <select name="category" id="category" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                                <option value="">-- Pilih Kategori --</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->name }}" {{ old('category', $competency->category) == $category->name ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                            @error('category')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Posisi Target -->
-                        <div class="md:col-span-1">
-                            <label for="position_id" class="block text-sm font-medium text-gray-700 mb-2">Posisi Target <span class="text-red-500">*</span></label>
-                            <select name="position_id" id="position_id" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                                <option value="">-- Pilih Posisi Target --</option>
-                                @foreach($positions as $position)
-                                    <option value="{{ $position->id }}" {{ old('position_id', $competency->position_id) == $position->id ? 'selected' : '' }}>
-                                        {{ $position->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('position_id')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Level Minimal -->
-                        <div class="md:col-span-1">
-                            <label for="min_level_required" class="block text-sm font-medium text-gray-700 mb-2">Level Minimal (1-5) <span class="text-red-500">*</span></label>
-                            <input type="number" name="min_level_required" id="min_level_required" required min="1" max="5" value="{{ old('min_level_required', $competency->min_level_required) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                placeholder="Cth: 3">
-                            <p class="mt-1 text-xs text-gray-500">1: Novice, 2: Beginner, 3: Competent, 4: Proficient, 5: Expert</p>
-                            @error('min_level_required')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Referensi (Opsional) -->
-                        <div class="md:col-span-1">
-                            <label for="source_reference" class="block text-sm font-medium text-gray-700 mb-2">Sumber/Referensi (Opsional)</label>
-                            <input type="text" name="source_reference" id="source_reference" value="{{ old('source_reference', $competency->source_reference) }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                placeholder="Link materi/referensi...">
-                            @error('source_reference')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                    </div>
-
-                    <div class="pt-6 border-t border-gray-200 flex justify-end gap-3 mt-6">
-                        <a href="{{ route('admin.competencies') }}" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium">
-                            Batal
-                        </a>
-                        <button type="submit" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md">
-                            Simpan Perubahan
-                        </button>
-                    </div>
-                </form>
-            </div>
-            
-        </div>
+<style>@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}</style>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-1">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
+        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('admin.competencies') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Kompetensi</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 dark:text-white font-medium">Edit</span>
+    </nav>
+    <div class="mb-6 anim-1">
+        <h1 class="text-2xl font-extrabold text-gray-900 dark:text-white">Edit Kompetensi</h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-1">Perbarui data kompetensi {{ $competency->name }}.</p>
     </div>
+    <div class="rounded-xl border border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm overflow-hidden anim-2">
+        <form action="{{ route('admin.competencies.update', $competency) }}" method="POST" class="p-6 sm:p-8 space-y-6">
+            @csrf @method('PUT')
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label for="code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Kode Kompetensi <span class="text-red-500">*</span></label>
+                    <input type="text" name="code" id="code" required value="{{ old('code', $competency->code) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition uppercase" placeholder="Misal: TECH-01">
+                    @error('code')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama Kompetensi <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" id="name" required value="{{ old('name', $competency->name) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition" placeholder="Contoh: Pemrograman Python">
+                    @error('name')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Kategori <span class="text-red-500">*</span></label>
+                    <select name="category" id="category" required class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach($categories as $cat)<option value="{{ $cat->name }}" {{ old('category',$competency->category)==$cat->name?'selected':'' }}>{{ $cat->name }}</option>@endforeach
+                    </select>
+                    @error('category')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="position_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Posisi Target <span class="text-red-500">*</span></label>
+                    <select name="position_id" id="position_id" required class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
+                        <option value="">-- Pilih Posisi --</option>
+                        @foreach($positions as $pos)<option value="{{ $pos->id }}" {{ old('position_id',$competency->position_id)==$pos->id?'selected':'' }}>{{ $pos->name }}</option>@endforeach
+                    </select>
+                    @error('position_id')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="min_level_required" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Level Minimal (1-5) <span class="text-red-500">*</span></label>
+                    <input type="number" name="min_level_required" id="min_level_required" required min="1" max="5" value="{{ old('min_level_required', $competency->min_level_required) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition" placeholder="Cth: 3">
+                    <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">1=Novice, 2=Beginner, 3=Competent, 4=Proficient, 5=Expert</p>
+                    @error('min_level_required')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="source_reference" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Sumber/Referensi <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                    <input type="text" name="source_reference" id="source_reference" value="{{ old('source_reference', $competency->source_reference) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition" placeholder="Link materi/referensi...">
+                </div>
+            </div>
+            <div class="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-3">
+                <a href="{{ route('admin.competencies') }}" class="px-5 py-2.5 border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-sm font-medium">Batal</a>
+                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white rounded-lg font-semibold text-sm shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
 </x-app-layout>

@@ -154,6 +154,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Reports
         Route::get('/reports/assessment/{id}/pdf', [ReportController::class, 'downloadAssessment'])->name('reports.assessment.pdf');
+
+        // TPA (Tes Potensi Akademik)
+        Route::get('/tpa', [App\Http\Controllers\SeekerTpaController::class, 'index'])->name('tpa.index');
+        Route::get('/tpa/{session}', [App\Http\Controllers\SeekerTpaController::class, 'show'])->name('tpa.show');
+        Route::post('/tpa/{session}/start', [App\Http\Controllers\SeekerTpaController::class, 'start'])->name('tpa.start');
+        Route::get('/tpa/{session}/test', [App\Http\Controllers\SeekerTpaController::class, 'test'])->name('tpa.test');
+        Route::post('/tpa/{session}/answer', [App\Http\Controllers\SeekerTpaController::class, 'saveAnswer'])->name('tpa.save-answer');
+        Route::post('/tpa/{session}/submit', [App\Http\Controllers\SeekerTpaController::class, 'submit'])->name('tpa.submit');
+        Route::get('/tpa/{session}/result', [App\Http\Controllers\SeekerTpaController::class, 'result'])->name('tpa.result');
+        Route::get('/tpa/{session}/result/pdf', [App\Http\Controllers\SeekerTpaController::class, 'downloadPdf'])->name('tpa.result.pdf');
+        Route::post('/tpa/{session}/respond-offline', [App\Http\Controllers\SeekerTpaController::class, 'respondOffline'])->name('tpa.respond-offline');
     });
 
     // =====================
@@ -164,6 +175,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
         Route::get('/competencies', [AdminDashboardController::class, 'competencies'])->name('competencies');
         Route::get('/reports', [AdminDashboardController::class, 'reports'])->name('reports');
+
+        // TPA Management
+        Route::get('/tpa', [App\Http\Controllers\Admin\TpaController::class, 'dashboard'])->name('tpa.dashboard');
+        Route::get('/tpa/questions', [App\Http\Controllers\Admin\TpaController::class, 'questions'])->name('tpa.questions');
+        Route::get('/tpa/questions/create', [App\Http\Controllers\Admin\TpaController::class, 'createQuestion'])->name('tpa.questions.create');
+        Route::post('/tpa/questions', [App\Http\Controllers\Admin\TpaController::class, 'storeQuestion'])->name('tpa.questions.store');
+        Route::get('/tpa/questions/{question}/edit', [App\Http\Controllers\Admin\TpaController::class, 'editQuestion'])->name('tpa.questions.edit');
+        Route::put('/tpa/questions/{question}', [App\Http\Controllers\Admin\TpaController::class, 'updateQuestion'])->name('tpa.questions.update');
+        Route::delete('/tpa/questions/{question}', [App\Http\Controllers\Admin\TpaController::class, 'destroyQuestion'])->name('tpa.questions.destroy');
+        Route::get('/tpa/tests', [App\Http\Controllers\Admin\TpaController::class, 'tests'])->name('tpa.tests');
+        Route::get('/tpa/tests/create', [App\Http\Controllers\Admin\TpaController::class, 'createTest'])->name('tpa.tests.create');
+        Route::post('/tpa/tests', [App\Http\Controllers\Admin\TpaController::class, 'storeTest'])->name('tpa.tests.store');
+        Route::get('/tpa/tests/{test}/edit', [App\Http\Controllers\Admin\TpaController::class, 'editTest'])->name('tpa.tests.edit');
+        Route::put('/tpa/tests/{test}', [App\Http\Controllers\Admin\TpaController::class, 'updateTest'])->name('tpa.tests.update');
+        Route::delete('/tpa/tests/{test}', [App\Http\Controllers\Admin\TpaController::class, 'destroyTest'])->name('tpa.tests.destroy');
+        Route::get('/tpa/results', [App\Http\Controllers\Admin\TpaController::class, 'results'])->name('tpa.results');
+        Route::get('/tpa/results/{result}', [App\Http\Controllers\Admin\TpaController::class, 'showResult'])->name('tpa.results.show');
+        Route::get('/tpa/results/{result}/pdf', [App\Http\Controllers\Admin\TpaController::class, 'downloadPdf'])->name('tpa.results.pdf');
     });
 
     // =====================
@@ -177,6 +206,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/candidates', [App\Http\Controllers\Industry\CandidateController::class, 'index'])->name('candidates');
         Route::get('/candidates/{id}', [App\Http\Controllers\Industry\CandidateController::class, 'show'])->name('candidates.show');
         Route::put('/applications/{id}/status', [App\Http\Controllers\Industry\CandidateController::class, 'updateStatus'])->name('applications.update-status');
+        Route::post('/applications/{id}/invite-tpa', [App\Http\Controllers\Industry\CandidateController::class, 'inviteTpa'])->name('applications.invite-tpa');
         Route::get('/jobs/{id}/talent', [JobPostingController::class, 'findTalent'])->name('jobs.talent');
         Route::post('/jobs/{id}/offer/{userId}', [JobPostingController::class, 'offerJob'])->name('jobs.offer');
         Route::get('/guide', function () {
@@ -188,6 +218,31 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/team/invite', [App\Http\Controllers\Industry\TeamController::class, 'invite'])->name('team.invite');
         Route::put('/team/{id}/role', [App\Http\Controllers\Industry\TeamController::class, 'updateRole'])->name('team.updateRole');
         Route::delete('/team/{id}', [App\Http\Controllers\Industry\TeamController::class, 'remove'])->name('team.remove');
+
+        // TPA Management
+        Route::get('/tpa', [App\Http\Controllers\Industry\TpaController::class, 'index'])->name('tpa.index');
+        Route::get('/tpa/create', [App\Http\Controllers\Industry\TpaController::class, 'create'])->name('tpa.create');
+        Route::post('/tpa', [App\Http\Controllers\Industry\TpaController::class, 'store'])->name('tpa.store');
+        Route::get('/tpa/{test}/edit', [App\Http\Controllers\Industry\TpaController::class, 'edit'])->name('tpa.edit');
+        Route::put('/tpa/{test}', [App\Http\Controllers\Industry\TpaController::class, 'update'])->name('tpa.update');
+        Route::delete('/tpa/{test}', [App\Http\Controllers\Industry\TpaController::class, 'destroy'])->name('tpa.destroy');
+        Route::post('/tpa/{test}/invite', [App\Http\Controllers\Industry\TpaController::class, 'inviteCandidate'])->name('tpa.invite');
+        Route::post('/tpa/bulk-invite', [App\Http\Controllers\Industry\TpaController::class, 'bulkInvite'])->name('tpa.bulk-invite');
+        Route::post('/tpa/bulk-invite-offline', [App\Http\Controllers\Industry\TpaController::class, 'bulkInviteOffline'])->name('tpa.bulk-invite-offline');
+        Route::post('/tpa/sessions/{session}/offline-result', [App\Http\Controllers\Industry\TpaController::class, 'submitOfflineResult'])->name('tpa.offline-result');
+        Route::get('/tpa/results', [App\Http\Controllers\Industry\TpaController::class, 'results'])->name('tpa.results');
+        Route::get('/tpa/results/{result}', [App\Http\Controllers\Industry\TpaController::class, 'showResult'])->name('tpa.results.show');
+        Route::get('/tpa/results/{result}/pdf', [App\Http\Controllers\Industry\TpaController::class, 'downloadPdf'])->name('tpa.results.pdf');
+
+        // TPA Bank Soal (Industry)
+        Route::get('/tpa/questions', [App\Http\Controllers\Industry\TpaController::class, 'questions'])->name('tpa.questions');
+        Route::get('/tpa/questions/create', [App\Http\Controllers\Industry\TpaController::class, 'createQuestion'])->name('tpa.questions.create');
+        Route::post('/tpa/questions', [App\Http\Controllers\Industry\TpaController::class, 'storeQuestion'])->name('tpa.questions.store');
+        Route::get('/tpa/questions/{question}/edit', [App\Http\Controllers\Industry\TpaController::class, 'editQuestion'])->name('tpa.questions.edit');
+        Route::put('/tpa/questions/{question}', [App\Http\Controllers\Industry\TpaController::class, 'updateQuestion'])->name('tpa.questions.update');
+        Route::delete('/tpa/questions/{question}', [App\Http\Controllers\Industry\TpaController::class, 'destroyQuestion'])->name('tpa.questions.destroy');
+        Route::get('/tpa/questions/download-template', [App\Http\Controllers\Industry\TpaController::class, 'downloadTemplate'])->name('tpa.questions.download-template');
+        Route::post('/tpa/questions/import', [App\Http\Controllers\Industry\TpaController::class, 'importQuestions'])->name('tpa.questions.import');
     });
 
     // =====================
