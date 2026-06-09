@@ -12,7 +12,9 @@
             <div class="mb-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800/50 rounded-xl">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
                     <div>
                         <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">Tentang Kursus & Pembelajaran</h4>
@@ -166,12 +168,12 @@
 
             <!-- Semua Kursus Grid -->
             <div class="mb-4 flex items-center">
-                <h3 class="text-xl font-bold text-gray-900">Semua Kursus</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Semua Kursus</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($courses as $course)
                 <div
-                    class="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    class="bg-white dark:bg-slate-900 rounded-xl shadow-md hover:shadow-lg transition duration-300 overflow-hidden border border-gray-100 dark:border-slate-800 flex flex-col">
                     <!-- Course Header -->
                     <div class="h-32 bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
                         <svg class="w-16 h-16 text-white opacity-80" fill="none" stroke="currentColor"
@@ -186,20 +188,20 @@
                     <div class="p-6 flex-1 flex flex-col">
                         <div class="flex justify-between items-start mb-2 gap-2">
                             <span
-                                class="text-xs font-semibold uppercase tracking-wide text-blue-600 bg-blue-50 px-2 py-1 rounded truncate">
+                                class="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded truncate">
                                 {{ $course->platform }}
                             </span>
                             <span
-                                class="text-xs font-medium shrink-0 whitespace-nowrap {{ $course->is_free ? 'text-green-600' : 'text-orange-600' }}">
+                                class="text-xs font-medium shrink-0 whitespace-nowrap {{ $course->is_free ? 'text-emerald-600 dark:text-emerald-400' : 'text-orange-600 dark:text-orange-400' }}">
                                 {{ $course->is_free ? 'Gratis' : 'Rp ' . number_format($course->price) }}
                             </span>
                         </div>
 
-                        <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2">{{ $course->title }}</h3>
-                        <p class="text-sm text-gray-600 mb-4 line-clamp-3 flex-1">{{ $course->description }}</p>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">{{ $course->title }}</h3>
+                        <p class="text-sm text-gray-600 dark:text-slate-400 mb-4 line-clamp-3 flex-1">{{ $course->description }}</p>
 
                         <!-- Course Meta -->
-                        <div class="flex items-center justify-between text-xs text-gray-500 mb-4">
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 mb-4">
                             <span class="flex items-center">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -209,10 +211,10 @@
                             </span>
                             <span
                                 class="capitalize px-2 py-1 rounded {{ $course->level == 'beginner'
-                                        ? 'bg-green-100 text-green-700'
+                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
                                         : ($course->level == 'intermediate'
-                                            ? 'bg-yellow-100 text-yellow-700'
-                                            : 'bg-red-100 text-red-700') }}">
+                                            ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                                            : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400') }}">
                                 {{ $course->level }}
                             </span>
                         </div>
@@ -237,7 +239,7 @@
                         <!-- Actions -->
                         <div class="flex gap-2">
                             <a href="{{ route('seeker.courses.show', $course->id) }}"
-                                class="flex-1 text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                                class="flex-1 text-center px-4 py-2 bg-blue-600 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition text-sm font-medium">
                                 Lihat Detail
                             </a>
                             @if (!in_array($course->id, $myProgress ?? []))
@@ -245,7 +247,7 @@
                                 class="flex-1">
                                 @csrf
                                 <button type="submit"
-                                    class="w-full px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm font-medium">
+                                    class="w-full px-4 py-2 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/40 transition text-sm font-medium">
                                     Enroll
                                 </button>
                             </form>

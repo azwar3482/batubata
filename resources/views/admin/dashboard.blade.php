@@ -159,35 +159,37 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-50 dark:divide-slate-700">
                                     @foreach ($stats['latest_users']->take(7) as $latest_user)
-                                        <tr class="hover:bg-gray-50 dark:bg-slate-800/50/80 transition-colors">
-                                            <td class="px-8 py-5">
-                                                <div class="flex items-center space-x-4">
-                                                    <div class="relative">
-                                                        <div
-                                                            class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                                                            {{ strtoupper(substr($latest_user->name, 0, 2)) }}
-                                                        </div>
-                                                        <div
-                                                            class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full">
-                                                        </div>
+                                    <tr class="hover:bg-gray-50 dark:bg-slate-800/50/80 transition-colors">
+                                        <td class="px-8 py-5">
+                                            <div class="flex items-center space-x-4">
+                                                <div class="relative">
+                                                    <div
+                                                        class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                                        {{ strtoupper(substr($latest_user->name, 0, 2)) }}
                                                     </div>
-                                                    <div>
-                                                        <div class="text-sm font-bold text-gray-900 dark:text-white">
-                                                            {{ $latest_user->name }}</div>
-                                                        <div class="text-xs text-gray-400 dark:text-slate-500">{{ $latest_user->email }}
-                                                        </div>
+                                                    <div
+                                                        class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full">
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td class="px-8 py-5">
-                                                <span
-                                                    class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-blue-50 text-blue-600">
-                                                    {{ str_replace('_', ' ', ucwords($latest_user->role)) }}
-                                                </span>
-                                            </td>
-                                            <td class="px-8 py-5 text-sm text-gray-500 dark:text-slate-400">
-                                                {{ $latest_user->created_at->diffForHumans() }}</td>
-                                            {{-- <td class="px-8 py-5 text-right">
+                                                <div>
+                                                    <div class="text-sm font-bold text-gray-900 dark:text-white">
+                                                        {{ $latest_user->name }}
+                                                    </div>
+                                                    <div class="text-xs text-gray-400 dark:text-slate-500">{{ $latest_user->email }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-5">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-blue-50 text-blue-600">
+                                                {{ str_replace('_', ' ', ucwords($latest_user->role)) }}
+                                            </span>
+                                        </td>
+                                        <td class="px-8 py-5 text-sm text-gray-500 dark:text-slate-400">
+                                            {{ $latest_user->created_at->diffForHumans() }}
+                                        </td>
+                                        {{-- <td class="px-8 py-5 text-right">
                                                 <button class="p-2 text-gray-400 dark:text-slate-500 hover:text-indigo-600 transition">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -198,7 +200,7 @@
                                                     </svg>
                                                 </button>
                                             </td> --}}
-                                        </tr>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -219,7 +221,7 @@
                             Aksi Cepat
                         </h3>
                         <div class="grid grid-cols-1 gap-4">
-                            <a href="{{ route('seeker.admin.settings') }}"
+                            <a href="{{ route('admin.settings') }}"
                                 class="flex items-center p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all duration-300 group">
                                 <div
                                     class="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
@@ -303,7 +305,7 @@
     </div>
 
     <!-- Driver.js for Tour -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
 
     <script>
@@ -311,7 +313,7 @@
             const startAdminTourBtn = document.getElementById('start-admin-tour');
             if (startAdminTourBtn) {
                 startAdminTourBtn.addEventListener('click', () => {
-                    
+
                     const driver = window.driver.js.driver;
                     const driverObj = driver({
                         showProgress: true,
@@ -319,8 +321,7 @@
                         prevBtnText: '⬅ Kembali',
                         doneBtnText: 'Selesai',
                         popoverClass: 'driverjs-theme',
-                        steps: [
-                            {
+                        steps: [{
                                 popover: {
                                     title: '👋 Selamat Datang di Panel Admin',
                                     description: 'Mari kita kenali berbagai fitur dan kontrol utama yang ada di dashboard Administrator ini.',
@@ -428,11 +429,11 @@
                             }
                         ]
                     });
-                    
+
                     driverObj.drive();
                 });
             }
-            
+
             // Auto play saat halaman terbuka
             const driver = window.driver.js.driver;
             const autoDriver = driver({
@@ -441,8 +442,7 @@
                 prevBtnText: '⬅ Kembali',
                 doneBtnText: 'Selesai',
                 popoverClass: 'driverjs-theme',
-                steps: [
-                    {
+                steps: [{
                         popover: {
                             title: '👋 Selamat Datang di Panel Admin',
                             description: 'Mari kita kenali berbagai fitur dan kontrol utama yang ada di dashboard Administrator ini.',
@@ -568,49 +568,63 @@
             padding: 16px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
+
         .driver-popover-title {
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 8px;
-            color: #1f2937; /* text-gray-900 */
+            color: #1f2937;
+            /* text-gray-900 */
         }
+
         .driver-popover-description {
             font-size: 13.5px;
             line-height: 1.5;
-            color: #4b5563; /* text-gray-600 */
+            color: #4b5563;
+            /* text-gray-600 */
         }
+
         .driver-popover-footer {
             margin-top: 12px;
         }
+
         .driver-popover-progress-text {
             font-size: 12px;
             color: #6b7280;
         }
-        
+
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
             html.dark .driverjs-theme {
-                background-color: #1e293b; /* bg-slate-800 */
+                background-color: #1e293b;
+                /* bg-slate-800 */
                 color: #e2e8f0;
             }
+
             html.dark .driver-popover-title {
                 color: #f8fafc;
             }
+
             html.dark .driver-popover-description {
-                color: #cbd5e1; /* text-slate-300 */
+                color: #cbd5e1;
+                /* text-slate-300 */
             }
+
             html.dark .driver-popover-progress-text {
                 color: #94a3b8;
             }
+
             html.dark .driver-popover-footer .driver-popover-btn {
                 background-color: #334155;
                 color: #f8fafc;
                 border: 1px solid #475569;
                 text-shadow: none;
             }
+
             html.dark .driver-popover-footer .driver-popover-btn:hover {
                 background-color: #475569;
             }
+
             html.dark .driver-popover-arrow {
                 border-color: #1e293b;
             }

@@ -56,7 +56,7 @@ class PartnersController extends Controller
             'location' => $company->user->address ?? '-',
             'description' => $company->industry ? "Perusahaan di bidang {$company->industry}" : '-',
             'collaboration_types' => ['Magang', 'Rekrutmen', 'Guest Lecture'],
-            'active_opportunities' => $company->user->jobListings()->where('is_active', true)->count(),
+            'active_opportunities' => $company->jobListings()->where('is_active', true)->count(),
             'website' => $company->website ?? '-',
             'contact_email' => $company->user->email ?? '-',
             'verified' => true,

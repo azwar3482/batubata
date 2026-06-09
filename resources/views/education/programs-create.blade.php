@@ -1,4 +1,21 @@
 <x-app-layout>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        .trix-button-group { background: white; }
+        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+        trix-editor { min-height: 150px; }
+        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content a { color: #3b82f6; text-decoration: underline; }
+        .trix-content strong { font-weight: 700; }
+        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+    </style>
+
     <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
@@ -42,11 +59,11 @@
                     <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
                     <div class="flex items-center">
                         <div
-                            class="w-8 h-8 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-sm">
+                            class="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
                             3</div>
                         <div class="ml-3">
-                            <p class="text-sm font-semibold text-gray-400">Konfirmasi</p>
-                            <p class="text-xs text-gray-400">Review & publikasi</p>
+                            <p class="text-sm font-semibold text-gray-400 dark:text-slate-400">Konfirmasi</p>
+                            <p class="text-xs text-gray-400 dark:text-slate-500">Review & publikasi</p>
                         </div>
                     </div>
                 </div>
@@ -157,10 +174,10 @@
                             <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
                                 Deskripsi Program <span class="text-red-500">*</span>
                             </label>
-                            <textarea name="description" id="description" rows="4" required
-                                placeholder="Jelaskan secara detail tentang program ini, manfaat bagi peserta, dan outline kegiatan..."
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-                                oninput="updatePreview()">{{ old('description') }}</textarea>
+                            <input id="description" type="hidden" name="description" value="{{ old('description') }}">
+                            <trix-editor input="description"
+                                class="trix-content w-full border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                placeholder="Jelaskan secara detail tentang program ini, manfaat bagi peserta, dan outline kegiatan..."></trix-editor>
                             <p class="text-xs text-gray-500 mt-1">Maksimal 2000 karakter. Gunakan bahasa yang jelas dan
                                 menarik.</p>
                             @error('description')
@@ -178,16 +195,17 @@
 
                             <div id="objectives-container" class="space-y-3">
                                 @foreach (old('learning_objectives', ['']) as $index => $objective)
-                                    <div class="flex gap-3">
+                                    <div class="flex items-start gap-3">
                                         <span
-                                            class="flex items-center justify-center w-8 h-10 bg-gray-100 rounded-lg text-sm font-medium text-gray-600">{{ $index + 1 }}.</span>
-                                        <input type="text" name="learning_objectives[]"
-                                            value="{{ $objective }}"
-                                            placeholder="Contoh: Mampu membuat kampanye digital marketing menggunakan Google Ads"
-                                            class="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
+                                            class="flex-shrink-0 flex items-center justify-center w-8 h-10 bg-gray-100 rounded-lg text-sm font-medium text-gray-600">{{ $index + 1 }}.</span>
+                                        <div class="flex-1">
+                                            <input id="objective_{{ $index }}" type="hidden" name="learning_objectives[]" value="{{ $objective }}">
+                                            <trix-editor input="objective_{{ $index }}"
+                                                class="trix-content border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"></trix-editor>
+                                        </div>
                                         @if ($index > 0)
                                             <button type="button" onclick="removeObjective(this)"
-                                                class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                class="flex-shrink-0 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -291,24 +309,24 @@
 
                 <!-- Preview Card (Sticky on Desktop) -->
                 <div
-                    class="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6 border border-green-200 sticky top-6">
-                    <h4 class="font-bold text-gray-900 mb-4">👁️ Preview Program</h4>
+                    class="bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/30 rounded-xl p-6 border border-green-200 dark:border-green-800 sticky top-6">
+                    <h4 class="font-bold text-gray-900 dark:text-gray-100 mb-4">👁️ Preview Program</h4>
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Nama:</span>
-                            <span class="font-medium text-gray-900" id="preview-name">-</span>
+                            <span class="text-gray-500 dark:text-gray-400">Nama:</span>
+                            <span class="font-medium text-gray-900 dark:text-gray-200" id="preview-name">-</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Jenis:</span>
-                            <span class="font-medium text-gray-900" id="preview-type">-</span>
+                            <span class="text-gray-500 dark:text-gray-400">Jenis:</span>
+                            <span class="font-medium text-gray-900 dark:text-gray-200" id="preview-type">-</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Durasi:</span>
-                            <span class="font-medium text-gray-900" id="preview-duration">-</span>
+                            <span class="text-gray-500 dark:text-gray-400">Durasi:</span>
+                            <span class="font-medium text-gray-900 dark:text-gray-200" id="preview-duration">-</span>
                         </div>
-                        <div class="pt-3 border-t">
-                            <p class="text-gray-500 mb-2">Deskripsi Singkat:</p>
-                            <p class="text-gray-700 line-clamp-3" id="preview-description">-</p>
+                        <div class="pt-3 border-t dark:border-slate-700">
+                            <p class="text-gray-500 dark:text-gray-400 mb-2">Deskripsi Singkat:</p>
+                            <div class="text-gray-700 dark:text-gray-300 line-clamp-3 trix-content" id="preview-description">-</div>
                         </div>
                     </div>
                 </div>
@@ -353,14 +371,16 @@
         function addObjective() {
             const container = document.getElementById('objectives-container');
             const index = container.children.length + 1;
+            const id = 'objective_new_' + Date.now();
             const div = document.createElement('div');
-            div.className = 'flex gap-3';
+            div.className = 'flex items-start gap-3';
             div.innerHTML = `
-                <span class="flex items-center justify-center w-8 h-10 bg-gray-100 rounded-lg text-sm font-medium text-gray-600">${index}.</span>
-                <input type="text" name="learning_objectives[]" required
-                    placeholder="Contoh: Mampu membuat kampanye digital marketing menggunakan Google Ads"
-                    class="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
-                <button type="button" onclick="removeObjective(this)" class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition">
+                <span class="flex-shrink-0 flex items-center justify-center w-8 h-10 bg-gray-100 rounded-lg text-sm font-medium text-gray-600">${index}.</span>
+                <div class="flex-1">
+                    <input id="${id}" type="hidden" name="learning_objectives[]" required>
+                    <trix-editor input="${id}" class="trix-content border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" placeholder="Contoh: Mampu membuat kampanye digital marketing..."></trix-editor>
+                </div>
+                <button type="button" onclick="removeObjective(this)" class="flex-shrink-0 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                 </button>
             `;
@@ -389,9 +409,15 @@
             document.getElementById('preview-name').textContent = name;
             document.getElementById('preview-type').textContent = type;
             document.getElementById('preview-duration').textContent = duration;
-            document.getElementById('preview-description').textContent = description.length > 100 ? description.substring(0,
+            document.getElementById('preview-description').innerHTML = description.length > 100 ? description.substring(0,
                 100) + '...' : description;
         }
+
+        document.addEventListener('trix-change', function(e) {
+            if(e.target.getAttribute('input') === 'description') {
+                updatePreview();
+            }
+        });
 
         // File Preview
         function previewFile(input) {

@@ -1,0 +1,155 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\ChatAgentService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
+class ChatController extends Controller
+{
+    protected $chatService;
+
+    public function __construct(ChatAgentService $chatService)
+    {
+        $this->chatService = $chatService;
+    }
+
+    /**
+     * Kirim pesan ke chat agent
+     */
+    public function sendMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:2000',
+            'session_id' => 'nullable|string|max:100',
+        ]);
+
+        $user = Auth::user();
+        $message = $request->input('message');
+        $sessionId = $request->input('session_id');
+
+        $response = $this->chatService->chat($user, $message, $sessionId);
+
+        if (!$response['success']) {
+            return response()->json([
+                'success' => false,
+                'error' => $response['error'],
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'text' => $response['text'],
+            'deep_links' => $response['deep_links'],
+            'suggestions' => $response['suggestions'],
+            'session_id' => $response['session_id'],
+        ]);
+    }
+
+    /**
+     * Ambil chat history
+     */
+    public function history(Request $request)
+    {
+        $user = Auth::user();
+        $sessionId = $request->input('session_id');
+
+        $messages = $this->chatService->getChatHistory($user->id, $sessionId);
+
+        return response()->json([
+            'success' => true,
+            'messages' => $messages,
+        ]);
+    }
+
+    /**
+     * Ambil daftar session
+     */
+    public function sessions()
+    {
+        $user = Auth::user();
+        $sessions = $this->chatService->getChatSessions($user->id);
+
+        return response()->json([
+            'success' => true,
+            'sessions' => $sessions,
+        ]);
+    }
+
+    /**
+     * Hapus chat history
+     */
+    public function clearHistory(Request $request)
+    {
+        $user = Auth::user();
+        $sessionId = $request->input('session_id');
+
+        $this->chatService->clearHistory($user->id, $sessionId);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Chat history berhasil dihapus.',
+        ]);
+    }
+
+    /**
+     * Ambil suggestions default
+     */
+    public function suggestions()
+    {
+        $user = Auth::user();
+
+        $suggestions = match ($user->role) {
+            'job_seeker' => [
+                'Bagaimana cara melamar kerja?',
+                'Apa itu Tes TPA?',
+                'Bagaimana cara meningkatkan skill?',
+                'Bagaimana cara upload CV?',
+                'Bagaimana cara melihat hasil assessment?',
+            ],
+            'industry' => [
+                'Bagaimana cara posting lowongan?',
+                'Bagaimana cara mengundang kandidat ke TPA?',
+                'Bagaimana cara mengelola tim?',
+                'Apa itu document weight?',
+                'Bagaimana cara melihat laporan?',
+            ],
+            'education' => [
+                'Bagaimana cara membuat program?',
+                'Bagaimana cara mengajukan kolaborasi?',
+                'Bagaimana cara mengelola kursus?',
+                'Bagaimana cara melihat analytics?',
+            ],
+            'admin' => [
+                'Bagaimana cara mengelola user?',
+                'Bagaimana cara menambah kompetensi?',
+                'Bagaimana cara cek AI workflow?',
+                'Bagaimana cara mengelola TPA?',
+            ],
+            default => ['Apa itu KOMPASKARIR?'],
+        };
+
+        return response()->json([
+            'success' => true,
+            'suggestions' => $suggestions,
+        ]);
+    }
+
+    /**
+     * Cek status API
+     */
+    public function status()
+    {
+        $configured = app(\App\Services\GeminiService::class)->isConfigured();
+
+        return response()->json([
+            'success' => true,
+            'configured' => $configured,
+            'message' => $configured
+                ? 'Gemini API sudah dikonfigurasi.'
+                : 'Gemini API belum dikonfigurasi. Tambahkan GEMINI_API_KEY di .env',
+        ]);
+    }
+}

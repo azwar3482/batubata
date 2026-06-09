@@ -23,14 +23,15 @@
                     <div>
                         <p class="text-blue-100 text-lg">Rata-rata Skill Gap Anda</p>
                         <p class="text-5xl font-extrabold mt-2">
-                            {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
+                            {{ number_format($assessment->total_gap_percentage, 1) }}%
+                        </p>
                         <p class="text-blue-100 mt-2">
                             @if ($assessment->total_gap_percentage > 50)
-                                🎯 Fokus pada skill prioritas untuk meningkatkan kesiapan karir
+                            🎯 Fokus pada skill prioritas untuk meningkatkan kesiapan karir
                             @elseif($assessment->total_gap_percentage > 25)
-                                ✨ Anda sudah cukup siap, tingkatkan beberapa skill kunci
+                            ✨ Anda sudah cukup siap, tingkatkan beberapa skill kunci
                             @else
-                                🏆 Profil Anda sangat kompetitif! Pertahankan dan kembangkan
+                            🏆 Profil Anda sangat kompetitif! Pertahankan dan kembangkan
                             @endif
                         </p>
                     </div>
@@ -81,52 +82,54 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach ($assessment->scores->sortByDesc('gap_percentage') as $score)
-                                        <tr class="hover:bg-gray-50 transition">
-                                            <td class="px-6 py-4">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    {{ $score->competency->name }}</div>
-                                                <div class="text-xs text-gray-500 capitalize">
-                                                    {{ $score->competency->category }}</div>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <div
-                                                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-700 font-bold">
-                                                    {{ $score->self_assessed_level }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <div
-                                                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-700 font-bold">
-                                                    {{ $score->competency->min_level_required }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ $score->competency->name }}
+                                            </div>
+                                            <div class="text-xs text-gray-500 capitalize">
+                                                {{ $score->competency->category }}
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div
+                                                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-700 font-bold">
+                                                {{ $score->self_assessed_level }}
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div
+                                                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-700 font-bold">
+                                                {{ $score->competency->min_level_required }}
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <span
+                                                class="text-sm font-bold {{ $score->gap_percentage > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                                {{ number_format($score->gap_percentage, 1) }}%
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            @if ($score->priority == 'high')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                 <span
-                                                    class="text-sm font-bold {{ $score->gap_percentage > 0 ? 'text-red-600' : 'text-green-600' }}">
-                                                    {{ number_format($score->gap_percentage, 1) }}%
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                @if ($score->priority == 'high')
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                        <span
-                                                            class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5 animate-pulse"></span>
-                                                        Tinggi
-                                                    </span>
-                                                @elseif($score->priority == 'medium')
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                        Sedang
-                                                    </span>
-                                                @else
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        Rendah
-                                                    </span>
-                                                @endif
-                                            </td>
-                                        </tr>
+                                                    class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5 animate-pulse"></span>
+                                                Tinggi
+                                            </span>
+                                            @elseif($score->priority == 'medium')
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Sedang
+                                            </span>
+                                            @else
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Rendah
+                                            </span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -163,45 +166,46 @@
 
                             <div class="p-4 space-y-4 max-h-96 overflow-y-auto">
                                 @forelse($recommendations ?? [] as $rec)
-                                    <div
-                                        class="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-indigo-300 transition">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <span
-                                                class="text-xs font-semibold uppercase tracking-wide {{ $rec['priority'] == 'high' ? 'text-red-600' : 'text-yellow-600' }}">
-                                                {{ $rec['priority'] }} Priority
-                                            </span>
-                                            <span class="text-xs text-gray-500">{{ $rec['course']->platform }}</span>
-                                        </div>
-                                        <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $rec['course']->title }}
-                                        </h4>
-                                        <p class="text-xs text-gray-600 mb-3 line-clamp-2">
-                                            {{ $rec['course']->description }}</p>
-
-                                        <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
-                                            <span>⏱ {{ $rec['course']->duration_hours }} Jam</span>
-                                            <span
-                                                class="capitalize px-2 py-0.5 rounded {{ $rec['course']->level == 'beginner' ? 'bg-green-100 text-green-700' : ($rec['course']->level == 'intermediate' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
-                                                {{ $rec['course']->level }}
-                                            </span>
-                                        </div>
-
-                                        <p class="text-xs text-indigo-600 font-medium mb-3">💡 {{ $rec['reason'] }}</p>
-
-                                        <a href="{{ $rec['course']->url }}" target="_blank"
-                                            class="block w-full text-center px-3 py-2 bg-indigo-600 text-white text-xs font-medium rounded hover:bg-indigo-700 transition">
-                                            Mulai Belajar
-                                        </a>
+                                <div
+                                    class="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-indigo-300 transition">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span
+                                            class="text-xs font-semibold uppercase tracking-wide {{ $rec['priority'] == 'high' ? 'text-red-600' : 'text-yellow-600' }}">
+                                            {{ $rec['priority'] }} Priority
+                                        </span>
+                                        <span class="text-xs text-gray-500">{{ $rec['course']->platform }}</span>
                                     </div>
+                                    <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $rec['course']->title }}
+                                    </h4>
+                                    <p class="text-xs text-gray-600 mb-3 line-clamp-2">
+                                        {{ $rec['course']->description }}
+                                    </p>
+
+                                    <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
+                                        <span>⏱ {{ $rec['course']->duration_hours }} Jam</span>
+                                        <span
+                                            class="capitalize px-2 py-0.5 rounded {{ $rec['course']->level == 'beginner' ? 'bg-green-100 text-green-700' : ($rec['course']->level == 'intermediate' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
+                                            {{ $rec['course']->level }}
+                                        </span>
+                                    </div>
+
+                                    <p class="text-xs text-indigo-600 font-medium mb-3">💡 {{ $rec['reason'] }}</p>
+
+                                    <a href="{{ route('seeker.courses.show', $rec['course']->id) }}"
+                                        class="block w-full text-center px-3 py-2 bg-indigo-600 text-white text-xs font-medium rounded hover:bg-indigo-700 transition">
+                                        Lihat Detail
+                                    </a>
+                                </div>
                                 @empty
-                                    <div class="text-center py-8">
-                                        <svg class="mx-auto h-12 w-12 text-green-500" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <p class="mt-2 text-sm text-gray-600">🎉 Skill Anda sudah sangat baik!</p>
-                                        <p class="text-xs text-gray-500">Tidak ada rekomendasi khusus saat ini.</p>
-                                    </div>
+                                <div class="text-center py-8">
+                                    <svg class="mx-auto h-12 w-12 text-green-500" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-600">🎉 Skill Anda sudah sangat baik!</p>
+                                    <p class="text-xs text-gray-500">Tidak ada rekomendasi khusus saat ini.</p>
+                                </div>
                                 @endforelse
                             </div>
 
@@ -218,35 +222,36 @@
                             <h3 class="text-lg font-bold text-gray-900 mb-4">🗓️ Roadmap 6 Bulan</h3>
 
                             @if (($roadmapExists ?? false) && isset($roadmapMilestones) && count($roadmapMilestones) > 0)
-                                <div class="space-y-3">
-                                    @foreach ($roadmapMilestones as $milestone)
-                                        <div class="flex items-start gap-3">
-                                            <div
-                                                class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
-                                                {{ $milestone->month_number }}
-                                            </div>
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-900">Bulan
-                                                    {{ $milestone->month_number }}: {{ $milestone->milestone_title }}</p>
-                                                <p class="text-xs text-gray-500">{{ $milestone->milestone_description }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                            <div class="space-y-3">
+                                @foreach ($roadmapMilestones as $milestone)
+                                <div class="flex items-start gap-3">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
+                                        {{ $milestone->month_number }}
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Bulan
+                                            {{ $milestone->month_number }}: {{ $milestone->milestone_title }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">{{ $milestone->milestone_description }}</p>
+                                    </div>
                                 </div>
-                                <a href="{{ route('seeker.roadmap.index') }}"
-                                    class="mt-4 block w-full text-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
-                                    Lihat Roadmap Lengkap
-                                </a>
+                                @endforeach
+                            </div>
+                            <a href="{{ route('seeker.roadmap.index') }}"
+                                class="mt-4 block w-full text-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                                Lihat Roadmap Lengkap
+                            </a>
                             @else
-                                <p class="text-sm text-gray-600 mb-4">Roadmap personal akan dibuat otomatis setelah
-                                    asesmen selesai.</p>
-                                <form action="{{ route('seeker.roadmap.generate', $assessment->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
-                                        Generate Roadmap
-                                    </button>
-                                </form>
+                            <p class="text-sm text-gray-600 mb-4">Roadmap personal akan dibuat otomatis setelah
+                                asesmen selesai.</p>
+                            <form action="{{ route('seeker.roadmap.generate', $assessment->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
+                                    Generate Roadmap
+                                </button>
+                            </form>
                             @endif
                         </div>
 
@@ -354,18 +359,18 @@
             function updateChartColors(chart, isDark) {
                 const textColor = isDark ? '#9ca3af' : '#6b7280';
                 const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                
+
                 if (chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels) {
                     chart.options.plugins.legend.labels.color = textColor;
                 }
-                
+
                 if (chart.options.scales.r) {
                     if (!chart.options.scales.r.pointLabels) chart.options.scales.r.pointLabels = {};
                     chart.options.scales.r.pointLabels.color = textColor;
-                    
+
                     if (!chart.options.scales.r.grid) chart.options.scales.r.grid = {};
                     chart.options.scales.r.grid.color = gridColor;
-                    
+
                     if (!chart.options.scales.r.angleLines) chart.options.scales.r.angleLines = {};
                     chart.options.scales.r.angleLines.color = gridColor;
                 }
@@ -383,8 +388,10 @@
                     }
                 });
             });
-            
-            observer.observe(document.documentElement, { attributes: true });
+
+            observer.observe(document.documentElement, {
+                attributes: true
+            });
         });
     </script>
 </x-app-layout>

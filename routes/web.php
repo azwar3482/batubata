@@ -47,11 +47,11 @@ Route::get('/', function () {
 
 
 
-Route::prefix('industry')->name('industry.')->group(function () {
+Route::prefix('industry')->name('industry.')->middleware(['auth', 'verified', 'role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Industry\DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::prefix('education')->name('education.')->group(function () {
+Route::prefix('education')->name('education.')->middleware(['auth', 'verified', 'role:education'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Education\DashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -59,7 +59,7 @@ Route::prefix('education')->name('education.')->group(function () {
 
 
 // Group Industri
-Route::prefix('industry')->name('industry.')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('industry')->name('industry.')->middleware(['auth', 'verified', 'role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer'])->group(function () {
     Route::get('/dashboard', [IndustryDashboard::class, 'index'])->name('dashboard');
     Route::get('/jobs', [JobPostingController::class, 'index'])->name('jobs.index');
     Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create');
@@ -90,24 +90,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =====================
     // JOB SEEKER ROUTES
     // =====================
-    Route::prefix('seeker')->name('seeker.')->group(function () {
+    Route::prefix('seeker')->name('seeker.')->middleware('role:job_seeker')->group(function () {
 
         // routes/web.php - inside seeker group
 
-        // Tambahkan di dalam admin group
+        // Settings (Seeker)
         Route::get('/settings', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
         Route::post('/settings/competency/{id}', [App\Http\Controllers\Admin\SettingsController::class, 'updateCompetency'])->name('admin.settings.competency.update');
         Route::post('/settings/system', [App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings'])->name('admin.settings.system');
         Route::post('/settings/sync', [App\Http\Controllers\Admin\SettingsController::class, 'syncCompetencies'])->name('admin.settings.sync');
-
-        // Tambahkan di dalam education group
-        // Route programs dipindahkan ke education group
-
-        // Education Program Create Route (inside education group)
-        // Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('education.programs.create');
-
-
-
 
         // Tambahkan di dalam seeker group
         Route::get('/jobs/all', [App\Http\Controllers\JobController::class, 'index'])->name('jobs.all');
@@ -148,12 +139,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/my-progress', [CourseController::class, 'myProgress'])->name('courses.my-progress');
         Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+        Route::get('/courses/{id}/learn', [CourseController::class, 'learn'])->name('courses.learn');
         Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
         Route::put('/courses/{id}/progress', [CourseController::class, 'updateProgress'])->name('courses.update-progress');
         Route::post('/courses/{id}/complete', [CourseController::class, 'complete'])->name('courses.complete');
 
         // Reports
         Route::get('/reports/assessment/{id}/pdf', [ReportController::class, 'downloadAssessment'])->name('reports.assessment.pdf');
+
+        // CV Preview & Download
+        Route::get('/cv/preview', [App\Http\Controllers\CvController::class, 'preview'])->name('cv.preview');
+        Route::get('/cv/download', [App\Http\Controllers\CvController::class, 'download'])->name('cv.download');
+
+        // Career Fields / Roadmap Jurusan
+        Route::get('/career-fields', [App\Http\Controllers\CareerFieldController::class, 'index'])->name('career-fields.index');
+        Route::get('/career-fields/{slug}', [App\Http\Controllers\CareerFieldController::class, 'show'])->name('career-fields.show');
 
         // TPA (Tes Potensi Akademik)
         Route::get('/tpa', [App\Http\Controllers\SeekerTpaController::class, 'index'])->name('tpa.index');
@@ -170,11 +170,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =====================
     // ADMIN ROUTES
     // =====================
-    Route::prefix('admin')->name('admin.')->middleware('can:access-admin')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('can:access-admin', 'role:admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
         Route::get('/competencies', [AdminDashboardController::class, 'competencies'])->name('competencies');
         Route::get('/reports', [AdminDashboardController::class, 'reports'])->name('reports');
+
+        // Settings & Competency Management
+        Route::get('/settings', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');
+        Route::post('/settings/competency/{id}', [App\Http\Controllers\Admin\SettingsController::class, 'updateCompetency'])->name('settings.competency.update');
+        Route::post('/settings/system', [App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings'])->name('settings.system');
+        Route::post('/settings/sync', [App\Http\Controllers\Admin\SettingsController::class, 'syncCompetencies'])->name('settings.sync');
 
         // TPA Management
         Route::get('/tpa', [App\Http\Controllers\Admin\TpaController::class, 'dashboard'])->name('tpa.dashboard');
@@ -198,7 +204,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =====================
     // INDUSTRY ROUTES
     // =====================
-    Route::prefix('industry')->name('industry.')->group(function () {
+    Route::prefix('industry')->name('industry.')->middleware('role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer')->group(function () {
         Route::get('/dashboard', [IndustryDashboardController::class, 'index'])->name('dashboard');
         Route::get('/dashboard/report', [IndustryDashboardController::class, 'downloadReport'])->name('dashboard.report');
         Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create');
@@ -248,7 +254,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =====================
     // EDUCATION ROUTES
     // =====================
-    Route::prefix('education')->name('education.')->group(function () {
+    Route::prefix('education')->name('education.')->middleware('role:education')->group(function () {
         Route::get('/dashboard', [EducationDashboardController::class, 'index'])->name('dashboard');
         Route::get('/analytics', function () {
             return view('education.analytics');
@@ -293,12 +299,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // Admin Routes (Update yang sebelumnya)
-    Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin', 'role:admin'])->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
+        // Settings & Competency Management
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');
+        Route::post('/settings/competency/{id}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateCompetency'])->name('settings.competency.update');
+        Route::post('/settings/system', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings'])->name('settings.system');
+        Route::post('/settings/sync', [\App\Http\Controllers\Admin\SettingsController::class, 'syncCompetencies'])->name('settings.sync');
 
-
-
+        // Users (Manual Routes agar nama route simpel: admin.users)
 
 
 
@@ -342,6 +352,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/ai-workflow/diagnostic', [\App\Http\Controllers\Admin\DashboardController::class, 'runDiagnostic'])->name('ai-workflow.diagnostic');
         Route::get('/ai-workflow/user-documents/{userId}', [\App\Http\Controllers\Admin\DashboardController::class, 'getUserDocuments'])->name('ai-workflow.user-documents');
         Route::get('/ai-workflow/extract-text/{documentId}', [\App\Http\Controllers\Admin\DashboardController::class, 'extractDocumentText'])->name('ai-workflow.extract-text');
+
+        // Chat FAQ Management
+        Route::resource('chat-faqs', \App\Http\Controllers\Admin\ChatFaqController::class);
+
+        // Career Fields Management
+        Route::resource('career-fields', \App\Http\Controllers\Admin\CareerFieldController::class);
+        Route::get('/career-fields/{careerField}/paths', [\App\Http\Controllers\Admin\CareerFieldController::class, 'paths'])->name('career-fields.paths');
+        Route::get('/career-fields/{careerField}/paths/create', [\App\Http\Controllers\Admin\CareerFieldController::class, 'createPath'])->name('career-fields.create-path');
+        Route::post('/career-fields/{careerField}/paths', [\App\Http\Controllers\Admin\CareerFieldController::class, 'storePath'])->name('career-fields.store-path');
+        Route::get('/career-fields/{careerField}/paths/{path}/edit', [\App\Http\Controllers\Admin\CareerFieldController::class, 'editPath'])->name('career-fields.edit-path');
+        Route::put('/career-fields/{careerField}/paths/{path}', [\App\Http\Controllers\Admin\CareerFieldController::class, 'updatePath'])->name('career-fields.update-path');
+        Route::delete('/career-fields/{careerField}/paths/{path}', [\App\Http\Controllers\Admin\CareerFieldController::class, 'destroyPath'])->name('career-fields.destroy-path');
     });
 
 
@@ -358,6 +380,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
     Route::put('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+
+    // Chat Agent
+    Route::prefix('chat')->name('chat.')->group(function () {
+        Route::post('/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send');
+        Route::get('/history', [App\Http\Controllers\ChatController::class, 'history'])->name('history');
+        Route::get('/sessions', [App\Http\Controllers\ChatController::class, 'sessions'])->name('sessions');
+        Route::delete('/history', [App\Http\Controllers\ChatController::class, 'clearHistory'])->name('clear');
+        Route::get('/suggestions', [App\Http\Controllers\ChatController::class, 'suggestions'])->name('suggestions');
+        Route::get('/status', [App\Http\Controllers\ChatController::class, 'status'])->name('status');
+    });
 });
 
 // Google Auth

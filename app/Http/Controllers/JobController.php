@@ -22,7 +22,7 @@ class JobController extends Controller
         $jobs = $this->jobSearchService->searchJobs($request->all(), $user);
         $filters = $this->jobSearchService->getFilters();
 
-        return view('jobs.all', array_merge(['jobs' => $jobs], $filters));
+        return view('jobs.index', array_merge(['jobs' => $jobs], $filters));
     }
 
     public function show($id)

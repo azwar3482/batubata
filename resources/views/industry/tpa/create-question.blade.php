@@ -1,4 +1,21 @@
 <x-app-layout>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        .trix-button-group { background: white; }
+        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+        trix-editor { min-height: 150px; }
+        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content a { color: #3b82f6; text-decoration: underline; }
+        .trix-content strong { font-weight: 700; }
+        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+    </style>
+
 <div class="px-4 sm:px-6 lg:px-8 py-8">
     {{-- Header --}}
     <div class="mb-6">
@@ -112,12 +129,14 @@
                     <div class="p-6 space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Pertanyaan <span class="text-red-500">*</span></label>
-                            <textarea name="question_text" x-model="questionText"
-                                      class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-xl shadow-sm focus:ring-purple-500 focus:border-purple-500"
-                                      rows="5" required placeholder="Tuliskan soal di sini...
+                            <input id="question_text" type="hidden" name="question_text" x-model="questionText">
+                            <trix-editor input="question_text"
+                                         class="trix-content w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-xl shadow-sm focus:border-purple-500 focus:ring-purple-500 transition-colors"
+                                         @trix-change="questionText = $event.target.value"
+                                         placeholder="Tuliskan soal di sini...
 
 Contoh:
-Pilih kata yang memiliki arti SAMA dengan kata SEDIH:"></textarea>
+Pilih kata yang memiliki arti SAMA dengan kata SEDIH:"></trix-editor>
                             <div class="flex items-center justify-between mt-1.5">
                                 <span class="text-xs text-gray-400 dark:text-gray-500" x-text="questionText.length + ' karakter'"></span>
                                 <span class="text-xs text-gray-400 dark:text-gray-500">Minimal 10 karakter</span>
@@ -214,13 +233,14 @@ Pilih kata yang memiliki arti SAMA dengan kata SEDIH:"></textarea>
                         </div>
                     </div>
                     <div class="p-6">
-                        <textarea name="explanation" x-model="explanation"
-                                  class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-xl shadow-sm focus:ring-amber-500 focus:border-amber-500"
-                                  rows="3"
-                                  placeholder="Jelaskan mengapa jawaban tersebut benar...
+                        <input id="explanation" type="hidden" name="explanation" x-model="explanation">
+                        <trix-editor input="explanation"
+                                     class="trix-content w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-xl shadow-sm focus:border-amber-500 focus:ring-amber-500 transition-colors"
+                                     @trix-change="explanation = $event.target.value"
+                                     placeholder="Jelaskan mengapa jawaban tersebut benar...
 
 Contoh:
-Murung memiliki arti yang sama dengan sedih, yaitu perasaan tidak gembira atau sedih."></textarea>
+Murung memiliki arti yang sama dengan sedih, yaitu perasaan tidak gembira atau sedih."></trix-editor>
                         <div class="flex items-center justify-between mt-1.5">
                             <span class="text-xs text-gray-400 dark:text-gray-500" x-text="explanation.length + ' karakter'"></span>
                             <span class="text-xs text-gray-400 dark:text-gray-500">Tampilan: kandidat setelah menjawab</span>
@@ -260,7 +280,7 @@ Murung memiliki arti yang sama dengan sedih, yaitu perasaan tidak gembira atau s
                             {{-- Question Preview --}}
                             <div>
                                 <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">Soal</p>
-                                <p class="text-sm text-gray-800 dark:text-gray-200" x-text="questionText || 'Belum diisi...'"></p>
+                                <div class="text-sm text-gray-800 dark:text-gray-200 trix-content" x-html="questionText || 'Belum diisi...'"></div>
                             </div>
 
                             {{-- Options Preview --}}
@@ -284,7 +304,7 @@ Murung memiliki arti yang sama dengan sedih, yaitu perasaan tidak gembira atau s
                             {{-- Explanation Preview --}}
                             <div x-show="explanation">
                                 <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">Penjelasan</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-300 bg-amber-50 p-2 rounded-lg" x-text="explanation"></p>
+                                <div class="text-xs text-gray-600 dark:text-gray-300 bg-amber-50 dark:bg-amber-900/20 p-2 rounded-lg trix-content" x-html="explanation"></div>
                             </div>
                         </div>
                     </div>

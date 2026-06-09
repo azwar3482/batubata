@@ -122,6 +122,44 @@
             overflow-y: visible !important;
         }
 
+        /* Light Mode - Menu Link Hover Styles */
+        .menu-link {
+            position: relative;
+            transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease !important;
+            cursor: pointer !important;
+            user-select: none;
+        }
+
+        .menu-link:hover {
+            background-color: #f0f4ff !important;
+            color: #1e40af !important;
+        }
+
+        .menu-link:hover .sidebar-icon {
+            color: #2563eb !important;
+        }
+
+        .menu-link:hover .sidebar-text {
+            color: #1e40af !important;
+        }
+
+        /* Active state - stronger visual */
+        .menu-link.bg-gradient-to-r {
+            background: linear-gradient(to right, #dbeafe, #e0e7ff) !important;
+            color: #1e40af !important;
+            border-left: 4px solid #2563eb !important;
+            font-weight: 600 !important;
+        }
+
+        .menu-link.bg-gradient-to-r .sidebar-icon {
+            color: #2563eb !important;
+        }
+
+        /* Remove scale transform that causes click issues */
+        .menu-link:active {
+            transform: none !important;
+        }
+
         /* Dark Mode Overrides for Sidebar */
         .dark .menu-link.text-slate-600 {
             color: #cbd5e1;
@@ -138,6 +176,65 @@
             border-color: #3b82f6 !important;
         }
 
+        /* ============================================ */
+        /* GLOBAL HOVER STYLES - LIGHT MODE             */
+        /* ============================================ */
+
+        /* Table Row Hover */
+        tbody tr {
+            transition: all 0.15s ease !important;
+        }
+        tbody tr:hover {
+            background-color: #f0f4ff !important;
+            box-shadow: inset 3px 0 0 #3b82f6;
+        }
+
+        /* Table Header Hover */
+        thead th {
+            transition: all 0.15s ease !important;
+            cursor: default;
+        }
+        thead th:hover {
+            background-color: #e8edf5 !important;
+            color: #1e40af !important;
+        }
+
+        /* Link Hover */
+        a:not(.menu-link):not(.btn) {
+            transition: all 0.15s ease !important;
+        }
+
+        /* Button Hover */
+        button:not([disabled]) {
+            transition: all 0.15s ease !important;
+        }
+
+        /* Card/Section Hover */
+        .bg-white.rounded-xl, .bg-white.rounded-2xl {
+            transition: all 0.2s ease !important;
+        }
+        .bg-white.rounded-xl:hover, .bg-white.rounded-2xl:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        /* Input Focus */
+        input:focus, select:focus, textarea:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+            outline: none !important;
+        }
+
+        /* Pagination Link Hover */
+        .pagination a, .pagination button {
+            transition: all 0.15s ease !important;
+        }
+        .pagination a:hover, .pagination button:hover {
+            background-color: #dbeafe !important;
+            color: #1e40af !important;
+            border-color: #93c5fd !important;
+        }
+
+        /* Dark Mode Overrides for Sidebar */
         .dark .sidebar-icon.text-slate-400 {
             color: #64748b;
         }
@@ -504,7 +601,7 @@
     </style>
     <script>
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('color-theme') === 'dark' || !('color-theme' in localStorage)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark')
@@ -564,7 +661,7 @@
                     <!-- Menu Job Seeker -->
                     <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
                     <a href="{{ route('dashboard') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
@@ -576,7 +673,7 @@
 
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Eksplorasi Karir</div>
                     <a href="{{ route('seeker.assessment.start') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.assessment.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.assessment.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.assessment.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
@@ -587,7 +684,7 @@
                     </a>
 
                     <a href="{{ route('seeker.roadmap.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.roadmap.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.roadmap.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.roadmap.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.806-.984A1 1 0 0119.5 7H15m0 0V3m0 4h4">
@@ -599,7 +696,7 @@
 
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Peluang & Pengembangan</div>
                     <a href="{{ route('seeker.jobs.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.jobs.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.jobs.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.jobs.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -620,7 +717,7 @@
                     </a>
 
                     <a href="{{ route('seeker.courses.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.courses.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.courses.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.courses.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -631,7 +728,7 @@
                     </a>
 
                     <a href="{{ route('seeker.tpa.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('seeker.tpa.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.tpa.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.tpa.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
@@ -650,11 +747,22 @@
                         </span>
                         @endif
                     </a>
+
+                    <a href="{{ route('seeker.career-fields.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.career-fields.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.career-fields.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.806-.984A1 1 0 0119.5 7H15m0 0V3m0 4h4">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Roadmap Karir</span>
+                        <div class="menu-tooltip">Roadmap Karir</div>
+                    </a>
                     @elseif(Auth::user()->isIndustryOrStaff())
                     <!-- Menu Industry/HRD -->
                     <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
                     <a href="{{ route('industry.dashboard') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('industry.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
@@ -667,7 +775,7 @@
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Rekrutmen</div>
                     @can('post_jobs')
                     <a href="{{ route('industry.jobs.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.jobs.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('industry.jobs.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.jobs.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
                             </path>
@@ -679,7 +787,7 @@
 
                     @can('view_candidates')
                     <a href="{{ route('industry.candidates') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.candidates*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('industry.candidates*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.candidates*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
@@ -692,7 +800,7 @@
 
                     @can('view_candidates')
                     <a href="{{ route('industry.tpa.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.tpa.index') || request()->routeIs('industry.tpa.create') || request()->routeIs('industry.tpa.edit') || request()->routeIs('industry.tpa.results*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('industry.tpa.index') || request()->routeIs('industry.tpa.create') || request()->routeIs('industry.tpa.edit') || request()->routeIs('industry.tpa.results*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.tpa.index') || request()->routeIs('industry.tpa.create') || request()->routeIs('industry.tpa.edit') || request()->routeIs('industry.tpa.results*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
@@ -703,7 +811,7 @@
                     </a>
 
                     <a href="{{ route('industry.tpa.questions') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.tpa.questions*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('industry.tpa.questions*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.tpa.questions*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
@@ -717,7 +825,7 @@
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Internal</div>
                     @if(Auth::user()->isIndustry() || Auth::user()->role === 'staf_hr_manager')
                     <a href="{{ route('industry.team') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('industry.team*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('industry.team*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.team*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
@@ -731,7 +839,7 @@
                     <!-- Menu Education -->
                     <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
                     <a href="{{ route('education.dashboard') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('education.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
@@ -742,7 +850,7 @@
                     </a>
 
                     <a href="{{ route('education.analytics') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.analytics*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('education.analytics*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.analytics*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
@@ -754,7 +862,7 @@
 
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Data</div>
                     <a href="{{ route('education.students') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.students*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('education.students*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.students*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
@@ -766,7 +874,7 @@
 
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Pembelajaran</div>
                     <a href="{{ route('education.courses.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('education.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.courses*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
@@ -776,7 +884,7 @@
                         <div class="menu-tooltip">Kelola Kursus</div>
                     </a>
                         <a href="{{ route('education.programs') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('education.programs*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('education.programs*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.programs*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
@@ -791,7 +899,7 @@
                     <div class="pt-2 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
 
                     <a href="{{ route('admin.dashboard') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
@@ -802,7 +910,7 @@
                     </a>
 
                     <a href="{{ route('admin.reports') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.reports*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.reports*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.reports*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -815,7 +923,7 @@
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Utama</div>
 
                     <a href="{{ route('admin.users') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.users*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.users*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.users*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
@@ -826,7 +934,7 @@
                     </a>
 
                     <a href="{{ route('admin.competencies') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.competencies*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.competencies*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.competencies*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
@@ -836,8 +944,20 @@
                         <div class="menu-tooltip">Kompetensi</div>
                     </a>
 
+                    <a href="{{ route('admin.settings') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.settings') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.settings') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Pengaturan</span>
+                        <div class="menu-tooltip">Pengaturan</div>
+                    </a>
+
                     <a href="{{ route('admin.tpa.dashboard') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.tpa.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.tpa.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.tpa.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
@@ -848,7 +968,7 @@
                     </a>
 
                     <a href="{{ route('admin.courses.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.courses*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.courses*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
@@ -859,7 +979,7 @@
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Master Data</div>
 
                     <a href="{{ route('admin.categories.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.categories*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.categories*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.categories*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
@@ -870,7 +990,7 @@
                     </a>
 
                     <a href="{{ route('admin.positions.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.positions*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.positions*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.positions*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -883,7 +1003,7 @@
                     <div class="pt-4 pb-2 px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Sistem AI</div>
 
                     <a href="{{ route('admin.ai-workflow') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.ai-workflow*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.ai-workflow*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.ai-workflow*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                         </svg>
@@ -892,7 +1012,7 @@
                     </a>
 
                     <a href="{{ route('admin.document-weights.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.document-weights*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.document-weights*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.document-weights*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
                         </svg>
@@ -901,12 +1021,30 @@
                     </a>
 
                     <a href="{{ route('admin.skill-keywords.index') }}"
-                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] {{ request()->routeIs('admin.skill-keywords*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.skill-keywords*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.skill-keywords*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                         <span class="sidebar-text transition-all duration-300">{{ __('messages.ai_dictionary') }}</span>
                         <div class="menu-tooltip">{{ __('messages.ai_dictionary') }}</div>
+                    </a>
+
+                    <a href="{{ route('admin.chat-faqs.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.chat-faqs*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.chat-faqs*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Chat FAQ</span>
+                        <div class="menu-tooltip">Chat FAQ</div>
+                    </a>
+
+                    <a href="{{ route('admin.career-fields.index') }}"
+                        class="group flex items-center menu-link px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300  {{ request()->routeIs('admin.career-fields*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.career-fields*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.806-.984A1 1 0 0119.5 7H15m0 0V3m0 4h4"></path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Roadmap Karir</span>
+                        <div class="menu-tooltip">Roadmap Karir</div>
                     </a>
                     @endif
 
@@ -927,7 +1065,7 @@
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Navbar -->
-            <header class="flex items-center justify-between h-16 px-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 sticky top-0 z-40 shadow-sm shadow-slate-100/40 dark:shadow-none transition-colors duration-300">
+            <header class="flex items-center justify-between h-16 px-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/60 sticky top-0 z-40 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50 transition-all duration-300 mb-6 lg:mb-8">
 
                 <!-- Left Side: Burger & Mobile Logo -->
                 <div class="flex items-center">
@@ -1213,6 +1351,17 @@
                 @endif
 
                 {{ $slot }}
+
+                <!-- Global Footer -->
+                <footer class="mt-auto pt-8 pb-6 text-center">
+                    <div class="border-t border-slate-200 dark:border-slate-800/60 pt-6">
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <span>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA.</span>
+                            <span class="hidden sm:inline">&middot;</span>
+                            <span>Hak Cipta Dilindungi.</span>
+                        </div>
+                    </div>
+                </footer>
             </main>
         </div>
     </div>
@@ -1221,7 +1370,7 @@
         var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('color-theme') === 'dark' || !('color-theme' in localStorage)) {
             themeToggleLightIcon.classList.remove('hidden');
         } else {
             themeToggleDarkIcon.classList.remove('hidden');
@@ -1275,6 +1424,11 @@
             }).catch(() => {});
         }
     </script>
+
+    {{-- Chat Widget --}}
+    @if(Auth::check())
+    <x-chat-widget />
+    @endif
 </body>
 
 </html>

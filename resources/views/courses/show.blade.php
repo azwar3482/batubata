@@ -117,7 +117,7 @@
 
                                 <div class="mt-6 pt-6 border-t border-gray-200">
                                     @if ($progress)
-                                    <a href="{{ $course->url }}" target="_blank"
+                                    <a href="{{ route('seeker.courses.learn', $course->id) }}"
                                         class="block w-full text-center px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium">
                                         Lanjutkan Belajar
                                     </a>

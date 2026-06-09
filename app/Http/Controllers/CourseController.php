@@ -67,6 +67,18 @@ class CourseController extends Controller
         return view('courses.show', compact('course', 'progress'));
     }
 
+    public function learn($id)
+    {
+        $course = $this->courseService->getCourseDetails($id);
+        $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
+
+        if (!$progress) {
+            return redirect()->route('seeker.courses.show', $id)->with('error', 'Anda harus mendaftar kursus ini terlebih dahulu.');
+        }
+
+        return view('courses.learn', compact('course', 'progress'));
+    }
+
     public function enroll($id, Request $request)
     {
         $progress = $this->courseService->enrollUser(Auth::id(), $id);

@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'role.redirect' => RoleRedirect::class,
+            'role' => \App\Http\Middleware\CheckRole::class,
             'profile.complete' => \App\Http\Middleware\EnsureProfileIsCompleted::class,
         ]);
     })

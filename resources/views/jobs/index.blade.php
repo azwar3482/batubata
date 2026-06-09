@@ -191,7 +191,7 @@
                                 @endif
                                 <td class="px-6 py-4 text-right whitespace-nowrap">
                                     <div class="flex flex-col items-end gap-2 w-full max-w-[140px] ml-auto">
-                                        <a href="{{ route('seeker.jobs.detail', $job->id) }}" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-medium rounded-md transition">
+                                        <a href="{{ route('seeker.jobs.detail', $job->id) }}" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/40 text-xs font-medium rounded-md transition">
                                             Detail
                                         </a>
                                         @if(!$job->user_status || $job->user_status === 'saved')

@@ -1,4 +1,22 @@
 <x-app-layout>
+    <!-- Trix Editor -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        .trix-button-group { background: white; }
+        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+        trix-editor { min-height: 150px; }
+        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content a { color: #3b82f6; text-decoration: underline; }
+        .trix-content strong { font-weight: 700; }
+        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+    </style>
+
     <div class="max-w-7xl mx-auto px-4 py-8" x-data="{ activeTab: 'tes' }" x-cloak>
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
             <div>
@@ -212,37 +230,39 @@
 
                 <div class="p-6">
                     {{-- TIPE TPA --}}
-                    <div class="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                        <label class="block text-sm font-semibold text-gray-800 mb-3">1. Pilih Tipe Tes TPA</label>
+                    <div class="mb-6 bg-gray-50 dark:bg-slate-800/50 p-5 rounded-xl border border-gray-200 dark:border-slate-700">
+                        <label class="block text-sm font-semibold text-gray-800 dark:text-slate-200 mb-3">1. Pilih Tipe Tes TPA</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <label class="relative cursor-pointer" @click="tpaType = 'online'">
-                                <input type="radio" name="tpa_type" value="online" x-model="tpaType" class="peer sr-only">
-                                <div class="p-4 border-2 rounded-xl transition-all peer-checked:border-purple-500 peer-checked:bg-purple-50 border-gray-200 hover:border-gray-300">
+                                <input type="radio" name="tpa_type" value="online" x-model="tpaType" class="sr-only">
+                                <div class="p-4 border-2 rounded-xl transition-all"
+                                     :class="tpaType === 'online' ? 'border-purple-500 bg-purple-50 dark:border-purple-400 dark:bg-purple-900/40' : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800'">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="font-semibold text-gray-800">Tes Online</div>
-                                            <div class="text-xs text-gray-500">Kandidat mengerjakan tes di browser</div>
+                                            <div class="font-semibold text-gray-800 dark:text-slate-200">Tes Online</div>
+                                            <div class="text-xs text-gray-500 dark:text-slate-400">Kandidat mengerjakan tes di browser</div>
                                         </div>
                                     </div>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer" @click="tpaType = 'offline'">
-                                <input type="radio" name="tpa_type" value="offline" x-model="tpaType" class="peer sr-only">
-                                <div class="p-4 border-2 rounded-xl transition-all peer-checked:border-purple-500 peer-checked:bg-purple-50 border-gray-200 hover:border-gray-300">
+                                <input type="radio" name="tpa_type" value="offline" x-model="tpaType" class="sr-only">
+                                <div class="p-4 border-2 rounded-xl transition-all"
+                                     :class="tpaType === 'offline' ? 'border-amber-500 bg-amber-50 dark:border-amber-400 dark:bg-amber-900/40' : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800'">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="font-semibold text-gray-800">Tes Offline</div>
-                                            <div class="text-xs text-gray-500">Kandidat datang ke lokasi tes</div>
+                                            <div class="font-semibold text-gray-800 dark:text-slate-200">Tes Offline</div>
+                                            <div class="text-xs text-gray-500 dark:text-slate-400">Kandidat datang ke lokasi tes</div>
                                         </div>
                                     </div>
                                 </div>
@@ -251,9 +271,9 @@
                     </div>
 
                     {{-- PILIH TES (hanya untuk online) --}}
-                    <div x-show="tpaType === 'online'" x-transition class="mb-6 bg-purple-50 p-5 rounded-xl border border-purple-100">
-                        <label class="block text-sm font-semibold text-purple-900 mb-2">2. Pilih Tes TPA yang Akan Digunakan</label>
-                        <select x-model="selectedTest" class="w-full border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm">
+                    <div x-show="tpaType === 'online'" x-transition class="mb-6 bg-purple-50 dark:bg-purple-900/10 p-5 rounded-xl border border-purple-100 dark:border-purple-900/30">
+                        <label class="block text-sm font-semibold text-purple-900 dark:text-purple-300 mb-2">2. Pilih Tes TPA yang Akan Digunakan</label>
+                        <select x-model="selectedTest" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm">
                             <option value="">-- Silakan Pilih Tes TPA --</option>
                             @foreach($tests as $test)
                             <option value="{{ $test->id }}">{{ $test->title }} &mdash; {{ $test->total_questions }} soal ({{ $test->time_limit_minutes }} menit) | Passing: {{ $test->passing_score }}%</option>
@@ -270,8 +290,8 @@
                                 <input type="hidden" name="application_ids[]" :value="id">
                             </template>
 
-                            <div class="bg-amber-50 p-5 rounded-xl border border-amber-200">
-                                <h3 class="font-semibold text-amber-900 mb-4 flex items-center gap-2">
+                            <div class="bg-amber-50 dark:bg-amber-900/10 p-5 rounded-xl border border-amber-200 dark:border-amber-900/30">
+                                <h3 class="font-semibold text-amber-900 dark:text-amber-300 mb-4 flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                     </svg>
@@ -279,47 +299,47 @@
                                 </h3>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Judul Tes <span class="text-red-500">*</span></label>
-                                        <input type="text" name="offline_title" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Judul Tes <span class="text-red-500">*</span></label>
+                                        <input type="text" name="offline_title" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                             placeholder="Contoh: Tes TPA Offline - Web Developer" value="Tes TPA Offline">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Instruksi Tes <span class="text-red-500">*</span></label>
-                                        <textarea name="offline_instructions" rows="4" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
-                                            placeholder="Jelaskan instruksi tes, apa yang perlu dibawa, materi yang diuji, dll..."></textarea>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Instruksi Tes <span class="text-red-500">*</span></label>
+                                        <input id="offline_instructions" type="hidden" name="offline_instructions">
+                                        <trix-editor input="offline_instructions" class="trix-content rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-amber-500 focus:ring-amber-500 transition-colors" placeholder="Jelaskan instruksi tes, apa yang perlu dibawa, materi yang diuji, dll..."></trix-editor>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal & Waktu <span class="text-red-500">*</span></label>
-                                            <input type="datetime-local" name="offline_scheduled_at" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500">
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Tanggal & Waktu <span class="text-red-500">*</span></label>
+                                            <input type="datetime-local" name="offline_scheduled_at" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500">
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi Tes <span class="text-red-500">*</span></label>
-                                            <input type="text" name="offline_location" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Lokasi Tes <span class="text-red-500">*</span></label>
+                                            <input type="text" name="offline_location" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                                 placeholder="Contoh: Kantor Pusat, Lt. 3, Ruang HRD">
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">PIC (Penanggung Jawab)</label>
-                                            <input type="text" name="offline_contact_person" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">PIC (Penanggung Jawab)</label>
+                                            <input type="text" name="offline_contact_person" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                                 placeholder="Nama PIC">
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Telepon PIC</label>
-                                            <input type="text" name="offline_contact_phone" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">No. Telepon PIC</label>
+                                            <input type="text" name="offline_contact_phone" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                                 placeholder="08xxxxxxxxxx">
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Passing Score (%)</label>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Passing Score (%)</label>
                                         <input type="number" name="offline_passing_score" value="60" min="0" max="100"
-                                            class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500">
+                                            class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Catatan Tambahan</label>
-                                        <textarea name="offline_notes" rows="2" class="w-full border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
-                                            placeholder="Catatan tambahan (opsional)..."></textarea>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Catatan Tambahan</label>
+                                        <input id="offline_notes" type="hidden" name="offline_notes">
+                                        <trix-editor input="offline_notes" class="trix-content rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-amber-500 focus:ring-amber-500 transition-colors" placeholder="Catatan tambahan (opsional)..."></trix-editor>
                                     </div>
                                 </div>
                             </div>
@@ -347,7 +367,7 @@
 
                     {{-- DAFTAR KANDIDAT PER LOWONGAN --}}
                     <div class="mb-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                        <label class="block text-sm font-semibold text-gray-800">
+                        <label class="block text-sm font-semibold text-gray-800 dark:text-slate-200">
                             <span x-show="tpaType === 'online'">3.</span>
                             <span x-show="tpaType === 'offline'">2.</span>
                             Pilih Kandidat per Lowongan
@@ -359,10 +379,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
                                 </div>
-                                <input type="text" x-model="searchQuery" placeholder="Cari nama, email, ID..." class="w-full pl-9 pr-3 py-2 border border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm text-sm">
+                                <input type="text" x-model="searchQuery" placeholder="Cari nama, email, ID..." class="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm text-sm">
                             </div>
                             <div class="w-full sm:w-64">
-                                <select x-model="selectedJob" class="w-full border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm text-sm">
+                                <select x-model="selectedJob" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm text-sm">
                                     <option value="all">Semua Lowongan</option>
                                     @foreach($jobsWithCandidates as $job)
                                     <option value="{{ $job->id }}">{{ $job->title }}</option>
@@ -384,45 +404,45 @@
 
                         @if($applications->count() > 0)
                         @php $hasCandidates = true; @endphp
-                        <div x-show="selectedJob === 'all' || selectedJob == {{ $job->id }}" x-transition class="border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-shadow hover:shadow-md">
-                            <div class="px-5 py-4 bg-gray-50 border-b flex items-center justify-between">
+                        <div x-show="selectedJob === 'all' || selectedJob == {{ $job->id }}" x-transition class="border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-sm transition-shadow hover:shadow-md bg-white dark:bg-slate-800">
+                            <div class="px-5 py-4 bg-gray-50 dark:bg-slate-800/50 border-b border-gray-200 dark:border-slate-700 flex items-center justify-between">
                                 <div>
-                                    <h3 class="font-bold text-gray-800 flex items-center gap-2">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <h3 class="font-bold text-gray-800 dark:text-slate-200 flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                         </svg>
                                         {{ $job->title }}
                                     </h3>
-                                    <p class="text-xs text-gray-500 mt-1">{{ $applications->count() }} kandidat belum menerima undangan TPA</p>
+                                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ $applications->count() }} kandidat belum menerima undangan TPA</p>
                                 </div>
                                 <button type="button" @click="toggleAll({{ $job->id }})"
-                                    class="text-sm text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-medium px-3 py-1.5 rounded-lg transition-colors border border-transparent hover:border-purple-200">
+                                    class="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 font-medium px-3 py-1.5 rounded-lg transition-colors border border-transparent hover:border-purple-200 dark:hover:border-purple-800">
                                     Pilih Semua
                                 </button>
                             </div>
-                            <div class="divide-y divide-gray-100 max-h-80 overflow-y-auto">
+                            <div class="divide-y divide-gray-100 dark:divide-slate-700 max-h-80 overflow-y-auto">
                                 @foreach($applications as $app)
                                 <label x-show="searchQuery === '' || '{{ strtolower(addslashes($app->user->name)) }}'.includes(searchQuery.toLowerCase()) || '{{ strtolower(addslashes($app->user->email)) }}'.includes(searchQuery.toLowerCase()) || '{{ $app->user->id }}'.includes(searchQuery)"
-                                    class="flex items-start gap-4 px-5 py-4 hover:bg-indigo-50/30 cursor-pointer transition-colors group">
+                                    class="flex items-start gap-4 px-5 py-4 hover:bg-indigo-50/30 dark:hover:bg-slate-700/50 cursor-pointer transition-colors group">
                                     <div class="mt-1">
                                         <input type="checkbox" value="{{ $app->id }}"
                                             x-model="selectedApplications"
-                                            class="rounded border-gray-300 text-purple-600 focus:ring-purple-500 job-{{ $job->id }} w-5 h-5 cursor-pointer">
+                                            class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-800 text-purple-600 focus:ring-purple-500 job-{{ $job->id }} w-5 h-5 cursor-pointer">
                                     </div>
                                     <div class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
                                         <div class="col-span-1 md:col-span-1">
-                                            <div class="font-medium text-gray-900 group-hover:text-purple-700 transition-colors">{{ $app->user->name }}</div>
-                                            <div class="text-xs text-gray-400 mt-0.5">Sistem ID: {{ $app->user->id }}</div>
+                                            <div class="font-medium text-gray-900 dark:text-slate-200 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors">{{ $app->user->name }}</div>
+                                            <div class="text-xs text-gray-400 dark:text-slate-500 mt-0.5">Sistem ID: {{ $app->user->id }}</div>
                                         </div>
                                         <div class="col-span-1 md:col-span-2">
-                                            <div class="text-sm text-gray-600 flex items-center gap-1.5">
-                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div class="text-sm text-gray-600 dark:text-slate-400 flex items-center gap-1.5">
+                                                <svg class="w-4 h-4 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                                 </svg>
                                                 {{ $app->user->email }}
                                             </div>
-                                            <div class="text-sm text-gray-500 mt-1 flex items-center gap-1.5">
-                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div class="text-sm text-gray-500 dark:text-slate-500 mt-1 flex items-center gap-1.5">
+                                                <svg class="w-4 h-4 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                                 </svg>
                                                 {{ $app->user->phone ?? 'Tidak ada nomor telepon' }}
@@ -430,11 +450,11 @@
                                         </div>
                                         <div class="col-span-1 md:text-right">
                                             @if($app->matching_percentage)
-                                            <span class="inline-flex items-center px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                                            <span class="inline-flex items-center px-2.5 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold border border-green-200 dark:border-green-800">
                                                 Match: {{ $app->matching_percentage }}%
                                             </span>
                                             @endif
-                                            <div class="text-xs text-gray-400 mt-2">
+                                            <div class="text-xs text-gray-400 dark:text-slate-500 mt-2">
                                                 Melamar: {{ $app->created_at->format('d M Y') }}
                                             </div>
                                         </div>
@@ -447,24 +467,24 @@
                         @endforeach
 
                         @if(!$hasCandidates)
-                        <div class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                            <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="text-center py-10 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-dashed border-gray-300 dark:border-slate-700">
+                            <svg class="w-12 h-12 text-gray-300 dark:text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
-                            <p class="text-gray-500 font-medium">Belum ada kandidat yang tersedia untuk diundang.</p>
-                            <p class="text-sm text-gray-400 mt-1">Kandidat akan muncul setelah mereka melamar pada lowongan aktif Anda.</p>
+                            <p class="text-gray-500 dark:text-slate-400 font-medium">Belum ada kandidat yang tersedia untuk diundang.</p>
+                            <p class="text-sm text-gray-400 dark:text-slate-500 mt-1">Kandidat akan muncul setelah mereka melamar pada lowongan aktif Anda.</p>
                         </div>
                         @endif
                     </div>
 
                     {{-- TOMBOL KIRIM --}}
-                    <div class="mt-8 pt-5 border-t border-gray-200">
+                    <div class="mt-8 pt-5 border-t border-gray-200 dark:border-slate-700">
                         {{-- TIPE TPA --}}
 
 
                         <div class="flex flex-col md:flex-row md:items-center justify-between">
-                            <div class="text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg inline-block mb-4 md:mb-0">
-                                Total dipilih: <span x-text="selectedApplications.length" class="font-bold text-purple-700 text-base">0</span> kandidat
+                            <div class="text-sm text-gray-600 dark:text-slate-400 bg-gray-50 dark:bg-slate-800 px-4 py-2 rounded-lg inline-block mb-4 md:mb-0 border border-gray-200 dark:border-slate-700">
+                                Total dipilih: <span x-text="selectedApplications.length" class="font-bold text-purple-700 dark:text-purple-400 text-base">0</span> kandidat
                             </div>
                             <div class="flex gap-3">
                                 {{-- Tombol Online --}}

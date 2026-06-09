@@ -6,11 +6,11 @@
             <div class="mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl font-extrabold text-gray-900">{{ __('messages.team_management') }}</h2>
-                        <p class="mt-2 text-gray-600">{{ __('messages.team_desc') }}</p>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{{ __('messages.team_management') }}</h2>
+                        <p class="mt-2 text-gray-500 dark:text-slate-400">{{ __('messages.team_desc') }}</p>
                     </div>
                     <button @click="$dispatch('open-invite-modal')"
-                        class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-800 transition shadow">
+                        class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
                             </path>
@@ -34,63 +34,62 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-xl p-4 shadow border-l-4 border-blue-500">
-                    <p class="text-sm text-gray-500">{{ __('messages.total_members') }}</p>
-                    <p class="text-2xl font-bold">{{ $teamMembers->count() }}</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-blue-500 hover:shadow-md transition-shadow">
+                    <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.total_members') }}</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $teamMembers->count() }}</p>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow border-l-4 border-green-500">
-                    <p class="text-sm text-gray-500">{{ __('messages.active_members') }}</p>
-                    <p class="text-2xl font-bold">{{ $teamMembers->where('status', 'active')->count() }}</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-green-500 hover:shadow-md transition-shadow">
+                    <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.active_members') }}</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $teamMembers->where('status', 'active')->count() }}</p>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow border-l-4 border-yellow-500">
-                    <p class="text-sm text-gray-500">{{ __('messages.pending_invitations') }}</p>
-                    <p class="text-2xl font-bold">{{ $teamMembers->where('status', 'invited')->count() }}</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-amber-500 hover:shadow-md transition-shadow">
+                    <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.pending_invitations') }}</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $teamMembers->where('status', 'invited')->count() }}</p>
                 </div>
-                <div class="bg-white rounded-xl p-4 shadow border-l-4 border-purple-500">
-                    <p class="text-sm text-gray-500">{{ __('messages.total_roles') }}</p>
-                    <p class="text-2xl font-bold">{{ count($availableRoles) }}</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-purple-500 hover:shadow-md transition-shadow">
+                    <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.total_roles') }}</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ count($availableRoles) }}</p>
                 </div>
             </div>
 
             <!-- Team Members Table -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-                <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-900">{{ __('messages.team_management') }}</h3>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden mb-8">
+                <div class="p-6 border-b border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.team_management') }}</h3>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                    <table class="min-w-full divide-y divide-gray-100 dark:divide-slate-800/50">
+                        <thead class="bg-gray-50 dark:bg-slate-800/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-16">{{ __('messages.no') }}</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.member') }}</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.role') }}</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.permissions') }}
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.status') }}</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.last_active') }}</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{{ __('messages.action') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider w-16">{{ __('messages.no') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider min-w-[200px]">{{ __('messages.member') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider min-w-[160px]">{{ __('messages.role') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider w-[40%] min-w-[300px]">{{ __('messages.permissions') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">{{ __('messages.status') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">{{ __('messages.last_active') }}</th>
+                                <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider w-24">{{ __('messages.action') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-slate-900 divide-y divide-gray-100 dark:divide-slate-800/50">
                             @foreach ($teamMembers as $member)
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $loop->iteration }}</td>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors group">
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-slate-300">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                            class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full shadow-sm flex items-center justify-center text-white font-bold text-sm shrink-0">
                                             {{ $member['avatar'] }}
                                         </div>
                                         <div>
-                                            <p class="font-medium text-gray-900">{{ $member['name'] }}</p>
-                                            <p class="text-sm text-gray-500">{{ $member['email'] }}</p>
+                                            <p class="font-semibold text-gray-900 dark:text-white">{{ $member['name'] }}</p>
+                                            <p class="text-sm text-gray-500 dark:text-slate-400">{{ $member['email'] }}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <select
-                                        class="text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        class="text-sm bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                         onchange="updateRole({{ $member['id'] }}, this.value)">
                                         @foreach ($availableRoles as $role => $label)
                                         <option value="{{ $role }}"
@@ -101,62 +100,57 @@
                                     </select>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="flex flex-wrap gap-1">
+                                    <div class="flex flex-wrap gap-1.5">
                                         @foreach ($member['permissions'] as $perm)
                                         <span
-                                            class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded">{{ $permissions[$perm] ?? $perm }}</span>
+                                            class="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-medium rounded-md border border-blue-100 dark:border-blue-800/50">{{ $permissions[$perm] ?? $perm }}</span>
                                         @endforeach
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($member['status'] == 'active')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5"></span>
                                         {{ __('messages.active') }}
                                     </span>
                                     @elseif ($member['status'] == 'inactive')
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                        <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50">
+                                        <span class="w-1.5 h-1.5 bg-rose-500 rounded-full mr-1.5"></span>
                                         {{ __('messages.inactive') }}
                                     </span>
                                     @else
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        <span
-                                            class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-1.5 animate-pulse"></span>
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50">
+                                        <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-1.5 animate-pulse"></span>
                                         {{ __('messages.invited') }}
                                     </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400 whitespace-nowrap">
                                     {{ $member['last_active'] ? \Carbon\Carbon::parse($member['last_active'])->diffForHumans() : '-' }}
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
+                                    <div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                         @if ($member['status'] == 'invited')
-                                        <button class="text-blue-600 hover:text-blue-900 text-sm font-medium"
+                                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors"
                                             onclick="resendInvite({{ $member['id'] }})">
                                             {{ __('messages.resend_invite') }}
                                         </button>
                                         @endif
-                                        <button class="text-gray-400 hover:text-blue-500 transition"
+                                        <button class="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1"
                                             onclick="editMember({{ $member['id'] }}, '{{ addslashes($member['name']) }}', '{{ $member['email'] }}', '{{ $member['role'] }}', '{{ $member['status'] }}', {{ json_encode($member['permissions']) }})"
                                             title="{{ __('messages.edit') }}">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                             </svg>
                                         </button>
-                                        <button class="text-gray-400 hover:text-red-500 transition"
+                                        <button class="text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors p-1"
                                             onclick="removeMember({{ $member['id'] }}, '{{ addslashes($member['name']) }}')"
                                             title="{{ __('messages.delete') }}">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
                                         </button>
                                     </div>

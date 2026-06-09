@@ -316,6 +316,7 @@
 
 
                     @if(Auth::user()->isJobSeeker())
+
                     <!-- Multi-Document Upload Card -->
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300" x-data="{ selectedFiles: {} }">
                         <div class="flex items-center justify-between mb-4">
@@ -692,6 +693,28 @@
                                     @endif
                                 </div>
                             </div>
+
+                            @if(Auth::user()->role === 'job_seeker')
+                            <!-- CV Preview Accordion -->
+                            <div x-data="{ open: false }" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 hover:shadow-md transition-all duration-300 mb-6">
+                                <button @click="open = !open" type="button" class="flex items-center justify-between w-full focus:outline-none">
+                                    <div class="flex items-center">
+                                        <div class="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg text-blue-600 dark:text-blue-400 mr-3">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path>
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Pratinjau CV</h3>
+                                    </div>
+                                    <svg class="w-5 h-5 text-slate-500 dark:text-slate-400 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition.opacity.duration.300ms style="display: none;" class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                    <x-cv-preview :user="Auth::user()" />
+                                </div>
+                            </div>
+                            @endif
 
                             @if(Auth::user()->role === 'job_seeker')
                             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
