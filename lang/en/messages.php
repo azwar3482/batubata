@@ -130,6 +130,7 @@ return [
     'chat_faq' => 'Chat FAQ',
     'type_message' => 'Type a message...',
     'send' => 'Send',
+    'direct_chats' => 'Messages',
 
     // Settings
     'settings' => 'Settings',

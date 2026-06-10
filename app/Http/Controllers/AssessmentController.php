@@ -10,6 +10,7 @@ use App\Models\CareerRoadmap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Services\RecommendationService;
 use App\Services\RoadmapService;
 
@@ -171,13 +172,14 @@ class AssessmentController extends Controller
                 ->with('success', 'Asesmen berhasil diselesaikan!');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Gagal menyimpan assessment', ['error' => $e->getMessage()]);
             if ($request->wantsJson() || $request->is('api/*')) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()
+                    'message' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.'
                 ], 500);
             }
-            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
         }
     }
 

@@ -13,6 +13,7 @@ use App\Models\UserCompetencyScore;
 use App\Models\Competency;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Services\ReportExportService;
 use App\Jobs\SendDashboardReportJob;
 
@@ -52,8 +53,13 @@ class DashboardController extends Controller
 
     public function reports(Request $request, ReportExportService $exportService)
     {
-        $startDate = $request->input('start_date', now()->subMonth()->format('Y-m-d'));
-        $endDate = $request->input('end_date', now()->format('Y-m-d'));
+        $validated = $request->validate([
+            'start_date' => 'nullable|date|before_or_equal:today',
+            'end_date' => 'nullable|date|before_or_equal:today|after_or_equal:start_date',
+        ]);
+
+        $startDate = $validated['start_date'] ?? now()->subMonth()->format('Y-m-d');
+        $endDate = $validated['end_date'] ?? now()->format('Y-m-d');
 
         // Basic Stats
         $totalUsers = User::count();
@@ -162,9 +168,10 @@ class DashboardController extends Controller
                 'success' => true
             ]);
         } catch (\Exception $e) {
+            Log::error('Gagal ekstrak dokumen', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Gagal memproses dokumen. Silakan coba lagi.'
             ], 500);
         }
     }
@@ -174,7 +181,14 @@ class DashboardController extends Controller
      */
     public function runDiagnostic(Request $request)
     {
-        $type = $request->input('type');
+        $validated = $request->validate([
+            'type' => 'required|string|in:ping,nlp,matching',
+            'cv_text' => 'nullable|string|max:5000',
+            'document_type' => 'nullable|string|max:50',
+            'target_position' => 'nullable|string|max:100',
+        ]);
+
+        $type = $validated['type'];
 
         switch ($type) {
             case 'ping':
@@ -192,10 +206,11 @@ class DashboardController extends Controller
                         'success' => true
                     ]);
                 } catch (\Exception $e) {
+                    Log::error('Diagnostic API offline', ['url' => $baseUrl, 'error' => $e->getMessage()]);
                     return response()->json([
                         'status' => 'offline',
                         'url' => $baseUrl,
-                        'error' => $e->getMessage(),
+                        'error' => 'Layanan tidak dapat dijangkau.',
                         'success' => false
                     ]);
                 }
@@ -286,7 +301,7 @@ class DashboardController extends Controller
                     return response()->json([
                         'mode' => 'simulation',
                         'endpoint' => $url,
-                        'error_message' => $e->getMessage(),
+                        'error_message' => 'Flask offline. Menggunakan fallback.',
                         'explanation' => 'Flask offline. Menggunakan Fallback NLP Keyword Extraction berbasis Regex Laravel.',
                         'input_payload' => $payload,
                         'output_response' => [

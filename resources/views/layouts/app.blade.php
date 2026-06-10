@@ -758,6 +758,25 @@
                         <span class="sidebar-text transition-all duration-300">Roadmap Karir</span>
                         <div class="menu-tooltip">Roadmap Karir</div>
                     </a>
+
+                    <a href="{{ route('seeker.chats.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('seeker.chats.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('seeker.chats.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">{{ __('messages.direct_chats') }}</span>
+                        <div class="menu-tooltip">{{ __('messages.direct_chats') }}</div>
+                        @php
+                            $unreadCountSeeker = Auth::user()->totalUnreadMessages();
+                        @endphp
+                        @if ($unreadCountSeeker > 0)
+                        <span class="ml-auto badge-pulse bg-red-500 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full ring-2 ring-red-100 animate-pulse">
+                            {{ $unreadCountSeeker }}
+                        </span>
+                        @endif
+                    </a>
                     @elseif(Auth::user()->isIndustryOrStaff())
                     <!-- Menu Industry/HRD -->
                     <div class="pt-2 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
@@ -835,6 +854,25 @@
                         <div class="menu-tooltip">{{ __('messages.manage_team') }}</div>
                     </a>
                     @endif
+
+                    <a href="{{ route('industry.chats.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('industry.chats.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.chats.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">{{ __('messages.direct_chats') }}</span>
+                        <div class="menu-tooltip">{{ __('messages.direct_chats') }}</div>
+                        @php
+                            $unreadCountIndustry = Auth::user()->totalUnreadMessages();
+                        @endphp
+                        @if ($unreadCountIndustry > 0)
+                        <span class="ml-auto badge-pulse bg-red-500 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full ring-2 ring-red-100 animate-pulse">
+                            {{ $unreadCountIndustry }}
+                        </span>
+                        @endif
+                    </a>
                     @elseif(Auth::user()->role === 'education')
                     <!-- Menu Education -->
                     <div class="pt-2 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>

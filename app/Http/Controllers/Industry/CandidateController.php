@@ -11,6 +11,7 @@ use App\Models\JobListing;
 use App\Models\TpaTest;
 use App\Models\TpaTestSession;
 use App\Services\TpaService;
+use App\Services\JobMatchingService;
 use Illuminate\Support\Facades\Auth;
 
 class CandidateController extends Controller
@@ -24,17 +25,141 @@ class CandidateController extends Controller
         $this->tpaService = $tpaService;
     }
 
-    public function index()
+    public function index(Request $request, JobMatchingService $matchingService)
     {
         $user = Auth::user();
+        
+        // 1. Get all jobs owned by the company
         $jobIds = JobListing::where('user_id', $user->id)->pluck('id');
+        $activeJobs = JobListing::where('user_id', $user->id)
+            ->where('is_active', true)
+            ->where('expires_date', '>', now())
+            ->with('position')
+            ->get();
 
-        $candidates = UserJobApplication::whereIn('job_listing_id', $jobIds)
-            ->with(['user', 'jobListing', 'user.assessments.scores.competency'])
-            ->orderByDesc('matching_percentage')
-            ->paginate(15);
+        // 2. Fetch applicants who have applied
+        $applications = UserJobApplication::whereIn('job_listing_id', $jobIds)
+            ->with(['user.assessments.scores.competency', 'jobListing'])
+            ->get();
 
-        return view('industry.candidates', compact('candidates'));
+        $applicants = $applications->map(function ($app) {
+            return (object)[
+                'user' => $app->user,
+                'matching_percentage' => $app->matching_percentage,
+                'jobListing' => $app->jobListing,
+                'status' => $app->status,
+                'id' => $app->id,
+                'has_applied' => true
+            ];
+        });
+
+        // 3. Fetch qualified non-applicants (match >= 70%)
+        $appliedUserIds = $applications->pluck('user_id')->unique()->toArray();
+        $allJobSeekers = User::where('role', 'job_seeker')
+            ->whereNotIn('id', $appliedUserIds)
+            ->with(['assessments.scores.competency'])
+            ->get();
+
+        $matchedNonApplicants = collect();
+        if ($activeJobs->isNotEmpty()) {
+            foreach ($allJobSeekers as $seeker) {
+                $bestMatch = 0;
+                $bestJob = null;
+
+                foreach ($activeJobs as $job) {
+                    $score = $matchingService->calculateMatch($seeker, $job);
+                    if ($score > $bestMatch) {
+                        $bestMatch = $score;
+                        $bestJob = $job;
+                    }
+                }
+
+                if ($bestMatch >= 70) {
+                    $matchedNonApplicants->push((object)[
+                        'user' => $seeker,
+                        'matching_percentage' => $bestMatch,
+                        'jobListing' => $bestJob,
+                        'status' => 'not_applied',
+                        'id' => null,
+                        'has_applied' => false
+                    ]);
+                }
+            }
+        }
+
+        // 4. Combine collections
+        $combinedCandidates = $applicants->concat($matchedNonApplicants);
+
+        // 5. Apply filters
+        // Search by Name, Email, or Applicant ID
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            $combinedCandidates = $combinedCandidates->filter(function ($item) use ($search) {
+                $u = $item->user;
+                return $u && (
+                    str_contains(strtolower($u->name), $search) ||
+                    str_contains(strtolower($u->email), $search) ||
+                    $u->id == $search
+                );
+            });
+        }
+
+        // Search by Skill
+        if ($request->filled('skill')) {
+            $skill = strtolower($request->skill);
+            $combinedCandidates = $combinedCandidates->filter(function ($item) use ($skill) {
+                $u = $item->user;
+                if (!$u) return false;
+                
+                // Check competencies
+                $hasCompetency = $u->assessments->flatMap->scores->contains(function ($score) use ($skill) {
+                    return str_contains(strtolower($score->competency->name), $skill);
+                });
+
+                // Check profile skills array
+                $hasSkillsArray = false;
+                if (is_array($u->skills)) {
+                    foreach ($u->skills as $s) {
+                        if (str_contains(strtolower($s), $skill)) {
+                            $hasSkillsArray = true;
+                            break;
+                        }
+                    }
+                }
+
+                return $hasCompetency || $hasSkillsArray;
+            });
+        }
+
+        // Filter by Position
+        if ($request->filled('position')) {
+            $positionId = $request->position;
+            $combinedCandidates = $combinedCandidates->filter(function ($item) use ($positionId) {
+                return $item->jobListing && $item->jobListing->position_id == $positionId;
+            });
+        }
+
+        // 6. Sort by matching percentage descending
+        $combinedCandidates = $combinedCandidates->sortByDesc('matching_percentage')->values();
+
+        // 7. Paginate the collection manually
+        $perPage = 15;
+        $currentPage = \Illuminate\Pagination\Paginator::resolveCurrentPage() ?: 1;
+        $currentItems = $combinedCandidates->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $candidates = new \Illuminate\Pagination\LengthAwarePaginator(
+            $currentItems,
+            $combinedCandidates->count(),
+            $perPage,
+            $currentPage,
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
+
+        $candidates->withQueryString();
+
+        $positions = \App\Models\Position::all();
+
+        return view('industry.candidates', compact('candidates', 'positions'));
     }
 
     public function show(Request $request, $candidateId)

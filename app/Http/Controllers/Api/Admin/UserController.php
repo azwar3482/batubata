@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -24,9 +25,10 @@ class UserController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
+            Log::error('Gagal mengambil data users', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengambil data pengguna: ' . $e->getMessage()
+                'message' => 'Gagal mengambil data pengguna. Silakan coba lagi.'
             ], 500);
         }
     }

@@ -21,29 +21,40 @@
             </div>
 
             <!-- Search & Filter -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <form action="{{ route('industry.candidates') }}" method="GET" class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Cari Berdasarkan Skill</label>
-                        <input type="text" placeholder="Contoh: Python, Digital Marketing, SEO..."
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-350 mb-1">Cari Kandidat</label>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama, email, atau ID..."
+                            class="w-full border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-950 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Posisi</label>
-                        <select
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-350 mb-1">Cari Berdasarkan Skill</label>
+                        <input type="text" name="skill" value="{{ request('skill') }}" placeholder="Contoh: Python, SEO, Excel..."
+                            class="w-full border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-950 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-350 mb-1">Posisi</label>
+                        <select name="position"
+                            class="w-full border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-950 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                             <option value="">Semua Posisi</option>
-                            <option value="1">Digital Marketing Specialist</option>
-                            <option value="2">Data Analyst</option>
+                            @foreach($positions as $pos)
+                                <option value="{{ $pos->id }}" {{ request('position') == $pos->id ? 'selected' : '' }}>{{ $pos->name }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="flex items-end">
-                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                            🔍 Cari Kandidat
+                    <div class="flex items-end gap-2">
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition shadow-sm h-[38px] flex items-center justify-center">
+                            🔍 Cari
                         </button>
+                        @if(request('search') || request('skill') || request('position'))
+                            <a href="{{ route('industry.candidates') }}" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-650 text-gray-700 dark:text-white rounded-lg font-semibold text-sm transition text-center flex items-center justify-center h-[38px]">
+                                Reset
+                            </a>
+                        @endif
                     </div>
                 </div>
-            </div>
+            </form>
 
             <!-- Candidate List -->
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden mb-6">
@@ -87,8 +98,26 @@
                                             {{ $initials }}
                                         </div>
                                         <div>
-                                            <div class="font-bold text-slate-900 dark:text-white text-sm">{{ $user->name }}</div>
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold text-slate-900 dark:text-white text-sm">{{ $user->name }}</span>
+                                                @if(isset($application->has_applied) && !$application->has_applied)
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50">Rekomendasi</span>
+                                                @else
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">Melamar</span>
+                                                @endif
+                                            </div>
                                             <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ $user->education_level ?? '-' }} {{ $user->major ?? '' }} • {{ $user->experience_years ?? 0 }} Thn Pengalaman</div>
+                                            @if(isset($application->jobListing))
+                                                <div class="text-[11px] mt-0.5">
+                                                    @if(isset($application->has_applied) && !$application->has_applied)
+                                                        <span class="text-slate-500 dark:text-slate-400">Cocok posisi: </span>
+                                                        <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{ $application->jobListing->title }}</span>
+                                                    @else
+                                                        <span class="text-slate-500 dark:text-slate-400">Melamar posisi: </span>
+                                                        <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $application->jobListing->title }}</span>
+                                                    @endif
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
@@ -108,7 +137,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('industry.candidates.show', $user->id) }}" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
+                                    <a href="{{ route('industry.candidates.show', ['id' => $user->id, 'job_id' => $application->jobListing?->id]) }}" class="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
                                         Lihat Profil
                                     </a>
                                 </td>

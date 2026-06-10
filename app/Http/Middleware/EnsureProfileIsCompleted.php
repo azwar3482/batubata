@@ -35,7 +35,7 @@ class EnsureProfileIsCompleted
             // 2. Gating Skill Gap > 30% jika ingin melamar kerja
             // Rute ini berlaku jika request mengarah ke lamar kerja
             if ($request->routeIs('seeker.jobs.apply')) {
-                $latestAssessment = UserAssessment::where('user_id', $user->id)->latest()->first();
+                $latestAssessment = UserAssessment::where('user_id', $user->id)->latest('assessment_date')->first();
                 $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
 
                 if ($avgGap > 30) {

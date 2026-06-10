@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Events\JobVacancyCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class JobPostingController extends Controller
@@ -75,9 +76,10 @@ class JobPostingController extends Controller
             ], 201);
 
         } catch (\Exception $e) {
+            Log::error('Gagal memposting lowongan', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal memposting lowongan: ' . $e->getMessage()
+                'message' => 'Gagal memposting lowongan. Silakan coba lagi.'
             ], 500);
         }
     }

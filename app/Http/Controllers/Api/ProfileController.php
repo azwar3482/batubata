@@ -33,7 +33,7 @@ class ProfileController extends Controller
             'statistics' => [
                 'total_assessments' => $user->assessments()->count(),
                 'total_courses_completed' => $user->courseProgress()->where('status', 'completed')->count(),
-                'average_skill_gap' => $user->assessments()->latest()->first()?->total_gap_percentage ?? 0,
+                'average_skill_gap' => $user->assessments()->latest('assessment_date')->first()?->total_gap_percentage ?? 0,
                 'total_jobs_applied' => $user->jobApplications()->count(),
                 'skills_improved' => 5, // Mocked for now
             ]
@@ -74,7 +74,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         
         // Get skills from latest assessment
-        $latestAssessment = $user->assessments()->with('scores.competency')->latest()->first();
+        $latestAssessment = $user->assessments()->with('scores.competency')->latest('assessment_date')->first();
         
         $skills = [];
         if ($latestAssessment) {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\GoogleAuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GoogleAuthController extends Controller
 {
@@ -41,7 +42,8 @@ class GoogleAuthController extends Controller
         try {
             return $this->googleAuthService->redirectToGoogle();
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Gagal menghubungkan ke Google: ' . $e->getMessage());
+            Log::error('Gagal redirect ke Google OAuth', ['error' => $e->getMessage()]);
+            return redirect()->route('login')->with('error', 'Gagal menghubungkan ke Google. Silakan coba lagi.');
         }
     }
 

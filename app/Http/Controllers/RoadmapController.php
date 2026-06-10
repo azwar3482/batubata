@@ -10,7 +10,7 @@ class RoadmapController extends Controller
     {
         $user = Auth::user();
         // Ambil roadmap terbaru berdasarkan posisi terakhir yang diasesmen
-        $latestAssessment = $user->assessments()->with('position')->latest()->first();
+        $latestAssessment = $user->assessments()->with('position')->latest('assessment_date')->first();
         
         if (!$latestAssessment) {
             return redirect()->route('seeker.assessment.create')->with('info', 'Anda harus menyelesaikan asesmen terlebih dahulu untuk melihat roadmap.');

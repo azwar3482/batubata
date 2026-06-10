@@ -165,6 +165,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/tpa/{session}/result', [App\Http\Controllers\SeekerTpaController::class, 'result'])->name('tpa.result');
         Route::get('/tpa/{session}/result/pdf', [App\Http\Controllers\SeekerTpaController::class, 'downloadPdf'])->name('tpa.result.pdf');
         Route::post('/tpa/{session}/respond-offline', [App\Http\Controllers\SeekerTpaController::class, 'respondOffline'])->name('tpa.respond-offline');
+
+        // Direct Chats (Seeker)
+        Route::get('/chats/{id?}', [App\Http\Controllers\DirectChatController::class, 'seekerIndex'])->name('chats.index');
+        Route::post('/chats/{conversation}/send', [App\Http\Controllers\DirectChatController::class, 'sendMessage'])->name('chats.send');
     });
 
     // =====================
@@ -249,6 +253,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/tpa/questions/{question}', [App\Http\Controllers\Industry\TpaController::class, 'destroyQuestion'])->name('tpa.questions.destroy');
         Route::get('/tpa/questions/download-template', [App\Http\Controllers\Industry\TpaController::class, 'downloadTemplate'])->name('tpa.questions.download-template');
         Route::post('/tpa/questions/import', [App\Http\Controllers\Industry\TpaController::class, 'importQuestions'])->name('tpa.questions.import');
+
+        // Direct Chats (Industry)
+        Route::post('/chats/initiate', [App\Http\Controllers\DirectChatController::class, 'initiate'])->name('chats.initiate');
+        Route::get('/chats/{id?}', [App\Http\Controllers\DirectChatController::class, 'industryIndex'])->name('chats.index');
+        Route::post('/chats/{conversation}/send', [App\Http\Controllers\DirectChatController::class, 'sendMessage'])->name('chats.send');
     });
 
     // =====================

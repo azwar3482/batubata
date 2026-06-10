@@ -62,7 +62,7 @@ class HomeController extends Controller
         $totalAssessments = UserAssessment::where('user_id', $user->id)->count();
         $latestAssessment = UserAssessment::where('user_id', $user->id)
             ->with(['scores.competency'])
-            ->latest()
+            ->latest('assessment_date')
             ->first();
             
         $coursesCompleted = UserCourseProgress::where('user_id', $user->id)
@@ -196,7 +196,7 @@ class HomeController extends Controller
     private function _getRecentActivities($user)
     {
         $activities = [];
-        $latestAssessment = UserAssessment::where('user_id', $user->id)->latest()->first();
+        $latestAssessment = UserAssessment::where('user_id', $user->id)->latest('assessment_date')->first();
         if ($latestAssessment) {
             $activities[] = [
                 'title' => 'Asesmen Selesai',

@@ -20,7 +20,7 @@ class JobSeekerDashboardService
     public function getDashboardData(User $user)
     {
         $totalAssessments = UserAssessment::where('user_id', $user->id)->count();
-        $latestAssessment = UserAssessment::where('user_id', $user->id)->with('scores.competency')->latest()->first();
+        $latestAssessment = UserAssessment::where('user_id', $user->id)->with('scores.competency')->latest('assessment_date')->first();
         $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
 
         $coursesInProgress = UserCourseProgress::where('user_id', $user->id)

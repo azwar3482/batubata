@@ -38,7 +38,7 @@ class CandidateController extends Controller
         }
 
         $candidates = $query->with(['assessments' => function($q) {
-            $q->latest()->with('scores.competency', 'position');
+            $q->latest('assessment_date')->with('scores.competency', 'position');
         }])->paginate(10);
 
         // Map data to a cleaner format for the API
@@ -82,7 +82,7 @@ class CandidateController extends Controller
             ->with(['assessments.scores.competency', 'assessments.position'])
             ->findOrFail($id);
 
-        $latestAssessment = $candidate->assessments()->latest()->first();
+        $latestAssessment = $candidate->assessments()->latest('assessment_date')->first();
 
         return response()->json([
             'success' => true,

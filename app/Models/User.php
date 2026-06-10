@@ -101,6 +101,32 @@ class User extends Authenticatable
         return $this->hasOne(Company::class);
     }
 
+    public function initiatedConversations()
+    {
+        return $this->hasMany(DirectConversation::class, 'industry_id');
+    }
+
+    public function receivedConversations()
+    {
+        return $this->hasMany(DirectConversation::class, 'job_seeker_id');
+    }
+
+    public function totalUnreadMessages()
+    {
+        if ($this->isIndustryOrStaff()) {
+            return DirectMessage::whereIn('conversation_id', $this->initiatedConversations()->pluck('id'))
+                ->where('sender_id', '!=', $this->id)
+                ->where('is_read', false)
+                ->count();
+        } elseif ($this->isJobSeeker()) {
+            return DirectMessage::whereIn('conversation_id', $this->receivedConversations()->pluck('id'))
+                ->where('sender_id', '!=', $this->id)
+                ->where('is_read', false)
+                ->count();
+        }
+        return 0;
+    }
+
     // Helper untuk cek role
     public function isAdmin()
     {

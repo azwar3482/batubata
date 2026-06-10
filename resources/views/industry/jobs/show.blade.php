@@ -66,7 +66,7 @@
                             </div>
 
                             <h4 class="font-bold text-gray-900 mb-2">Deskripsi Pekerjaan</h4>
-                            <div class="text-gray-700 prose prose-sm max-w-none mb-6">{!! $job->description !!}</div>
+                            <div class="text-gray-700 prose prose-sm max-w-none mb-6 whitespace-pre-line">{{ $job->description }}</div>
 
                             <h4 class="font-bold text-gray-900 mb-2">Keahlian (Skills) yang Dibutuhkan</h4>
                             <div class="flex flex-wrap gap-2">

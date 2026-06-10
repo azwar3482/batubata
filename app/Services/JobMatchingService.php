@@ -28,7 +28,7 @@ class JobMatchingService
         // 2. Ambil skill terbaik user dari asesmen manual terakhir - Bobot 40%
         $latestAssessment = $user->assessments()
             ->with('scores.competency')
-            ->latest()
+            ->latest('assessment_date')
             ->first();
 
         $assessmentScore = 0.0;

@@ -8,6 +8,7 @@ use App\Models\TpaResult;
 use App\Services\TpaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class SeekerTpaController extends Controller
@@ -87,7 +88,8 @@ class SeekerTpaController extends Controller
         try {
             $session = $this->tpaService->startTest($session);
         } catch (\Exception $e) {
-            return redirect()->route('seeker.tpa.show', $session)->with('error', $e->getMessage());
+            Log::error('Gagal start TPA test', ['session_id' => $session->id, 'error' => $e->getMessage()]);
+            return redirect()->route('seeker.tpa.show', $session)->with('error', 'Gagal memulai tes. Silakan coba lagi.');
         }
 
         return redirect()->route('seeker.tpa.test', $session);
@@ -187,8 +189,9 @@ class SeekerTpaController extends Controller
         try {
             $result = $this->tpaService->submitTest($session);
         } catch (\Exception $e) {
+            Log::error('Gagal submit TPA test', ['session_id' => $session->id, 'error' => $e->getMessage()]);
             return redirect()->route('seeker.tpa.show', $session)
-                ->with('error', 'Gagal submit tes: ' . $e->getMessage());
+                ->with('error', 'Gagal submit tes. Silakan coba lagi atau hubungi admin.');
         }
 
         // Refresh untuk memastikan data terbaru

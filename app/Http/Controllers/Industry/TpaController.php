@@ -14,6 +14,7 @@ use App\Imports\TpaQuestionImport;
 use App\Exports\TpaQuestionTemplateExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -247,8 +248,9 @@ class TpaController extends Controller
                 $this->tpaService->inviteCandidate($application, $test);
                 $successCount++;
             } catch (\Exception $e) {
+                Log::error('Gagal mengundang TPA candidate', ['user_id' => $application->user_id, 'error' => $e->getMessage()]);
                 $failCount++;
-                $errors[] = "Gagal mengundang {$application->user->name}: " . $e->getMessage();
+                $errors[] = "Gagal mengundang {$application->user->name}: Terjadi kesalahan sistem.";
             }
         }
 
@@ -325,8 +327,9 @@ class TpaController extends Controller
                 $this->tpaService->inviteOffline($application, null, $offlineData);
                 $successCount++;
             } catch (\Exception $e) {
+                Log::error('Gagal mengundang TPA offline', ['user_id' => $application->user_id, 'error' => $e->getMessage()]);
                 $failCount++;
-                $errors[] = "Gagal mengundang {$application->user->name}: " . $e->getMessage();
+                $errors[] = "Gagal mengundang {$application->user->name}: Terjadi kesalahan sistem.";
             }
         }
 
@@ -606,7 +609,8 @@ class TpaController extends Controller
 
             return redirect()->route('industry.tpa.questions')->with('success', $message);
         } catch (\Exception $e) {
-            return redirect()->route('industry.tpa.questions')->with('error', 'Gagal import: ' . $e->getMessage());
+            Log::error('Gagal import TPA questions', ['error' => $e->getMessage()]);
+            return redirect()->route('industry.tpa.questions')->with('error', 'Gagal import soal. Silakan coba lagi atau hubungi admin.');
         }
     }
 

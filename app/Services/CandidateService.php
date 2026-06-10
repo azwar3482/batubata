@@ -16,7 +16,7 @@ class CandidateService
         // Ambil assessment terbaru
         $latestAssessment = UserAssessment::where('user_id', $candidate->id)
             ->with('scores.competency')
-            ->latest()
+            ->latest('assessment_date')
             ->first();
 
         // Hitung match percentage dari data assessment

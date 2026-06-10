@@ -70,7 +70,7 @@
                 </div>
 
                 {{-- QUESTION TEXT --}}
-                <div class="text-lg text-gray-800 mb-6 leading-relaxed whitespace-pre-line">{!! $questionData['question_text'] !!}</div>
+                <div class="text-lg text-gray-800 mb-6 leading-relaxed whitespace-pre-line">{{ $questionData['question_text'] }}</div>
 
                 @if($questionData['question_image'])
                 <div class="mb-6">

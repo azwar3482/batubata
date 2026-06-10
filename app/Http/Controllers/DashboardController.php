@@ -27,17 +27,24 @@ class DashboardController extends Controller
     public function jobs(Request $request, JobMatchingService $matchingService)
     {
         $user = Auth::user();
-        
-        $search = $request->input('search');
-        $sort = $request->input('sort', 'terbaru');
-        $perPage = $request->input('per_page', 10);
-        $tab = $request->input('tab', 'all');
-        
+
+        $validated = $request->validate([
+            'search' => 'nullable|string|max:100',
+            'sort' => 'nullable|in:terbaru,terlama,relevansi',
+            'per_page' => 'nullable|integer|min:5|max:50',
+            'tab' => 'nullable|in:all,saved,applied',
+        ]);
+
+        $search = $validated['search'] ?? null;
+        $sort = $validated['sort'] ?? 'terbaru';
+        $perPage = $validated['per_page'] ?? 10;
+        $tab = $validated['tab'] ?? 'all';
+
         $jobs = $matchingService->getMatchedJobsPaginated($user, $perPage, $search, $sort, $tab);
-        
-        $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest()->first();
+
+        $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest('assessment_date')->first();
         $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
-        
+
         return view('jobs.index', compact('jobs', 'avgGap'));
     }
 
@@ -67,9 +74,15 @@ class DashboardController extends Controller
     public function myApplications(Request $request, JobApplicationService $applicationService)
     {
         $user = Auth::user();
-        $status = $request->input('status');
-        $highlightJobId = $request->input('highlight_job_id');
-        
+
+        $validated = $request->validate([
+            'status' => 'nullable|string|max:50',
+            'highlight_job_id' => 'nullable|integer|min:1',
+        ]);
+
+        $status = $validated['status'] ?? null;
+        $highlightJobId = $validated['highlight_job_id'] ?? null;
+
         $applications = $applicationService->getUserApplications($user, 10, $status, $highlightJobId);
         $counts = $applicationService->getApplicationStats($user);
 
@@ -96,7 +109,7 @@ class DashboardController extends Controller
             return back()->with('error', 'Profil Anda belum lengkap (' . $user->profile_completion_percentage . '%). Silakan lengkapi profil dan unggah CV Anda terlebih dahulu.');
         }
 
-        $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest()->first();
+        $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest('assessment_date')->first();
         $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
         if ($avgGap > 30) {
             return back()->with('error', 'Maaf, celah keahlian (Skill Gap) Anda sebesar ' . number_format($avgGap, 1) . '% melebihi batas maksimal 30%. Silakan ikuti kursus rekomendasi terlebih dahulu.');

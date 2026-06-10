@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Http\Requests\UpdateProfileRequest;
@@ -179,9 +180,10 @@ class ProfileController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            Log::error('Gagal ekstrak data ijazah', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengekstrak data dari ijazah: ' . $e->getMessage()
+                'message' => 'Gagal mengekstrak data dari ijazah. Silakan coba lagi atau input manual.'
             ], 500);
         }
     }

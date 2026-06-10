@@ -130,6 +130,7 @@ return [
     'chat_faq' => 'FAQ Chat',
     'type_message' => 'Ketik pesan...',
     'send' => 'Kirim',
+    'direct_chats' => 'Pesan Masuk',
 
     // Settings
     'settings' => 'Pengaturan',
