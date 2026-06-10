@@ -12,7 +12,7 @@ class ReportController extends Controller
 {
     public function downloadAssessment($id, RecommendationService $recService)
     {
-        $assessment = UserAssessment::with(['position', 'scores.competency', 'user'])
+        $assessment = UserAssessment::with(['position', 'jobListing', 'scores.competency', 'user'])
             ->findOrFail($id);
 
         // Keamanan: Hanya pemilik atau admin yang bisa download

@@ -5,7 +5,7 @@
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-extrabold text-gray-900">Roadmap Karir Anda</h2>
                 <p class="mt-2 text-gray-600">Rencana aksi 6 bulan menuju posisi: <span
-                        class="font-bold text-blue-600">{{ $latestAssessment->position->name }}</span></p>
+                        class="font-bold text-blue-600">{{ $latestAssessment->target_name }}</span></p>
             </div>
 
             <!-- Info Card -->

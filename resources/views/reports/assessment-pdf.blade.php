@@ -31,7 +31,7 @@
     <!-- Info Pengguna -->
     <div class="info-box">
         <strong>Nama:</strong> {{ $user->name }}<br>
-        <strong>Posisi Target:</strong> {{ $assessment->position->name }}<br>
+        <strong>Posisi Target:</strong> {{ $assessment->target_name }}<br>
         <strong>Tanggal Asesmen:</strong> {{ $assessment->assessment_date->format('d F Y') }}<br>
         <strong>Rata-rata Skill Gap:</strong> {{ number_format($assessment->total_gap_percentage, 1) }}%
     </div>

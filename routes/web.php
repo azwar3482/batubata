@@ -116,6 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('assessment.start');
         })->name('assessment.start');
         Route::get('/assessment/create', [AssessmentController::class, 'create'])->name('assessment.create');
+        Route::get('/assessment/from-job/{jobId}', [AssessmentController::class, 'fromJob'])->name('assessment.from-job');
         Route::post('/assessment/store', [AssessmentController::class, 'store'])->name('assessment.store');
         Route::get('/assessment/questions', [AssessmentController::class, 'questions'])->name('assessment.questions');
         Route::post('/assessment/submit', [AssessmentController::class, 'submit'])->name('assessment.submit');
@@ -258,6 +259,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/chats/initiate', [App\Http\Controllers\DirectChatController::class, 'initiate'])->name('chats.initiate');
         Route::get('/chats/{id?}', [App\Http\Controllers\DirectChatController::class, 'industryIndex'])->name('chats.index');
         Route::post('/chats/{conversation}/send', [App\Http\Controllers\DirectChatController::class, 'sendMessage'])->name('chats.send');
+
+        // Competency Management (Industry)
+        Route::get('/competencies', [App\Http\Controllers\Industry\CompetencyController::class, 'index'])->name('competencies.index');
+        Route::get('/competencies/create', [App\Http\Controllers\Industry\CompetencyController::class, 'create'])->name('competencies.create');
+        Route::post('/competencies', [App\Http\Controllers\Industry\CompetencyController::class, 'store'])->name('competencies.store');
+        Route::get('/competencies/{competency}/edit', [App\Http\Controllers\Industry\CompetencyController::class, 'edit'])->name('competencies.edit');
+        Route::put('/competencies/{competency}', [App\Http\Controllers\Industry\CompetencyController::class, 'update'])->name('competencies.update');
+        Route::delete('/competencies/{competency}', [App\Http\Controllers\Industry\CompetencyController::class, 'destroy'])->name('competencies.destroy');
     });
 
     // =====================

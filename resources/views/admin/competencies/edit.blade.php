@@ -35,17 +35,17 @@
                     @error('category')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label for="position_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Posisi Target <span class="text-red-500">*</span></label>
-                    <select name="position_id" id="position_id" required class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
-                        <option value="">-- Pilih Posisi --</option>
+                    <label for="position_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Posisi Target <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                    <select name="position_id" id="position_id" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
+                        <option value="">-- Umum (Semua Posisi) --</option>
                         @foreach($positions as $pos)<option value="{{ $pos->id }}" {{ old('position_id',$competency->position_id)==$pos->id?'selected':'' }}>{{ $pos->name }}</option>@endforeach
                     </select>
                     @error('position_id')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label for="min_level_required" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Level Minimal (1-5) <span class="text-red-500">*</span></label>
-                    <input type="number" name="min_level_required" id="min_level_required" required min="1" max="5" value="{{ old('min_level_required', $competency->min_level_required) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition" placeholder="Cth: 3">
-                    <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">1=Novice, 2=Beginner, 3=Competent, 4=Proficient, 5=Expert</p>
+                    <label for="min_level_required" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Level Minimal (1-10) <span class="text-red-500">*</span></label>
+                    <input type="number" name="min_level_required" id="min_level_required" required min="1" max="10" value="{{ old('min_level_required', $competency->min_level_required) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition" placeholder="Cth: 5">
+                    <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">1-2=Tidak Tahu, 3-4=Pemula, 5-6=Menengah, 7-8=Mahir, 9-10=Ahli</p>
                     @error('min_level_required')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
                 <div>

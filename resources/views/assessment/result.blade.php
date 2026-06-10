@@ -14,7 +14,7 @@
                 </div>
                 <h2 class="text-3xl font-extrabold text-gray-900">Hasil Analisis Kompetensi</h2>
                 <p class="mt-2 text-gray-600">Posisi Target: <span
-                        class="font-bold text-blue-600">{{ $assessment->position->name }}</span></p>
+                        class="font-bold text-blue-600">{{ $targetName }}</span></p>
             </div>
 
             <!-- Overall Score Card -->

@@ -12,7 +12,9 @@ class CompetencyController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Competency::with('position')->latest();
+        $query = Competency::with('position')
+            ->whereNull('company_id')
+            ->latest();
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%')
@@ -23,8 +25,8 @@ class CompetencyController extends Controller
             $query->where('category', $request->category);
         }
 
-        $competencies = $query->paginate(5)->withQueryString();
-        $categories = Category::all();
+        $competencies = $query->paginate(10)->withQueryString();
+        $categories = ['technical', 'soft_skill'];
         return view('admin.competencies', compact('competencies', 'categories'));
     }
 
@@ -43,8 +45,8 @@ class CompetencyController extends Controller
             'code' => 'required|unique:competencies,code',
             'name' => 'required|string|max:255',
             'category' => 'required|in:technical,soft_skill',
-            'position_id' => 'required|exists:positions,id',
-            'min_level_required' => 'required|integer|min:1|max:5',
+            'position_id' => 'nullable|exists:positions,id',
+            'min_level_required' => 'required|integer|min:1|max:10',
             'source_reference' => 'nullable|string',
         ]);
 
@@ -66,10 +68,9 @@ class CompetencyController extends Controller
             'code' => 'required|unique:competencies,code,' . $competency->id,
             'name' => 'required|string|max:255',
             'category' => 'required|in:technical,soft_skill',
-            'position_id' => 'required|exists:positions,id',
-            'min_level_required' => 'required|integer|min:1|max:5',
+            'position_id' => 'nullable|exists:positions,id',
+            'min_level_required' => 'required|integer|min:1|max:10',
         ]);
-
 
         $competency->update($validated);
 

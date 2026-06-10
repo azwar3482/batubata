@@ -14,11 +14,13 @@ class AssessmentScoringService
      * @param int $userId
      * @param int|null $positionId
      * @param array $submittedSkills Format: [competency_id => self_assessed_level]
+     * @param int|null $jobListingId
      * @return UserAssessment|null
      */
-    public function processAndSaveScores($userId, $positionId, array $submittedSkills)
+    public function processAndSaveScores($userId, $positionId, array $submittedSkills, $jobListingId = null)
     {
-        if (!$positionId) {
+        // Allow either position_id or job_listing_id
+        if (!$positionId && !$jobListingId) {
             return null;
         }
 
@@ -26,15 +28,18 @@ class AssessmentScoringService
         $assessment = UserAssessment::create([
             'user_id' => $userId,
             'position_id' => $positionId,
+            'job_listing_id' => $jobListingId,
             'assessment_date' => now(),
             'status' => 'completed',
             'total_gap_percentage' => 0, // Akan dihitung
         ]);
 
         // Hapus roadmap lama karena ada hasil asesmen baru
-        \App\Models\CareerRoadmap::where('user_id', $userId)
-            ->where('position_id', $positionId)
-            ->delete();
+        if ($positionId) {
+            \App\Models\CareerRoadmap::where('user_id', $userId)
+                ->where('position_id', $positionId)
+                ->delete();
+        }
 
         // 2. Ambil semua data kompetensi yang dibutuhkan dalam 1 Query (Mencegah N+1 Read)
         $competencyIds = array_keys($submittedSkills);

@@ -1,402 +1,335 @@
 <x-app-layout>
-    <div class="py-8">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-10 min-h-screen">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Breadcrumb & Back -->
-            <div class="mb-6">
-                <a href="{{ route('seeker.jobs.index') }}"
-                    class="inline-flex items-center text-gray-600 hover:text-blue-600 text-sm font-medium transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Kembali ke Daftar Lowongan
-                </a>
-            </div>
+            <!-- Breadcrumb -->
+            <nav class="mb-6" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                    <li>
+                        <a href="{{ route('seeker.jobs.index') }}" class="hover:text-blue-600 transition-colors flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Daftar Lowongan
+                        </a>
+                    </li>
+                    <li><span class="text-gray-400">/</span></li>
+                    <li class="text-gray-900 dark:text-gray-100 font-medium truncate max-w-xs">{{ $job->title }}</li>
+                </ol>
+            </nav>
 
-            <!-- Main Content Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Column: Main Content -->
+                <div class="lg:col-span-8 space-y-6">
 
-                <!-- Left Column: Job Details -->
-                <div class="lg:col-span-2 space-y-6">
-
-                    <!-- Job Header Card -->
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                        <!-- Header Gradient -->
-                        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
-                            <div class="flex items-start justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center text-white font-bold text-xl backdrop-blur-sm">
-                                        {{ substr($job->company_name, 0, 2) }}
+                    <!-- Main Header Card -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        <div class="p-8">
+                            <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                                <div class="flex items-start gap-5">
+                                    <!-- Company Logo Placeholder -->
+                                    <div class="w-20 h-20 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center text-blue-600 font-bold text-2xl border border-blue-100 shadow-inner flex-shrink-0">
+                                        {{ strtoupper(substr($job->company_name, 0, 2)) }}
                                     </div>
+                                    
                                     <div>
-                                        <h1 class="text-2xl font-bold">{{ $job->title }}</h1>
-                                        <p class="text-blue-100 text-lg">{{ $job->company_name }}</p>
+                                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-gray-100 leading-tight mb-2">{{ $job->title }}</h1>
+                                        <p class="text-lg text-blue-600 font-medium flex items-center gap-1.5 mb-4">
+                                            {{ $job->company_name }}
+                                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        </p>
+                                        
+                                        <div class="flex flex-wrap items-center gap-3 text-sm">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 text-gray-700 border border-gray-200">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                                {{ $job->location }}
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 text-gray-700 border border-gray-200">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                                <span class="capitalize">{{ $job->work_type }}</span>
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 text-gray-700 border border-gray-200">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                {{ $job->experience_required }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                @if ($matchPercentage >= 80)
-                                <div class="text-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl">
-                                    <p class="text-xs text-blue-100 uppercase tracking-wide">Match Score</p>
-                                    <p class="text-2xl font-bold text-white">{{ round($matchPercentage) }}%</p>
+                                
+                                <div class="flex flex-col items-end gap-3 min-w-fit">
+                                    @if ($matchPercentage >= 80)
+                                    <div class="inline-flex flex-col items-center justify-center px-4 py-3 bg-gradient-to-b from-green-50 to-white border border-green-200 rounded-xl shadow-sm">
+                                        <span class="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">Match Score</span>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-2xl font-black text-green-700 leading-none">{{ round($matchPercentage) }}</span>
+                                            <span class="text-sm font-bold text-green-600">%</span>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
-                                @endif
                             </div>
                         </div>
 
-                        <!-- Job Meta -->
-                        <div class="p-6 border-b border-gray-100">
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                                <div class="flex items-center text-gray-600">
-                                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                        </path>
-                                    </svg>
-                                    {{ $job->location }}
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                        </path>
-                                    </svg>
-                                    <span class="capitalize">{{ $job->work_type }}</span>
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    {{ $job->experience_required }}
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                    Diposting {{ \Carbon\Carbon::parse($job->posted_date)->diffForHumans() }}
-                                </div>
-                            </div>
-
+                        <!-- Salary & Time Info Footer -->
+                        <div class="bg-gray-50/80 border-t border-gray-100 px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                             @if ($job->salary_min)
-                            <div class="mt-4 pt-4 border-t border-gray-100">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-medium">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                        </path>
-                                    </svg>
-                                    Rp {{ number_format($job->salary_min / 1000000, 0) }} -
-                                    {{ number_format($job->salary_max / 1000000, 0) }} Juta / bulan
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-gray-900 dark:text-gray-100 font-bold">
+                                    Rp {{ number_format($job->salary_min / 1000000, 0) }} Jt - {{ number_format($job->salary_max / 1000000, 0) }} Jt <span class="text-gray-500 font-normal text-sm">/ bulan</span>
                                 </span>
                             </div>
                             @endif
-                        </div>
-
-                        <!-- Job Description -->
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Deskripsi Pekerjaan</h3>
-                            <div class="prose prose-sm max-w-none text-gray-600">
-                                {!! nl2br(e($job->description)) !!}
+                            <div class="text-sm text-gray-500 flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Diposting {{ \Carbon\Carbon::parse($job->posted_date)->diffForHumans() }}
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Required Skills -->
-                        @if ($job->required_skills)
-                        <div class="p-6 bg-gray-50 border-t border-gray-100">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Keahlian yang Dibutuhkan</h3>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($job->required_skills as $skill)
+                    <!-- Job Description -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Deskripsi Pekerjaan
+                        </h2>
+                        <div class="prose prose-blue max-w-none text-gray-600 leading-relaxed">
+                            {!! nl2br(e($job->description)) !!}
+                        </div>
+                    </div>
+
+                    <!-- Skills & Requirements -->
+                    @if ($job->required_skills)
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Keahlian yang Dibutuhkan
+                        </h2>
+                        <div class="flex flex-wrap gap-2.5">
+                            @foreach ($job->required_skills as $skill)
                                 @php
-                                $userHasSkill = false; // Logic cek skill user nanti
-                                $matchClass = $userHasSkill
-                                ? 'bg-green-100 text-green-800 border-green-200'
-                                : 'bg-blue-50 text-blue-700 border-blue-200';
+                                    // Dummy logic for now, or you can implement actual checking
+                                    $userHasSkill = false; 
+                                    $matchClass = $userHasSkill 
+                                        ? 'bg-green-50 text-green-700 border-green-200' 
+                                        : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-gray-300';
                                 @endphp
-                                <span
-                                    class="px-3 py-1.5 {{ $matchClass }} border rounded-lg text-sm font-medium flex items-center gap-1.5">
+                                <span class="px-4 py-2 {{ $matchClass }} border rounded-xl text-sm font-medium flex items-center gap-2 transition-colors">
                                     @if ($userHasSkill)
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
+                                        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
                                     @else
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                        </path>
-                                    </svg>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
                                     @endif
                                     {{ $skill }}
                                 </span>
-                                @endforeach
-                            </div>
-                            <p class="text-xs text-gray-500 mt-3">
-                                <span class="text-green-600">●</span> Skill yang Anda miliki &nbsp;
-                                <span class="text-blue-600">●</span> Skill yang perlu dipelajari
-                            </p>
+                            @endforeach
                         </div>
-                        @endif
                     </div>
+                    @endif
 
-                    <!-- Skill Gap Analysis Card -->
+                    <!-- Skill Gap Analysis -->
                     @if ($matchPercentage < 100)
-                        <div class="bg-white rounded-2xl shadow-lg p-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">📊 Analisis Kecocokan Skill</h3>
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                                Analisis Kecocokan Skill
+                            </h2>
+                            <span class="px-3 py-1 rounded-full text-sm font-bold {{ $matchPercentage >= 80 ? 'bg-green-100 text-green-700' : ($matchPercentage >= 50 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
+                                {{ round($matchPercentage) }}% Match
+                            </span>
+                        </div>
 
-                        <div class="mb-6">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-sm font-medium text-gray-700">Overall Match</span>
-                                <span
-                                    class="text-2xl font-bold {{ $matchPercentage >= 80 ? 'text-green-600' : ($matchPercentage >= 50 ? 'text-yellow-600' : 'text-red-600') }}">
-                                    {{ round($matchPercentage) }}%
-                                </span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="h-3 rounded-full transition-all duration-500 {{ $matchPercentage >= 80 ? 'bg-green-500' : ($matchPercentage >= 50 ? 'bg-yellow-500' : 'bg-red-500') }}"
-                                    style="width: {{ $matchPercentage }}%"></div>
-                            </div>
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-gray-100 rounded-full h-2.5 mb-8 overflow-hidden">
+                            <div class="h-2.5 rounded-full transition-all duration-1000 ease-out {{ $matchPercentage >= 80 ? 'bg-green-500' : ($matchPercentage >= 50 ? 'bg-yellow-500' : 'bg-red-500') }}"
+                                style="width: {{ $matchPercentage }}%"></div>
                         </div>
 
                         @if ($matchPercentage < 80)
-                            <div class="space-y-3">
-                            <p class="text-sm font-medium text-gray-700">Skill yang perlu ditingkatkan:</p>
-                            @foreach (['Data Analysis', 'Project Management', 'Cloud Computing'] as $gapSkill)
-                            <div
-                                class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-100">
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-red-500" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                        </path>
-                                    </svg>
-                                    <span
-                                        class="text-sm font-medium text-gray-900">{{ $gapSkill }}</span>
-                                </div>
-                                <a href="{{ route('seeker.courses.index') }}"
-                                    class="text-xs text-blue-600 hover:text-blue-800 font-medium">Pelajari
-                                    →</a>
-                            </div>
-                            @endforeach
-                </div>
-                @else
-                <div class="p-4 bg-green-50 rounded-lg border border-green-100">
-                    <p class="text-sm text-green-700 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        🎉 Profil Anda sangat cocok dengan lowongan ini! Segera lamar sebelum ditutup.
-                    </p>
-                </div>
-                @endif
-            </div>
-            @endif
-        </div>
-
-        <!-- Right Column: Sticky Actions -->
-        <div class="lg:col-span-1">
-            <div class="sticky top-6 space-y-6">
-
-                <!-- Apply Card -->
-                <div
-                    class="bg-white rounded-2xl shadow-lg p-6 border-2 {{ $alreadyApplied ? 'border-green-200 bg-green-50' : 'border-blue-200' }}">
-                    @if ($alreadyApplied)
-                    <div class="text-center">
-                        <div
-                            class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
-                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Lamaran Terkirim!</h3>
-                        <p class="text-sm text-gray-600 mb-4">Anda sudah melamar posisi ini. Pantau status
-                            lamaran di dashboard.</p>
-                        <a href="{{ route('seeker.jobs.applications', ['highlight_job_id' => $job->id]) }}"
-                            class="block w-full text-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium">
-                            Lihat Status Lamaran
-                        </a>
-                    </div>
-                    @elseif (!Auth::user()->hasCompletedProfile())
-                    <div class="text-center py-4">
-                        <div class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center mb-4 border border-amber-200">
-                            <svg class="w-8 h-8 text-amber-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold text-amber-900 mb-2">Profil Belum Lengkap</h3>
-                        <p class="text-xs text-amber-700 mb-5 leading-relaxed">Profil Anda baru lengkap {{ Auth::user()->profile_completion_percentage }}%. Lengkapi profil Anda hingga 100% terlebih dahulu untuk melamar.</p>
-                        <a href="{{ route('dashboard') }}"
-                            class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl transition font-semibold shadow-md transform hover:-translate-y-0.5">
-                            Lengkapi Profil di Dashboard →
-                        </a>
-                    </div>
-                    @else
-                        @php
-                            $latestAssessment = \App\Models\UserAssessment::where('user_id', Auth::id())->latest()->first();
-                            $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
-                        @endphp
-                        @if ($avgGap > 30)
-                        <div class="text-center py-4">
-                            <div class="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4 border border-red-200">
-                                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-bold text-red-950 mb-2">Celah Keahlian Terlalu Tinggi</h3>
-                            <p class="text-xs text-red-700 mb-5 leading-relaxed">Maaf, celah keahlian (Skill Gap) Anda sebesar <strong>{{ number_format($avgGap, 1) }}%</strong> melebihi batas 30%. Selesaikan kursus yang direkomendasikan terlebih dahulu.</p>
-                            <a href="{{ route('seeker.courses.index') }}"
-                                class="block w-full text-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition font-semibold shadow-md transform hover:-translate-y-0.5">
-                                Belajar Lewat Kursus Rekomendasi →
-                            </a>
-                        </div>
-                        @else
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">Tertarik dengan posisi ini?</h3>
-
-                        <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="space-y-4" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < 75) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
-                            @csrf
-
-                            <!-- CV Preview -->
-                            <div class="p-3 bg-gray-50 rounded-lg">
-                                <p class="text-xs text-gray-500 mb-2">CV yang akan dikirim:</p>
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
-                                    <div class="min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">
-                                            CV_{{ Auth::user()->name }}.pdf</p>
-                                        <p class="text-xs text-gray-500">2.4 MB • Updated 2 days ago</p>
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider">Skill yang perlu ditingkatkan</h3>
+                                <div class="grid sm:grid-cols-2 gap-3">
+                                    @foreach (['Data Analysis', 'Project Management', 'Cloud Computing'] as $gapSkill)
+                                    <div class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all group">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500 group-hover:bg-red-100 transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                            </div>
+                                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $gapSkill }}</span>
+                                        </div>
+                                        <a href="{{ route('seeker.courses.index') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            Pelajari <span aria-hidden="true">&rarr;</span>
+                                        </a>
                                     </div>
-                                    <a href="{{ route('profile.edit') }}"
-                                        class="text-xs text-blue-600 hover:underline ml-auto">Ganti</a>
+                                    @endforeach
+                                </div>
+
+                                <!-- Upskill CTA -->
+                                <div class="mt-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                    <div>
+                                        <h4 class="text-base font-bold text-blue-900 mb-1">Ingin tahu skill gap Anda sebenarnya?</h4>
+                                        <p class="text-sm text-blue-700/80">Ikuti asesmen kompetensi untuk mengetahui kekuatan dan kelemahan Anda secara presisi.</p>
+                                    </div>
+                                    <a href="{{ route('seeker.assessment.from-job', $job->id) }}" class="shrink-0 w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm text-center">
+                                        Mulai Asesmen
+                                    </a>
                                 </div>
                             </div>
-
-                            <!-- Note (Optional) -->
-                            <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Catatan untuk
-                                    Recruiter (Opsional)</label>
-                                <textarea name="note" rows="3" placeholder="Tulis pesan singkat mengapa Anda cocok..."
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        @else
+                            <div class="p-4 bg-green-50 rounded-xl border border-green-200 flex items-start gap-3">
+                                <svg class="w-5 h-5 text-green-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div>
+                                    <h4 class="text-sm font-bold text-green-900">Kandidat Sangat Cocok!</h4>
+                                    <p class="text-sm text-green-700 mt-1">Profil Anda memenuhi kriteria utama untuk posisi ini. Peluang Anda sangat tinggi.</p>
+                                </div>
                             </div>
-
-                            <button type="submit"
-                                class="w-full flex justify-center items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-800 transition shadow-lg transform hover:-translate-y-0.5">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                </svg>
-                                Kirim Lamaran Sekarang
-                            </button>
-                        </form>
-
-                        <p class="text-xs text-gray-500 text-center mt-4">
-                            Dengan mengirim lamaran, Anda menyetujui <a href="#"
-                                class="text-blue-600 hover:underline">Syarat & Ketentuan</a> KOMPASKARIR
-                        </p>
                         @endif
+                    </div>
                     @endif
                 </div>
 
-                <!-- Quick Actions -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
-                    <div class="space-y-2">
-                        @if(!$alreadyApplied)
-                        <form action="{{ route('seeker.jobs.save', $job->id) }}" method="POST" class="block w-full">
-                            @csrf
-                            @if($isSaved)
-                            <button type="submit"
-                                class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-50 border border-yellow-300 rounded-lg text-sm font-semibold text-yellow-800 hover:bg-yellow-100 transition shadow-sm">
-                                <svg class="w-5 h-5 text-yellow-600 fill-current" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-                                </svg>
-                                Batal Simpan Lowongan
-                            </button>
-                            @else
-                            <button type="submit"
-                                class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                    </path>
-                                </svg>
-                                Simpan Lowongan
-                            </button>
-                            @endif
-                        </form>
-                        @endif
-                        <button
-                            class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
-                                </path>
-                            </svg>
-                            Bagikan Lowongan
-                        </button>
-                        <button
-                            class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Ingatkan Saya
-                        </button>
-                    </div>
-                </div>
+                <!-- Right Column: Sidebar Actions -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="sticky top-6 space-y-6">
 
-                <!-- Company Info -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Tentang Perusahaan</h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Industri</span>
-                            <span class="font-medium text-gray-900">Teknologi / Software</span>
+                        <!-- Action Card -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 {{ $alreadyApplied ? 'ring-2 ring-green-500/20' : '' }}">
+                            @if ($alreadyApplied)
+                                <div class="text-center py-4">
+                                    <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4 ring-8 ring-green-50">
+                                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Lamaran Terkirim</h3>
+                                    <p class="text-sm text-gray-500 mb-6">Anda telah melamar posisi ini. Silakan pantau status lamaran Anda melalui dashboard.</p>
+                                    <a href="{{ route('seeker.jobs.applications', ['highlight_job_id' => $job->id]) }}" class="block w-full px-4 py-3 bg-gray-50 hover:bg-gray-100 text-gray-900 dark:text-gray-100 border border-gray-200 rounded-xl transition-colors font-semibold text-center">
+                                        Lihat Status Lamaran
+                                    </a>
+                                </div>
+                            @elseif (!Auth::user()->hasCompletedProfile())
+                                <div class="text-center py-2">
+                                    <div class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center mb-4 ring-8 ring-amber-50">
+                                        <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Profil Belum Lengkap</h3>
+                                    <p class="text-sm text-gray-500 mb-4">Profil Anda baru lengkap <span class="font-bold text-gray-900 dark:text-gray-100">{{ Auth::user()->profile_completion_percentage }}%</span>. Lengkapi profil hingga 100% untuk dapat melamar.</p>
+                                    <div class="w-full bg-gray-100 rounded-full h-1.5 mb-6">
+                                        <div class="bg-amber-500 h-1.5 rounded-full" style="width: {{ Auth::user()->profile_completion_percentage }}%"></div>
+                                    </div>
+                                    <a href="{{ route('dashboard') }}" class="block w-full px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl transition-colors font-semibold shadow-sm text-center">
+                                        Lengkapi Profil Sekarang
+                                    </a>
+                                </div>
+                            @else
+                                @php
+                                    $latestAssessment = \App\Models\UserAssessment::where('user_id', Auth::id())->latest()->first();
+                                    $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
+                                @endphp
+
+                                @if ($avgGap > 30)
+                                    <div class="text-center py-2">
+                                        <div class="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4 ring-8 ring-red-50">
+                                            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Celah Keahlian Tinggi</h3>
+                                        <p class="text-sm text-gray-500 mb-6">Celah keahlian Anda <strong class="text-gray-900 dark:text-gray-100">{{ number_format($avgGap, 1) }}%</strong> (Batas: 30%). Silakan tingkatkan skill Anda melalui kursus yang direkomendasikan terlebih dahulu.</p>
+                                        <a href="{{ route('seeker.courses.index') }}" class="block w-full px-4 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-xl transition-colors font-semibold shadow-sm text-center">
+                                            Lihat Rekomendasi Kursus
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="mb-6">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">Siap untuk melamar?</h3>
+                                        <p class="text-sm text-gray-500">Kirimkan profil dan CV terbaik Anda.</p>
+                                    </div>
+
+                                    <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="space-y-5" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < 75) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
+                                        @csrf
+
+                                        <!-- CV Preview Mini Card -->
+                                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl group relative overflow-hidden">
+                                            <div class="flex items-start gap-3 relative z-10">
+                                                <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center border border-gray-100 shrink-0">
+                                                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
+                                                </div>
+                                                <div class="min-w-0 flex-1">
+                                                    <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">CV_{{ Auth::user()->name }}.pdf</p>
+                                                    <p class="text-xs text-gray-500 mt-0.5">Dokumen utama • Terhubung otomatis</p>
+                                                </div>
+                                            </div>
+                                            <a href="{{ route('profile.edit') }}" class="absolute inset-0 z-20 flex items-center justify-center bg-gray-900/5 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <span class="px-3 py-1.5 bg-white text-gray-900 dark:text-gray-100 text-xs font-bold rounded-lg shadow-sm border border-gray-200">Ganti Dokumen</span>
+                                            </a>
+                                        </div>
+
+                                        <!-- Note Field -->
+                                        <div>
+                                            <label for="note" class="block text-sm font-semibold text-gray-700 mb-1.5">Pesan untuk Recruiter <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                                            <textarea name="note" id="note" rows="3" placeholder="Sebutkan alasan mengapa Anda adalah kandidat terbaik..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-colors resize-none"></textarea>
+                                        </div>
+
+                                        <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-sm hover:shadow-md transform active:scale-[0.98]">
+                                            Kirim Lamaran Sekarang
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                        </button>
+                                    </form>
+
+                                    <p class="text-[11px] text-gray-400 text-center mt-4">
+                                        Dengan melamar, Anda menyetujui <a href="#" class="text-gray-600 hover:text-blue-600 underline decoration-gray-300 underline-offset-2">Syarat & Ketentuan</a> kami.
+                                    </p>
+                                @endif
+                            @endif
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Ukuran</span>
-                            <span class="font-medium text-gray-900">50-200 karyawan</span>
+
+                        <!-- Secondary Actions -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 space-y-2">
+                            @if(!$alreadyApplied)
+                                <form action="{{ route('seeker.jobs.save', $job->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors {{ $isSaved ? 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200' }}">
+                                        @if($isSaved)
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" /></svg>
+                                            Disimpan
+                                        @else
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                                            Simpan Lowongan
+                                        @endif
+                                    </button>
+                                </form>
+                            @endif
+                            <button type="button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                                Bagikan
+                            </button>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">Website</span>
-                            <a href="{{ $job->application_url }}" target="_blank"
-                                class="font-medium text-blue-600 hover:underline">
-                                {{ parse_url($job->application_url, PHP_URL_HOST) }}
-                            </a>
+
+                        <!-- Company Info Mini Card -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                            <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-4">Profil Perusahaan</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Industri</p>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Teknologi / Software</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Ukuran Perusahaan</p>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">50-200 Karyawan</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Situs Web</p>
+                                    <a href="{{ $job->application_url }}" target="_blank" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1">
+                                        {{ parse_url($job->application_url, PHP_URL_HOST) ?? 'Kunjungi Website' }}
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                    <a href="{{ $job->application_url }}" target="_blank"
-                        class="mt-4 block w-full text-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                        Kunjungi Website Perusahaan
-                    </a>
                 </div>
 
             </div>
         </div>
-    </div>
-    </div>
-    </div>
     </div>
 
     <!-- Low Match Modal -->
@@ -416,7 +349,7 @@
                  x-transition:leave="ease-in duration-200" 
                  x-transition:leave-start="opacity-100" 
                  x-transition:leave-end="opacity-0" 
-                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
+                 class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" 
                  @click="open = false" 
                  aria-hidden="true"></div>
 
@@ -429,7 +362,7 @@
                  x-transition:leave="ease-in duration-200" 
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                 class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                 class="inline-block align-bottom bg-white rounded-2xl px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 border border-gray-100">
                 <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
                         <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -437,22 +370,22 @@
                         </svg>
                     </div>
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        <h3 class="text-lg leading-6 font-bold text-gray-900 dark:text-gray-100" id="modal-title">
                             Kecocokan Belum Memenuhi Syarat
                         </h3>
                         <div class="mt-2">
-                            <p class="text-sm text-gray-500">
-                                Silahkan lakukan asesmen kompetensi untuk meningkatkan peluang Anda. Minimal kecocokan yang disarankan adalah 75%.
+                            <p class="text-sm text-gray-500 leading-relaxed">
+                                Mohon maaf, tingkat kecocokan profil Anda dengan persyaratan lowongan masih di bawah 75%. Silakan lakukan asesmen kompetensi untuk meningkatkan skor Anda.
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                    <a href="{{ url('/seeker/assessment') }}" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Asesmen
+                <div class="mt-6 sm:mt-5 sm:flex sm:flex-row-reverse gap-3">
+                    <a href="{{ url('/seeker/assessment') }}" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2.5 bg-blue-600 text-base font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto sm:text-sm transition-colors">
+                        Mulai Asesmen
                     </a>
-                    <button type="button" @click="open = false" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Cancel
+                    <button type="button" @click="open = false" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2.5 bg-white text-base font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm transition-colors">
+                        Batal
                     </button>
                 </div>
             </div>

@@ -10,10 +10,12 @@ class RoadmapService
 {
     public function generateRoadmap(UserAssessment $assessment)
     {
-        // Hapus roadmap lama jika ada untuk posisi ini agar tidak duplikat
-        CareerRoadmap::where('user_id', $assessment->user_id)
-            ->where('position_id', $assessment->position_id)
-            ->delete();
+        // Hapus roadmap lama jika ada agar tidak duplikat
+        $deleteQuery = CareerRoadmap::where('user_id', $assessment->user_id);
+        if ($assessment->position_id) {
+            $deleteQuery->where('position_id', $assessment->position_id);
+        }
+        $deleteQuery->delete();
 
         $scores = $assessment->scores()->with('competency')->orderByDesc('gap_percentage')->get();
         
@@ -40,7 +42,7 @@ class RoadmapService
                 'title' => "Pendalaman {$skill->competency->name}",
                 'desc' => "Lanjutkan pembelajaran {$skill->competency->name} dan kerjakan latihan studi kasus sederhana."
             ];
-        } else {
+        } elseif ($highPrioritySkills->isNotEmpty()) {
             $roadmaps[] = [
                 'month_number' => 2,
                 'title' => "Proyek Mini {$highPrioritySkills[0]->competency->name}",

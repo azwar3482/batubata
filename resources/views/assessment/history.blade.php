@@ -46,9 +46,13 @@
                                     {{ $assessments->firstItem() + $loop->index }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900">{{ $assessment->position->name }}
+                                    <div class="text-sm font-medium text-gray-900">{{ $assessment->target_name }}
                                     </div>
+                                    @if($assessment->position)
                                     <div class="text-xs text-gray-500">{{ $assessment->position->category }}</div>
+                                    @elseif($assessment->jobListing)
+                                    <div class="text-xs text-gray-500">{{ $assessment->jobListing->company_name }}</div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500">
                                     {{ $assessment->assessment_date->format('d M Y') }}

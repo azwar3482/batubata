@@ -24,7 +24,7 @@
                     </div>
                     <div>
                         <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200 mb-1">Tentang Kelola Kompetensi</h4>
-                        <p class="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">Kompetensi adalah standar keahlian yang diukur dalam asesmen. Setiap kompetensi terkait dengan <strong>posisi kerja</strong> dan memiliki <strong>level minimum</strong> yang dibutuhkan (1-5). Data ini digunakan untuk menghitung <strong>skill gap</strong> dan merekomendasikan kursus yang sesuai.</p>
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">Kompetensi adalah standar keahlian yang diukur dalam asesmen. Setiap kompetensi terkait dengan <strong>posisi kerja</strong> (opsional) dan memiliki <strong>level minimum</strong> yang dibutuhkan (1-10). Data ini digunakan untuk menghitung <strong>skill gap</strong> dan merekomendasikan kursus yang sesuai.</p>
                     </div>
                 </div>
             </div>

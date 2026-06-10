@@ -10,16 +10,19 @@ class RoadmapController extends Controller
     {
         $user = Auth::user();
         // Ambil roadmap terbaru berdasarkan posisi terakhir yang diasesmen
-        $latestAssessment = $user->assessments()->with('position')->latest('assessment_date')->first();
+        $latestAssessment = $user->assessments()->with('position', 'jobListing')->latest('assessment_date')->first();
         
         if (!$latestAssessment) {
             return redirect()->route('seeker.assessment.create')->with('info', 'Anda harus menyelesaikan asesmen terlebih dahulu untuk melihat roadmap.');
         }
 
-        $roadmaps = CareerRoadmap::where('user_id', $user->id)
-            ->where('position_id', $latestAssessment->position_id)
-            ->orderBy('month_number')
-            ->get();
+        $roadmapQuery = CareerRoadmap::where('user_id', $user->id);
+        if ($latestAssessment->position_id) {
+            $roadmapQuery->where('position_id', $latestAssessment->position_id);
+        } else {
+            $roadmapQuery->whereNull('position_id');
+        }
+        $roadmaps = $roadmapQuery->orderBy('month_number')->get();
 
         return view('roadmap.index', compact('roadmaps', 'latestAssessment'));
     }

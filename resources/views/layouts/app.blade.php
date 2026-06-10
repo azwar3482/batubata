@@ -841,6 +841,17 @@
                         <span class="sidebar-text transition-all duration-300">Bank Soal TPA</span>
                         <div class="menu-tooltip">Bank Soal TPA</div>
                     </a>
+
+                    <a href="{{ route('industry.competencies.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('industry.competencies*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('industry.competencies*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Kelola Kompetensi</span>
+                        <div class="menu-tooltip">Kelola Kompetensi</div>
+                    </a>
                     @endcan
 
                     <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Manajemen Internal</div>

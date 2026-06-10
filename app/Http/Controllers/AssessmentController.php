@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Position;
 use App\Models\Competency;
+use App\Models\JobListing;
 use App\Models\UserAssessment;
 use App\Models\UserCompetencyScore;
 use App\Models\CareerRoadmap;
@@ -13,24 +14,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\RecommendationService;
 use App\Services\RoadmapService;
+use App\Services\DynamicCompetencyService;
 
 
 class AssessmentController extends Controller
 {
     public function create()
     {
-        // Hanya tampilkan posisi yang punya minimal 1 teknis DAN 1 soft skill
-        $positions = Position::whereHas('competencies', function ($q) {
-            $q->where('category', 'technical');
-        })->whereHas('competencies', function ($q) {
-            $q->where('category', 'soft_skill');
-        })->withCount(['competencies as technical_count' => function ($q) {
+        $positions = Position::withCount(['competencies as technical_count' => function ($q) {
             $q->where('category', 'technical');
         }, 'competencies as soft_count' => function ($q) {
             $q->where('category', 'soft_skill');
         }])->get();
 
-        return view('assessment.create', compact('positions'));
+        $jobListings = JobListing::where('is_active', true)
+            ->where('expires_date', '>', now())
+            ->get();
+
+        return view('assessment.create', compact('positions', 'jobListings'));
     }
 
     public function positions()
@@ -69,18 +70,56 @@ class AssessmentController extends Controller
         ]);
     }
 
+    /**
+     * Start assessment from a job listing (dynamic competency generation).
+     */
+    public function fromJob($jobId, DynamicCompetencyService $dynamicService)
+    {
+        $job = JobListing::findOrFail($jobId);
+        $user = Auth::user();
+
+        // Generate competencies from job listing
+        $competencies = $dynamicService->generateFromJobListing($job);
+
+        if ($competencies->isEmpty()) {
+            return redirect()->route('seeker.jobs.detail', $jobId)
+                ->with('error', 'Lowongan ini tidak memiliki data skill yang dapat digunakan untuk assessment.');
+        }
+
+        // Store in session
+        session()->put('assessment_data', [
+            'position_id' => $job->position_id,
+            'job_listing_id' => $job->id,
+            'experience_years' => $user->experience_years ?? 0,
+            'education_level' => $user->education_level ?? 'SMA/SMK',
+        ]);
+
+        return redirect()->route('seeker.assessment.questions');
+    }
+
     public function store(Request $request)
     {
-        // Validasi awal
+        // Convert empty strings to null before validation
+        $request->merge([
+            'position_id' => $request->position_id ?: null,
+            'job_listing_id' => $request->job_listing_id ?: null,
+        ]);
+
         $request->validate([
-            'position_id' => 'required|exists:positions,id',
+            'position_id' => 'nullable|exists:positions,id',
+            'job_listing_id' => 'nullable|exists:job_listings,id',
             'experience_years' => 'nullable|integer|min:0',
             'education_level' => 'required|string',
         ]);
 
-        // Simpan sesi sementara untuk data diri (bisa juga langsung simpan ke user jika mau update profil)
+        // Must have at least one of position_id or job_listing_id
+        if (!$request->position_id && !$request->job_listing_id) {
+            return back()->with('error', 'Silakan pilih posisi atau lowongan.');
+        }
+
         session()->put('assessment_data', [
             'position_id' => $request->position_id,
+            'job_listing_id' => $request->job_listing_id,
             'experience_years' => $request->experience_years,
             'education_level' => $request->education_level,
         ]);
@@ -88,34 +127,67 @@ class AssessmentController extends Controller
         return redirect()->route('seeker.assessment.questions');
     }
 
-    public function questions()
+    public function questions(DynamicCompetencyService $dynamicService)
     {
         $data = session()->get('assessment_data');
         if (!$data) {
             return redirect()->route('seeker.assessment.create')->with('error', 'Silakan mulai asesmen dari awal.');
         }
 
-        $position = Position::with('competencies')->find($data['position_id']);
+        \Log::info('Assessment questions - session data:', $data);
 
-        if (!$position || $position->competencies->isEmpty()) {
-            return redirect()->route('seeker.assessment.create')->with('error', 'Posisi ini belum memiliki kompetensi yang terdaftar. Silakan pilih posisi lain.');
+        $position = null;
+        $jobListing = null;
+        $technicalSkills = collect([]);
+        $softSkills = collect([]);
+
+        if (!empty($data['position_id'])) {
+            // Position-based assessment
+            $position = Position::with('competencies')->find($data['position_id']);
+            if ($position && $position->competencies->isNotEmpty()) {
+                $technicalSkills = $position->competencies->where('category', 'technical');
+                $softSkills = $position->competencies->where('category', 'soft_skill');
+            }
         }
 
-        // Kelompokkan kompetensi berdasarkan kategori
-        $technicalSkills = $position->competencies->where('category', 'technical');
-        $softSkills = $position->competencies->where('category', 'soft_skill');
+        \Log::info('After position check:', ['tech' => $technicalSkills->count(), 'soft' => $softSkills->count(), 'job_listing_id' => $data['job_listing_id'] ?? 'not set']);
 
-        // Hitung steps dinamis
+        // If no competencies from position, try job listing
+        if ($technicalSkills->isEmpty() && $softSkills->isEmpty() && !empty($data['job_listing_id'])) {
+            \Log::info('Loading from job listing:', ['job_listing_id' => $data['job_listing_id']]);
+            $jobListing = JobListing::find($data['job_listing_id']);
+            if ($jobListing) {
+                $competencies = $dynamicService->generateFromJobListing($jobListing);
+                $technicalSkills = $competencies->where('category', 'technical');
+                $softSkills = $competencies->where('category', 'soft_skill');
+                \Log::info('Generated from job listing:', ['tech' => $technicalSkills->count(), 'soft' => $softSkills->count()]);
+            }
+        }
+
+        // Fallback: if still empty, try generating from job listing even with position
+        if ($technicalSkills->isEmpty() && $softSkills->isEmpty() && !empty($data['job_listing_id'])) {
+            $jobListing = $jobListing ?? JobListing::find($data['job_listing_id']);
+            if ($jobListing) {
+                $competencies = $dynamicService->generateFromJobListing($jobListing);
+                $technicalSkills = $competencies->where('category', 'technical');
+                $softSkills = $competencies->where('category', 'soft_skill');
+            }
+        }
+
+        // Build steps dynamically
         $steps = [];
         if ($technicalSkills->isNotEmpty()) $steps[] = 'technical';
         if ($softSkills->isNotEmpty()) $steps[] = 'soft_skill';
         $totalSteps = count($steps);
 
         if ($totalSteps === 0) {
-            return redirect()->route('seeker.assessment.create')->with('error', 'Posisi ini belum memiliki kompetensi. Silakan hubungi admin.');
+            return redirect()->route('seeker.assessment.create')->with('error', 'Tidak ada kompetensi yang ditemukan. Silakan pilih posisi lain atau lowongan yang memiliki data skill.');
         }
 
-        return view('assessment.questions', compact('position', 'technicalSkills', 'softSkills', 'steps', 'totalSteps'));
+        // Determine display name
+        $targetName = $position ? $position->name : ($jobListing ? $jobListing->title : 'Assessment Umum');
+
+        return view('assessment.questions', compact('position', 'jobListing', 'technicalSkills', 'softSkills', 'steps', 'totalSteps', 'targetName'));
     }
 
     public function submit(Request $request, \App\Services\AssessmentScoringService $scoringService)
@@ -125,31 +197,37 @@ class AssessmentController extends Controller
 
         $request->validate([
             'skills' => 'required|array',
-            'skills.*' => 'required|integer|min:1|max:5',
+            'skills.*' => 'required|integer|min:1|max:10',
             'education_level' => 'nullable|string',
             'experience_years' => 'nullable|integer',
         ]);
 
-        if (!$data) {
+        $positionId = null;
+        $jobListingId = null;
+
+        if ($data) {
+            $positionId = $data['position_id'] ?? null;
+            $jobListingId = $data['job_listing_id'] ?? null;
+        } else {
             // Fallback for API calls where session might be missing
             $firstSkillId = array_key_first($request->skills);
             $competency = Competency::find($firstSkillId);
             
-            $data = [
-                'position_id' => $competency ? $competency->position_id : null,
-                'education_level' => $request->education_level ?? $user->education_level,
-                'experience_years' => $request->experience_years ?? $user->experience_years,
-            ];
+            $positionId = $competency ? $competency->position_id : null;
         }
 
-        if (!$data['position_id']) {
-             return response()->json(['success' => false, 'message' => 'Position ID not found'], 400);
+        if (!$positionId && !$jobListingId) {
+             return response()->json(['success' => false, 'message' => 'Position or Job Listing ID not found'], 400);
         }
 
         DB::beginTransaction();
         try {
-            // Mendelegasikan logika kalkulasi dan Bulk Insert ke Service
-            $assessment = $scoringService->processAndSaveScores($user->id, $data['position_id'], $request->skills);
+            $assessment = $scoringService->processAndSaveScores(
+                $user->id,
+                $positionId,
+                $request->skills,
+                $jobListingId
+            );
 
             if (!$assessment) {
                 throw new \Exception("Gagal memproses skor asesmen.");
@@ -164,7 +242,7 @@ class AssessmentController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Asesmen berhasil diselesaikan!',
-                    'data' => $assessment->load(['position', 'scores.competency'])
+                    'data' => $assessment->load(['position', 'jobListing', 'scores.competency'])
                 ]);
             }
 
@@ -183,21 +261,9 @@ class AssessmentController extends Controller
         }
     }
 
-    // public function result($id)
-    // {
-    //     $assessment = UserAssessment::with(['position', 'scores.competency'])
-    //         ->findOrFail($id);
-
-    //     // Pastikan hanya user pemilik yang bisa lihat
-    //     if ($assessment->user_id !== Auth::id()) {
-    //         abort(403);
-    //     }
-
-    //     return view('assessment.result', compact('assessment'));
-    // }
     public function result($id, RecommendationService $recService)
     {
-        $assessment = UserAssessment::with(['position', 'scores.competency'])
+        $assessment = UserAssessment::with(['position', 'jobListing', 'scores.competency'])
             ->findOrFail($id);
 
         if ($assessment->user_id !== Auth::id()) {
@@ -208,14 +274,15 @@ class AssessmentController extends Controller
         $recommendations = $recService->getRecommendedCourses($assessment, 6);
 
         // Cek apakah roadmap sudah ada
-        $roadmapExists = CareerRoadmap::where('user_id', $assessment->user_id)
-            ->where('position_id', $assessment->position_id)
-            ->exists();
+        $roadmapQuery = CareerRoadmap::where('user_id', $assessment->user_id);
+        if ($assessment->position_id) {
+            $roadmapQuery->where('position_id', $assessment->position_id);
+        }
+        $roadmapExists = $roadmapQuery->exists();
 
         $roadmapMilestones = [];
         if ($roadmapExists) {
-            $roadmapMilestones = CareerRoadmap::where('user_id', $assessment->user_id)
-                ->where('position_id', $assessment->position_id)
+            $roadmapMilestones = (clone $roadmapQuery)
                 ->orderBy('month_number')
                 ->take(3)
                 ->get();
@@ -223,7 +290,7 @@ class AssessmentController extends Controller
 
         // Generate radar data dari assessment scores (sudah eager loaded)
         $radarData = [];
-        $scores = $assessment->scores; // Gunakan yang sudah eager loaded
+        $scores = $assessment->scores;
 
         if ($scores->isNotEmpty()) {
             $technicalScores = $scores->where('competency.category', 'technical');
@@ -259,6 +326,9 @@ class AssessmentController extends Controller
             }
         }
 
+        // Determine target name
+        $targetName = $assessment->target_name;
+
         if (request()->wantsJson() || request()->is('api/*')) {
             return response()->json([
                 'success' => true,
@@ -268,16 +338,18 @@ class AssessmentController extends Controller
                     'roadmap_exists' => $roadmapExists,
                     'roadmap_milestones' => $roadmapMilestones,
                     'radar_data' => $radarData,
+                    'target_name' => $targetName,
                 ]
             ]);
         }
 
-        return view('assessment.result', compact('assessment', 'recommendations', 'roadmapExists', 'roadmapMilestones', 'radarData'));
+        return view('assessment.result', compact('assessment', 'recommendations', 'roadmapExists', 'roadmapMilestones', 'radarData', 'targetName'));
     }
+
     public function history()
     {
         $user = Auth::user();
-        $assessments = UserAssessment::with(['position', 'scores'])
+        $assessments = UserAssessment::with(['position', 'jobListing', 'scores'])
             ->where('user_id', $user->id)
             ->orderBy('assessment_date', 'desc')
             ->paginate(10);
@@ -303,7 +375,6 @@ class AssessmentController extends Controller
             abort(403);
         }
 
-        // Load data asesmen sebelumnya untuk referensi
         session()->put('previous_assessment_id', $id);
 
         return redirect()->route('seeker.assessment.create');
@@ -327,17 +398,13 @@ class AssessmentController extends Controller
             'cv' => 'nullable|file|mimes:pdf|max:5120',
         ]);
 
-        // Handle Photo Upload
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('photos', 'public');
             $validated['photo'] = $path;
         }
 
-        // Handle CV Upload
         if ($request->hasFile('cv')) {
             $path = $request->file('cv')->store('cvs', 'public');
-            // Simpan path CV di tabel terpisah atau user_meta jika perlu
-            // Untuk simplifikasi, kita simpan di session atau buat tabel user_documents
         }
 
         $user->update($validated);
