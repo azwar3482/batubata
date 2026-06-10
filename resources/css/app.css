@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mobile overflow fix */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Ensure content doesn't overflow on mobile */
+@media (max-width: 640px) {
+    .flex-1 {
+        min-width: 0;
+    }
+    
+    /* Fix for tables and wide content on mobile */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

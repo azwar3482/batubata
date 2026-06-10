@@ -71,4 +71,110 @@ return [
     
     // Success messages
     'member_updated' => 'Team member data updated successfully.',
+
+    // Dashboard
+    'dashboard_job_seeker' => 'Job Seeker Dashboard',
+    'welcome' => 'Welcome',
+    'profile_completion' => 'Profile Completion',
+    'skill_gap' => 'Skill Gap',
+    'total_assessments' => 'Total Assessments',
+    'recommended_jobs' => 'Recommended Jobs',
+    'start_tour' => 'Start Tour',
+    'tour_app' => 'Tour Kompaskarir App',
+
+    // Common Actions
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'back' => 'Back',
+    'search' => 'Search',
+    'filter' => 'Filter',
+    'reset' => 'Reset',
+    'create' => 'Create New',
+    'update' => 'Update',
+    'submit' => 'Submit',
+    'confirm' => 'Confirm',
+    'close' => 'Close',
+    'download' => 'Download',
+    'upload' => 'Upload',
+    'preview' => 'Preview',
+    'export' => 'Export',
+    'import' => 'Import',
+
+    // Status
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'status_pending' => 'Pending',
+    'status_approved' => 'Approved',
+    'status_rejected' => 'Rejected',
+    'status_completed' => 'Completed',
+    'status_in_progress' => 'In Progress',
+
+    // TPA
+    'tpa_test' => 'TPA Test',
+    'tpa_questions' => 'TPA Question Bank',
+    'tpa_results' => 'TPA Results',
+    'tpa_invite' => 'Invite TPA',
+    'tpa_score' => 'TPA Score',
+    'tpa_passed' => 'Passed',
+    'tpa_failed' => 'Failed',
+
+    // Career Fields
+    'career_fields' => 'Career Fields',
+    'career_roadmap' => 'Career Roadmap',
+    'level' => 'Level',
+    'demand_score' => 'Market Demand',
+    'salary_range' => 'Salary Range',
+
+    // Chat
+    'chat_agent' => 'Chat Assistant',
+    'chat_faq' => 'Chat FAQ',
+    'type_message' => 'Type a message...',
+    'send' => 'Send',
+
+    // Settings
+    'settings' => 'Settings',
+    'general_settings' => 'General Settings',
+    'ai_settings' => 'AI Settings',
+    'notification_settings' => 'Notification Settings',
+    'security_settings' => 'Security Settings',
+
+    // Profile
+    'profile' => 'Profile',
+    'profile_information' => 'Profile Information',
+    'update_password' => 'Update Password',
+    'delete_account' => 'Delete Account',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm Password',
+
+    // Jobs
+    'jobs' => 'Job Vacancies',
+    'my_applications' => 'My Applications',
+    'apply' => 'Apply',
+    'applied' => 'Applied',
+    'withdraw' => 'Withdraw Application',
+
+    // Courses
+    'courses' => 'Courses',
+    'my_courses' => 'My Courses',
+    'enroll' => 'Enroll',
+    'enrolled' => 'Enrolled',
+    'progress' => 'Progress',
+
+    // Assessment
+    'assessment' => 'Assessment',
+    'start_assessment' => 'Start Assessment',
+    'assessment_result' => 'Assessment Result',
+    'retake' => 'Retake',
+
+    // Notifications
+    'new_notification' => 'New Notification',
+    'mark_as_read' => 'Mark as Read',
+    'view_all' => 'View All',
+
+    // Time
+    'today' => 'Today',
+    'yesterday' => 'Yesterday',
+    'this_week' => 'This Week',
+    'this_month' => 'This Month',
 ];

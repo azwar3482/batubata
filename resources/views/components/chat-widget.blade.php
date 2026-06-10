@@ -1,19 +1,19 @@
 <div id="chat-widget" x-data="chatWidget()" x-cloak>
     {{-- Floating Button --}}
     <button @click="toggleChat()"
-            class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
+            class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
             :class="isOpen ? 'rotate-90' : ''">
-        <svg x-show="!isOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg x-show="!isOpen" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
         </svg>
-        <svg x-show="isOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg x-show="isOpen" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
         </svg>
     </button>
 
     {{-- Chat Window --}}
     <div x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-         class="fixed bottom-24 right-6 z-50 w-96 h-[600px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden">
+         class="fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-1rem)] sm:w-96 h-[500px] sm:h-[600px] bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden max-w-[400px]">
 
         {{-- Header --}}
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-4 flex items-center justify-between flex-shrink-0">
@@ -142,6 +142,14 @@ function chatWidget() {
                 this.isConfigured = false;
             }
 
+            // Restore sessionId dari localStorage
+            this.sessionId = localStorage.getItem('chat_session_id') || null;
+
+            // Load history jika ada session tersimpan
+            if (this.sessionId) {
+                this.loadHistory();
+            }
+
             // Load suggestions
             this.loadSuggestions();
         },
@@ -180,6 +188,28 @@ function chatWidget() {
             const message = text || this.inputMessage.trim();
             if (!message || this.isLoading) return;
 
+            // Validasi panjang pesan
+            if (message.length > 1000) {
+                this.messages.push({
+                    role: 'assistant',
+                    content: 'Pesan terlalu panjang. Maksimal 1000 karakter.',
+                    created_at: new Date().toISOString(),
+                });
+                this.$nextTick(() => this.scrollToBottom());
+                return;
+            }
+
+            // Cek apakah pesan mengandung URL/file media
+            if (/\.(jpg|jpeg|png|gif|mp4|mp3|wav|webm|svg|bmp)/i.test(message)) {
+                this.messages.push({
+                    role: 'assistant',
+                    content: 'Maaf, saya hanya dapat memproses pesan teks. Saya tidak bisa memproses gambar atau video.',
+                    created_at: new Date().toISOString(),
+                });
+                this.$nextTick(() => this.scrollToBottom());
+                return;
+            }
+
             this.inputMessage = '';
             this.messages.push({
                 role: 'user',
@@ -208,6 +238,7 @@ function chatWidget() {
 
                 if (data.success) {
                     this.sessionId = data.session_id;
+                    localStorage.setItem('chat_session_id', this.sessionId);
                     this.messages.push({
                         role: 'assistant',
                         content: data.text,
@@ -253,14 +284,22 @@ function chatWidget() {
 
             this.messages = [];
             this.sessionId = null;
+            localStorage.removeItem('chat_session_id');
             this.suggestions = [];
             this.loadSuggestions();
         },
 
         formatMessage(text) {
             if (!text) return '';
+            // Escape HTML terlebih dahulu untuk mencegah XSS
+            const escaped = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
             // Convert markdown-like formatting
-            return text
+            return escaped
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/`(.*?)`/g, '<code class="bg-gray-200 px-1 rounded text-xs">$1</code>')

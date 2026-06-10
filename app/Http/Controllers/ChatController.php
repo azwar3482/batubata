@@ -22,13 +22,26 @@ class ChatController extends Controller
     public function sendMessage(Request $request)
     {
         $request->validate([
-            'message' => 'required|string|max:2000',
+            'message' => 'required|string|max:1000',
             'session_id' => 'nullable|string|max:100',
         ]);
 
         $user = Auth::user();
-        $message = $request->input('message');
+        $message = $this->sanitizeInput($request->input('message'));
         $sessionId = $request->input('session_id');
+
+        // Validasi session_id format
+        if ($sessionId && !preg_match('/^chat_\d+_\d+$/', $sessionId)) {
+            $sessionId = null;
+        }
+
+        // Cek apakah pesan kosong setelah sanitasi
+        if (empty(trim($message))) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Pesan tidak boleh kosong.',
+            ], 422);
+        }
 
         $response = $this->chatService->chat($user, $message, $sessionId);
 
@@ -151,5 +164,28 @@ class ChatController extends Controller
                 ? 'Gemini API sudah dikonfigurasi.'
                 : 'Gemini API belum dikonfigurasi. Tambahkan GEMINI_API_KEY di .env',
         ]);
+    }
+
+    /**
+     * Sanitasi input user untuk mencegah injection dan abuse
+     */
+    protected function sanitizeInput(string $input): string
+    {
+        // Hapus karakter null bytes
+        $input = str_replace("\0", '', $input);
+
+        // Hapus control characters kecuali newline dan tab
+        $input = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $input);
+
+        // Trim whitespace berlebih
+        $input = trim($input);
+
+        // Batasi jumlah karakter berulang (mencegah spam)
+        $input = preg_replace('/(.)\1{10,}/u', '$1$1$1', $input);
+
+        // Batasi jumlah newline berurutan
+        $input = preg_replace('/\n{4,}/', "\n\n\n", $input);
+
+        return $input;
     }
 }

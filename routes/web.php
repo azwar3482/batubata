@@ -381,14 +381,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
-    // Chat Agent
+    // Chat Agent (rate limited)
     Route::prefix('chat')->name('chat.')->group(function () {
-        Route::post('/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send');
-        Route::get('/history', [App\Http\Controllers\ChatController::class, 'history'])->name('history');
-        Route::get('/sessions', [App\Http\Controllers\ChatController::class, 'sessions'])->name('sessions');
-        Route::delete('/history', [App\Http\Controllers\ChatController::class, 'clearHistory'])->name('clear');
-        Route::get('/suggestions', [App\Http\Controllers\ChatController::class, 'suggestions'])->name('suggestions');
-        Route::get('/status', [App\Http\Controllers\ChatController::class, 'status'])->name('status');
+        Route::post('/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send')->middleware('throttle:20,1');
+        Route::get('/history', [App\Http\Controllers\ChatController::class, 'history'])->name('history')->middleware('throttle:60,1');
+        Route::get('/sessions', [App\Http\Controllers\ChatController::class, 'sessions'])->name('sessions')->middleware('throttle:30,1');
+        Route::delete('/history', [App\Http\Controllers\ChatController::class, 'clearHistory'])->name('clear')->middleware('throttle:10,1');
+        Route::get('/suggestions', [App\Http\Controllers\ChatController::class, 'suggestions'])->name('suggestions')->middleware('throttle:60,1');
+        Route::get('/status', [App\Http\Controllers\ChatController::class, 'status'])->name('status')->middleware('throttle:60,1');
     });
 });
 

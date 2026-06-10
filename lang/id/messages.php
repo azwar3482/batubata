@@ -71,4 +71,110 @@ return [
     
     // Success messages
     'member_updated' => 'Data anggota tim berhasil diperbarui.',
+
+    // Dashboard
+    'dashboard_job_seeker' => 'Dashboard Job Seeker',
+    'welcome' => 'Selamat Datang',
+    'profile_completion' => 'Kelengkapan Profil',
+    'skill_gap' => 'Skill Gap',
+    'total_assessments' => 'Total Asesmen',
+    'recommended_jobs' => 'Lowongan Cocok',
+    'start_tour' => 'Mulai Tour',
+    'tour_app' => 'Tour App Kompaskarir',
+
+    // Common Actions
+    'save' => 'Simpan',
+    'cancel' => 'Batal',
+    'back' => 'Kembali',
+    'search' => 'Cari',
+    'filter' => 'Filter',
+    'reset' => 'Reset',
+    'create' => 'Buat Baru',
+    'update' => 'Update',
+    'submit' => 'Submit',
+    'confirm' => 'Konfirmasi',
+    'close' => 'Tutup',
+    'download' => 'Download',
+    'upload' => 'Upload',
+    'preview' => 'Preview',
+    'export' => 'Export',
+    'import' => 'Import',
+
+    // Status
+    'status_active' => 'Aktif',
+    'status_inactive' => 'Nonaktif',
+    'status_pending' => 'Menunggu',
+    'status_approved' => 'Disetujui',
+    'status_rejected' => 'Ditolak',
+    'status_completed' => 'Selesai',
+    'status_in_progress' => 'Sedang Berjalan',
+
+    // TPA
+    'tpa_test' => 'Tes TPA',
+    'tpa_questions' => 'Bank Soal TPA',
+    'tpa_results' => 'Hasil TPA',
+    'tpa_invite' => 'Undang TPA',
+    'tpa_score' => 'Skor TPA',
+    'tpa_passed' => 'Lulus',
+    'tpa_failed' => 'Tidak Lulus',
+
+    // Career Fields
+    'career_fields' => 'Bidang Karir',
+    'career_roadmap' => 'Roadmap Karir',
+    'level' => 'Level',
+    'demand_score' => 'Permintaan Pasar',
+    'salary_range' => 'Range Gaji',
+
+    // Chat
+    'chat_agent' => 'Asisten Chat',
+    'chat_faq' => 'FAQ Chat',
+    'type_message' => 'Ketik pesan...',
+    'send' => 'Kirim',
+
+    // Settings
+    'settings' => 'Pengaturan',
+    'general_settings' => 'Pengaturan Umum',
+    'ai_settings' => 'Pengaturan AI',
+    'notification_settings' => 'Pengaturan Notifikasi',
+    'security_settings' => 'Pengaturan Keamanan',
+
+    // Profile
+    'profile' => 'Profil',
+    'profile_information' => 'Informasi Profil',
+    'update_password' => 'Ubah Password',
+    'delete_account' => 'Hapus Akun',
+    'current_password' => 'Password Saat Ini',
+    'new_password' => 'Password Baru',
+    'confirm_password' => 'Konfirmasi Password',
+
+    // Jobs
+    'jobs' => 'Lowongan Kerja',
+    'my_applications' => 'Lamaran Saya',
+    'apply' => 'Lamar',
+    'applied' => 'Dilamar',
+    'withdraw' => 'Tarik Lamaran',
+
+    // Courses
+    'courses' => 'Kursus',
+    'my_courses' => 'Kursus Saya',
+    'enroll' => 'Daftar',
+    'enrolled' => 'Terdaftar',
+    'progress' => 'Progress',
+
+    // Assessment
+    'assessment' => 'Asesmen',
+    'start_assessment' => 'Mulai Asesmen',
+    'assessment_result' => 'Hasil Asesmen',
+    'retake' => 'Ulangi',
+
+    // Notifications
+    'new_notification' => 'Notifikasi Baru',
+    'mark_as_read' => 'Tandai Dibaca',
+    'view_all' => 'Lihat Semua',
+
+    // Time
+    'today' => 'Hari Ini',
+    'yesterday' => 'Kemarin',
+    'this_week' => 'Minggu Ini',
+    'this_month' => 'Bulan Ini',
 ];
