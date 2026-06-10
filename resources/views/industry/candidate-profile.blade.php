@@ -68,9 +68,14 @@
                             <div class="flex flex-col sm:flex-row sm:items-end gap-4 -mt-12">
                                 <!-- Avatar -->
                                 <div class="relative">
+                                    @php $photoDoc = $candidate->documents->where('document_type', 'photo')->first(); @endphp
                                     <div
-                                        class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-2xl font-bold border-4 border-white shadow-lg">
-                                        {{ substr($candidate->name, 0, 2) }}
+                                        class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-2xl font-bold border-4 border-white shadow-lg overflow-hidden">
+                                        @if($photoDoc)
+                                            <img src="{{ Storage::url($photoDoc->file_path) }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover">
+                                        @else
+                                            {{ substr($candidate->name, 0, 2) }}
+                                        @endif
                                     </div>
                                     @if ($candidate->is_verified ?? false)
                                     <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-green-500 rounded-full flex items-center justify-center border-2 border-white"
@@ -281,7 +286,8 @@
                     </div>
 
                     <!-- Attachments -->
-                    @if ($candidate->cv_path ?? false)
+                    @php $cvDoc = $candidate->documents->where('document_type', 'cv')->first(); @endphp
+                    @if ($cvDoc)
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4">Dokumen</h3>
                         <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -294,10 +300,10 @@
                                 </svg>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p class="font-medium text-gray-900 truncate">CV_{{ $candidate->name }}.pdf</p>
-                                <p class="text-sm text-gray-500">2.4 MB • Updated 3 days ago</p>
+                                <p class="font-medium text-gray-900 truncate">{{ $cvDoc->original_name }}</p>
+                                <p class="text-sm text-gray-500">{{ $cvDoc->file_size_human }} • {{ $cvDoc->updated_at->diffForHumans() }}</p>
                             </div>
-                            <a href="{{ Storage::url($candidate->cv_path) }}" target="_blank"
+                            <a href="{{ Storage::url($cvDoc->file_path) }}" target="_blank"
                                 class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
                                 Lihat
                             </a>
@@ -396,10 +402,22 @@
                             @endif
 
                             <!-- Action Buttons Forms -->
-                            <form action="{{ route('industry.applications.update-status', $application->id) }}" method="POST" class="mt-4 space-y-3">
+                            <form action="{{ route('industry.applications.update-status', $application->id) }}" method="POST" class="mt-4 space-y-3"
+                                x-data="{ loading: false }" @submit="loading = true">
                                 @csrf
                                 @method('PUT')
-                                
+
+                                <template x-if="loading">
+                                    <div class="flex items-center justify-center gap-2 py-3 text-blue-600">
+                                        <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Memproses...</span>
+                                    </div>
+                                </template>
+
+                                <div x-show="!loading">
                                 @if ($currentStatus === 'applied')
                                     <button type="submit" name="status" value="reviewed" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 duration-150">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -472,6 +490,7 @@
                                         Pulihkan / Aktifkan Kembali
                                     </button>
                                 @endif
+                                </div>
                             </form>
                         </div>
                         @endif
@@ -515,11 +534,12 @@
                                         @click.self="showTpaModal = false">
                                         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" @click.stop>
                                             <h3 class="text-lg font-bold mb-4">Kirim Undangan TPA</h3>
-                                            <form action="{{ route('industry.applications.invite-tpa', $application->id) }}" method="POST">
+                                            <form action="{{ route('industry.applications.invite-tpa', $application->id) }}" method="POST"
+                                                x-data="{ loading: false }" @submit="loading = true">
                                                 @csrf
                                                 <div class="mb-4">
                                                     <label class="block text-sm font-medium mb-2">Pilih Tes TPA</label>
-                                                    <select name="tpa_test_id" class="w-full border rounded-lg px-3 py-2" required>
+                                                    <select name="tpa_test_id" class="w-full border rounded-lg px-3 py-2" required :disabled="loading">
                                                         <option value="">-- Pilih Tes --</option>
                                                         @foreach($availableTests as $test)
                                                         <option value="{{ $test->id }}">{{ $test->title }} ({{ $test->total_questions }} soal, {{ $test->time_limit_minutes }}m)</option>
@@ -528,8 +548,14 @@
                                                 </div>
                                                 <p class="text-xs text-gray-500 mb-4">Kandidat akan menerima undangan untuk mengerjakan tes TPA secara online.</p>
                                                 <div class="flex gap-3">
-                                                    <button type="button" @click="showTpaModal = false" class="flex-1 px-4 py-2 border rounded-lg">Batal</button>
-                                                    <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Kirim</button>
+                                                    <button type="button" @click="showTpaModal = false" class="flex-1 px-4 py-2 border rounded-lg" :disabled="loading">Batal</button>
+                                                    <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2" :disabled="loading">
+                                                        <svg x-show="loading" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        <span x-text="loading ? 'Mengirim...' : 'Kirim'"></span>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -664,6 +690,289 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Informasi Profil Lengkap - Full Width -->
+            <div class="mt-8">
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Informasi Profil
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                        <!-- ID Pelamar -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">ID Pelamar</span>
+                            <span class="text-sm font-mono font-bold text-gray-900">#{{ $candidate->id }}</span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</span>
+                            <a href="mailto:{{ $candidate->email }}" class="text-sm text-blue-600 hover:underline">{{ $candidate->email }}</a>
+                        </div>
+
+                        <!-- Telepon -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Telepon</span>
+                            @if($candidate->phone)
+                            <a href="tel:{{ $candidate->phone }}" class="text-sm text-blue-600 hover:underline">{{ $candidate->phone }}</a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Jenis Kelamin -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Jenis Kelamin</span>
+                            @if($candidate->gender)
+                            <span class="text-sm text-gray-900">{{ $candidate->gender === 'male' ? 'Laki-laki' : 'Perempuan' }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Tanggal Lahir -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Tanggal Lahir</span>
+                            @if($candidate->birth_date)
+                            <span class="text-sm text-gray-900">{{ \Carbon\Carbon::parse($candidate->birth_date)->format('d M Y') }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Golongan Darah -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Golongan Darah</span>
+                            @if($candidate->blood_type)
+                            <span class="text-sm text-gray-900">{{ $candidate->blood_type }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Pendidikan -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pendidikan</span>
+                            @if($candidate->education_level)
+                            <span class="text-sm text-gray-900">{{ $candidate->education_level }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Jurusan -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Jurusan</span>
+                            @if($candidate->major)
+                            <span class="text-sm text-gray-900">{{ $candidate->major }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Tahun Lulus -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Tahun Lulus</span>
+                            @if($candidate->graduation_year)
+                            <span class="text-sm text-gray-900">{{ $candidate->graduation_year }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Pengalaman -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pengalaman</span>
+                            <span class="text-sm text-gray-900">{{ $candidate->experience_years ?? 0 }} Tahun</span>
+                        </div>
+
+                        <!-- Status Akun -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Status Akun</span>
+                            @if($candidate->email_verified_at)
+                            <span class="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-1 rounded-full">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Terverifikasi
+                            </span>
+                            @else
+                            <span class="inline-flex items-center gap-1 text-xs font-semibold text-yellow-700 bg-yellow-50 px-2 py-1 rounded-full">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                Belum Verifikasi
+                            </span>
+                            @endif
+                        </div>
+
+                        <!-- Tanggal Daftar -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Bergabung</span>
+                            <span class="text-sm text-gray-900">{{ $candidate->created_at->format('d M Y') }}</span>
+                        </div>
+
+                        <!-- Koordinat -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Koordinat</span>
+                            @if($candidate->latitude && $candidate->longitude)
+                            <span class="text-xs text-gray-600 font-mono">{{ $candidate->latitude }}, {{ $candidate->longitude }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- CV -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">CV</span>
+                            @php $cvDoc = $candidate->documents->where('document_type', 'cv')->first(); @endphp
+                            @if($cvDoc)
+                            <a href="{{ Storage::url($cvDoc->file_path) }}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Download CV
+                            </a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Ijazah -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Ijazah</span>
+                            @php $ijazahDoc = $candidate->documents->where('document_type', 'ijazah')->first(); @endphp
+                            @if($ijazahDoc)
+                            <a href="{{ Storage::url($ijazahDoc->file_path) }}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Download Ijazah
+                            </a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Transkrip -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Transkrip</span>
+                            @php $transkripDoc = $candidate->documents->where('document_type', 'transkrip')->first(); @endphp
+                            @if($transkripDoc)
+                            <a href="{{ Storage::url($transkripDoc->file_path) }}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Download Transkrip
+                            </a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Sertifikat -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Sertifikat</span>
+                            @php $sertifikatDoc = $candidate->documents->where('document_type', 'sertifikat')->first(); @endphp
+                            @if($sertifikatDoc)
+                            <a href="{{ Storage::url($sertifikatDoc->file_path) }}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Download Sertifikat
+                            </a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Portofolio -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Portofolio</span>
+                            @php $portoDoc = $candidate->documents->where('document_type', 'portofolio')->first(); @endphp
+                            @if($portoDoc)
+                            <a href="{{ Storage::url($portoDoc->file_path) }}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Download Portofolio
+                            </a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- LinkedIn -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">LinkedIn</span>
+                            @if($candidate->linkedin_url)
+                            <a href="{{ $candidate->linkedin_url }}" target="_blank" class="text-sm text-blue-600 hover:underline truncate max-w-[200px]">Profil LinkedIn</a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Portfolio -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Portfolio</span>
+                            @if($candidate->portfolio_url)
+                            <a href="{{ $candidate->portfolio_url }}" target="_blank" class="text-sm text-blue-600 hover:underline truncate max-w-[200px]">Lihat Portfolio</a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- GitHub -->
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">GitHub</span>
+                            @if($candidate->github_url)
+                            <a href="{{ $candidate->github_url }}" target="_blank" class="text-sm text-blue-600 hover:underline truncate max-w-[200px]">Lihat GitHub</a>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Alamat - Full Width -->
+                        <div class="py-2 border-b border-gray-100 md:col-span-2">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1">Alamat</span>
+                            @if($candidate->address)
+                            <span class="text-sm text-gray-900">{{ $candidate->address }}</span>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Skills - Full Width -->
+                        <div class="py-2 border-b border-gray-100 md:col-span-2">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Keahlian</span>
+                            @if($candidate->skills && count($candidate->skills) > 0)
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($candidate->skills as $skill)
+                                <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">{{ $skill }}</span>
+                                @endforeach
+                            </div>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+
+                        <!-- Bahasa - Full Width -->
+                        <div class="py-2 md:col-span-2">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Bahasa</span>
+                            @if($candidate->languages && count($candidate->languages) > 0)
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($candidate->languages as $lang)
+                                <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full">{{ $lang }}</span>
+                                @endforeach
+                            </div>
+                            @else
+                            <span class="text-sm text-gray-400 italic">-</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

@@ -14,20 +14,26 @@ class ProfileService
     public function updateProfile(User $user, array $validatedData, ?UploadedFile $photo, ?UploadedFile $cv)
     {
         if ($photo) {
-            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-                Storage::disk('public')->delete($user->photo);
-            }
-            $validatedData['photo'] = $photo->store('photos', 'public');
+            $this->uploadDocument($user, $photo, 'photo');
         }
 
         if ($cv) {
-            if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-                Storage::disk('public')->delete($user->cv_path);
-            }
-            $validatedData['cv_path'] = $cv->store('cvs', 'public');
+            $this->uploadDocument($user, $cv, 'cv');
         }
 
-        $user->fill(\Illuminate\Support\Arr::except($validatedData, ['career_histories']));
+        // Filter out photo and cv from validated data
+        $userData = \Illuminate\Support\Arr::except($validatedData, ['career_histories', 'photo', 'cv']);
+
+        // Handle array fields - save empty arrays as null
+        foreach (['skills', 'languages', 'expected_jobs'] as $arrayField) {
+            if (isset($userData[$arrayField]) && is_array($userData[$arrayField]) && empty(array_filter($userData[$arrayField], function($item) {
+                return !empty($item) && (!is_array($item) || !empty(array_filter($item)));
+            }))) {
+                $userData[$arrayField] = null;
+            }
+        }
+
+        $user->fill($userData);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -36,9 +42,12 @@ class ProfileService
         $user->save();
 
         if (isset($validatedData['career_histories']) && is_array($validatedData['career_histories'])) {
-            $user->careerHistories()->delete(); // Clear old entries
+            $user->careerHistories()->delete();
             foreach ($validatedData['career_histories'] as $history) {
-                // Ensure is_current is boolean
+                // Skip empty histories
+                if (empty($history['company_name']) && empty($history['position'])) {
+                    continue;
+                }
                 $history['is_current'] = isset($history['is_current']) && $history['is_current'] ? 1 : 0;
                 $user->careerHistories()->create($history);
             }
@@ -47,27 +56,41 @@ class ProfileService
         return $user;
     }
 
+    protected function uploadDocument(User $user, UploadedFile $file, string $docType): void
+    {
+        $oldDocs = UserDocument::where('user_id', $user->id)
+            ->where('document_type', $docType)
+            ->get();
+
+        foreach ($oldDocs as $oldDoc) {
+            if (Storage::disk('public')->exists($oldDoc->file_path)) {
+                Storage::disk('public')->delete($oldDoc->file_path);
+            }
+            $oldDoc->delete();
+        }
+
+        $path = $file->store("documents/{$docType}", 'public');
+
+        UserDocument::create([
+            'user_id'       => $user->id,
+            'document_type' => $docType,
+            'original_name' => $file->getClientOriginalName(),
+            'file_path'     => $path,
+            'mime_type'     => $file->getMimeType(),
+            'file_size'     => $file->getSize(),
+            'status'        => UserDocument::STATUS_COMPLETED,
+        ]);
+    }
+
     public function updateCvOnly(User $user, UploadedFile $cv)
     {
-        if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-            Storage::disk('public')->delete($user->cv_path);
-        }
-        $path = $cv->store('cvs', 'public');
-
-        $user->update(['cv_path' => $path]);
-
+        $this->uploadDocument($user, $cv, 'cv');
         return $user;
     }
 
     public function updatePhotoOnly(User $user, UploadedFile $photo)
     {
-        if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-            Storage::disk('public')->delete($user->photo);
-        }
-        $path = $photo->store('photos', 'public');
-
-        $user->update(['photo' => $path]);
-
+        $this->uploadDocument($user, $photo, 'photo');
         return $user;
     }
 

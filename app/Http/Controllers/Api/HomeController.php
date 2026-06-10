@@ -19,9 +19,11 @@ class HomeController extends Controller
     {
         $user = Auth::user()->load(['company', 'institution']);
 
+        $photoDoc = $user->documents()->where('document_type', 'photo')->first();
+
         $data = [
             'user_name' => $user->name,
-            'user_avatar' => $user->photo ? (filter_var($user->photo, FILTER_VALIDATE_URL) ? $user->photo : asset('storage/' . $user->photo)) : null,
+            'user_avatar' => $photoDoc ? asset('storage/' . $photoDoc->file_path) : null,
             'role' => $user->role,
             'notification_count' => $user->unreadNotifications()->count(),
             'level_badge' => $this->_getLevelBadge($user),

@@ -64,4 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->middleware('throttle:6,1')
         ->name('logout');
+
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->middleware('throttle:6,1');
 });

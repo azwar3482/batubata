@@ -11,7 +11,9 @@
             <div class="mb-6 p-5 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border border-emerald-100 dark:border-emerald-800/50 rounded-xl">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0 w-10 h-10 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
                     <div>
                         <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200 mb-1">Tentang Pencarian Kandidat</h4>
@@ -39,7 +41,7 @@
                             class="w-full border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-950 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                             <option value="">Semua Posisi</option>
                             @foreach($positions as $pos)
-                                <option value="{{ $pos->id }}" {{ request('position') == $pos->id ? 'selected' : '' }}>{{ $pos->name }}</option>
+                            <option value="{{ $pos->id }}" {{ request('position') == $pos->id ? 'selected' : '' }}>{{ $pos->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -48,9 +50,9 @@
                             🔍 Cari
                         </button>
                         @if(request('search') || request('skill') || request('position'))
-                            <a href="{{ route('industry.candidates') }}" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-650 text-gray-700 dark:text-white rounded-lg font-semibold text-sm transition text-center flex items-center justify-center h-[38px]">
-                                Reset
-                            </a>
+                        <a href="{{ route('industry.candidates') }}" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-650 text-gray-700 dark:text-white rounded-lg font-semibold text-sm transition text-center flex items-center justify-center h-[38px]">
+                            Reset
+                        </a>
                         @endif
                     </div>
                 </div>
@@ -68,7 +70,7 @@
                         Download Data (CSV)
                     </button>
                 </div>
-                
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
@@ -83,12 +85,12 @@
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-750">
                             @forelse($candidates as $index => $application)
                             @php
-                                $user = $application->user;
-                                $initials = strtoupper(substr($user->name ?? 'U', 0, 1));
-                                $match = round($application->matching_percentage ?? 0);
-                                $matchColor = $match >= 80 ? 'emerald' : ($match >= 60 ? 'yellow' : 'orange');
-                                $latestAssessment = $user->assessments->sortByDesc('assessment_date')->first();
-                                $skills = $latestAssessment ? $latestAssessment->scores->take(3)->pluck('competency.name') : collect();
+                            $user = $application->user;
+                            $initials = strtoupper(substr($user->name ?? 'U', 0, 1));
+                            $match = round($application->matching_percentage ?? 0);
+                            $matchColor = $match >= 80 ? 'emerald' : ($match >= 60 ? 'yellow' : 'orange');
+                            $latestAssessment = $user->assessments->sortByDesc('assessment_date')->first();
+                            $skills = $latestAssessment ? $latestAssessment->scores->take(3)->pluck('competency.name') : collect();
                             @endphp
                             <tr class="hover:bg-slate-50 dark:hover:bg-slate-750/50 transition-colors duration-200">
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-slate-500 dark:text-slate-400">{{ $candidates->firstItem() + $index }}</td>
@@ -100,23 +102,25 @@
                                         <div>
                                             <div class="flex items-center gap-2">
                                                 <span class="font-bold text-slate-900 dark:text-white text-sm">{{ $user->name }}</span>
+                                                <span class="text-xs text-slate-400 font-medium">(ID: {{ $user->id }})</span>
                                                 @if(isset($application->has_applied) && !$application->has_applied)
-                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50">Rekomendasi</span>
+                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50">Rekomendasi</span>
                                                 @else
-                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">Melamar</span>
+                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">Melamar</span>
                                                 @endif
                                             </div>
+                                            <div class="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-0.5">{{ $user->email }}</div>
                                             <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ $user->education_level ?? '-' }} {{ $user->major ?? '' }} • {{ $user->experience_years ?? 0 }} Thn Pengalaman</div>
                                             @if(isset($application->jobListing))
-                                                <div class="text-[11px] mt-0.5">
-                                                    @if(isset($application->has_applied) && !$application->has_applied)
-                                                        <span class="text-slate-500 dark:text-slate-400">Cocok posisi: </span>
-                                                        <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{ $application->jobListing->title }}</span>
-                                                    @else
-                                                        <span class="text-slate-500 dark:text-slate-400">Melamar posisi: </span>
-                                                        <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $application->jobListing->title }}</span>
-                                                    @endif
-                                                </div>
+                                            <div class="text-[11px] mt-0.5">
+                                                @if(isset($application->has_applied) && !$application->has_applied)
+                                                <span class="text-slate-500 dark:text-slate-400">Cocok posisi: </span>
+                                                <span class="font-semibold text-emerald-600 dark:text-emerald-400">{{ $application->jobListing->title }}</span>
+                                                @else
+                                                <span class="text-slate-500 dark:text-slate-400">Melamar posisi: </span>
+                                                <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $application->jobListing->title }}</span>
+                                                @endif
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
@@ -152,7 +156,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
                     <div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">

@@ -47,16 +47,10 @@ class GoogleAuthService
             $user = User::create([
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'photo' => $googleUser->getAvatar(), // Save Google avatar
                 'password' => Hash::make(Str::random(16)),
                 'role' => $role,
                 'email_verified_at' => now(),
             ]);
-        } else {
-            // Update photo if it's empty
-            if (empty($user->photo)) {
-                $user->update(['photo' => $googleUser->getAvatar()]);
-            }
         }
 
         return $user;

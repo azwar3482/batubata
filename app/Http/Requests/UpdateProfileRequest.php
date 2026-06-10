@@ -50,7 +50,7 @@ class UpdateProfileRequest extends FormRequest
             'career_histories.*.company_name' => 'nullable|string|max:255',
             'career_histories.*.position' => 'nullable|string|max:255',
             'career_histories.*.start_date' => 'nullable|date',
-            'career_histories.*.end_date' => 'nullable|date|after_or_equal:career_histories.*.start_date',
+            'career_histories.*.end_date' => 'nullable|date',
             'career_histories.*.is_current' => 'nullable|boolean',
             'career_histories.*.description' => 'nullable|string|max:1000',
         ];

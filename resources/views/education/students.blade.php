@@ -66,8 +66,9 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
-                                            @if($student->photo)
-                                                <img src="{{ asset('storage/' . $student->photo) }}" class="h-10 w-10 rounded-full object-cover">
+                                            @php $photoDoc = $student->documents()->where('document_type', 'photo')->first(); @endphp
+                                            @if($photoDoc)
+                                                <img src="{{ asset('storage/' . $photoDoc->file_path) }}" class="h-10 w-10 rounded-full object-cover">
                                             @else
                                                 <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold">
                                                     {{ strtoupper(substr($student->name, 0, 1)) }}

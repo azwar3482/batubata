@@ -116,7 +116,8 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                             {{-- Step 1: Data Diri --}}
                             @php
-                                $step1Complete = !empty($user->name) && !empty($user->photo) && !empty($user->phone) && !empty($user->gender) && !empty($user->address);
+                                $hasPhoto = \App\Models\UserDocument::where('user_id', $user->id)->where('document_type', 'photo')->exists();
+                                $step1Complete = !empty($user->name) && $hasPhoto && !empty($user->phone) && !empty($user->gender) && !empty($user->address);
                             @endphp
                             @if($step1Complete)
                                 <div class="p-3 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-center gap-3 checklist-complete">
@@ -166,7 +167,7 @@
 
                             {{-- Step 3: CV --}}
                             @php
-                                $step3Complete = !empty($user->cv_path) || \App\Models\UserDocument::where('user_id', $user->id)->where('document_type', 'cv')->exists();
+                                $step3Complete = \App\Models\UserDocument::where('user_id', $user->id)->where('document_type', 'cv')->exists();
                             @endphp
                             @if($step3Complete)
                                 <div class="p-3 rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-950/10 flex items-center gap-3 checklist-complete">

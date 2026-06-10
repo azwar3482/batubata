@@ -2,6 +2,145 @@
     <!-- Trix Editor -->
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('profileForm', () => ({
+            isExtracting: false,
+            saving: false,
+            successMessage: '',
+            errorMessage: '',
+            education_level: '{{ addslashes(old("education_level", Auth::user()->education_level ?? "")) }}',
+            major: '{{ addslashes(old("major", Auth::user()->major ?? "")) }}',
+            career_histories: JSON.parse('{!! addslashes(json_encode(old("career_histories", Auth::user()->careerHistories ?? []))) !!}'),
+            skills: JSON.parse('{!! addslashes(json_encode(old("skills", Auth::user()->skills ?? []))) !!}'),
+            new_skill: '',
+            languages: JSON.parse('{!! addslashes(json_encode(old("languages", Auth::user()->languages ?? []))) !!}'),
+            new_language: '',
+            positions: JSON.parse('{!! addslashes(json_encode($positions->pluck('name'))) !!}'),
+            
+            addCareerHistory() {
+                this.career_histories.push({ company_name: '', position: '', start_date: '', end_date: '', is_current: false, description: '' });
+            },
+            removeCareerHistory(index) {
+                this.career_histories.splice(index, 1);
+            },
+            
+            addSkill(e) {
+                e.preventDefault();
+                if(this.new_skill.trim() !== '' && !this.skills.includes(this.new_skill.trim())) {
+                    this.skills.push(this.new_skill.trim());
+                    this.new_skill = '';
+                }
+            },
+            removeSkill(index) {
+                this.skills.splice(index, 1);
+            },
+            
+            addLanguage(e) {
+                e.preventDefault();
+                if(this.new_language.trim() !== '' && !this.languages.includes(this.new_language.trim())) {
+                    this.languages.push(this.new_language.trim());
+                    this.new_language = '';
+                }
+            },
+            removeLanguage(index) {
+                this.languages.splice(index, 1);
+            },
+
+            async extractIjazah() {
+                this.isExtracting = true;
+                try {
+                    const response = await fetch('{{ route("profile.extract.ijazah") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                    const data = await response.json();
+                    if(data.success) {
+                        if(data.data.education_level) this.education_level = data.data.education_level;
+                        if(data.data.major) this.major = data.data.major;
+                        alert(data.message || 'Berhasil mengekstrak data dari Ijazah!');
+                    } else {
+                        alert(data.message || 'Gagal mengekstrak data.');
+                    }
+                } catch(error) {
+                    alert('Terjadi kesalahan jaringan.');
+                }
+                this.isExtracting = false;
+            },
+
+            async submitForm(event) {
+                event.preventDefault();
+                this.saving = true;
+                this.successMessage = '';
+                this.errorMessage = '';
+
+                try {
+                    const form = document.getElementById('profile-update-form');
+                    const formData = new FormData(form);
+                    
+                    // Set education_level and major from Alpine state
+                    formData.set('education_level', this.education_level || '');
+                    formData.set('major', this.major || '');
+                    
+                    if (this.skills && this.skills.length > 0) {
+                        this.skills.forEach((skill, index) => {
+                            formData.set('skills[' + index + ']', skill);
+                        });
+                    }
+                    
+                    if (this.languages && this.languages.length > 0) {
+                        this.languages.forEach((lang, index) => {
+                            formData.set('languages[' + index + ']', lang);
+                        });
+                    }
+                    
+                    if (this.career_histories && this.career_histories.length > 0) {
+                        this.career_histories.forEach((history, index) => {
+                            formData.set('career_histories[' + index + '][company_name]', history.company_name || '');
+                            formData.set('career_histories[' + index + '][position]', history.position || '');
+                            formData.set('career_histories[' + index + '][start_date]', history.start_date || '');
+                            if (!history.is_current && history.end_date) {
+                                formData.set('career_histories[' + index + '][end_date]', history.end_date);
+                            }
+                            formData.set('career_histories[' + index + '][is_current]', history.is_current ? '1' : '0');
+                            formData.set('career_histories[' + index + '][description]', history.description || '');
+                        });
+                    }
+
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.successMessage = data.message || 'Profil berhasil diperbarui!';
+                        setTimeout(() => { this.successMessage = ''; }, 5000);
+                    } else {
+                        if (data.errors) {
+                            this.errorMessage = Object.values(data.errors).flat().join('\n');
+                        } else {
+                            this.errorMessage = data.message || 'Gagal menyimpan profil.';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Submit error:', error);
+                    this.errorMessage = 'Terjadi kesalahan jaringan. Silakan coba lagi.';
+                }
+                this.saving = false;
+            }
+        }));
+    });
+    </script>
     <style>
         .trix-button-group {
             background: white;
@@ -72,7 +211,58 @@
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola informasi pribadi, foto, dan preferensi akun Anda.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {{-- Success Notification --}}
+            @if(session('success'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
+                class="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl flex items-center gap-3">
+                <div class="p-1 bg-green-500 text-white rounded-full">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <p class="text-sm font-medium text-green-800 dark:text-green-300">{{ session('success') }}</p>
+                <button @click="show = false" class="ml-auto text-green-500 hover:text-green-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            @endif
+
+            {{-- Error Notification --}}
+            @if(session('error'))
+            <div x-data="{ show: true }" x-show="show" x-transition
+                class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl flex items-center gap-3">
+                <div class="p-1 bg-red-500 text-white rounded-full">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </div>
+                <p class="text-sm font-medium text-red-800 dark:text-red-300">{{ session('error') }}</p>
+                <button @click="show = false" class="ml-auto text-red-500 hover:text-red-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            @endif
+
+            {{-- Validation Errors --}}
+            @if($errors->any() && !$errors->hasAny(['documents', 'documents.*', 'current_password', 'password', 'photo']))
+            <div x-data="{ show: true }" x-show="show" x-transition
+                class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="p-1 bg-red-500 text-white rounded-full">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <p class="text-sm font-bold text-red-800 dark:text-red-300">Terdapat kesalahan:</p>
+                    <button @click="show = false" class="ml-auto text-red-500 hover:text-red-700">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
+                    @foreach($errors->all() as $error)
+                        @if(!str_contains($error, 'Dokumen') && !str_contains($error, 'sandi') && !str_contains($error, 'password'))
+                        <li>{{ $error }}</li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" x-data="profileForm()">
 
                 <!-- Left Sidebar: Photo & CV Upload (lg:col-span-4) -->
                 <div class="lg:col-span-4 space-y-6">
@@ -82,10 +272,11 @@
                         <div class="h-24 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500"></div>
                         <div class="px-6 pb-6 relative text-center">
 
-                            <div class="w-32 h-32 mx-auto rounded-full bg-white dark:bg-slate-800 p-1.5 absolute -top-16 left-1/2 -translate-x-1/2 shadow-md">
+                                <div class="w-32 h-32 mx-auto rounded-full bg-white dark:bg-slate-800 p-1.5 absolute -top-16 left-1/2 -translate-x-1/2 shadow-md">
                                 <div class="w-full h-full rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-4xl font-bold overflow-hidden ring-4 ring-white dark:ring-slate-900">
-                                    @if (Auth::user()->photo)
-                                    <img src="{{ Storage::url(Auth::user()->photo) }}" alt="Photo" class="w-full h-full object-cover">
+                                    @php $photoDoc = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
+                                    @if ($photoDoc)
+                                    <img src="{{ Storage::url($photoDoc->file_path) }}" alt="Photo" class="w-full h-full object-cover">
                                     @else
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                     @endif
@@ -96,10 +287,19 @@
                                 <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">{{ Auth::user()->name }}</h3>
                                 <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 capitalize">{{ str_replace('_', ' ', Auth::user()->role) }}</p>
 
-                                <form action="{{ route('profile.photo.upload') }}" method="POST" enctype="multipart/form-data" id="photoForm">
+                                <form action="{{ route('profile.photo.upload') }}" method="POST" enctype="multipart/form-data" id="photoForm"
+                                    x-data="{ uploading: false }" @submit="uploading = true">
                                     @csrf
 
-                                    <div class="mt-2 flex justify-center gap-2">
+                                    <div x-show="uploading" class="mt-2 flex items-center justify-center gap-2 py-2">
+                                        <svg class="w-5 h-5 animate-spin text-blue-600" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-blue-600">Mengunggah foto...</span>
+                                    </div>
+
+                                    <div x-show="!uploading" class="mt-2 flex justify-center gap-2">
                                         <label class="relative cursor-pointer bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 rounded-xl px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center shadow-sm justify-center flex-1">
                                             <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
@@ -115,7 +315,7 @@
                                             Kamera
                                         </button>
                                     </div>
-                                    <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">JPG, GIF, atau PNG. Maks 2MB.</p>
+                                    <p x-show="!uploading" class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">JPG, GIF, atau PNG. Maks 2MB.</p>
                                 </form>
 
                                 <!-- Webcam Modal -->
@@ -165,7 +365,7 @@
                                         <span x-show="isExtracting">Sedang memproses...</span>
                                     </button>
                                 </div>
-                                <select name="education_level" x-model="education_level" @change="if(education_level === 'Tidak Sekolah') major = ''" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
+                                <select name="education_level" form="profile-update-form" x-model="education_level" @change="if(education_level === 'Tidak Sekolah') major = ''" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200">
                                     <option value="" disabled>Pilih Tingkat Pendidikan</option>
                                     <option value="Tidak Sekolah">Tidak Sekolah</option>
                                     <option value="SMA/SMK">SMA/SMK</option>
@@ -182,7 +382,7 @@
                             <!-- Jurusan -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Program Studi / Jurusan <span class="text-red-500" x-show="education_level !== 'Tidak Sekolah'">*</span></label>
-                                <input type="text" name="major" x-model="major" placeholder="Contoh: Teknik Informatika"
+                                <input type="text" name="major" form="profile-update-form" x-model="major" placeholder="Contoh: Teknik Informatika"
                                     :disabled="education_level === 'Tidak Sekolah'"
                                     class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 block p-3 transition-all duration-200 disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800">
                                 @error('major') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
@@ -197,7 +397,7 @@
                                             <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                                         </svg>
                                     </div>
-                                    <input type="url" name="linkedin_url" value="{{ Auth::user()->linkedin_url ?? '' }}" placeholder="https://linkedin.com/in/..."
+                                    <input type="url" name="linkedin_url" form="profile-update-form" value="{{ Auth::user()->linkedin_url ?? '' }}" placeholder="https://linkedin.com/in/..."
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block pl-10 p-3 transition-all duration-200">
                                 </div>
                             </div>
@@ -211,7 +411,7 @@
                                             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                                         </svg>
                                     </div>
-                                    <input type="url" name="portfolio_url" value="{{ Auth::user()->portfolio_url ?? '' }}" placeholder="https://github.com/..."
+                                    <input type="url" name="portfolio_url" form="profile-update-form" value="{{ Auth::user()->portfolio_url ?? '' }}" placeholder="https://github.com/..."
                                         class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-slate-500/20 focus:border-slate-500 block pl-10 p-3 transition-all duration-200">
                                 </div>
                             </div>
@@ -234,7 +434,8 @@
                             </div>
                         </div>
 
-                        <form method="post" action="{{ route('password.update') }}" class="space-y-4">
+                        <form method="post" action="{{ route('password.update') }}" class="space-y-4"
+                            x-data="{ show: false, loading: false }" @submit="loading = true">
                             @csrf
                             @method('put')
 
@@ -301,8 +502,12 @@
                             </div>
 
                             <div class="flex items-center gap-4 pt-2">
-                                <button type="submit" class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm">
-                                    Simpan Kata Sandi
+                                <button type="submit" class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm flex items-center justify-center gap-2" :disabled="loading">
+                                    <svg x-show="loading" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span x-text="loading ? 'Menyimpan...' : 'Simpan Kata Sandi'"></span>
                                 </button>
                             </div>
 
@@ -333,7 +538,8 @@
                             </span>
                         </div>
 
-                        <form action="{{ route('profile.documents.upload') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('profile.documents.upload') }}" method="POST" enctype="multipart/form-data"
+                            x-data="{ uploading: false }" @submit="uploading = true">
                             @csrf
 
                             @php
@@ -435,8 +641,12 @@
 
                             <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 text-center">Hanya menerima format PDF (Maksimal 2MB).</p>
 
-                            <button type="submit" class="w-full py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold hover:bg-emerald-700 transition shadow-sm">
-                                Upload & Proses AI
+                            <button type="submit" class="w-full py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold hover:bg-emerald-700 transition shadow-sm flex items-center justify-center gap-2" :disabled="uploading">
+                                <svg x-show="uploading" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span x-text="uploading ? 'Mengunggah & Memproses...' : 'Upload & Proses AI'"></span>
                             </button>
                         </form>
 
@@ -521,72 +731,29 @@
                 <!-- Right Content: Profile Form (lg:col-span-8) -->
                 <div class="lg:col-span-8">
                     <div>
-                        <form id="profile-update-form" action="{{ route('profile.update') }}" method="POST" class="space-y-6" x-data="{
-                            isExtracting: false,
-                            education_level: '{{ old('education_level', Auth::user()->education_level) }}',
-                            major: '{{ old('major', Auth::user()->major) }}',
-                            career_histories: {{ json_encode(old('career_histories', Auth::user()->careerHistories ?? [])) ?: '[]' }},
-                            skills: {{ json_encode(old('skills', Auth::user()->skills ?? [])) ?: '[]' }},
-                            new_skill: '',
-                            languages: {{ json_encode(old('languages', Auth::user()->languages ?? [])) ?: '[]' }},
-                            new_language: '',
-                            
-                            addCareerHistory() {
-                                this.career_histories.push({ company_name: '', position: '', start_date: '', end_date: '', is_current: false, description: '' });
-                            },
-                            removeCareerHistory(index) {
-                                this.career_histories.splice(index, 1);
-                            },
-                            
-                            addSkill(e) {
-                                e.preventDefault();
-                                if(this.new_skill.trim() !== '' && !this.skills.includes(this.new_skill.trim())) {
-                                    this.skills.push(this.new_skill.trim());
-                                    this.new_skill = '';
-                                }
-                            },
-                            removeSkill(index) {
-                                this.skills.splice(index, 1);
-                            },
-                            
-                            addLanguage(e) {
-                                e.preventDefault();
-                                if(this.new_language.trim() !== '' && !this.languages.includes(this.new_language.trim())) {
-                                    this.languages.push(this.new_language.trim());
-                                    this.new_language = '';
-                                }
-                            },
-                            removeLanguage(index) {
-                                this.languages.splice(index, 1);
-                            },
-
-                            async extractIjazah() {
-                                this.isExtracting = true;
-                                try {
-                                    const response = await fetch('{{ route('profile.extract.ijazah') }}', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        }
-                                    });
-                                    const data = await response.json();
-                                    if(data.success) {
-                                        if(data.data.education_level) this.education_level = data.data.education_level;
-                                        if(data.data.major) this.major = data.data.major;
-                                        alert(data.message || 'Berhasil mengekstrak data dari Ijazah!');
-                                    } else {
-                                        alert(data.message || 'Gagal mengekstrak data.');
-                                    }
-                                } catch(error) {
-                                    alert('Terjadi kesalahan jaringan.');
-                                }
-                                this.isExtracting = false;
-                            }
-                        }">
+                        <form id="profile-update-form" action="{{ route('profile.update') }}" method="POST" class="space-y-6">
                             <div hidden>
                                 @csrf
                                 @method('PATCH')
+                            </div>
+
+                            {{-- AJAX Success Message --}}
+                            <div x-show="successMessage" x-transition x-cloak class="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl flex items-center gap-3">
+                                <div class="p-1 bg-green-500 text-white rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <p class="text-sm font-medium text-green-800 dark:text-green-300" x-text="successMessage"></p>
+                            </div>
+
+                            {{-- AJAX Error Message --}}
+                            <div x-show="errorMessage" x-transition x-cloak class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl flex items-start gap-3">
+                                <div class="p-1 bg-red-500 text-white rounded-full mt-0.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-red-800 dark:text-red-300">Gagal menyimpan:</p>
+                                    <p class="text-sm text-red-700 dark:text-red-400 whitespace-pre-line" x-text="errorMessage"></p>
+                                </div>
                             </div>
 
                             @if($errors->any() && !$errors->hasAny(['documents', 'documents.*', 'current_password', 'password']))
@@ -619,6 +786,18 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <!-- ID Pelamar -->
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">ID Pelamar</label>
+                                        <div class="relative">
+                                            <input type="text" value="{{ Auth::user()->id }}" disabled
+                                                class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-750 text-slate-500 dark:text-slate-450 text-sm rounded-xl block p-3 cursor-not-allowed font-mono">
+                                            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+
                                     <!-- Nama -->
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
@@ -840,9 +1019,31 @@
                                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Nama Perusahaan / Organisasi</label>
                                                     <input type="text" x-model="history.company_name" :name="'career_histories['+index+'][company_name]'" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
                                                 </div>
-                                                <div>
+                                                <div x-data="{
+                                                    open: false,
+                                                    search: history.position || '',
+                                                    get filteredPositions() {
+                                                        if (!this.search) return positions;
+                                                        return positions.filter(p => p.toLowerCase().includes(this.search.toLowerCase()));
+                                                    },
+                                                    selectPosition(pos) {
+                                                        history.position = pos;
+                                                        this.search = pos;
+                                                        this.open = false;
+                                                    }
+                                                }" x-init="$watch('history.position', val => search = val)">
                                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Posisi / Jabatan</label>
-                                                    <input type="text" x-model="history.position" :name="'career_histories['+index+'][position]'" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
+                                                    <div class="relative">
+                                                        <input type="text" x-model="search" @focus="open = true" @click.away="open = false" @input="history.position = search" placeholder="Pilih atau ketik posisi" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-lg p-2.5 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-green-500/20 focus:border-green-500">
+                                                        <div x-show="open && filteredPositions.length > 0" style="display: none;" class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg max-h-40 overflow-y-auto">
+                                                            <ul class="py-1">
+                                                                <template x-for="pos in filteredPositions" :key="pos">
+                                                                    <li @click="selectPosition(pos)" class="px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-green-50 dark:hover:bg-green-900/30 cursor-pointer" x-text="pos"></li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" :name="'career_histories['+index+'][position]'" :value="history.position">
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Tanggal Mulai</label>
@@ -988,8 +1189,12 @@
                         <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
                             Batal
                         </a>
-                        <button type="submit" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200">
-                            Simpan Perubahan
+                        <button type="button" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200 flex items-center gap-2" :disabled="saving" @click="submitForm($event)">
+                            <svg x-show="saving" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span x-text="saving ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                         </button>
                     </div>
                 </div>

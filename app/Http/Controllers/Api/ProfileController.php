@@ -12,12 +12,14 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         
+        $photoDoc = $user->documents()->where('document_type', 'photo')->first();
+        
         $data = [
             'id' => (string)$user->id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'avatar' => $user->photo ? (filter_var($user->photo, FILTER_VALIDATE_URL) ? $user->photo : asset('storage/' . $user->photo)) : null,
+            'avatar' => $photoDoc ? asset('storage/' . $photoDoc->file_path) : null,
             'education' => $user->education_level,
             'major' => $user->major,
             'graduation_year' => $user->graduation_year,

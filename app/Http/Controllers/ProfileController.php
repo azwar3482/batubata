@@ -38,16 +38,38 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(UpdateProfileRequest $request): RedirectResponse
+    public function update(UpdateProfileRequest $request)
     {
-        $this->profileService->updateProfile(
-            $request->user(), 
-            $request->validated(), 
-            $request->file('photo'), 
-            $request->file('cv')
-        );
+        try {
+            $this->profileService->updateProfile(
+                $request->user(), 
+                $request->validated(), 
+                $request->file('photo'), 
+                $request->file('cv')
+            );
 
-        return Redirect::route('profile.edit')->with('success', 'Profil berhasil diperbarui!');
+            // Return JSON for AJAX requests
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profil berhasil diperbarui!'
+                ]);
+            }
+
+            return Redirect::route('profile.edit')->with('success', 'Profil berhasil diperbarui!');
+        } catch (\Exception $e) {
+            Log::error('Gagal update profil', ['error' => $e->getMessage(), 'user_id' => $request->user()->id]);
+            
+            // Return JSON for AJAX requests
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menyimpan profil. Silakan coba lagi.'
+                ], 500);
+            }
+
+            return Redirect::route('profile.edit')->with('error', 'Gagal menyimpan profil. Silakan coba lagi.');
+        }
     }
 
     public function uploadCv(UploadCvRequest $request): RedirectResponse

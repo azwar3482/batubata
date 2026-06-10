@@ -21,8 +21,6 @@ class User extends Authenticatable
         'gender',
         'blood_type',
         'phone',
-        'photo',
-        'cv_path',
         'education_level',
         'major',
         'graduation_year',
@@ -202,7 +200,8 @@ class User extends Authenticatable
         }
 
         // photo (10%)
-        if (!empty($this->photo)) {
+        $hasPhoto = \App\Models\UserDocument::where('user_id', $this->id)->where('document_type', 'photo')->exists();
+        if ($hasPhoto) {
             $percentage += 10;
         }
 
@@ -232,7 +231,7 @@ class User extends Authenticatable
         }
 
         // cv_path (25%)
-        $hasCv = !empty($this->cv_path) || \App\Models\UserDocument::where('user_id', $this->id)->where('document_type', 'cv')->exists();
+        $hasCv = \App\Models\UserDocument::where('user_id', $this->id)->where('document_type', 'cv')->exists();
         if ($hasCv) {
             $percentage += 25;
         }

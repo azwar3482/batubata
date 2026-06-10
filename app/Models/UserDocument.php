@@ -15,6 +15,7 @@ class UserDocument extends Model
     const TYPE_TRANSKRIP    = 'transkrip';
     const TYPE_SERTIFIKAT   = 'sertifikat';
     const TYPE_PORTOFOLIO   = 'portofolio';
+    const TYPE_PHOTO        = 'photo';
 
     const TYPES = [
         self::TYPE_CV         => 'Curriculum Vitae (CV)',
@@ -22,6 +23,7 @@ class UserDocument extends Model
         self::TYPE_TRANSKRIP  => 'Transkrip Nilai',
         self::TYPE_SERTIFIKAT => 'Sertifikat',
         self::TYPE_PORTOFOLIO => 'Portofolio',
+        self::TYPE_PHOTO      => 'Foto Profil',
     ];
 
     // Status pemrosesan dokumen

@@ -17,6 +17,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        [x-cloak] { display: none !important; }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -1178,7 +1180,7 @@
                     </button>
 
                     <!-- Notifikasi Dropdown -->
-                    <div class="relative" x-data="{ open: false }">
+                    <div class="relative" x-data="{ open: false }" x-cloak>
                         <button @click="open = !open"
                             class="text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 focus:outline-none relative transition-colors duration-200 p-1.5 sm:p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1194,7 +1196,7 @@
                         </button>
 
                         <!-- Dropdown Card -->
-                        <div x-show="open" @click.away="open = false"
+                        <div x-show="open" @click.away="open = false" style="display: none;"
                             x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 scale-95 translate-y-2"
                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
@@ -1466,6 +1468,9 @@
     @if(Auth::check())
     <x-chat-widget />
     @endif
+
+    {{-- Loading Script --}}
+    <x-loading-script />
 </body>
 
 </html>

@@ -82,16 +82,9 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'photo' => $validated['photo'] ?? null,
-                'password' => Hash::make(Str::random(16)), // Random password for social login
+                'password' => Hash::make(Str::random(16)),
                 'role' => $request->role ?? 'job_seeker',
-                // 'firebase_uid' => $validated['firebase_uid'], // Add this field to migration if needed
             ]);
-        } else {
-            // Update photo if we have a new one from Google and current is empty
-            if (!empty($validated['photo']) && empty($user->photo)) {
-                $user->update(['photo' => $validated['photo']]);
-            }
         }
 
         $token = $user->createToken('auth-token')->plainTextToken;
