@@ -1,14 +1,66 @@
 <x-app-layout>
+    <style>
+        .rating-btn input[type="radio"]:checked + .rating-box {
+            transform: scale(1.1);
+            color: white;
+        }
+        .rating-btn input[type="radio"]:checked + .rating-box[data-color="red"] {
+            background-color: #ef4444;
+            border-color: #ef4444;
+        }
+        .rating-btn input[type="radio"]:checked + .rating-box[data-color="orange"] {
+            background-color: #f97316;
+            border-color: #f97316;
+        }
+        .rating-btn input[type="radio"]:checked + .rating-box[data-color="yellow"] {
+            background-color: #eab308;
+            border-color: #eab308;
+        }
+        .rating-btn input[type="radio"]:checked + .rating-box[data-color="blue"] {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .rating-btn input[type="radio"]:checked + .rating-box[data-color="green"] {
+            background-color: #22c55e;
+            border-color: #22c55e;
+        }
+        .rating-btn:hover .rating-box[data-color="red"] {
+            border-color: #f87171;
+        }
+        .rating-btn:hover .rating-box[data-color="orange"] {
+            border-color: #fb923c;
+        }
+        .rating-btn:hover .rating-box[data-color="yellow"] {
+            border-color: #facc15;
+        }
+        .rating-btn:hover .rating-box[data-color="blue"] {
+            border-color: #60a5fa;
+        }
+        .rating-btn:hover .rating-box[data-color="green"] {
+            border-color: #4ade80;
+        }
+        .rating-btn input[type="radio"]:checked + .rating-box + .rating-label {
+            opacity: 1;
+        }
+        #sticky-legend {
+            background-color: #eff6ff !important; /* solid blue-50 */
+        }
+        html.dark #sticky-legend, .dark #sticky-legend {
+            background-color: #0f172a !important; /* solid slate-900 */
+        }
+    </style>
     <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Penilaian Skill: {{ $targetName }}</h2>
-                <p class="mt-2 text-gray-600 dark:text-slate-400">Nilai kemampuan Anda secara jujur (Skala 1-10).</p>
-            </div>
+                
+                 <p class="mt-2 text-gray-600 dark:text-slate-400">Orang yang terbiasa berbohong lupa bahwa kepercayaan itu tidak bisa dibeli, hanya bisa dijaga.</p>
+            <p class="mt-2 text-gray-600 dark:text-slate-400">Nilai kemampuan Anda secara jujur (Skala 1-10).</p>
+        </div>
 
             {{-- Legend (Sticky) --}}
-            <div class="sticky top-16 z-40 mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl shadow-md backdrop-blur-sm bg-opacity-95">
+            <div id="sticky-legend" class="sticky top-16 z-50 mb-6 py-6 px-4 border border-blue-200 dark:border-slate-800 rounded-xl shadow-md">
                 <div class="flex items-center justify-between">
                     <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200">Panduan Penilaian</h4>
                     <div class="flex gap-2 text-xs">
@@ -44,30 +96,26 @@
                                 </div>
                                 
                                 {{-- Rating Buttons --}}
-                                <div class="flex flex-wrap gap-2">
+                                <div class="flex flex-wrap justify-between gap-2">
                                     @for($i = 1; $i <= 10; $i++)
                                         @php
                                             $color = $i <= 2 ? 'red' : ($i <= 4 ? 'orange' : ($i <= 6 ? 'yellow' : ($i <= 8 ? 'blue' : 'green')));
-                                            $label = $i == 1 ? 'Tidak Tahu' : ($i == 3 ? 'Pemula' : ($i == 5 ? 'Menengah' : ($i == 7 ? 'Mahir' : ($i == 9 ? 'Ahli' : ''))));
+                                            $label = $i <= 2 ? 'Tidak Tahu' : ($i <= 4 ? 'Pemula' : ($i <= 6 ? 'Menengah' : ($i <= 8 ? 'Mahir' : 'Ahli')));
                                         @endphp
-                                        <label class="cursor-pointer group relative">
-                                            <input type="radio" name="skills[{{ $skill->id }}]" value="{{ $i }}" required class="peer sr-only">
-                                            <div class="w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-400 dark:text-slate-500 font-bold peer-checked:scale-110 transition-all duration-200
-                                                peer-checked:border-{{ $color }}-500 peer-checked:bg-{{ $color }}-500 peer-checked:text-white
-                                                hover:border-{{ $color }}-400">
+                                        <label class="rating-btn cursor-pointer group relative">
+                                            <input type="radio" name="skills[{{ $skill->id }}]" value="{{ $i }}" required class="sr-only">
+                                            <div class="rating-box w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-400 dark:text-slate-500 font-bold transition-all duration-200" data-color="{{ $color }}">
                                                 <span class="text-sm">{{ $i }}</span>
                                             </div>
-                                            @if($label)
-                                            <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-gray-500 dark:text-slate-400 whitespace-nowrap opacity-0 group-hover:opacity-100 peer-checked:opacity-100 transition-opacity">
+                                            <div class="rating-label absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-gray-500 dark:text-slate-400 whitespace-nowrap opacity-0 transition-opacity">
                                                 {{ $label }}
                                             </div>
-                                            @endif
                                         </label>
                                     @endfor
                                 </div>
                                 
                                 {{-- Scale Labels --}}
-                                <div class="flex justify-between mt-3 text-[10px] text-gray-500 dark:text-slate-400">
+                                <div class="flex justify-between mt-7 text-[10px] text-gray-500 dark:text-slate-400">
                                     <span>1: Tidak Tahu</span>
                                     <span>3: Pemula</span>
                                     <span>5: Menengah</span>
@@ -100,30 +148,26 @@
                                 </div>
                                 
                                 {{-- Rating Buttons --}}
-                                <div class="flex flex-wrap gap-2">
+                                <div class="flex flex-wrap justify-between gap-2">
                                     @for($i = 1; $i <= 10; $i++)
                                         @php
                                             $color = $i <= 2 ? 'red' : ($i <= 4 ? 'orange' : ($i <= 6 ? 'yellow' : ($i <= 8 ? 'blue' : 'green')));
-                                            $label = $i == 1 ? 'Tidak Tahu' : ($i == 3 ? 'Pemula' : ($i == 5 ? 'Menengah' : ($i == 7 ? 'Mahir' : ($i == 9 ? 'Ahli' : ''))));
+                                            $label = $i <= 2 ? 'Tidak Tahu' : ($i <= 4 ? 'Pemula' : ($i <= 6 ? 'Menengah' : ($i <= 8 ? 'Mahir' : 'Ahli')));
                                         @endphp
-                                        <label class="cursor-pointer group relative">
-                                            <input type="radio" name="skills[{{ $skill->id }}]" value="{{ $i }}" required class="peer sr-only">
-                                            <div class="w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-400 dark:text-slate-500 font-bold peer-checked:scale-110 transition-all duration-200
-                                                peer-checked:border-{{ $color }}-500 peer-checked:bg-{{ $color }}-500 peer-checked:text-white
-                                                hover:border-{{ $color }}-400">
+                                        <label class="rating-btn cursor-pointer group relative">
+                                            <input type="radio" name="skills[{{ $skill->id }}]" value="{{ $i }}" required class="sr-only">
+                                            <div class="rating-box w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-400 dark:text-slate-500 font-bold transition-all duration-200" data-color="{{ $color }}">
                                                 <span class="text-sm">{{ $i }}</span>
                                             </div>
-                                            @if($label)
-                                            <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-gray-500 dark:text-slate-400 whitespace-nowrap opacity-0 group-hover:opacity-100 peer-checked:opacity-100 transition-opacity">
+                                            <div class="rating-label absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-gray-500 dark:text-slate-400 whitespace-nowrap opacity-0 transition-opacity">
                                                 {{ $label }}
                                             </div>
-                                            @endif
                                         </label>
                                     @endfor
                                 </div>
                                 
                                 {{-- Scale Labels --}}
-                                <div class="flex justify-between mt-3 text-[10px] text-gray-500 dark:text-slate-400">
+                                <div class="flex justify-between mt-7 text-[10px] text-gray-500 dark:text-slate-400">
                                     <span>1: Tidak Tahu</span>
                                     <span>3: Pemula</span>
                                     <span>5: Menengah</span>

@@ -219,21 +219,47 @@
 
                         <!-- Roadmap Preview -->
                         <div class="bg-white rounded-xl shadow-md p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">🗓️ Roadmap 6 Bulan</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">🗓️ Roadmap 6 Bulan</h3>
+                            <p class="text-xs text-gray-500 mb-4">Rencana belajar berdasarkan {{ $assessment->scores->where('gap_percentage', '>', 0)->count() }} kompetensi yang perlu ditingkatkan</p>
 
                             @if (($roadmapExists ?? false) && isset($roadmapMilestones) && count($roadmapMilestones) > 0)
                             <div class="space-y-3">
                                 @foreach ($roadmapMilestones as $milestone)
+                                @php
+                                    // Parse deskripsi untuk ambil info ringkas
+                                    $lines = explode("\n", $milestone->milestone_description);
+                                    $skillCount = 0;
+                                    $focusTheme = '';
+                                    foreach ($lines as $line) {
+                                        $trimmed = trim($line);
+                                        if (str_starts_with($trimmed, 'Fokus bulan ini:')) {
+                                            $focusTheme = str_replace('Fokus bulan ini: ', '', $trimmed);
+                                        }
+                                        if (str_starts_with($trimmed, '•')) $skillCount++;
+                                    }
+                                @endphp
                                 <div class="flex items-start gap-3">
                                     <div
-                                        class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
+                                        class="w-6 h-6 rounded-full {{ $milestone->month_number <= 4 ? 'bg-purple-100 text-purple-600' : ($milestone->month_number == 5 ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600') }} flex items-center justify-center text-xs font-bold flex-shrink-0">
                                         {{ $milestone->month_number }}
                                     </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">Bulan
-                                            {{ $milestone->month_number }}: {{ $milestone->milestone_title }}
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900">
+                                            {{ $milestone->milestone_title }}
                                         </p>
-                                        <p class="text-xs text-gray-500">{{ $milestone->milestone_description }}</p>
+                                        @if($focusTheme)
+                                        <p class="text-xs text-purple-600 font-medium mt-0.5">{{ $focusTheme }}</p>
+                                        @endif
+                                        <div class="flex items-center gap-2 mt-1">
+                                            @if($skillCount > 0)
+                                            <span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">{{ $skillCount }} kompetensi</span>
+                                            @endif
+                                            @if($milestone->gap_percentage)
+                                            <span class="text-[10px] px-1.5 py-0.5 {{ $milestone->gap_percentage > 50 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' }} rounded">
+                                                Gap: {{ number_format($milestone->gap_percentage, 1) }}%
+                                            </span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                                 @endforeach
@@ -243,13 +269,15 @@
                                 Lihat Roadmap Lengkap
                             </a>
                             @else
-                            <p class="text-sm text-gray-600 mb-4">Roadmap personal akan dibuat otomatis setelah
-                                asesmen selesai.</p>
+                            <div class="mb-4 p-3 bg-indigo-50 rounded-lg">
+                                <p class="text-xs text-indigo-700 font-medium">📊 Skill Gap Anda: {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
+                                <p class="text-xs text-indigo-600 mt-1">Roadmap akan mencakup <strong>{{ $assessment->scores->where('gap_percentage', '>', 0)->count() }} kompetensi</strong> yang perlu ditingkatkan</p>
+                            </div>
                             <form action="{{ route('seeker.roadmap.generate', $assessment->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"
-                                    class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
-                                    Generate Roadmap
+                                    class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                                    🚀 Generate Roadmap dari Skill Gap
                                 </button>
                             </form>
                             @endif
