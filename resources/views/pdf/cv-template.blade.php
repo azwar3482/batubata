@@ -528,6 +528,33 @@
         <!-- Dekorasi Pojok Kiri Bawah (Dipindah ke luar kolom kiri untuk kompatibilitas PDF) -->
         <div class="cv-shape-gold"></div>
         <div class="cv-shape-grey"></div>
+
+        <!-- Verifikasi Sertifikat Pojok Kanan Bawah -->
+        @php
+            $qrText = "Verifikasi Sertifikat\nkompaskarir-indonesia/certificates/N9ZON0EQ0XG5\nBerlaku hingga " . \Carbon\Carbon::now()->addYear()->translatedFormat('d F Y');
+            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=60x60&margin=0&data=' . urlencode($qrText);
+            try {
+                // Konversi gambar ke base64 agar bisa dirender oleh DOMPDF
+                $qrImage = file_get_contents($qrUrl);
+                $qrBase64 = 'data:image/png;base64,' . base64_encode($qrImage);
+            } catch (\Exception $e) {
+                $qrBase64 = $qrUrl;
+            }
+        @endphp
+        <div style="position: absolute; bottom: 20px; right: 30px; text-align: right; font-size: 10px; color: #4b5563; line-height: 1.4; z-index: 10;">
+            <table style="border: none; margin: 0; padding: 0;">
+                <tr>
+                    <td style="text-align: right; padding-right: 10px; vertical-align: middle;">
+                        <div style="font-weight: bold; color: #1F262C;">Verifikasi Sertifikat</div>
+                        <div>kompaskarir-indonesia/certificates/N9ZON0EQ0XG5</div>
+                        <div>Berlaku hingga {{ \Carbon\Carbon::now()->addYear()->translatedFormat('d F Y') }}</div>
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <img src="{{ $qrBase64 }}" alt="QR Code" style="width: 50px; height: 50px;">
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
     @if(!request()->is('*/download*'))
     <div class="no-print" style="position: fixed; bottom: 30px; right: 30px; display: flex; gap: 15px; z-index: 9999;">

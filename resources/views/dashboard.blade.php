@@ -81,6 +81,15 @@
                                     <span class="text-xs font-bold text-green-600 dark:text-green-400">Profil Sempurna</span>
                                 </div>
                             @endif
+
+                            @if(isset($totalAssessments) && $totalAssessments > 0 && isset($avgGap) && $avgGap < 30)
+                                <div class="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 rounded-xl achievement-badge" style="animation-delay: 0.5s;">
+                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400">Skill OK</span>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -225,10 +234,22 @@
                                 <span class="text-sm font-bold text-green-600 dark:text-green-400">Profil Anda Sudah Sempurna!</span>
                             </div>
                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Fitur pencarian kerja dan rekomendasi telah optimal.</p>
-                            <a href="{{ url('/seeker/assessment') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition transform hover:-translate-y-0.5">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                                Ukur Skill Sekarang
-                            </a>
+                            @if($totalAssessments == 0)
+                                <a href="{{ url('/seeker/assessment') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition transform hover:-translate-y-0.5">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                                    Ukur Skill Sekarang
+                                </a>
+                            @elseif($avgGap < 30)
+                                <a href="{{ url('/seeker/jobs') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 transition transform hover:-translate-y-0.5">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    Cari Pekerjaan
+                                </a>
+                            @else
+                                <a href="{{ url('/seeker/roadmap') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 transition transform hover:-translate-y-0.5">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                                    Lihat Roadmap
+                                </a>
+                            @endif
                         </div>
                     @endif
                 </div>

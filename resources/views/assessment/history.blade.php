@@ -4,7 +4,7 @@
 
             <div class="flex justify-between items-center mb-8">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900">Riwayat Asesmen2</h2>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Riwayat Asesmen</h2>
                     <p class="mt-2 text-gray-600">Lihat semua hasil asesmen kompetensi yang pernah Anda lakukan.</p>
                 </div>
                 <a href="{{ route('seeker.assessment.create') }}"
