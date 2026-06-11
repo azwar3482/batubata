@@ -11,7 +11,9 @@
                 <!-- Error Messages -->
                 @if(session('error'))
                 <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-                    <svg class="w-5 h-5 text-red-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <svg class="w-5 h-5 text-red-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <p class="text-sm text-red-700">{{ session('error') }}</p>
                 </div>
                 @endif
@@ -26,17 +28,31 @@
                 @endif
 
                 @php
-                    $userSkills = auth()->user()->skills ?? [];
-                    if (is_string($userSkills)) {
-                        $userSkills = json_decode($userSkills, true) ?? [];
-                    }
+                $userSkills = auth()->user()->skills ?? [];
+                if (is_string($userSkills)) {
+                    $userSkills = json_decode($userSkills, true) ?? [];
+                }
+                
+                $mappedPositions = [];
+                foreach ($positions as $p) {
+                    $mappedPositions[] = ['id' => (string)$p->id, 'name' => $p->name];
+                }
+
+                $mappedJobs = [];
+                foreach ($jobListings as $j) {
+                    $mappedJobs[] = [
+                        'id' => (string)$j->id,
+                        'name' => $j->title . ' - ' . $j->company_name,
+                        'skills' => $j->required_skills ?? []
+                    ];
+                }
                 @endphp
 
                 <!-- Data initialization -->
                 <script>
                     window.assessmentData = {
-                        positions: @json($positions->map(fn($p) => ['id' => (string)$p->id, 'name' => $p->name])->values()),
-                        jobs: @json($jobListings->map(fn($j) => ['id' => (string)$j->id, 'name' => $j->title . ' - ' . $j->company_name, 'skills' => $j->required_skills ?? []])->values()),
+                        positions: @json($mappedPositions),
+                        jobs: @json($mappedJobs),
                         userSkills: @json(array_values($userSkills))
                     };
                 </script>
@@ -69,13 +85,17 @@
                             <button type="button" @click="mode = 'position'; jobSelected = ''; jobName = 'Pilih lowongan...'; selectedJobSkills = []"
                                 :class="mode === 'position' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 class="flex-1 py-3 px-4 border-2 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
                                 Posisi Karir
                             </button>
                             <button type="button" @click="mode = 'job'; positionSelected = ''; positionName = 'Pilih posisi...'"
                                 :class="mode === 'job' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
                                 class="flex-1 py-3 px-4 border-2 rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
                                 Lowongan Kerja
                             </button>
                         </div>
@@ -90,7 +110,9 @@
                                 <div @click="positionOpen = !positionOpen; if(positionOpen) $nextTick(() => $refs.posSearch.focus())" @click.away="positionOpen = false"
                                     class="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition shadow-sm cursor-pointer flex justify-between items-center">
                                     <span x-text="positionName" :class="positionSelected === '' ? 'text-gray-500 dark:text-slate-400' : 'text-gray-900 dark:text-white'"></span>
-                                    <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="positionOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="positionOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </div>
                                 <div x-show="positionOpen" x-transition class="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-xl max-h-60 flex flex-col overflow-hidden">
                                     <div class="p-3 border-b border-gray-100 dark:border-slate-700">
@@ -102,7 +124,9 @@
                                                 class="px-4 py-2.5 hover:bg-blue-50 dark:hover:bg-slate-700/50 cursor-pointer text-gray-700 dark:text-slate-200 text-sm flex items-center transition-colors"
                                                 :class="positionSelected === opt.id ? 'bg-blue-50/50 dark:bg-slate-700/30 font-medium text-blue-700 dark:text-blue-400' : ''">
                                                 <span x-text="opt.name"></span>
-                                                <svg x-show="positionSelected === opt.id" class="w-4 h-4 ml-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                <svg x-show="positionSelected === opt.id" class="w-4 h-4 ml-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
                                             </li>
                                         </template>
                                         <li x-show="filteredPositions.length === 0" class="px-4 py-3 text-center text-gray-500 text-sm">Posisi tidak ditemukan</li>
@@ -119,7 +143,9 @@
                                 <div @click="jobOpen = !jobOpen; if(jobOpen) $nextTick(() => $refs.jobSearch.focus())" @click.away="jobOpen = false"
                                     class="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition shadow-sm cursor-pointer flex justify-between items-center">
                                     <span x-text="jobName" :class="jobSelected === '' ? 'text-gray-500 dark:text-slate-400' : 'text-gray-900 dark:text-white'"></span>
-                                    <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="jobOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="jobOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </div>
                                 <div x-show="jobOpen" x-transition class="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-xl max-h-60 flex flex-col overflow-hidden">
                                     <div class="p-3 border-b border-gray-100 dark:border-slate-700">
@@ -131,7 +157,9 @@
                                                 class="px-4 py-2.5 hover:bg-blue-50 dark:hover:bg-slate-700/50 cursor-pointer text-gray-700 dark:text-slate-200 text-sm flex items-center transition-colors"
                                                 :class="jobSelected === opt.id ? 'bg-blue-50/50 dark:bg-slate-700/30 font-medium text-blue-700 dark:text-blue-400' : ''">
                                                 <span x-text="opt.name"></span>
-                                                <svg x-show="jobSelected === opt.id" class="w-4 h-4 ml-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                <svg x-show="jobSelected === opt.id" class="w-4 h-4 ml-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
                                             </li>
                                         </template>
                                         <li x-show="filteredJobs.length === 0" class="px-4 py-3 text-center text-gray-500 text-sm">Lowongan tidak ditemukan</li>
@@ -140,39 +168,26 @@
                             </div>
 
                             <!-- Skill Comparison Panel -->
-                            <div x-show="selectedJobSkills.length > 0" x-transition class="mt-4">
-                                <div class="rounded-xl border-2 overflow-hidden" :class="missingSkills.length > 0 ? 'border-amber-200 bg-amber-50' : 'border-green-200 bg-green-50'">
-                                    <div class="px-4 py-3 font-medium text-sm" :class="missingSkills.length > 0 ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'">
-                                        <template x-if="missingSkills.length > 0">
-                                            <span class="flex items-center gap-2">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                                Anda belum memiliki beberapa skill yang dibutuhkan
-                                            </span>
-                                        </template>
-                                        <template x-if="missingSkills.length === 0">
-                                            <span class="flex items-center gap-2">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                                Anda memiliki semua skill yang dibutuhkan!
-                                            </span>
-                                        </template>
+                            <div x-show="selectedJobSkills.length > 0 && missingSkills.length > 0" x-transition class="mt-4">
+                                <div class="rounded-xl border-2 overflow-hidden border-amber-200 bg-amber-50">
+                                    <div class="px-4 py-3 font-medium text-sm bg-amber-100 text-amber-800 border-b border-amber-200">
+                                        <span class="flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                            </svg>
+                                            Anda belum memiliki beberapa skill yang dibutuhkan
+                                        </span>
                                     </div>
                                     <div class="p-4 space-y-2">
-                                        <template x-for="skill in selectedJobSkills" :key="skill">
-                                            <div class="flex items-center justify-between py-1.5 px-3 rounded-lg text-sm"
-                                                 :class="userHasSkill(skill) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                                        <template x-for="skill in missingSkills" :key="skill">
+                                            <div class="flex items-center justify-between py-1.5 px-3 rounded-lg text-sm bg-red-100 text-red-800">
                                                 <span x-text="skill" class="font-medium"></span>
-                                                <template x-if="userHasSkill(skill)">
-                                                    <span class="text-xs flex items-center gap-1">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                                        Sudah ada
-                                                    </span>
-                                                </template>
-                                                <template x-if="!userHasSkill(skill)">
-                                                    <span class="text-xs flex items-center gap-1">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                                        Belum ada
-                                                    </span>
-                                                </template>
+                                                <span class="text-xs flex items-center gap-1">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                    Belum ada
+                                                </span>
                                             </div>
                                         </template>
                                     </div>
@@ -185,9 +200,21 @@
                                                     <li>Update profil Anda dengan skill tersebut</li>
                                                     <li>Baru kemudian ambil assessment untuk lowongan ini</li>
                                                 </ol>
-                                                <a href="{{ route('profile.edit') }}" class="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-800 underline">
-                                                    Update Profil Sekarang &rarr;
-                                                </a>
+                                                <div class="mt-4 flex flex-col sm:flex-row items-center gap-3">
+                                                    <a href="{{ route('profile.edit') }}" class="w-full sm:w-auto px-4 py-2 bg-white border border-amber-300 text-amber-700 rounded-lg shadow-sm hover:bg-amber-50 hover:border-amber-400 hover:shadow transition-all duration-200 flex items-center justify-center gap-2 font-medium text-sm">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                        Update Profil
+                                                    </a>
+                                                    <span class="text-sm text-amber-600/70 font-medium italic hidden sm:block">atau</span>
+                                                    <a href="{{ url('/seeker/courses') }}" class="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg shadow hover:shadow-md hover:from-amber-600 hover:to-orange-600 transition-all duration-200 flex items-center justify-center gap-2 font-medium text-sm">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                        </svg>
+                                                        Ambil Kursus
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </template>
@@ -237,7 +264,11 @@
 
     <script>
         function assessmentForm() {
-            const data = window.assessmentData || { positions: [], jobs: [], userSkills: [] };
+            const data = window.assessmentData || {
+                positions: [],
+                jobs: [],
+                userSkills: []
+            };
             return {
                 mode: 'position',
                 positionSelected: '',

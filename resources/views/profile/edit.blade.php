@@ -1165,47 +1165,43 @@
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
-                                </template>
+                                    </template>
 
-                                <button type="button" @click="addJob" class="flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 transition-colors mb-4">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                    Tambah Preferensi Pekerjaan
-                                </button>
-                                <div class="md:col-span-2">
-                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Catatan Preferensi Pekerjaan</label>
-                                    <textarea name="job_preferences" rows="2" placeholder="Contoh: Bersedia ditempatkan di luar kota, preferensi WFH, dll..."
-                                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">{{ Auth::user()->job_preferences }}</textarea>
+                                    <button type="button" @click="addJob" class="flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 transition-colors mb-4">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Tambah Preferensi Pekerjaan
+                                    </button>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Catatan Preferensi Pekerjaan</label>
+                                        <textarea name="job_preferences" rows="2" placeholder="Contoh: Bersedia ditempatkan di luar kota, preferensi WFH, dll..."
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">{{ Auth::user()->job_preferences }}</textarea>
+                                    </div>
                                 </div>
+                                @endif
+
                             </div>
-                            @endif
-
-                    </div>
 
 
-                    <div class="flex items-center justify-end gap-3 pt-6">
-                        <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
-                            Batal
-                        </a>
-                        <button type="button" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200 flex items-center gap-2" :disabled="saving" @click="submitForm($event)">
-                            <svg x-show="saving" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <span x-text="saving ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
-                        </button>
+                            <div class="flex items-center justify-end gap-3 pt-6">
+                                <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
+                                    Batal
+                                </a>
+                                <button type="button" class="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200 flex items-center gap-2" :disabled="saving" @click="submitForm($event)">
+                                    <svg x-show="saving" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span x-text="saving ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        </form>
                     </div>
                 </div>
-
-                </form>
-            </div>
         </div>
-
-    </div>
-    </div>
-    </div>
     </div>
 <script>
 document.addEventListener('alpine:init', () => {

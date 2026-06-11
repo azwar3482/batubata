@@ -18,8 +18,6 @@
             line-height: 1.5;
             color: #1F262C;
             background: #f5f5f5;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
         }
 
         .cv-container {
@@ -28,77 +26,14 @@
             margin: 20px auto;
             background: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: table;
-            table-layout: fixed;
-            position: relative;
-        }
-
-        .cv-bg-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 35%;
-            height: 100%;
-            background: #1F262C;
-            z-index: 0;
+            display: flex;
         }
 
         /* Left Column */
         .cv-left {
-            display: table-cell;
-            vertical-align: top;
             width: 35%;
+            background: #1F262C;
             color: white;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cv-shape-grey {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 110px solid #2C353D;
-            border-top: 80px solid transparent;
-            border-bottom: 120px solid transparent;
-            z-index: 1;
-        }
-
-        .cv-shape-gold {
-            position: absolute;
-            bottom: -1px;
-            left: -1px;
-            width: 0;
-            height: 0;
-            border-bottom: 100px solid #D4A574;
-            border-left: 68px solid transparent;
-            border-right: 102px solid transparent;
-            z-index: 0;
-        }
-
-        .cv-right-shape-grey {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-right: 70px solid #2C353D;
-            border-top: 96px solid transparent;
-            border-bottom: 64px solid transparent;
-            z-index: 1;
-        }
-
-        .cv-right-shape-gold {
-            position: absolute;
-            top: -1px;
-            right: -1px;
-            width: 0;
-            height: 0;
-            border-top: 80px solid #D4A574;
-            border-left: 78px solid transparent;
-            border-right: 52px solid transparent;
-            z-index: 0;
         }
 
         .cv-left-photo {
@@ -107,14 +42,11 @@
 
         .cv-left-content {
             padding: 5px 20px 20px 20px;
-            position: relative;
-            z-index: 2;
-            padding-bottom: 60px;
         }
 
         .cv-photo {
             width: 100%;
-            height: 73.5mm;
+            aspect-ratio: 1/1;
             border-radius: 6px;
             overflow: hidden;
         }
@@ -128,13 +60,14 @@
 
         .cv-photo-placeholder {
             width: 100%;
-            height: 73.5mm;
+            aspect-ratio: 3/4;
             border-radius: 6px;
             background: #3a4a5c;
-            text-align: center;
-            line-height: 73.5mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 48px;
-            color: #fff;
+            color: #6b7b8d;
         }
 
         .cv-left-content {
@@ -183,12 +116,8 @@
 
         /* Right Column */
         .cv-right {
-            display: table-cell;
-            vertical-align: top;
             width: 65%;
             padding: 30px 25px;
-            position: relative;
-            z-index: 1;
         }
 
         .cv-name {
@@ -196,8 +125,6 @@
             font-weight: 700;
             color: #1F262C;
             margin-bottom: 5px;
-            position: relative;
-            z-index: 2;
         }
 
         .cv-position {
@@ -205,14 +132,10 @@
             font-style: italic;
             color: #666;
             margin-bottom: 25px;
-            position: relative;
-            z-index: 2;
         }
 
         .cv-right-section {
             margin-bottom: 25px;
-            position: relative;
-            z-index: 2;
         }
 
         .cv-right-title {
@@ -319,9 +242,6 @@
 
 <body>
     <div class="cv-container">
-        <!-- Background untuk Navbar agar selalu full ke bawah -->
-        <div class="cv-bg-left"></div>
-
         <!-- Left Column -->
         <div class="cv-left">
             <!-- Photo -->
@@ -329,17 +249,7 @@
             <div class="cv-left-photo">
                 @if($photoDoc)
                 <div class="cv-photo">
-                    @php
-                        $photoUrl = asset('storage/' . $photoDoc->file_path);
-                        if (request()->is('*/download*')) {
-                            $photoPath = public_path('storage/' . $photoDoc->file_path);
-                            if (file_exists($photoPath)) {
-                                $ext = pathinfo($photoPath, PATHINFO_EXTENSION);
-                                $photoUrl = 'data:image/' . $ext . ';base64,' . base64_encode(file_get_contents($photoPath));
-                            }
-                        }
-                    @endphp
-                    <img src="{{ $photoUrl }}" alt="Foto {{ $user->name }}">
+                    <img src="{{ asset('storage/' . $photoDoc->file_path) }}" alt="Foto {{ $user->name }}">
                 </div>
                 @else
                 <div class="cv-photo-placeholder">
@@ -436,10 +346,6 @@
 
         <!-- Right Column -->
         <div class="cv-right">
-            <!-- Dekorasi Pojok Kanan Atas -->
-            <div class="cv-right-shape-gold"></div>
-            <div class="cv-right-shape-grey"></div>
-
             <!-- Nama & Posisi -->
             <div class="cv-name">{{ strtoupper($user->name) }}</div>
             <div class="cv-position">
@@ -524,10 +430,6 @@
             </div>
             @endif
         </div>
-
-        <!-- Dekorasi Pojok Kiri Bawah (Dipindah ke luar kolom kiri untuk kompatibilitas PDF) -->
-        <div class="cv-shape-gold"></div>
-        <div class="cv-shape-grey"></div>
     </div>
     @if(!request()->is('*/download*'))
     <div class="no-print" style="position: fixed; bottom: 30px; right: 30px; display: flex; gap: 15px; z-index: 9999;">
@@ -545,22 +447,6 @@
             .no-print { display: none !important; }
             body { background: white !important; }
             .cv-container { box-shadow: none !important; margin: 0 !important; max-width: none !important; }
-        }
-    </style>
-    @endif
-
-    @if(request()->is('*/download*'))
-    <style>
-        @page { margin: 0px; size: 210mm 297mm; }
-        body { margin: 0; padding: 0; background: white; width: 210mm; height: 297mm; position: relative; }
-        .cv-container { 
-            margin: 0 !important; 
-            padding: 0;
-            box-shadow: none !important; 
-            width: 210mm !important; 
-            height: 297mm !important; 
-            max-width: none !important;
-            position: relative;
         }
     </style>
     @endif

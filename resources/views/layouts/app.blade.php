@@ -1405,11 +1405,10 @@
                 <!-- Global Footer -->
                 <footer class="mt-auto pt-6 sm:pt-8 pb-4 sm:pb-6 text-center">
                     <div class="border-t border-slate-200 dark:border-slate-800/60 pt-4 sm:pt-6">
-                        <div class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                            <span>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA.</span>
-                            <span class="hidden sm:inline">&middot;</span>
-                            <span>Hak Cipta Dilindungi.</span>
-                        </div>
+                       <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA. Hak Cipta Dilindungi.</p>
+                <p class="mt-2 text-sm">Dikembangkan oleh: Noor Syam  AR & Anggitya Ayu Pertiwi</p>
+            </div>
                     </div>
                 </footer>
             </main>
