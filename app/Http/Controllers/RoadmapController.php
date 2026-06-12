@@ -10,7 +10,7 @@ class RoadmapController extends Controller
     {
         $user = Auth::user();
         // Ambil roadmap terbaru berdasarkan posisi terakhir yang diasesmen
-        $latestAssessment = $user->assessments()->with('position', 'jobListing')->latest('assessment_date')->first();
+        $latestAssessment = $user->assessments()->with('position', 'jobListing', 'scores.competency')->latest('assessment_date')->first();
         
         if (!$latestAssessment) {
             return redirect()->route('seeker.assessment.create')->with('info', 'Anda harus menyelesaikan asesmen terlebih dahulu untuk melihat roadmap.');
@@ -24,7 +24,22 @@ class RoadmapController extends Controller
         }
         $roadmaps = $roadmapQuery->orderBy('month_number')->get();
 
-        return view('roadmap.index', compact('roadmaps', 'latestAssessment'));
+        // Build assessment scores untuk fallback skill tree data
+        $assessmentScores = $latestAssessment->scores
+            ->filter(fn($s) => $s->competency !== null)
+            ->sortByDesc('gap_percentage')
+            ->values()
+            ->map(fn($s) => [
+                'name'           => $s->competency->name,
+                'category'       => $s->competency->category,
+                'current_level'  => (int) $s->self_assessed_level,
+                'target_level'   => (int) $s->competency->min_level_required,
+                'gap_percentage' => (float) $s->gap_percentage,
+                'priority'       => $s->priority ?? 'medium',
+            ])
+            ->toArray();
+
+        return view('roadmap.index', compact('roadmaps', 'latestAssessment', 'assessmentScores'));
     }
     
     public function generate($assessmentId)
