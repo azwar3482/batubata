@@ -72,7 +72,7 @@ class CourseController extends Controller
         $type = $request->query('type', 'external');
 
         if ($type === 'teacher') {
-            $course = \App\Models\TeacherCourse::with(['teacher', 'teacherProfile', 'competency', 'modules.materials', 'classes'])
+            $course = \App\Models\TeacherCourse::with(['teacher.teacherProfile', 'competency', 'modules.materials', 'classes'])
                 ->findOrFail($id);
             $progress = null;
 

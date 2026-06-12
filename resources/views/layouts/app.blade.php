@@ -1135,8 +1135,8 @@
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.career-fields*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.806-.984A1 1 0 0119.5 7H15m0 0V3m0 4h4"></path>
                         </svg>
-                        <span class="sidebar-text transition-all duration-300">Roadmap Karir</span>
-                        <div class="menu-tooltip">Roadmap Karir</div>
+                        <span class="sidebar-text transition-all duration-300">Bidang Karir</span>
+                        <div class="menu-tooltip">Bidang Karir</div>
                     </a>
                     @endif
 
