@@ -12,12 +12,12 @@
             errorMessage: '',
             education_level: '{{ addslashes(old("education_level", Auth::user()->education_level ?? "")) }}',
             major: '{{ addslashes(old("major", Auth::user()->major ?? "")) }}',
-            career_histories: JSON.parse('{!! addslashes(json_encode(old("career_histories", Auth::user()->careerHistories ?? []))) !!}'),
-            skills: JSON.parse('{!! addslashes(json_encode(old("skills", Auth::user()->skills ?? []))) !!}'),
+            career_histories: @json(old("career_histories", Auth::user()->careerHistories ?? [])),
+            skills: @json(old("skills", Auth::user()->skills ?? [])),
             new_skill: '',
-            languages: JSON.parse('{!! addslashes(json_encode(old("languages", Auth::user()->languages ?? []))) !!}'),
+            languages: @json(old("languages", Auth::user()->languages ?? [])),
             new_language: '',
-            positions: JSON.parse('{!! addslashes(json_encode($positions->pluck('name'))) !!}'),
+            positions: @json($positions->pluck('name')),
             
             addCareerHistory() {
                 this.career_histories.push({ company_name: '', position: '', start_date: '', end_date: '', is_current: false, description: '' });

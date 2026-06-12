@@ -16,6 +16,11 @@ class CheckRole
             return redirect()->route('login');
         }
 
+        // Cek apakah akun aktif
+        if (isset($user->status) && $user->status === 'suspended') {
+            abort(403, 'Akun Anda telah dinonaktifkan. Hubungi administrator.');
+        }
+
         // Cek apakah role user ada di daftar role yang diizinkan
         if (!in_array($user->role, $roles)) {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');

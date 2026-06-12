@@ -17,7 +17,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
         'gender',
         'blood_type',
         'phone',
@@ -39,10 +38,6 @@ class User extends Authenticatable
         'expected_jobs',
         'job_preferences',
         'birth_date',
-        'company_id',
-        'company_role',
-        'status',
-        'custom_permissions'
     ];
 
     protected $hidden = ['password', 'remember_token'];

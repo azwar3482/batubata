@@ -229,7 +229,7 @@ class CourseController extends Controller
             'type' => 'required|in:document,video,link,assignment,quiz',
             'content' => 'nullable|string',
             'external_url' => 'nullable|url|max:500',
-            'file' => 'nullable|file|max:51200',
+            'file' => 'nullable|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,mp4,avi,mov,mp3,jpg,jpeg,png,gif,webp,zip,rar',
             'is_downloadable' => 'boolean',
         ]);
 
@@ -261,7 +261,7 @@ class CourseController extends Controller
             'type' => 'required|in:document,video,link,assignment,quiz',
             'content' => 'nullable|string',
             'external_url' => 'nullable|url|max:500',
-            'file' => 'nullable|file|max:51200',
+            'file' => 'nullable|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,mp4,avi,mov,mp3,jpg,jpeg,png,gif,webp,zip,rar',
             'is_downloadable' => 'boolean',
         ]);
 
@@ -300,6 +300,10 @@ class CourseController extends Controller
 
     public function downloadMaterial(CourseMaterial $material)
     {
+        if ($material->module->course->teacher_id !== Auth::id()) {
+            abort(403);
+        }
+
         if (!$material->file_path || !Storage::disk('public')->exists($material->file_path)) {
             abort(404);
         }

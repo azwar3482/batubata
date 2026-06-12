@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class TeacherProfile extends Model
 {
     protected $fillable = [
-        'user_id', 'specialization', 'bio', 'qualification',
+        'specialization', 'bio', 'qualification',
         'institution_name', 'avatar_path', 'experience_years',
-        'expertise_areas', 'linkedin_url', 'is_verified',
+        'expertise_areas', 'linkedin_url',
     ];
 
     protected $casts = [

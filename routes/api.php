@@ -78,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Industry Routes
-    Route::prefix('industry')->group(function () {
+    Route::prefix('industry')->middleware('role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer')->group(function () {
         Route::get('/jobs', [\App\Http\Controllers\Api\Industry\JobPostingController::class, 'index']);
         Route::post('/jobs', [\App\Http\Controllers\Api\Industry\JobPostingController::class, 'store']);
         Route::get('/candidates', [\App\Http\Controllers\Api\Industry\CandidateController::class, 'index']);
@@ -89,7 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/team/{id}', [\App\Http\Controllers\Api\Industry\TeamController::class, 'remove']);
     });
 
-    Route::prefix('education')->group(function () {
+    Route::prefix('education')->middleware('role:education')->group(function () {
         Route::get('/analytics', [\App\Http\Controllers\Api\Education\AnalyticsController::class, 'index']);
         
         // Partners

@@ -94,12 +94,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // routes/web.php - inside seeker group
 
-        // Settings (Seeker)
-        Route::get('/settings', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
-        Route::post('/settings/competency/{id}', [App\Http\Controllers\Admin\SettingsController::class, 'updateCompetency'])->name('admin.settings.competency.update');
-        Route::post('/settings/system', [App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings'])->name('admin.settings.system');
-        Route::post('/settings/sync', [App\Http\Controllers\Admin\SettingsController::class, 'syncCompetencies'])->name('admin.settings.sync');
-
         // Tambahkan di dalam seeker group
         Route::get('/jobs/all', [App\Http\Controllers\JobController::class, 'index'])->name('jobs.all');
         Route::get('/jobs/my-applications', [DashboardController::class, 'myApplications'])->name('jobs.applications');
