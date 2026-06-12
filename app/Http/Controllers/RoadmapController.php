@@ -13,6 +13,13 @@ class RoadmapController extends Controller
         $latestAssessment = $user->assessments()->with('position', 'jobListing', 'scores.competency')->latest('assessment_date')->first();
         
         if (!$latestAssessment) {
+            if (request()->wantsJson() || request()->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda harus menyelesaikan asesmen terlebih dahulu untuk melihat roadmap.',
+                    'needs_assessment' => true
+                ], 400);
+            }
             return redirect()->route('seeker.assessment.create')->with('info', 'Anda harus menyelesaikan asesmen terlebih dahulu untuk melihat roadmap.');
         }
 
@@ -39,6 +46,17 @@ class RoadmapController extends Controller
             ])
             ->toArray();
 
+        if (request()->wantsJson() || request()->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'roadmaps' => $roadmaps,
+                    'latest_assessment' => $latestAssessment,
+                    'assessment_scores' => $assessmentScores
+                ]
+            ]);
+        }
+
         return view('roadmap.index', compact('roadmaps', 'latestAssessment', 'assessmentScores'));
     }
     
@@ -59,14 +77,22 @@ class RoadmapController extends Controller
     
     // Nanti kita tambah fitur update progress di sini
     public function complete($id) {
-    $roadmap = CareerRoadmap::findOrFail($id);
-    if ($roadmap->user_id !== Auth::id()) abort(403);
-    
-    $roadmap->update([
-        'is_completed' => true,
-        'completed_at' => now()
-    ]);
-    
-    return back()->with('success', 'Milestone berhasil diselesaikan!');
-}
+        $roadmap = CareerRoadmap::findOrFail($id);
+        if ($roadmap->user_id !== Auth::id()) abort(403);
+        
+        $roadmap->update([
+            'is_completed' => true,
+            'completed_at' => now()
+        ]);
+        
+        if (request()->wantsJson() || request()->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Milestone berhasil diselesaikan!',
+                'data' => $roadmap
+            ]);
+        }
+        
+        return back()->with('success', 'Milestone berhasil diselesaikan!');
+    }
 }

@@ -34,10 +34,17 @@ class HomeController extends Controller
                 $data = array_merge($data, $this->_getAdminData($user));
                 break;
             case 'industry':
+            case 'staf_hr_manager':
+            case 'staf_recruiter':
+            case 'staf_talent_sourcer':
+            case 'staf_interviewer':
                 $data = array_merge($data, $this->_getIndustryData($user));
                 break;
             case 'education':
                 $data = array_merge($data, $this->_getEducationData($user));
+                break;
+            case 'teacher':
+                $data = array_merge($data, $this->_getTeacherData($user));
                 break;
             case 'job_seeker':
             default:
@@ -120,9 +127,14 @@ class HomeController extends Controller
     private function _getIndustryData($user)
     {
         $company = $user->company;
-        $jobIds = JobListing::where('user_id', $user->id)->pluck('id');
+        if (!$company && $user->company_id) {
+            $company = \App\Models\Company::find($user->company_id);
+        }
+
+        $companyId = $company ? $company->id : null;
+        $jobIds = JobListing::where('company_id', $companyId)->pluck('id');
         
-        $activeJobsCount = JobListing::where('user_id', $user->id)->count();
+        $activeJobsCount = JobListing::where('company_id', $companyId)->count();
         $totalApplicants = UserJobApplication::whereIn('job_listing_id', $jobIds)->count();
         $highMatchCandidates = UserJobApplication::whereIn('job_listing_id', $jobIds)
             ->where('matching_percentage', '>=', 80)
@@ -133,6 +145,29 @@ class HomeController extends Controller
             'total_applicants' => $totalApplicants,
             'high_match_candidates' => $highMatchCandidates,
             'company_name' => $company->name ?? 'N/A',
+            'recent_activities' => $this->_getRecentActivities($user),
+        ];
+    }
+
+    private function _getTeacherData($user)
+    {
+        $teacherId = $user->id;
+        $totalCourses = \App\Models\TeacherCourse::where('teacher_id', $teacherId)->count();
+        $activeClasses = \App\Models\TeacherClass::where('teacher_id', $teacherId)->where('status', 'active')->count();
+
+        $classIds = \App\Models\TeacherClass::where('teacher_id', $teacherId)->pluck('id');
+        $totalStudents = \App\Models\ClassEnrollment::whereIn('class_id', $classIds)->where('status', 'active')->count();
+
+        $enrollmentIds = \App\Models\ClassEnrollment::whereIn('class_id', $classIds)->pluck('id');
+        $pendingSubmissions = \App\Models\Submission::whereIn('enrollment_id', $enrollmentIds)
+            ->where('status', 'submitted')
+            ->count();
+
+        return [
+            'total_courses' => $totalCourses,
+            'active_classes' => $activeClasses,
+            'total_students' => $totalStudents,
+            'pending_submissions' => $pendingSubmissions,
             'recent_activities' => $this->_getRecentActivities($user),
         ];
     }
