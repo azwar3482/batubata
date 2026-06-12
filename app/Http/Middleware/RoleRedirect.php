@@ -24,6 +24,8 @@ class RoleRedirect
                 return redirect()->route('industry.dashboard');
             } elseif ($user->isEducation()) {
                 return redirect()->route('education.dashboard');
+            } elseif ($user->isTeacher()) {
+                return redirect()->route('teacher.dashboard');
             }
         }
 

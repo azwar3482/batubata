@@ -757,8 +757,8 @@
                                 d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.806-.984A1 1 0 0119.5 7H15m0 0V3m0 4h4">
                             </path>
                         </svg>
-                        <span class="sidebar-text transition-all duration-300">Roadmap Karir</span>
-                        <div class="menu-tooltip">Roadmap Karir</div>
+                        <span class="sidebar-text transition-all duration-300">Bidang Karir</span>
+                        <div class="menu-tooltip">Bidang Karir</div>
                     </a>
 
                     <a href="{{ route('seeker.chats.index') }}"
@@ -886,6 +886,47 @@
                         </span>
                         @endif
                     </a>
+                    @elseif(Auth::user()->role === 'teacher')
+                    <!-- Menu Teacher -->
+                    <div class="pt-2 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>
+                    <a href="{{ route('teacher.dashboard') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('teacher.dashboard*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('teacher.dashboard*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Dashboard</span>
+                        <div class="menu-tooltip">Dashboard</div>
+                    </a>
+
+                    <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Pembelajaran</div>
+                    <a href="{{ route('teacher.courses.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('teacher.courses.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('teacher.courses.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Kelola Kursus</span>
+                        <div class="menu-tooltip">Kelola Kursus</div>
+                    </a>
+
+                    <a href="{{ route('teacher.classes.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('teacher.classes.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('teacher.classes.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Kelola Kelas</span>
+                        <div class="menu-tooltip">Kelola Kelas</div>
+                    </a>
+
+                    <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Penilaian</div>
+                    <a href="{{ route('teacher.submissions.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all duration-300  {{ request()->routeIs('teacher.submissions.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('teacher.submissions.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                        <span class="sidebar-text transition-all duration-300">Nilai Tugas</span>
+                        <div class="menu-tooltip">Nilai Tugas</div>
+                    </a>
+
                     @elseif(Auth::user()->role === 'education')
                     <!-- Menu Education -->
                     <div class="pt-2 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-all duration-300">Ringkasan</div>

@@ -166,9 +166,68 @@
             </div>
             @endif
 
-            <!-- Semua Kursus Grid -->
+            <!-- Kursus dari Pengajar -->
+            @if(isset($teacherCourses) && $teacherCourses->count() > 0)
+            <div class="mb-10">
+                <div class="flex items-center mb-4">
+                    <div class="p-2 bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 rounded-lg mr-3 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Kursus dari Pengajar</h3>
+                        <p class="text-sm text-gray-500 dark:text-slate-400">Kursus langsung dari pengajar ahli dengan materi lengkap dan tugas praktik.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($teacherCourses as $tCourse)
+                    <div class="bg-gradient-to-br from-violet-50 to-white dark:from-violet-900/20 dark:to-slate-900 rounded-xl shadow border border-violet-100 dark:border-violet-800/30 hover:shadow-md transition duration-300 overflow-hidden flex flex-col relative">
+                        <div class="absolute top-3 right-3 bg-violet-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider shadow-sm">Pengajar</div>
+
+                        <div class="p-6 pt-12 flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-3 gap-2">
+                                <span class="text-xs font-semibold uppercase tracking-wide text-violet-600 bg-violet-50 dark:bg-violet-900/30 dark:text-violet-400 px-2 py-1 rounded truncate">
+                                    {{ $tCourse->teacher->name }}
+                                </span>
+                                <span class="text-xs font-medium shrink-0 whitespace-nowrap {{ $tCourse->is_free ? 'text-green-600' : 'text-orange-600' }}">
+                                    {{ $tCourse->is_free ? 'Gratis' : 'Rp ' . number_format($tCourse->price) }}
+                                </span>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">{{ $tCourse->title }}</h4>
+                            <p class="text-xs text-gray-600 dark:text-slate-400 mb-4 line-clamp-2 flex-1">{{ $tCourse->description }}</p>
+
+                            <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 mb-4">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    {{ $tCourse->duration_hours }} Jam
+                                </span>
+                                <span class="capitalize px-2 py-1 rounded {{ $tCourse->level == 'beginner' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : ($tCourse->level == 'intermediate' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400') }}">
+                                    {{ $tCourse->level }}
+                                </span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <a href="{{ route('seeker.courses.show', ['id' => $tCourse->id]) }}?type=teacher" class="flex-1 text-center px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition text-sm font-medium">
+                                    Lihat Detail
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            <!-- Semua Kursus Grid (External Platforms) -->
             <div class="mb-4 flex items-center">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Semua Kursus</h3>
+                <div class="flex items-center gap-3">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Kursus Platform Eksternal</h3>
+                    <span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">Dicoding, Udemy, Coursera</span>
+                </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($courses as $course)

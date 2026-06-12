@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Education;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
+use App\Models\TeacherCourse;
+use App\Models\CourseModule;
+use App\Models\CourseMaterial;
 use App\Models\Competency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::with('competency', 'creator')
-            ->where('created_by', Auth::id())
+        $courses = TeacherCourse::where('teacher_id', Auth::id())
+            ->withCount(['modules', 'classes'])
+            ->with('competency')
             ->latest()
             ->paginate(10);
 
@@ -31,17 +35,16 @@ class CourseController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'provider' => 'nullable|string|max:255',
-            'platform' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'competency_id' => 'required|exists:competencies,id',
-            'duration_hours' => 'required|integer|min:1',
+            'objectives' => 'nullable|string',
+            'competency_id' => 'nullable|exists:competencies,id',
+            'category' => 'required|string|max:100',
             'level' => 'required|in:beginner,intermediate,advanced',
-            'url' => 'required|url|max:255',
+            'duration_hours' => 'required|integer|min:1',
             'price' => 'nullable|numeric|min:0',
             'is_free' => 'boolean',
-            'skills_covered' => 'nullable|string',
-            'image_url' => 'nullable|url|max:500',
+            'tags' => 'nullable|string',
+            'max_students' => 'nullable|integer|min:0',
+            'thumbnail' => 'nullable|image|max:2048',
         ]);
 
         $validated['is_free'] = $request->has('is_free');
@@ -49,47 +52,62 @@ class CourseController extends Controller
             $validated['price'] = 0;
         }
 
-        if (!empty($validated['skills_covered'])) {
-            $validated['skills_covered'] = array_map('trim', explode(',', $validated['skills_covered']));
+        if (!empty($validated['tags'])) {
+            $validated['tags'] = array_map('trim', explode(',', $validated['tags']));
         }
 
-        $validated['created_by'] = Auth::id();
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail_path'] = $request->file('thumbnail')->store('teacher/thumbnails', 'public');
+        }
 
-        Course::create($validated);
+        $validated['teacher_id'] = Auth::id();
+        $validated['status'] = 'draft';
 
-        return redirect()->route('education.courses.index')->with('success', 'Kursus berhasil ditambahkan.');
+        TeacherCourse::create($validated);
+
+        return redirect()->route('education.courses.index')->with('success', 'Kursus berhasil dibuat.');
     }
 
-    public function edit(Course $course)
+    public function show(TeacherCourse $course)
     {
-        if ($course->created_by !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki izin untuk mengedit kursus ini.');
+        if ($course->teacher_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $course->load(['modules.materials', 'competency', 'classes.enrollments.user']);
+
+        return view('education.courses.show', compact('course'));
+    }
+
+    public function edit(TeacherCourse $course)
+    {
+        if ($course->teacher_id !== Auth::id()) {
+            abort(403);
         }
 
         $competencies = Competency::orderBy('name')->get();
         return view('education.courses.edit', compact('course', 'competencies'));
     }
 
-    public function update(Request $request, Course $course)
+    public function update(Request $request, TeacherCourse $course)
     {
-        if ($course->created_by !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki izin untuk mengedit kursus ini.');
+        if ($course->teacher_id !== Auth::id()) {
+            abort(403);
         }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'provider' => 'nullable|string|max:255',
-            'platform' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'competency_id' => 'required|exists:competencies,id',
-            'duration_hours' => 'required|integer|min:1',
+            'objectives' => 'nullable|string',
+            'competency_id' => 'nullable|exists:competencies,id',
+            'category' => 'required|string|max:100',
             'level' => 'required|in:beginner,intermediate,advanced',
-            'url' => 'required|url|max:255',
+            'duration_hours' => 'required|integer|min:1',
             'price' => 'nullable|numeric|min:0',
             'is_free' => 'boolean',
-            'skills_covered' => 'nullable|string',
-            'image_url' => 'nullable|url|max:500',
+            'tags' => 'nullable|string',
+            'max_students' => 'nullable|integer|min:0',
+            'thumbnail' => 'nullable|image|max:2048',
         ]);
 
         $validated['is_free'] = $request->has('is_free');
@@ -97,8 +115,15 @@ class CourseController extends Controller
             $validated['price'] = 0;
         }
 
-        if (!empty($validated['skills_covered'])) {
-            $validated['skills_covered'] = array_map('trim', explode(',', $validated['skills_covered']));
+        if (!empty($validated['tags'])) {
+            $validated['tags'] = array_map('trim', explode(',', $validated['tags']));
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            if ($course->thumbnail_path) {
+                Storage::disk('public')->delete($course->thumbnail_path);
+            }
+            $validated['thumbnail_path'] = $request->file('thumbnail')->store('teacher/thumbnails', 'public');
         }
 
         $course->update($validated);
@@ -106,14 +131,40 @@ class CourseController extends Controller
         return redirect()->route('education.courses.index')->with('success', 'Kursus berhasil diperbarui.');
     }
 
-    public function destroy(Course $course)
+    public function destroy(TeacherCourse $course)
     {
-        if ($course->created_by !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki izin untuk menghapus kursus ini.');
+        if ($course->teacher_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($course->thumbnail_path) {
+            Storage::disk('public')->delete($course->thumbnail_path);
         }
 
         $course->delete();
 
         return redirect()->route('education.courses.index')->with('success', 'Kursus berhasil dihapus.');
+    }
+
+    public function publish(TeacherCourse $course)
+    {
+        if ($course->teacher_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $course->update(['status' => 'published']);
+
+        return back()->with('success', 'Kursus berhasil dipublikasikan.');
+    }
+
+    public function unpublish(TeacherCourse $course)
+    {
+        if ($course->teacher_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $course->update(['status' => 'draft']);
+
+        return back()->with('success', 'Kursus dikembalikan ke draft.');
     }
 }

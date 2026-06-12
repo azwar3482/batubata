@@ -99,6 +99,26 @@ class User extends Authenticatable
         return $this->hasOne(Company::class);
     }
 
+    public function teacherProfile()
+    {
+        return $this->hasOne(TeacherProfile::class);
+    }
+
+    public function teacherCourses()
+    {
+        return $this->hasMany(TeacherCourse::class, 'teacher_id');
+    }
+
+    public function teacherClasses()
+    {
+        return $this->hasMany(TeacherClass::class, 'teacher_id');
+    }
+
+    public function classEnrollments()
+    {
+        return $this->hasMany(ClassEnrollment::class);
+    }
+
     public function initiatedConversations()
     {
         return $this->hasMany(DirectConversation::class, 'industry_id');
@@ -141,6 +161,10 @@ class User extends Authenticatable
     public function isEducation()
     {
         return $this->role === 'education';
+    }
+    public function isTeacher()
+    {
+        return $this->role === 'teacher';
     }
     public function isStaff()
     {

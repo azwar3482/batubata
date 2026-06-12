@@ -21,7 +21,22 @@ class CourseController extends Controller
         $courses = $this->courseService->getCourses($filters);
         $myProgress = $this->courseService->getUserProgressIds(Auth::id());
         $activeProgress = $this->courseService->getAllUserProgress(Auth::id());
-        
+
+        // Get published teacher courses (hybrid data)
+        $teacherCourses = \App\Models\TeacherCourse::with('teacher', 'competency')
+            ->where('status', 'published')
+            ->when(!empty($filters['category']), function ($q) use ($filters) {
+                $q->where('category', $filters['category']);
+            })
+            ->when(!empty($filters['search']), function ($q) use ($filters) {
+                $q->where('title', 'like', '%' . $filters['search'] . '%');
+            })
+            ->when(!empty($filters['level']), function ($q) use ($filters) {
+                $q->where('level', $filters['level']);
+            })
+            ->latest()
+            ->get();
+
         $recommendedCourses = collect();
         if (Auth::user()->isJobSeeker()) {
             $latestAssessment = \App\Models\UserAssessment::where('user_id', Auth::id())
@@ -34,7 +49,7 @@ class CourseController extends Controller
                     ->where('gap_percentage', '>', 0)
                     ->pluck('competency_id')
                     ->toArray();
-                
+
                 $recommendedCourses = $this->courseService->getRecommendedCourses($weakCompetencyIds);
             }
         }
@@ -43,16 +58,31 @@ class CourseController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $courses,
+                'teacher_courses' => $teacherCourses,
                 'recommended' => $recommendedCourses,
                 'my_progress' => $myProgress
             ]);
         }
 
-        return view('courses.index', compact('courses', 'recommendedCourses', 'myProgress', 'activeProgress'));
+        return view('courses.index', compact('courses', 'teacherCourses', 'recommendedCourses', 'myProgress', 'activeProgress'));
     }
 
     public function show($id, Request $request)
     {
+        $type = $request->query('type', 'external');
+
+        if ($type === 'teacher') {
+            $course = \App\Models\TeacherCourse::with(['teacher', 'teacherProfile', 'competency', 'modules.materials', 'classes'])
+                ->findOrFail($id);
+            $progress = null;
+
+            if ($request->expectsJson()) {
+                return response()->json(['success' => true, 'data' => $course, 'progress' => $progress]);
+            }
+
+            return view('courses.show_teacher', compact('course', 'progress'));
+        }
+
         $course = $this->courseService->getCourseDetails($id);
         $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
 

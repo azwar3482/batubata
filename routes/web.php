@@ -270,6 +270,52 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // =====================
+    // TEACHER ROUTES
+    // =====================
+    Route::prefix('teacher')->name('teacher.')->middleware('role:teacher')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('dashboard');
+
+        // Course Management
+        Route::get('/courses', [\App\Http\Controllers\Teacher\CourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/create', [\App\Http\Controllers\Teacher\CourseController::class, 'create'])->name('courses.create');
+        Route::post('/courses', [\App\Http\Controllers\Teacher\CourseController::class, 'store'])->name('courses.store');
+        Route::get('/courses/{course}', [\App\Http\Controllers\Teacher\CourseController::class, 'show'])->name('courses.show');
+        Route::get('/courses/{course}/edit', [\App\Http\Controllers\Teacher\CourseController::class, 'edit'])->name('courses.edit');
+        Route::put('/courses/{course}', [\App\Http\Controllers\Teacher\CourseController::class, 'update'])->name('courses.update');
+        Route::delete('/courses/{course}', [\App\Http\Controllers\Teacher\CourseController::class, 'destroy'])->name('courses.destroy');
+        Route::post('/courses/{course}/publish', [\App\Http\Controllers\Teacher\CourseController::class, 'publish'])->name('courses.publish');
+        Route::post('/courses/{course}/unpublish', [\App\Http\Controllers\Teacher\CourseController::class, 'unpublish'])->name('courses.unpublish');
+
+        // Module Management
+        Route::post('/courses/{course}/modules', [\App\Http\Controllers\Teacher\CourseController::class, 'storeModule'])->name('courses.store-module');
+        Route::put('/modules/{module}', [\App\Http\Controllers\Teacher\CourseController::class, 'updateModule'])->name('courses.update-module');
+        Route::delete('/modules/{module}', [\App\Http\Controllers\Teacher\CourseController::class, 'destroyModule'])->name('courses.destroy-module');
+
+        // Material Management
+        Route::post('/modules/{module}/materials', [\App\Http\Controllers\Teacher\CourseController::class, 'storeMaterial'])->name('courses.store-material');
+        Route::put('/materials/{material}', [\App\Http\Controllers\Teacher\CourseController::class, 'updateMaterial'])->name('courses.update-material');
+        Route::delete('/materials/{material}', [\App\Http\Controllers\Teacher\CourseController::class, 'destroyMaterial'])->name('courses.destroy-material');
+        Route::get('/materials/{material}/download', [\App\Http\Controllers\Teacher\CourseController::class, 'downloadMaterial'])->name('courses.download-material');
+
+        // Class Management
+        Route::get('/classes', [\App\Http\Controllers\Teacher\ClassController::class, 'index'])->name('classes.index');
+        Route::get('/classes/create', [\App\Http\Controllers\Teacher\ClassController::class, 'create'])->name('classes.create');
+        Route::post('/classes', [\App\Http\Controllers\Teacher\ClassController::class, 'store'])->name('classes.store');
+        Route::get('/classes/{class}', [\App\Http\Controllers\Teacher\ClassController::class, 'show'])->name('classes.show');
+        Route::get('/classes/{class}/edit', [\App\Http\Controllers\Teacher\ClassController::class, 'edit'])->name('classes.edit');
+        Route::put('/classes/{class}', [\App\Http\Controllers\Teacher\ClassController::class, 'update'])->name('classes.update');
+        Route::delete('/classes/{class}', [\App\Http\Controllers\Teacher\ClassController::class, 'destroy'])->name('classes.destroy');
+        Route::post('/classes/{class}/enroll', [\App\Http\Controllers\Teacher\ClassController::class, 'enrollStudent'])->name('classes.enroll-student');
+        Route::put('/enrollments/{enrollment}/status', [\App\Http\Controllers\Teacher\ClassController::class, 'updateStudentStatus'])->name('classes.update-student');
+        Route::delete('/enrollments/{enrollment}', [\App\Http\Controllers\Teacher\ClassController::class, 'removeStudent'])->name('classes.remove-student');
+
+        // Submissions
+        Route::get('/submissions', [\App\Http\Controllers\Teacher\SubmissionController::class, 'index'])->name('submissions.index');
+        Route::get('/submissions/{submission}', [\App\Http\Controllers\Teacher\SubmissionController::class, 'show'])->name('submissions.show');
+        Route::post('/submissions/{submission}/grade', [\App\Http\Controllers\Teacher\SubmissionController::class, 'grade'])->name('submissions.grade');
+    });
+
+    // =====================
     // EDUCATION ROUTES
     // =====================
     Route::prefix('education')->name('education.')->middleware('role:education')->group(function () {
@@ -279,13 +325,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('analytics');
         Route::get('/students', [\App\Http\Controllers\Education\StudentController::class, 'index'])->name('students');
 
-        // Course Management (Education role)
+        // Course Management (Education role - using teacher_courses table)
         Route::get('/courses', [\App\Http\Controllers\Education\CourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/create', [\App\Http\Controllers\Education\CourseController::class, 'create'])->name('courses.create');
         Route::post('/courses', [\App\Http\Controllers\Education\CourseController::class, 'store'])->name('courses.store');
+        Route::get('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'show'])->name('courses.show');
         Route::get('/courses/{course}/edit', [\App\Http\Controllers\Education\CourseController::class, 'edit'])->name('courses.edit');
         Route::put('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'update'])->name('courses.update');
         Route::delete('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'destroy'])->name('courses.destroy');
+        Route::post('/courses/{course}/publish', [\App\Http\Controllers\Education\CourseController::class, 'publish'])->name('courses.publish');
+        Route::post('/courses/{course}/unpublish', [\App\Http\Controllers\Education\CourseController::class, 'unpublish'])->name('courses.unpublish');
 
         // Program Management (Education role)
         Route::get('/programs', [App\Http\Controllers\Education\ProgramController::class, 'index'])->name('programs');
