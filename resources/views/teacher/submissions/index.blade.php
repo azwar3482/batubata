@@ -45,6 +45,7 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
                         <thead class="bg-gray-50 dark:bg-slate-900/50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase w-12">No</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Siswa</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Tugas</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Kelas</th>
@@ -57,6 +58,7 @@
                         <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
                             @forelse($submissions as $submission)
                             <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition">
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">{{ $loop->iteration + ($submissions->firstItem() ?: 1) - 1 }}</td>
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{{ $submission->enrollment->user->name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-400">{{ $submission->material->title }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-400">{{ $submission->enrollment->classRoom->name }}</td>
@@ -77,7 +79,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">Tidak ada tugas ditemukan.</td>
+                                <td colspan="8" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">Tidak ada tugas ditemukan.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -85,7 +87,7 @@
                 </div>
                 @if($submissions->hasPages())
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700">
-                    {{ $submissions->links() }}
+                    {{ $submissions->withQueryString()->links() }}
                 </div>
                 @endif
             </div>

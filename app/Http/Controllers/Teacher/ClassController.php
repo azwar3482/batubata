@@ -13,13 +13,24 @@ use Illuminate\Support\Str;
 
 class ClassController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $classes = TeacherClass::where('teacher_id', Auth::id())
+        $query = TeacherClass::where('teacher_id', Auth::id())
             ->with('course')
-            ->withCount('enrollments')
-            ->latest()
-            ->paginate(10);
+            ->withCount('enrollments');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('code', 'like', "%{$search}%")
+                  ->orWhereHas('course', function($qCourse) use ($search) {
+                      $qCourse->where('title', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $classes = $query->latest()->paginate(10);
 
         return view('teacher.classes.index', compact('classes'));
     }

@@ -79,6 +79,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Umum (Akan di-redirect oleh middleware sesuai role)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Certificate Route
+    Route::get('/certificates/class/{enrollment}', [CourseController::class, 'viewCertificate'])->name('courses.certificate');
+    Route::get('/certificates/class/{enrollment}/pdf', [CourseController::class, 'downloadCertificatePdf'])->name('courses.certificate.pdf');
+    Route::get('/certificates/platform/{progress}', [CourseController::class, 'viewPlatformCertificate'])->name('courses.platform-certificate');
+    Route::get('/certificates/platform/{progress}/pdf', [CourseController::class, 'downloadPlatformCertificatePdf'])->name('courses.platform-certificate.pdf');
+
 
     // Tambahkan di dalam group auth
     Route::post('/profile/cv-upload', [ProfileController::class, 'uploadCv'])->name('profile.cv.upload');

@@ -36,6 +36,7 @@ class JobListing extends Model
     public function applications() { return $this->hasMany(UserJobApplication::class); }
     public function position() { return $this->belongsTo(Position::class); }
     public function tpaTest() { return $this->hasOne(TpaTest::class, 'job_listing_id'); }
+    public function company() { return $this->belongsTo(Company::class); }
 
     /**
      * Cek apakah lowongan masih tersedia untuk melamar

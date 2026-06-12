@@ -82,11 +82,23 @@
                                             style="width: {{ $progress->progress_percentage }}%"></div>
                                     </div>
                                 </div>
-                                @if ($progress->status === 'completed')
-                                <p class="text-green-600 text-sm mt-2">🎉 Selamat! Anda telah menyelesaikan
-                                    kursus ini.</p>
-                                @endif
-                            </div>
+                                 @if ($progress->status === 'completed')
+                                 <div class="mt-4 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/30 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                     <div>
+                                         <p class="text-green-800 dark:text-green-400 font-bold text-sm">🎉 Selamat! Anda telah menyelesaikan kursus ini.</p>
+                                         <p class="text-green-600 dark:text-green-500 text-xs mt-0.5">Sertifikat kelulusan Anda sudah diterbitkan.</p>
+                                     </div>
+                                     <a href="{{ route('courses.platform-certificate', $progress->id) }}" target="_blank"
+                                         class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-lg transition shadow hover:shadow-md text-xs font-bold shrink-0">
+                                         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                         </svg>
+                                         Lihat Sertifikat
+                                     </a>
+                                 </div>
+                                 @endif
+                             </div>
                             @endif
                         </div>
 

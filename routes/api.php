@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'show']);
     Route::post('/user/profile/update', [ProfileController::class, 'update']);
     Route::get('/user/skills', [ProfileController::class, 'skills']);
+    Route::post('/user/avatar', [ProfileController::class, 'uploadAvatar']);
+    Route::post('/user/change-password', [ProfileController::class, 'changePassword']);
     
     // Dashboard
     Route::get('/home/data', [HomeController::class, 'index']);
@@ -53,10 +55,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/assessments/{id}/result', [AssessmentController::class, 'result']);
 
     // Jobs
-    Route::get('/jobs', [JobController::class, 'index']);
-    Route::get('/jobs/{id}', [JobController::class, 'show']);
-    Route::post('/jobs/{id}/apply', [JobController::class, 'apply']);
-    Route::get('/jobs/my-applications', [JobController::class, 'myApplications']);
+    Route::get('/jobs', [\App\Http\Controllers\Api\JobController::class, 'index']);
+    Route::get('/jobs/{id}', [\App\Http\Controllers\Api\JobController::class, 'show']);
+    Route::post('/jobs/{id}/apply', [\App\Http\Controllers\Api\JobController::class, 'apply']);
+    Route::get('/jobs/my-applications', [\App\Http\Controllers\Api\JobController::class, 'myApplications']);
+    
+    // Saved Jobs
+    Route::get('/saved-jobs', [\App\Http\Controllers\Api\JobController::class, 'savedJobs']);
+    Route::post('/saved-jobs/{id}', [\App\Http\Controllers\Api\JobController::class, 'saveJob']);
+    Route::delete('/saved-jobs/{id}', [\App\Http\Controllers\Api\JobController::class, 'unsaveJob']);
 
     // Courses
     Route::get('/courses', [CourseController::class, 'index']);
@@ -66,6 +73,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Roadmap
     Route::get('/roadmap', [RoadmapController::class, 'index']);
     Route::put('/roadmap/{id}/complete', [RoadmapController::class, 'complete']);
+
+    // Career Fields
+    Route::get('/career-fields', [\App\Http\Controllers\Api\CareerFieldController::class, 'index']);
+    Route::get('/career-fields/{slug}', [\App\Http\Controllers\Api\CareerFieldController::class, 'show']);
 
     // Direct Chats
     Route::get('/chats/sessions', [\App\Http\Controllers\Api\DirectChatController::class, 'index']);

@@ -37,6 +37,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('industry.dashboard');
         } elseif ($user->isEducation()) {
             $route = 'education.dashboard';
+        } elseif ($user->isTeacher()) {
+            $route = 'teacher.dashboard';
         }
         // return redirect()->intended(route('dashboard', absolute: false)); //FIXME : dashboard default
         return redirect()->intended(route($route, absolute: false));

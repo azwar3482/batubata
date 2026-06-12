@@ -17,4 +17,9 @@ class UserCourseProgress extends Model
 
     public function user() { return $this->belongsTo(User::class); }
     public function course() { return $this->belongsTo(Course::class); }
+
+    public function getCertificateCodeAttribute()
+    {
+        return 'BTB-P-' . strtoupper(substr(md5($this->id . 'batubata-salt-platform-certificate'), 0, 10));
+    }
 }

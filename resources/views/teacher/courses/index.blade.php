@@ -20,11 +20,23 @@
             </div>
             @endif
 
+            <!-- Search Form -->
+            <div class="mb-6">
+                <form action="{{ route('teacher.courses.index') }}" method="GET" class="flex gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul kursus, kategori..." class="w-full md:w-1/3 rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                    <button type="submit" class="px-4 py-2 bg-gray-800 dark:bg-slate-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-slate-600 transition text-sm font-medium">Cari</button>
+                    @if(request('search'))
+                        <a href="{{ route('teacher.courses.index') }}" class="px-4 py-2 bg-gray-200 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-700 transition text-sm font-medium">Reset</a>
+                    @endif
+                </form>
+            </div>
+
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
                         <thead class="bg-gray-50 dark:bg-slate-900/50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider w-12">No</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kursus</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kategori</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Level</th>
@@ -37,6 +49,7 @@
                         <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
                             @forelse($courses as $course)
                             <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">{{ $loop->iteration + ($courses->firstItem() ?: 1) - 1 }}</td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $course->title }}</div>
                                     <div class="text-xs text-gray-500 dark:text-slate-400">{{ Str::limit($course->description, 60) }}</div>
@@ -103,8 +116,8 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">
-                                    Belum ada kursus. <a href="{{ route('teacher.courses.create') }}" class="text-blue-600 hover:underline">Buat kursus pertama</a>.
+                                <td colspan="8" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">
+                                    Belum ada kursus {{ request('search') ? 'yang sesuai dengan pencarian' : '' }}. <a href="{{ route('teacher.courses.create') }}" class="text-blue-600 hover:underline">Buat kursus pertama</a>.
                                 </td>
                             </tr>
                             @endforelse
@@ -113,7 +126,7 @@
                 </div>
                 @if($courses->hasPages())
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-slate-700">
-                    {{ $courses->links() }}
+                    {{ $courses->withQueryString()->links() }}
                 </div>
                 @endif
             </div>

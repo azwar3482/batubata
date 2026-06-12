@@ -27,6 +27,11 @@ class ClassEnrollment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getCertificateCodeAttribute()
+    {
+        return 'BTB-' . strtoupper(substr(md5($this->id . 'batubata-salt-certificate'), 0, 10));
+    }
+
     public function submissions()
     {
         return $this->hasMany(Submission::class, 'enrollment_id');

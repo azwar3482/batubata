@@ -13,13 +13,24 @@ use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courses = TeacherCourse::where('teacher_id', Auth::id())
+        $query = TeacherCourse::where('teacher_id', Auth::id())
             ->withCount(['modules', 'classes'])
-            ->with('competency')
-            ->latest()
-            ->paginate(10);
+            ->with('competency');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('category', 'like', "%{$search}%")
+                  ->orWhereHas('competency', function($qComp) use ($search) {
+                      $qComp->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $courses = $query->latest()->paginate(10);
 
         return view('teacher.courses.index', compact('courses'));
     }

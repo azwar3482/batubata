@@ -25,6 +25,8 @@ class JobSeekerDashboardService
 
         $coursesInProgress = UserCourseProgress::where('user_id', $user->id)
             ->where('status', 'in_progress')
+            ->count() + \App\Models\ClassEnrollment::where('user_id', $user->id)
+            ->where('status', 'active')
             ->count();
 
         $matchedJobs = $this->matchingService->getMatchedJobs($user, 3);

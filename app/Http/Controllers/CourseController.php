@@ -161,14 +161,134 @@ class CourseController extends Controller
     public function myProgress(Request $request)
     {
         $progress = $this->courseService->getAllUserProgress(Auth::id());
+        $classEnrollments = \App\Models\ClassEnrollment::with(['classRoom.course', 'classRoom.teacher'])
+            ->where('user_id', Auth::id())
+            ->orderByDesc('updated_at')
+            ->get();
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'data' => $progress
+                'data' => $progress,
+                'class_enrollments' => $classEnrollments
             ]);
         }
 
-        return view('courses.my_progress', compact('progress'));
+        return view('courses.my_progress', compact('progress', 'classEnrollments'));
+    }
+
+    public function viewCertificate($enrollmentId)
+    {
+        $enrollment = \App\Models\ClassEnrollment::with(['classRoom.course', 'classRoom.teacher', 'user'])
+            ->findOrFail($enrollmentId);
+
+        $user = Auth::user();
+
+        // Keamanan/Otorisasi:
+        // 1. Siswa yang memiliki sertifikat
+        // 2. Guru dari kelas tersebut
+        // 3. Admin
+        // 4. Perusahaan/Recruiter (Role: industry atau staffing roles)
+        if ($enrollment->user_id !== $user->id &&
+            !$user->isAdmin() &&
+            !($user->isTeacher() && $enrollment->classRoom->teacher_id === $user->id) &&
+            !$user->isIndustry() &&
+            !$user->isStaff()) {
+            abort(403, 'Anda tidak memiliki akses untuk melihat sertifikat ini.');
+        }
+
+        // Kriteria: Status harus completed dan nilai >= 70
+        if ($enrollment->status !== 'completed' || is_null($enrollment->final_score) || floatval($enrollment->final_score) < 70) {
+            if ($user->isJobSeeker()) {
+                return redirect()->route('seeker.courses.my-progress')
+                    ->with('error', 'Sertifikat belum tersedia atau nilai akhir tidak memenuhi kriteria kelulusan (>= 70%).');
+            }
+            abort(404, 'Sertifikat tidak ditemukan atau belum memenuhi kriteria kelulusan.');
+        }
+
+        return view('courses.certificate', compact('enrollment'));
+    }
+
+    public function viewPlatformCertificate($progressId)
+    {
+        $progress = \App\Models\UserCourseProgress::with(['course.competency', 'user'])
+            ->findOrFail($progressId);
+
+        $user = Auth::user();
+
+        // Keamanan/Otorisasi:
+        // 1. Siswa yang memiliki sertifikat
+        // 2. Admin
+        // 3. Perusahaan/Recruiter (Role: industry atau staffing roles)
+        if ($progress->user_id !== $user->id &&
+            !$user->isAdmin() &&
+            !$user->isIndustry() &&
+            !$user->isStaff()) {
+            abort(403, 'Anda tidak memiliki akses untuk melihat sertifikat ini.');
+        }
+
+        // Kriteria: Status harus completed
+        if ($progress->status !== 'completed') {
+            if ($user->isJobSeeker()) {
+                return redirect()->route('seeker.courses.my-progress')
+                    ->with('error', 'Sertifikat belum tersedia.');
+            }
+            abort(404, 'Sertifikat tidak ditemukan.');
+        }
+
+        return view('courses.platform_certificate', compact('progress'));
+    }
+
+    public function downloadCertificatePdf($enrollmentId)
+    {
+        $enrollment = \App\Models\ClassEnrollment::with(['classRoom.course', 'classRoom.teacher', 'user'])
+            ->findOrFail($enrollmentId);
+
+        $user = Auth::user();
+
+        // Keamanan/Otorisasi
+        if ($enrollment->user_id !== $user->id &&
+            !$user->isAdmin() &&
+            !($user->isTeacher() && $enrollment->classRoom->teacher_id === $user->id) &&
+            !$user->isIndustry() &&
+            !$user->isStaff()) {
+            abort(403, 'Anda tidak memiliki akses untuk melihat sertifikat ini.');
+        }
+
+        if ($enrollment->status !== 'completed' || is_null($enrollment->final_score) || floatval($enrollment->final_score) < 70) {
+            abort(404, 'Sertifikat tidak ditemukan atau belum memenuhi kriteria kelulusan.');
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.class_certificate', compact('enrollment'));
+        $pdf->setPaper('A4', 'landscape');
+        
+        $filename = 'Sertifikat_Kelas_' . str_replace(' ', '_', $enrollment->classRoom->course->title) . '.pdf';
+        return $pdf->download($filename);
+    }
+
+    public function downloadPlatformCertificatePdf($progressId)
+    {
+        $progress = \App\Models\UserCourseProgress::with(['course.competency', 'user'])
+            ->findOrFail($progressId);
+
+        $user = Auth::user();
+
+        // Keamanan/Otorisasi
+        if ($progress->user_id !== $user->id &&
+            !$user->isAdmin() &&
+            !$user->isIndustry() &&
+            !$user->isStaff()) {
+            abort(403, 'Anda tidak memiliki akses untuk melihat sertifikat ini.');
+        }
+
+        if ($progress->status !== 'completed') {
+            abort(404, 'Sertifikat tidak ditemukan.');
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.platform_certificate', compact('progress'));
+        $pdf->setPaper('A4', 'landscape');
+        
+        $filename = 'Sertifikat_Kursus_' . str_replace(' ', '_', $progress->course->title) . '.pdf';
+        return $pdf->download($filename);
     }
 }
