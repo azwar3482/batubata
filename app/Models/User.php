@@ -77,6 +77,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserDocument::class);
     }
+
+    public function savedJobs()
+    {
+        return $this->belongsToMany(JobListing::class, 'saved_jobs', 'user_id', 'job_listing_id')->withTimestamps();
+    }
     public function tpaSessions()
     {
         return $this->hasMany(TpaTestSession::class);

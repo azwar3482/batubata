@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CandidateController extends Controller
 {
@@ -107,5 +108,94 @@ class CandidateController extends Controller
                 }) : [],
             ]
         ]);
+    }
+
+    /**
+     * Export candidates data.
+     */
+    public function export(Request $request)
+    {
+        $format = $request->query('format', 'pdf');
+        $skillQuery = $request->query('skill');
+
+        $query = User::where('role', 'job_seeker');
+
+        if ($skillQuery) {
+            $query->whereHas('assessments', function($q) use ($skillQuery) {
+                $q->whereHas('scores', function($sq) use ($skillQuery) {
+                    $sq->whereHas('competency', function($cq) use ($skillQuery) {
+                        $cq->where('name', 'LIKE', "%{$skillQuery}%");
+                    });
+                });
+            });
+        }
+
+        $candidates = $query->with(['assessments' => function($q) {
+            $q->latest('assessment_date')->with('scores.competency', 'position');
+        }])->get();
+
+        // Format data
+        $data = $candidates->map(function ($candidate) {
+            $latestAssessment = $candidate->assessments->first();
+            
+            return [
+                'name' => $candidate->name,
+                'email' => $candidate->email,
+                'education_level' => $candidate->education_level ?? '-',
+                'major' => $candidate->major ?? '-',
+                'experience_years' => $candidate->experience_years ?? 0,
+                'target_position' => $latestAssessment->position->name ?? $candidate->target_position ?? '-',
+                'skills' => $latestAssessment 
+                    ? $latestAssessment->scores->pluck('competency.name')->implode(', ')
+                    : '-',
+                'match_score' => $latestAssessment 
+                    ? number_format(100 - ($latestAssessment->total_gap_percentage ?? 0), 1) . '%'
+                    : '-',
+            ];
+        });
+
+        if ($format === 'pdf') {
+            // Generate PDF
+            $pdf = \PDF::loadView('exports.candidates-pdf', ['candidates' => $data]);
+            $filename = 'candidates_' . now()->format('Y-m-d_His') . '.pdf';
+            $path = 'exports/' . $filename;
+            Storage::disk('public')->put($path, $pdf->output());
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'download_url' => asset('storage/' . $path),
+                    'filename' => $filename,
+                ]
+            ]);
+        } else {
+            // Generate CSV (Excel alternative)
+            $filename = 'candidates_' . now()->format('Y-m-d_His') . '.csv';
+            $path = 'exports/' . $filename;
+            
+            $csv = "Name,Email,Education,Major,Experience,Target Position,Skills,Match Score\n";
+            foreach ($data as $row) {
+                $csv .= '"' . implode('","', [
+                    $row['name'],
+                    $row['email'],
+                    $row['education_level'],
+                    $row['major'],
+                    $row['experience_years'],
+                    $row['target_position'],
+                    $row['skills'],
+                    $row['match_score'],
+                ]) . '"\n';
+            }
+
+            Storage::disk('public')->put($path, $csv);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'download_url' => asset('storage/' . $path),
+                    'filename' => $filename,
+                ]
+            ]);
+        }
     }
 }

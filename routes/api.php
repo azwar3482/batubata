@@ -38,6 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/skills', [ProfileController::class, 'skills']);
     Route::post('/user/avatar', [ProfileController::class, 'uploadAvatar']);
     Route::post('/user/change-password', [ProfileController::class, 'changePassword']);
+    Route::get('/user/documents', [ProfileController::class, 'documents']);
+    Route::post('/user/documents/{type}', [ProfileController::class, 'uploadDocument']);
+    Route::delete('/user/documents/{type}', [ProfileController::class, 'deleteDocument']);
     
     // Dashboard
     Route::get('/home/data', [HomeController::class, 'index']);
@@ -56,9 +59,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Jobs
     Route::get('/jobs', [\App\Http\Controllers\Api\JobController::class, 'index']);
+    Route::get('/jobs/my-applications', [\App\Http\Controllers\Api\JobController::class, 'myApplications']);
     Route::get('/jobs/{id}', [\App\Http\Controllers\Api\JobController::class, 'show']);
     Route::post('/jobs/{id}/apply', [\App\Http\Controllers\Api\JobController::class, 'apply']);
-    Route::get('/jobs/my-applications', [\App\Http\Controllers\Api\JobController::class, 'myApplications']);
     
     // Saved Jobs
     Route::get('/saved-jobs', [\App\Http\Controllers\Api\JobController::class, 'savedJobs']);
@@ -67,8 +70,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Courses
     Route::get('/courses', [CourseController::class, 'index']);
-    Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll']);
     Route::get('/courses/my-progress', [CourseController::class, 'myProgress']);
+    Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll']);
 
     // Roadmap
     Route::get('/roadmap', [RoadmapController::class, 'index']);
@@ -83,6 +86,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chats/{id}/messages', [\App\Http\Controllers\Api\DirectChatController::class, 'messages']);
     Route::post('/chats/{id}/send', [\App\Http\Controllers\Api\DirectChatController::class, 'send']);
     Route::post('/chats/initiate', [\App\Http\Controllers\Api\DirectChatController::class, 'initiate']);
+
+    // AI Chat Agent
+    Route::prefix('chat')->middleware('throttle:20,1')->group(function () {
+        Route::post('/send', [\App\Http\Controllers\ChatController::class, 'sendMessage']);
+        Route::get('/history', [\App\Http\Controllers\ChatController::class, 'history']);
+        Route::get('/sessions', [\App\Http\Controllers\ChatController::class, 'sessions']);
+        Route::post('/clear', [\App\Http\Controllers\ChatController::class, 'clearHistory']);
+        Route::get('/suggestions', [\App\Http\Controllers\ChatController::class, 'suggestions']);
+        Route::get('/status', [\App\Http\Controllers\ChatController::class, 'status']);
+    });
+
+    // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\Api\NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [\App\Http\Controllers\Api\NotificationController::class, 'unreadCount']);
+    Route::post('/notifications/{id}/read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+    Route::post('/notifications/read-all', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [\App\Http\Controllers\Api\NotificationController::class, 'destroy']);
+    Route::delete('/notifications', [\App\Http\Controllers\Api\NotificationController::class, 'clearAll']);
 
     // Seeker TPA
     Route::get('/seeker/tpa', [\App\Http\Controllers\Api\SeekerTpaController::class, 'index']);
@@ -142,6 +163,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/jobs', [\App\Http\Controllers\Api\Industry\JobPostingController::class, 'index']);
         Route::post('/jobs', [\App\Http\Controllers\Api\Industry\JobPostingController::class, 'store']);
         Route::get('/candidates', [\App\Http\Controllers\Api\Industry\CandidateController::class, 'index']);
+        Route::get('/candidates/export', [\App\Http\Controllers\Api\Industry\CandidateController::class, 'export']);
         Route::get('/candidates/{id}', [\App\Http\Controllers\Api\Industry\CandidateController::class, 'show']);
         Route::get('/team', [\App\Http\Controllers\Api\Industry\TeamController::class, 'index']);
         Route::post('/team/invite', [\App\Http\Controllers\Api\Industry\TeamController::class, 'invite']);

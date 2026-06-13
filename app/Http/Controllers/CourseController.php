@@ -45,12 +45,31 @@ class CourseController extends Controller
                 ->first();
 
             if ($latestAssessment) {
-                $weakCompetencyIds = \App\Models\UserCompetencyScore::where('assessment_id', $latestAssessment->id)
+                $weakCompetencies = \App\Models\UserCompetencyScore::where('assessment_id', $latestAssessment->id)
                     ->where('gap_percentage', '>', 0)
-                    ->pluck('competency_id')
-                    ->toArray();
+                    ->with('competency')
+                    ->get();
 
-                $recommendedCourses = $this->courseService->getRecommendedCourses($weakCompetencyIds);
+                $weakCompetencyIds = $weakCompetencies->pluck('competency_id')->toArray();
+                
+                if (!empty($weakCompetencyIds)) {
+                    $recommendedCourses = $this->courseService->getRecommendedCourses($weakCompetencyIds);
+                    
+                    // Add match score and reason to each recommendation
+                    $recommendedCourses = $recommendedCourses->map(function ($course) use ($weakCompetencies) {
+                        $relatedGap = $weakCompetencies->firstWhere('competency_id', $course->competency_id);
+                        $matchScore = $relatedGap ? max(0, 100 - $relatedGap->gap_percentage) : 70;
+                        
+                        $course->match_score = $matchScore;
+                        $course->priority = $matchScore >= 70 ? 'High' : ($matchScore >= 50 ? 'Medium' : 'Low');
+                        $course->reason = $relatedGap 
+                            ? 'Meningkatkan kompetensi ' . ($relatedGap->competency?->name ?? '') . ' (gap: ' . number_format($relatedGap->gap_percentage, 1) . '%)'
+                            : 'Kursus rekomendasi untuk Anda';
+                        $course->instructor = $course->creator?->name ?? 'Kompaskarir';
+                        
+                        return $course;
+                    });
+                }
             }
         }
 
