@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV {{ $user->name }}</title>
+    <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg" class="h-8 w-auto mr-2 rounded-lg">
     <style>
         * {
             margin: 0;

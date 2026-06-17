@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sertifikat - {{ $enrollment->user->name }}</title>
+     <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg" class="h-8 w-auto mr-2 rounded-lg">
+   
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -48,12 +48,25 @@
                 }
                 @endphp
 
+                @php
+                $previousData = null;
+                if ($previousAssessment) {
+                    $previousData = [
+                        'position_id' => $previousAssessment->position_id ? (string)$previousAssessment->position_id : null,
+                        'job_listing_id' => $previousAssessment->job_listing_id ? (string)$previousAssessment->job_listing_id : null,
+                        'position_name' => $previousAssessment->position?->name,
+                        'job_listing_name' => $previousAssessment->jobListing ? $previousAssessment->jobListing->title . ' - ' . $previousAssessment->jobListing->company_name : null,
+                    ];
+                }
+                @endphp
+
                 <!-- Data initialization -->
                 <script>
                     window.assessmentData = {
                         positions: @json($mappedPositions),
                         jobs: @json($mappedJobs),
-                        userSkills: @json(array_values($userSkills))
+                        userSkills: @json(array_values($userSkills)),
+                        previousAssessment: @json($previousData)
                     };
                 </script>
 
@@ -267,19 +280,45 @@
             const data = window.assessmentData || {
                 positions: [],
                 jobs: [],
-                userSkills: []
+                userSkills: [],
+                previousAssessment: null
             };
+            const prev = data.previousAssessment;
+
+            let initMode = 'position';
+            let initPositionSelected = '';
+            let initJobSelected = '';
+            let initPositionName = 'Pilih posisi...';
+            let initJobName = 'Pilih lowongan...';
+            let initSelectedJobSkills = [];
+
+            if (prev) {
+                if (prev.position_id) {
+                    initMode = 'position';
+                    initPositionSelected = prev.position_id;
+                    initPositionName = prev.position_name || 'Pilih posisi...';
+                } else if (prev.job_listing_id) {
+                    initMode = 'job';
+                    initJobSelected = prev.job_listing_id;
+                    initJobName = prev.job_listing_name || 'Pilih lowongan...';
+                    const matchedJob = data.jobs.find(j => j.id === prev.job_listing_id);
+                    if (matchedJob) {
+                        initSelectedJobSkills = matchedJob.skills || [];
+                    }
+                }
+            }
+
             return {
-                mode: 'position',
-                positionSelected: '',
-                jobSelected: '',
-                positionName: 'Pilih posisi...',
-                jobName: 'Pilih lowongan...',
+                mode: initMode,
+                positionSelected: initPositionSelected,
+                jobSelected: initJobSelected,
+                positionName: initPositionName,
+                jobName: initJobName,
                 positionOpen: false,
                 jobOpen: false,
                 positionSearch: '',
                 jobSearch: '',
-                selectedJobSkills: [],
+                selectedJobSkills: initSelectedJobSkills,
                 userSkills: data.userSkills,
                 positions: data.positions,
                 jobs: data.jobs,

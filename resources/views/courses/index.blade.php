@@ -172,6 +172,7 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800 text-left">
                             <thead class="bg-gray-50 dark:bg-slate-800">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Nama Kursus</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Pengajar</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Durasi</th>
@@ -183,6 +184,9 @@
                             <tbody class="divide-y divide-gray-200 dark:divide-slate-800">
                                 @foreach($teacherCourses as $tCourse)
                                 <tr class="hover:bg-violet-50/10 dark:hover:bg-violet-900/10 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400 font-medium text-center">
+                                        {{ $loop->iteration }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{{ $tCourse->title }}</div>
                                         <div class="text-xs text-gray-500 dark:text-slate-400 line-clamp-1 mt-0.5">{{ $tCourse->description }}</div>
@@ -276,6 +280,7 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800 text-left">
                             <thead class="bg-gray-50 dark:bg-slate-800">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Nama Kursus</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Platform</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Durasi</th>
@@ -287,6 +292,9 @@
                             <tbody class="divide-y divide-gray-200 dark:divide-slate-800">
                                 @foreach($recommendedCourses as $course)
                                 <tr class="hover:bg-emerald-50/10 dark:hover:bg-emerald-900/10 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400 font-medium text-center">
+                                        {{ $loop->iteration }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{{ $course->title }}</div>
                                         <div class="text-xs text-gray-500 dark:text-slate-400 line-clamp-1 mt-0.5">{{ $course->description }}</div>
@@ -371,6 +379,7 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800 text-left">
                             <thead class="bg-gray-50 dark:bg-slate-800">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Nama Kursus</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Platform</th>
                                     <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Progres Belajar</th>
@@ -380,6 +389,9 @@
                             <tbody class="divide-y divide-gray-200 dark:divide-slate-800">
                                 @foreach($activeProgress as $progress)
                                 <tr class="hover:bg-blue-50/10 dark:hover:bg-blue-900/10 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400 font-medium text-center">
+                                        {{ $loop->iteration }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{{ $progress->course->title }}</div>
                                         <div class="text-xs text-gray-500 dark:text-slate-400 line-clamp-1 mt-0.5">{{ $progress->course->description }}</div>
@@ -509,6 +521,7 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800 text-left">
                         <thead class="bg-gray-50 dark:bg-slate-800">
                             <tr>
+                                <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
                                 <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Nama Kursus</th>
                                 <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Platform</th>
                                 <th scope="col" class="px-6 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Durasi</th>
@@ -521,6 +534,9 @@
                         <tbody class="divide-y divide-gray-200 dark:divide-slate-800">
                             @forelse($courses as $course)
                             <tr class="hover:bg-blue-50/10 dark:hover:bg-blue-900/10 transition">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400 font-medium text-center">
+                                    {{ $loop->iteration }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{{ $course->title }}</div>
                                     <div class="text-xs text-gray-500 dark:text-slate-400 line-clamp-1 mt-0.5">{{ $course->description }}</div>
@@ -583,7 +599,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-10 text-center text-sm text-gray-500 dark:text-slate-400">
+                                <td colspan="8" class="px-6 py-10 text-center text-sm text-gray-500 dark:text-slate-400">
                                     Tidak ada kursus yang tersedia saat ini.
                                 </td>
                             </tr>

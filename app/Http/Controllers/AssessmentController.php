@@ -31,7 +31,13 @@ class AssessmentController extends Controller
             ->where('expires_date', '>', now())
             ->get();
 
-        return view('assessment.create', compact('positions', 'jobListings'));
+        $previousAssessment = null;
+        $previousAssessmentId = session()->pull('previous_assessment_id');
+        if ($previousAssessmentId) {
+            $previousAssessment = UserAssessment::with(['position', 'jobListing'])->find($previousAssessmentId);
+        }
+
+        return view('assessment.create', compact('positions', 'jobListings', 'previousAssessment'));
     }
 
     public function positions()
