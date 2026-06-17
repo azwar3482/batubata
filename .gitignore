@@ -30,6 +30,9 @@ Thumbs.db
 /uji_coba_antigravity.py
 /instal antigravity.txt
 /logo_new_png_*.png
+/check_ids.php
+/test_job26.php
+/scratch/
 
 # Flutter
 /flutter/.dart_tool/
@@ -52,5 +55,7 @@ venv/
 
 # Database
 /database/
+# We don't want to ignore the whole database directory because it contains migrations, factories and seeders
+# database.sqlite is already ignored by database/.gitignore
 
 /dokumen/

@@ -60,13 +60,25 @@ class GoogleAuthController extends Controller
             $role = session('social_role', 'job_seeker');
             session()->forget('social_role');
 
+            Log::info('Google callback started', ['role' => $role]);
+
             $user = $this->googleAuthService->handleGoogleUser($role);
+
+            Log::info('Google user retrieved', ['email' => $user->email, 'name' => $user->name]);
 
             Auth::login($user);
 
+            Log::info('User logged in successfully', ['user_id' => $user->id]);
+
             return redirect()->route('dashboard');
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Terjadi kesalahan saat login dengan Google.');
+            Log::error('Google OAuth callback error', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->route('login')->with('error', 'Terjadi kesalahan saat login dengan Google: ' . $e->getMessage());
         }
     }
 

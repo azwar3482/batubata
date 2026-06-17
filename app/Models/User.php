@@ -16,7 +16,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'provider',
+        'provider_id',
         'password',
+        'role',
+        'status',
         'gender',
         'blood_type',
         'phone',
@@ -266,5 +270,10 @@ class User extends Authenticatable
     public function hasCompletedProfile()
     {
         return $this->profile_completion_percentage === 100;
+    }
+
+    public function isGoogleUser()
+    {
+        return $this->provider === 'google';
     }
 }

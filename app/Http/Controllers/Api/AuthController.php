@@ -19,6 +19,10 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'role' => 'nullable|string|in:job_seeker,industry,education',
+            'phone' => 'nullable|string|max:20',
+            'linkedin_url' => 'nullable|url|max:255',
+            'github_url' => 'nullable|url|max:255',
+            'portfolio_url' => 'nullable|url|max:255',
         ]);
 
         $user = User::create([
@@ -26,6 +30,10 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'] ?? 'job_seeker',
+            'phone' => $validated['phone'] ?? null,
+            'linkedin_url' => $validated['linkedin_url'] ?? null,
+            'github_url' => $validated['github_url'] ?? null,
+            'portfolio_url' => $validated['portfolio_url'] ?? null,
         ]);
 
         $token = $user->createToken('auth-token')->plainTextToken;
@@ -82,8 +90,15 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
+                'provider' => 'google',
+                'provider_id' => $validated['firebase_uid'],
                 'password' => Hash::make(Str::random(16)),
                 'role' => $request->role ?? 'job_seeker',
+            ]);
+        } elseif (!$user->provider) {
+            $user->update([
+                'provider' => 'google',
+                'provider_id' => $validated['firebase_uid'],
             ]);
         }
 

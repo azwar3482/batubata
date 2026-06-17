@@ -17,14 +17,14 @@
             </div>
 
             <!-- Info Card -->
-            <div class="mb-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl">
+            <div class="mb-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-200 dark:border-blue-800 rounded-xl">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-blue-900 mb-1">Tentang Kompetensi Perusahaan</h4>
-                        <p class="text-sm text-blue-700 leading-relaxed">Kompetensi yang Anda buat akan <strong>khusus untuk lowongan perusahaan Anda</strong>. Jika kompetensi tidak dibuat, sistem akan menggunakan kompetensi default dari admin. Job seeker yang melamar lowongan Anda akan melihat kompetensi buatan Anda terlebih dahulu.</p>
+                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-100 mb-1">Tentang Kompetensi Perusahaan</h4>
+                        <p class="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">Kompetensi yang Anda buat akan <strong class="dark:text-blue-200">khusus untuk lowongan perusahaan Anda</strong>. Jika kompetensi tidak dibuat, sistem akan menggunakan kompetensi default dari admin. Job seeker yang melamar lowongan Anda akan melihat kompetensi buatan Anda terlebih dahulu.</p>
                     </div>
                 </div>
             </div>

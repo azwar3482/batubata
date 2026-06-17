@@ -47,9 +47,16 @@ class GoogleAuthService
             $user = User::create([
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
+                'provider' => 'google',
+                'provider_id' => $googleUser->getId(),
                 'password' => Hash::make(Str::random(16)),
                 'role' => $role,
                 'email_verified_at' => now(),
+            ]);
+        } elseif (!$user->provider) {
+            $user->update([
+                'provider' => 'google',
+                'provider_id' => $googleUser->getId(),
             ]);
         }
 

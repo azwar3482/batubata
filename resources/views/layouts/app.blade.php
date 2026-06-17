@@ -640,8 +640,13 @@
                 <div class="mx-3 sm:mx-4 my-3 sm:my-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-50 to-indigo-50/40 dark:from-slate-800/50 dark:to-indigo-950/20 border border-slate-100/80 dark:border-slate-800/80 shadow-sm relative overflow-hidden group user-card transition-all duration-300">
                     <div class="absolute -right-3 -top-3 w-12 h-12 rounded-full bg-indigo-500/5 group-hover:scale-150 transition-all duration-500"></div>
                     <div class="flex items-center space-x-2.5 sm:space-x-3 w-full">
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200 shrink-0 text-sm sm:text-base">
-                            {{ substr(Auth::user()->name, 0, 1) }}
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200 shrink-0 text-sm sm:text-base overflow-hidden">
+                            @php $navPhoto1 = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
+                            @if($navPhoto1)
+                                <img src="{{ Storage::url($navPhoto1->file_path) }}" alt="Photo" class="w-full h-full object-cover">
+                            @else
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            @endif
                         </div>
                         <div class="flex-1 min-w-0 user-info-text transition-opacity duration-300">
                             <p class="text-xs sm:text-sm font-semibold text-slate-800 truncate">{{ Auth::user()->name }}</p>
@@ -1338,8 +1343,13 @@
                     <div class="relative" x-data="{ openProfile: false }">
                         <button @click="openProfile = !openProfile" @click.away="openProfile = false" class="flex items-center space-x-2 sm:space-x-3 border-l border-slate-100 dark:border-slate-850 pl-3 sm:pl-6 h-8 select-none focus:outline-none group">
                             <span class="hidden sm:inline text-xs font-semibold text-slate-600 dark:text-slate-300 transition-colors duration-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 max-w-[80px] truncate">{{ Auth::user()->name }}</span>
-                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
-                                {{ substr(Auth::user()->name, 0, 1) }}
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-105 overflow-hidden">
+                                @php $navPhoto2 = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
+                                @if($navPhoto2)
+                                    <img src="{{ Storage::url($navPhoto2->file_path) }}" alt="Photo" class="w-full h-full object-cover">
+                                @else
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                @endif
                             </div>
                             <svg class="hidden sm:block w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-transform duration-300" :class="openProfile ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>

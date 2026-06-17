@@ -1179,9 +1179,9 @@
                                             class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 block p-3 transition-all duration-200">{{ Auth::user()->job_preferences }}</textarea>
                                     </div>
                                 </div>
-                                @endif
-
                             </div>
+                            @endif
+
 
 
                             <div class="flex items-center justify-end gap-3 pt-6">
@@ -1196,13 +1196,13 @@
                                     <span x-text="saving ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                 </button>
                             </div>
-                        </div>
 
                         </form>
                     </div>
                 </div>
         </div>
     </div>
+</div>
 <script>
 document.addEventListener('alpine:init', () => {
     Alpine.data('webcamUpload', () => ({
