@@ -274,4 +274,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->provider === 'google';
     }
+
+    public function getSafeBioAttribute()
+    {
+        if (!$this->bio) {
+            return '';
+        }
+
+        $allowedTags = '<h1><h2><h3><h4><h5><h6><p><a><strong><b><i><em><u><ul><ol><li><br><del><div>';
+        $cleanHtml = strip_tags($this->bio, $allowedTags);
+
+        // 1. Remove event handlers like onclick="...", onload='...'
+        $cleanHtml = preg_replace('/on[a-zA-Z]+\s*=\s*("[^"]*"|\'[^\']*\')/i', '', $cleanHtml);
+
+        // 2. Remove javascript: URIs in href
+        $cleanHtml = preg_replace('/href\s*=\s*("[^"]*javascript:[^"]*"|\'[^\']*javascript:[^\']*\')/i', 'href="#"', $cleanHtml);
+
+        return $cleanHtml;
+    }
 }

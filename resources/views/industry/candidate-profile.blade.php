@@ -134,9 +134,13 @@
                     <!-- About Section -->
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4">Tentang Kandidat</h3>
-                        <p class="text-gray-600 leading-relaxed">
-                            {{ $candidate->bio ?? 'Profesional digital marketing dengan pengalaman 3+ tahun dalam mengelola kampanye iklan digital, SEO, dan content strategy. Berkomitmen untuk menghasilkan hasil yang terukur dan berdampak bagi bisnis.' }}
-                        </p>
+                        <div class="text-gray-600 leading-relaxed prose dark:prose-invert max-w-none text-sm">
+                            @if($candidate->bio)
+                                {!! $candidate->safe_bio !!}
+                            @else
+                                Profesional digital marketing dengan pengalaman 3+ tahun dalam mengelola kampanye iklan digital, SEO, dan content strategy. Berkomitmen untuk menghasilkan hasil yang terukur dan berdampak bagi bisnis.
+                            @endif
+                        </div>
 
                         @if ($candidate->linkedin_url || $candidate->portfolio_url)
                         <div class="mt-4 pt-4 border-t flex flex-wrap gap-3">

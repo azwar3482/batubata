@@ -59,7 +59,7 @@ $hasExperience = $user->careerHistories && $user->careerHistories->count() > 0;
                 @if($user->bio)
                 <div class="mb-4">
                     <div class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Ringkasan</div>
-                    <p class="text-sm text-gray-600 line-clamp-3">{{ Str::limit($user->bio, 200) }}</p>
+                    <p class="text-sm text-gray-600 line-clamp-3">{{ Str::limit(strip_tags($user->bio), 200) }}</p>
                 </div>
                 @endif
 
