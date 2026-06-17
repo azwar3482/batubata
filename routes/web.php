@@ -47,13 +47,6 @@ Route::get('/', function () {
 
 
 
-Route::prefix('industry')->name('industry.')->middleware(['auth', 'verified', 'role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer'])->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Industry\DashboardController::class, 'index'])->name('dashboard');
-});
-
-Route::prefix('education')->name('education.')->middleware(['auth', 'verified', 'role:education'])->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Education\DashboardController::class, 'index'])->name('dashboard');
-});
 
 
 
@@ -87,11 +80,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // Tambahkan di dalam group auth
-    Route::post('/profile/cv-upload', [ProfileController::class, 'uploadCv'])->name('profile.cv.upload');
-    Route::post('/profile/photo-upload', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
-    Route::post('/profile/documents-upload', [ProfileController::class, 'uploadDocuments'])->name('profile.documents.upload');
+    Route::post('/profile/cv-upload', [ProfileController::class, 'uploadCv'])->middleware('throttle:10,1')->name('profile.cv.upload');
+    Route::post('/profile/photo-upload', [ProfileController::class, 'uploadPhoto'])->middleware('throttle:10,1')->name('profile.photo.upload');
+    Route::post('/profile/documents-upload', [ProfileController::class, 'uploadDocuments'])->middleware('throttle:10,1')->name('profile.documents.upload');
     Route::delete('/profile/documents/{id}', [ProfileController::class, 'deleteDocument'])->name('profile.documents.destroy');
-    Route::post('/profile/update-location', [ProfileController::class, 'updateLocation'])->name('profile.location.update');
+    Route::post('/profile/update-location', [ProfileController::class, 'updateLocation'])->middleware('throttle:30,1')->name('profile.location.update');
 
     // =====================
     // JOB SEEKER ROUTES
@@ -438,9 +431,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =====================
     // COMMON ROUTES
     // =====================
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Notifications
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');

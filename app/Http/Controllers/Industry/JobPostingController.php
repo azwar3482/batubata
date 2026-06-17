@@ -347,34 +347,38 @@ class JobPostingController extends Controller
             ->with('position')
             ->findOrFail($id);
 
-        // Ambil semua job seeker
-        $allJobSeekers = User::where('role', 'job_seeker')->get();
-
-        // Filter: HANYA job seeker yang memiliki profil lengkap 100%
-        $jobSeekers = $allJobSeekers->filter(function ($user) {
-            return $user->hasCompletedProfile();
-        });
-
         // Ambil status lamaran/penawaran yang sudah ada untuk lowongan ini
         $existingApplications = \App\Models\UserJobApplication::where('job_listing_id', $job->id)
             ->get()
             ->keyBy('user_id');
 
-        $talents = $jobSeekers->map(function ($user) use ($job, $matchingService, $existingApplications) {
-            $matchPercentage = $matchingService->calculateMatch($user, $job);
-            $shortcomings = $matchingService->getJobShortcomings($user, $job);
-            
-            $existingApp = $existingApplications->get($user->id);
-            
-            return [
-                'user' => $user,
-                'match_percentage' => $matchPercentage,
-                'shortcomings' => $shortcomings,
-                'existing_app' => $existingApp,
-            ];
-        })
-        ->sortByDesc('match_percentage')
-        ->values();
+        // Ambil job seeker dengan eager loading dan chunk untuk menghemat memory
+        $talents = collect();
+        User::where('role', 'job_seeker')
+            ->with(['documents' => function ($query) {
+                $query->where('document_type', 'photo');
+            }])
+            ->chunk(100, function ($jobSeekers) use ($job, $matchingService, $existingApplications, $talents) {
+                foreach ($jobSeekers as $user) {
+                    // Skip user yang belum lengkap profilnya
+                    if (!$user->hasCompletedProfile()) {
+                        continue;
+                    }
+
+                    $matchPercentage = $matchingService->calculateMatch($user, $job);
+                    $shortcomings = $matchingService->getJobShortcomings($user, $job);
+                    $existingApp = $existingApplications->get($user->id);
+
+                    $talents->push([
+                        'user' => $user,
+                        'match_percentage' => $matchPercentage,
+                        'shortcomings' => $shortcomings,
+                        'existing_app' => $existingApp,
+                    ]);
+                }
+            });
+
+        $talents = $talents->sortByDesc('match_percentage')->values();
 
         return view('industry.jobs.talent', compact('job', 'talents'));
     }
@@ -392,23 +396,18 @@ class JobPostingController extends Controller
             'notes' => 'nullable|string|max:1000',
         ]);
 
-        $matchPercentage = $matchingService->calculateMatch($user, $job);
+        // Dispatch job untuk kalkulasi match di background
+        \App\Jobs\CalculateMatchJob::dispatch($user->id, $job->id);
 
-        $application = \App\Models\UserJobApplication::updateOrCreate(
-            ['user_id' => $user->id, 'job_listing_id' => $job->id],
-            [
-                'matching_percentage' => $matchPercentage,
-                'applied_at' => now(),
-                'status' => 'offered',
-                'is_direct_offer' => true,
-                'direct_offer_status' => 'pending',
-                'notes' => $request->notes,
-            ]
-        );
+        // Kirim notifikasi ke Job Seeker (langsung, tanpa tunggu kalkulasi)
+        $application = UserJobApplication::where('user_id', $user->id)
+            ->where('job_listing_id', $job->id)
+            ->first();
 
-        // Kirim notifikasi ke Job Seeker
-        $user->notify(new \App\Notifications\JobOfferReceivedNotification($application));
+        if ($application) {
+            $user->notify(new \App\Notifications\JobOfferReceivedNotification($application));
+        }
 
-        return back()->with('success', 'Penawaran kerja berhasil dikirim ke ' . $user->name . '!');
+        return back()->with('success', 'Penawaran kerja berhasil dikirim ke ' . $user->name . '! Kalkulasi kecocokan sedang diproses.');
     }
 }

@@ -58,6 +58,17 @@ class ProfileService
 
     protected function uploadDocument(User $user, UploadedFile $file, string $docType): void
     {
+        // Validate file based on document type
+        $allowedMimes = match($docType) {
+            'photo' => ['image/jpeg', 'image/png', 'image/webp'],
+            'cv' => ['application/pdf'],
+            default => ['application/pdf', 'image/jpeg', 'image/png'],
+        };
+
+        if (!in_array($file->getMimeType(), $allowedMimes)) {
+            throw new \InvalidArgumentException('Tipe file tidak diizinkan untuk ' . $docType);
+        }
+
         $oldDocs = UserDocument::where('user_id', $user->id)
             ->where('document_type', $docType)
             ->get();

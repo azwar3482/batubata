@@ -111,30 +111,37 @@ class JobController extends Controller
         ]);
     }
 
-    public function myApplications()
+    public function myApplications(Request $request)
     {
         $user = Auth::user();
+        $perPage = $request->input('per_page', 15);
 
         $applications = UserJobApplication::where('user_id', $user->id)
             ->with(['jobListing.company'])
             ->latest('applied_at')
-            ->get();
+            ->paginate($perPage);
 
         return response()->json([
             'success' => true,
-            'data' => $applications->map(function ($app) {
-                return [
-                    'id' => $app->id,
-                    'job_id' => $app->job_listing_id,
-                    'job_title' => $app->jobListing?->title ?? 'Posisi Tidak Diketahui',
-                    'company' => $app->jobListing?->company?->name ?? 'Perusahaan',
-                    'location' => $app->jobListing?->location,
-                    'work_type' => $app->jobListing?->work_type,
-                    'status' => $app->status,
-                    'applied_at' => $app->applied_at?->toISOString(),
-                    'matching_percentage' => $app->matching_percentage,
-                ];
-            }),
+            'data' => [
+                'data' => $applications->map(function ($app) {
+                    return [
+                        'id' => $app->id,
+                        'job_id' => $app->job_listing_id,
+                        'job_title' => $app->jobListing?->title ?? 'Posisi Tidak Diketahui',
+                        'company' => $app->jobListing?->company?->name ?? 'Perusahaan',
+                        'location' => $app->jobListing?->location,
+                        'work_type' => $app->jobListing?->work_type,
+                        'status' => $app->status,
+                        'applied_at' => $app->applied_at?->toISOString(),
+                        'matching_percentage' => $app->matching_percentage,
+                    ];
+                }),
+                'current_page' => $applications->currentPage(),
+                'last_page' => $applications->lastPage(),
+                'per_page' => $applications->perPage(),
+                'total' => $applications->total(),
+            ],
         ]);
     }
 

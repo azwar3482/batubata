@@ -39,7 +39,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Lowongan Aktif</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $totalJobs ?? 0 }}</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['totalJobs'] ?? 0 }}</p>
                             <p class="text-sm text-green-600 mt-1 flex items-center">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,7 +63,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Pelamar</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $totalApplicants ?? 0 }}</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['totalApplicants'] ?? 0 }}</p>
                             <p class="text-sm text-gray-500 mt-1">dari semua lowongan</p>
                         </div>
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
@@ -81,7 +81,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Match &gt; 80%</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $highMatchCandidates ?? 0 }}</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['highMatchCandidates'] ?? 0 }}</p>
                             <p class="text-sm text-purple-600 mt-1 flex items-center">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -107,7 +107,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Waktu Rekrutmen</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $avgHiringDays ?? 14 }} Hari</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['avgHiringDays'] ?? 14 }} Hari</p>
                             <p class="text-sm text-gray-500 mt-1">rata-rata dari posting ke hire</p>
                         </div>
                         <div
@@ -426,7 +426,7 @@
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-500">Lowongan Aktif</span>
-                                <span class="font-medium text-blue-600">{{ $totalJobs ?? 0 }}</span>
+                                <span class="font-medium text-blue-600">{{ $stats['totalJobs'] ?? 0 }}</span>
                             </div>
                         </div>
                         <a href="{{ route('profile.edit') }}"

@@ -15,11 +15,11 @@ class CollaborationController extends Controller
     {
         $institution = Auth::user()->institution;
 
-        // Data mitra dari database (perusahaan yang sudah terdaftar)
+        // Data mitra dari database (perusahaan yang sudah terdaftar) - dengan pagination
         $partners = Company::select('id', 'name', 'industry')
             ->withCount('user as employees_count')
-            ->get()
-            ->map(function ($company) {
+            ->paginate(20)
+            ->through(function ($company) {
                 return [
                     'id' => $company->id,
                     'name' => $company->name,
@@ -27,8 +27,7 @@ class CollaborationController extends Controller
                     'logo' => strtoupper(substr($company->name, 0, 2)),
                     'contact_email' => $company->user->email ?? '-',
                 ];
-            })
-            ->toArray();
+            });
 
         $collaborationTypes = [
             'magang' => 'Program Magang / Internship',

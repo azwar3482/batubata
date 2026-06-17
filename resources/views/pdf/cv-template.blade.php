@@ -460,7 +460,7 @@
             @if($user->bio)
             <div class="cv-right-section">
                 <div class="cv-right-title">Ringkasan Profesional</div>
-                <div class="cv-bio">{!! $user->bio !!}</div>
+                <div class="cv-bio">{!! nl2br(e($user->bio)) !!}</div>
             </div>
             @endif
 

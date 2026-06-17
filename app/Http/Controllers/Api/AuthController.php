@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,19 +29,20 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => $validated['role'] ?? 'job_seeker',
             'phone' => $validated['phone'] ?? null,
             'linkedin_url' => $validated['linkedin_url'] ?? null,
             'github_url' => $validated['github_url'] ?? null,
             'portfolio_url' => $validated['portfolio_url'] ?? null,
         ]);
+        $user->role = $validated['role'] ?? 'job_seeker';
+        $user->save();
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
             'data' => [
-                'user' => $user,
+                'user' => new UserResource($user),
                 'token' => $token
             ]
         ], 201);
@@ -67,7 +68,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => [
-                'user' => $user,
+                'user' => new UserResource($user),
                 'token' => $token
             ]
         ]);
@@ -87,19 +88,30 @@ class AuthController extends Controller
 
         if (!$user) {
             // Create new user if not exists
-            $user = User::create([
+            $user = new User([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'provider' => 'google',
                 'provider_id' => $validated['firebase_uid'],
                 'password' => Hash::make(Str::random(16)),
-                'role' => $request->role ?? 'job_seeker',
             ]);
-        } elseif (!$user->provider) {
-            $user->update([
-                'provider' => 'google',
-                'provider_id' => $validated['firebase_uid'],
-            ]);
+            $user->email_verified_at = now();
+            $user->role = $request->role ?? 'job_seeker';
+            $user->save();
+        } else {
+            $hasUpdates = false;
+            if (!$user->provider) {
+                $user->provider = 'google';
+                $user->provider_id = $validated['firebase_uid'];
+                $hasUpdates = true;
+            }
+            if (!$user->email_verified_at) {
+                $user->email_verified_at = now();
+                $hasUpdates = true;
+            }
+            if ($hasUpdates) {
+                $user->save();
+            }
         }
 
         $token = $user->createToken('auth-token')->plainTextToken;
@@ -107,7 +119,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => [
-                'user' => $user,
+                'user' => new UserResource($user),
                 'token' => $token
             ]
         ]);

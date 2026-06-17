@@ -29,7 +29,7 @@ class CandidateController extends Controller
     {
         $user = Auth::user();
         
-        // 1. Get all jobs owned by the company
+        // 1. Get all jobs owned by the company (with eager loading)
         $jobIds = JobListing::where('user_id', $user->id)->pluck('id');
         $activeJobs = JobListing::where('user_id', $user->id)
             ->where('is_active', true)
@@ -37,7 +37,7 @@ class CandidateController extends Controller
             ->with('position')
             ->get();
 
-        // 2. Fetch applicants who have applied
+        // 2. Fetch applicants who have applied (with eager loading)
         $applications = UserJobApplication::whereIn('job_listing_id', $jobIds)
             ->with(['user.assessments.scores.competency', 'jobListing'])
             ->get();
@@ -54,37 +54,39 @@ class CandidateController extends Controller
         });
 
         // 3. Fetch qualified non-applicants (match >= 70%)
+        // Use chunk to avoid loading all users at once
         $appliedUserIds = $applications->pluck('user_id')->unique()->toArray();
-        $allJobSeekers = User::where('role', 'job_seeker')
-            ->whereNotIn('id', $appliedUserIds)
-            ->with(['assessments.scores.competency'])
-            ->get();
-
         $matchedNonApplicants = collect();
+        
         if ($activeJobs->isNotEmpty()) {
-            foreach ($allJobSeekers as $seeker) {
-                $bestMatch = 0;
-                $bestJob = null;
+            User::where('role', 'job_seeker')
+                ->whereNotIn('id', $appliedUserIds)
+                ->with(['assessments.scores.competency'])
+                ->chunk(100, function ($jobSeekers) use ($activeJobs, $matchingService, $matchedNonApplicants) {
+                    foreach ($jobSeekers as $seeker) {
+                        $bestMatch = 0;
+                        $bestJob = null;
 
-                foreach ($activeJobs as $job) {
-                    $score = $matchingService->calculateMatch($seeker, $job);
-                    if ($score > $bestMatch) {
-                        $bestMatch = $score;
-                        $bestJob = $job;
+                        foreach ($activeJobs as $job) {
+                            $score = $matchingService->calculateMatch($seeker, $job);
+                            if ($score > $bestMatch) {
+                                $bestMatch = $score;
+                                $bestJob = $job;
+                            }
+                        }
+
+                        if ($bestMatch >= 70) {
+                            $matchedNonApplicants->push((object)[
+                                'user' => $seeker,
+                                'matching_percentage' => $bestMatch,
+                                'jobListing' => $bestJob,
+                                'status' => 'not_applied',
+                                'id' => null,
+                                'has_applied' => false
+                            ]);
+                        }
                     }
-                }
-
-                if ($bestMatch >= 70) {
-                    $matchedNonApplicants->push((object)[
-                        'user' => $seeker,
-                        'matching_percentage' => $bestMatch,
-                        'jobListing' => $bestJob,
-                        'status' => 'not_applied',
-                        'id' => null,
-                        'has_applied' => false
-                    ]);
-                }
-            }
+                });
         }
 
         // 4. Combine collections

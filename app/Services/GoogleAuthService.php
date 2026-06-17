@@ -44,20 +44,30 @@ class GoogleAuthService
         $user = User::where('email', $googleUser->getEmail())->first();
 
         if (!$user) {
-            $user = User::create([
+            $user = new User([
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'provider' => 'google',
                 'provider_id' => $googleUser->getId(),
                 'password' => Hash::make(Str::random(16)),
-                'role' => $role,
-                'email_verified_at' => now(),
             ]);
-        } elseif (!$user->provider) {
-            $user->update([
-                'provider' => 'google',
-                'provider_id' => $googleUser->getId(),
-            ]);
+            $user->email_verified_at = now();
+            $user->role = $role;
+            $user->save();
+        } else {
+            $hasUpdates = false;
+            if (!$user->provider) {
+                $user->provider = 'google';
+                $user->provider_id = $googleUser->getId();
+                $hasUpdates = true;
+            }
+            if (!$user->email_verified_at) {
+                $user->email_verified_at = now();
+                $hasUpdates = true;
+            }
+            if ($hasUpdates) {
+                $user->save();
+            }
         }
 
         return $user;
@@ -71,16 +81,21 @@ class GoogleAuthService
      */
     public function getOrCreateMockUser(string $role): User
     {
-        $user = User::where('role', $role)->first();
+        $mockEmail = 'mock.' . $role . '@google.com';
+        $user = User::where('email', $mockEmail)->first();
         
         if (!$user) {
-            $user = User::create([
+            $user = new User([
                 'name' => 'Mock Google User (' . $role . ')',
-                'email' => 'mock.' . $role . '@google.com',
+                'email' => $mockEmail,
                 'password' => Hash::make('password'),
-                'role' => $role,
-                'email_verified_at' => now(),
             ]);
+            $user->email_verified_at = now();
+            $user->role = $role;
+            $user->save();
+        } elseif (!$user->email_verified_at) {
+            $user->email_verified_at = now();
+            $user->save();
         }
 
         return $user;

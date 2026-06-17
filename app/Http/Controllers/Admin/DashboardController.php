@@ -12,7 +12,7 @@ use App\Models\UserAssessment;
 use App\Models\UserCompetencyScore;
 use App\Models\Competency;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\Services\ReportExportService;
 use App\Jobs\SendDashboardReportJob;
@@ -21,12 +21,14 @@ class DashboardController extends Controller
 {
     public function index() 
     {
-        $stats = [
-            'total_users' => User::count(),
-            'total_assessments' => UserAssessment::count(),
-            'active_jobs' => JobListing::where('is_active', true)->count(),
-            'latest_users' => User::latest()->take(5)->get(),
-        ];
+        $stats = Cache::remember('admin.dashboard.stats', 300, function () {
+            return [
+                'total_users' => User::count(),
+                'total_assessments' => UserAssessment::count(),
+                'active_jobs' => JobListing::where('is_active', true)->count(),
+                'latest_users' => User::latest()->take(5)->get(),
+            ];
+        });
         
         return view('admin.dashboard', compact('stats'));
     }
@@ -35,12 +37,14 @@ class DashboardController extends Controller
     {
         $users = User::latest()->paginate(10);
         
-        $stats = [
-            'total' => User::count(),
-            'job_seeker' => User::where('role', 'job_seeker')->count(),
-            'industry' => User::where('role', 'industry')->count(),
-            'education' => User::where('role', 'education')->count(),
-        ];
+        $stats = Cache::remember('admin.users.stats', 300, function () {
+            return [
+                'total' => User::count(),
+                'job_seeker' => User::where('role', 'job_seeker')->count(),
+                'industry' => User::where('role', 'industry')->count(),
+                'education' => User::where('role', 'education')->count(),
+            ];
+        });
 
         return view('admin.users', compact('users', 'stats'));
     }
@@ -84,14 +88,20 @@ class DashboardController extends Controller
             ->get()
             ->toArray();
 
-        // Pertumbuhan pengguna per bulan (6 bulan terakhir)
-        $monthlyGrowth = collect(range(5, 0))->map(function ($monthsAgo) {
+        // Pertumbuhan pengguna per bulan (6 bulan terakhir) - single query
+        $sixMonthsAgo = now()->subMonths(5)->startOfMonth();
+        $monthlyData = User::where('created_at', '>=', $sixMonthsAgo)
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month_key, COUNT(*) as count")
+            ->groupBy('month_key')
+            ->pluck('count', 'month_key')
+            ->toArray();
+
+        $monthlyGrowth = collect(range(5, 0))->map(function ($monthsAgo) use ($monthlyData) {
             $date = now()->subMonths($monthsAgo);
+            $key = $date->format('Y-m');
             return [
                 'label' => $date->format('M'),
-                'count' => User::whereYear('created_at', $date->year)
-                    ->whereMonth('created_at', $date->month)
-                    ->count(),
+                'count' => $monthlyData[$key] ?? 0,
             ];
         })->toArray();
 
