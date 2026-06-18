@@ -164,7 +164,7 @@
                         <span class="answer-status {{ $statusClass }}">{{ $statusText }}</span>
                     </div>
                 </div>
-                <div class="answer-question">{{ Str::limit($answer->question->question_text, 150) }}</div>
+                <div class="answer-question">{!! Str::limit(strip_tags($answer->question->question_text), 150) !!}</div>
                 @if($hasAnswer)
                 <div class="answer-detail">
                     Jawaban: <strong>{{ $answer->selected_answer }}</strong>
@@ -175,7 +175,7 @@
                 @endif
                 @if($answer->question->explanation && !$isCorrect)
                 <div class="explanation">
-                    <strong>Penjelasan:</strong> {{ $answer->question->explanation }}
+                    <strong>Penjelasan:</strong> {!! $answer->question->explanation !!}
                 </div>
                 @endif
             </div>

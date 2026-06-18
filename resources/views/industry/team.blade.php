@@ -163,13 +163,13 @@
             </div>
 
             <!-- Roles & Permissions Guide -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h3 class="text-lg font-bold text-gray-900 mb-4">Panduan Role & Permissions</h3>
+            <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Panduan Role & Permissions</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach ($availableRoles as $role => $label)
-                    <div class="p-4 border border-gray-200 rounded-lg">
-                        <h4 class="font-semibold text-gray-900">{{ $label }}</h4>
-                        <p class="text-sm text-gray-600 mt-1">{{ $roleDescriptions[$role] ?? '' }}</p>
+                    <div class="p-4 border border-gray-200 dark:border-slate-700 rounded-lg">
+                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ $label }}</h4>
+                        <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">{{ $roleDescriptions[$role] ?? '' }}</p>
                         <div class="mt-3 flex flex-wrap gap-1">
                             @php
                             $rolePermissions = [
@@ -182,7 +182,7 @@
                             @foreach ($rolePermissions as $permKey)
                             @if (isset($permissions[$permKey]))
                             <span
-                                class="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded">{{ $permissions[$permKey] }}</span>
+                                class="px-2 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 text-xs rounded">{{ $permissions[$permKey] }}</span>
                             @endif
                             @endforeach
                         </div>
@@ -199,16 +199,16 @@
     <!-- Edit Role Modal -->
     <div id="editModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true" onclick="closeEditModal()"></div>
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75 dark:bg-slate-900 dark:bg-opacity-80" aria-hidden="true" onclick="closeEditModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block w-full max-w-3xl overflow-hidden text-left align-bottom transition-all transform bg-white rounded-xl shadow-2xl sm:my-8 sm:align-middle">
+            <div class="inline-block w-full max-w-3xl overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-slate-800 rounded-xl shadow-2xl sm:my-8 sm:align-middle">
                 
-                <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2" id="modal-title">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2" id="modal-title">
+                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         {{ __('messages.edit_member') }}
                     </h3>
-                    <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-500 focus:outline-none transition">
+                    <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-500 dark:hover:text-slate-300 focus:outline-none transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
@@ -217,39 +217,39 @@
                     @csrf
                     @method('PUT')
                     
-                    <div class="px-6 py-6 space-y-8 bg-white">
+                    <div class="px-6 py-6 space-y-8 bg-white dark:bg-slate-800">
                         
                         <!-- Informasi Profil -->
                         <div>
-                            <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 border-b pb-2">{{ __('messages.full_name') }} & {{ __('messages.email') }}</h4>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-200 dark:border-slate-700 pb-2">{{ __('messages.full_name') }} & {{ __('messages.email') }}</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.full_name') }}</label>
-                                    <input type="text" name="name" id="editMemberNameInput" required class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.full_name') }}</label>
+                                    <input type="text" name="name" id="editMemberNameInput" required class="block w-full px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.email') }}</label>
-                                    <input type="email" name="email" id="editMemberEmailInput" required class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.email') }}</label>
+                                    <input type="email" name="email" id="editMemberEmailInput" required class="block w-full px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Pengaturan Peran & Status -->
                         <div>
-                            <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 border-b pb-2">{{ __('messages.base_role') }} & {{ __('messages.status') }}</h4>
+                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-200 dark:border-slate-700 pb-2">{{ __('messages.base_role') }} & {{ __('messages.status') }}</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.base_role') }}</label>
-                                    <select name="role" id="editMemberRole" class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm bg-gray-50">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.base_role') }}</label>
+                                    <select name="role" id="editMemberRole" class="block w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm bg-gray-50 dark:bg-slate-700 dark:text-white">
                                         @foreach ($availableRoles as $role => $label)
                                         <option value="{{ $role }}">{{ $label }}</option>
                                         @endforeach
                                     </select>
-                                    <p class="mt-1 text-xs text-gray-500">{{ __('messages.role_hint') }}</p>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-slate-400">{{ __('messages.role_hint') }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.status_keaktifan') }}</label>
-                                    <select name="status" id="editMemberStatus" class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.status_keaktifan') }}</label>
+                                    <select name="status" id="editMemberStatus" class="block w-full px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition sm:text-sm">
                                         <option value="active">{{ __('messages.active') }}</option>
                                         <option value="inactive">{{ __('messages.inactive') }}</option>
                                         <option value="invited">{{ __('messages.invited') }}</option>
@@ -260,19 +260,19 @@
 
                         <!-- Hak Akses Spesifik -->
                         <div>
-                            <div class="flex items-center justify-between mb-4 border-b pb-2">
-                                <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">{{ __('messages.specific_permissions') }}</h4>
-                                <span class="text-xs font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded-md">{{ __('messages.override_hint') }}</span>
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-slate-700 pb-2">
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">{{ __('messages.specific_permissions') }}</h4>
+                                <span class="text-xs font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-md">{{ __('messages.override_hint') }}</span>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 @foreach ($permissions as $key => $label)
-                                <label class="relative flex items-start p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition group">
+                                <label class="relative flex items-start p-4 border border-gray-200 dark:border-slate-700 rounded-xl cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition group">
                                     <div class="flex items-center h-5">
-                                        <input type="checkbox" name="permissions[]" value="{{ $key }}" class="edit-permission-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition">
+                                        <input type="checkbox" name="permissions[]" value="{{ $key }}" class="edit-permission-checkbox h-5 w-5 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-slate-600 dark:bg-slate-700 rounded focus:ring-blue-500 transition">
                                     </div>
                                     <div class="ml-3 text-sm flex-1">
-                                        <span class="font-medium text-gray-900 group-hover:text-blue-700 transition">{{ $label }}</span>
-                                        <p class="text-gray-500 text-xs mt-0.5">{{ __('messages.permission_allow_prefix') }} {{ strtolower($label) }}.</p>
+                                        <span class="font-medium text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition">{{ $label }}</span>
+                                        <p class="text-gray-500 dark:text-slate-400 text-xs mt-0.5">{{ __('messages.permission_allow_prefix') }} {{ strtolower($label) }}.</p>
                                     </div>
                                 </label>
                                 @endforeach
@@ -281,11 +281,11 @@
 
                     </div>
                     
-                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 sm:flex sm:flex-row-reverse rounded-b-xl">
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 sm:flex sm:flex-row-reverse rounded-b-xl">
                         <button type="submit" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-6 py-2.5 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition">
                             {{ __('messages.save_changes') }}
                         </button>
-                        <button type="button" onclick="closeEditModal()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-6 py-2.5 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition">
+                        <button type="button" onclick="closeEditModal()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 dark:border-slate-600 shadow-sm px-6 py-2.5 bg-white dark:bg-slate-800 text-base font-medium text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition">
                             {{ __('messages.cancel') }}
                         </button>
                     </div>

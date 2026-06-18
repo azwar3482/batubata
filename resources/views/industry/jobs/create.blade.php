@@ -186,21 +186,30 @@
                                         <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Lokasi Penempatan<span class="text-red-500">*</span></label>
                                         <div x-data="{
                                             open: false,
-                                            search: '{{ old('location') }}',
+                                            search: '',
+                                            selected: '{{ old('location') }}',
                                             options: ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur', 'Surabaya', 'Bandung', 'Medan', 'Semarang', 'Makassar', 'Palembang', 'Tangerang', 'Tangerang Selatan', 'Depok', 'Batam', 'Padang', 'Denpasar', 'Pekanbaru', 'Bogor', 'Malang', 'Yogyakarta', 'Surakarta', 'Balikpapan', 'Banjarmasin', 'Pontianak', 'Samarinda', 'Manado', 'Mataram', 'Cimahi', 'Banda Aceh', 'Ambon', 'Jayapura', 'Kupang', 'Palu', 'Kendari', 'Cirebon', 'Madiun', 'Kediri', 'Tegal', 'Pekalongan', 'Probolinggo', 'Pasuruan', 'Mojokerto', 'Bontang', 'Pangkalpinang', 'Dumai', 'Sorong', 'Bengkulu', 'Jambi', 'Gorontalo', 'Ternate', 'Remote', 'Luar Negeri'],
                                             get filteredOptions() {
                                                 if (this.search === '') return this.options;
                                                 return this.options.filter(i => i.toLowerCase().includes(this.search.toLowerCase()));
                                             },
                                             selectOption(opt) {
-                                                this.search = opt;
+                                                this.selected = opt;
                                                 this.open = false;
+                                                this.search = '';
                                             }
                                         }" class="relative w-full" @click.away="open = false">
 
-                                            <input type="text" name="location" x-model="search" placeholder="Contoh: Jakarta Selatan / Remote" required autocomplete="off"
-                                                @focus="open = true" @keydown.escape="open = false"
-                                                class="block w-full rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 transition-colors">
+                                            <input type="text" name="location" :value="selected" required class="absolute w-0 h-0 opacity-0 pointer-events-none" style="top: 50%;">
+
+                                            <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())"
+                                                class="flex items-center justify-between w-full rounded-xl border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm sm:text-sm p-3 transition-colors cursor-pointer focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+                                                :class="{'border-blue-500 ring-1 ring-blue-500': open}">
+                                                <span x-text="selected ? selected : 'Contoh: Jakarta Selatan / Remote'" :class="{'text-gray-400 dark:text-gray-500': !selected}"></span>
+                                                <svg class="w-4 h-4 text-gray-400 transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </div>
 
                                             <div x-show="open" style="display: none;"
                                                 x-transition:enter="transition ease-out duration-100"
@@ -211,16 +220,27 @@
                                                 x-transition:leave-end="transform opacity-0 scale-95"
                                                 class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg">
 
+                                                <div class="p-2 border-b border-gray-100 dark:border-slate-700">
+                                                    <input type="text" x-model="search" placeholder="Cari kota..."
+                                                        class="w-full text-sm rounded-lg border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 p-2"
+                                                        @keydown.escape="open = false"
+                                                        @keydown.enter.prevent="if(filteredOptions.length === 0 && search.trim() !== '') { selectOption(search) } else if (filteredOptions.length > 0) { selectOption(filteredOptions[0]) }"
+                                                        x-ref="searchInput">
+                                                </div>
+
                                                 <ul class="max-h-60 overflow-y-auto p-1 custom-scrollbar">
                                                     <template x-for="option in filteredOptions" :key="option">
                                                         <li @click="selectOption(option)"
                                                             class="cursor-pointer px-3 py-2 rounded-lg text-sm transition-colors hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-slate-700 dark:hover:text-blue-400"
-                                                            :class="{'bg-blue-50 text-blue-600 dark:bg-slate-700 dark:text-blue-400 font-semibold': search.toLowerCase() === option.toLowerCase(), 'text-gray-700 dark:text-slate-200': search.toLowerCase() !== option.toLowerCase()}">
+                                                            :class="{'bg-blue-50 text-blue-600 dark:bg-slate-700 dark:text-blue-400 font-semibold': selected && selected.toLowerCase() === option.toLowerCase(), 'text-gray-700 dark:text-slate-200': !selected || selected.toLowerCase() !== option.toLowerCase()}">
                                                             <span x-text="option"></span>
                                                         </li>
                                                     </template>
-                                                    <li x-show="filteredOptions.length === 0 && search.trim() !== ''" class="px-3 py-2 text-sm text-center text-gray-500 dark:text-slate-400">
-                                                        Tekan Enter atau klik di luar untuk menggunakan &quot;<span x-text="search" class="font-semibold text-gray-700 dark:text-white"></span>&quot;
+                                                    <li x-show="filteredOptions.length === 0 && search.trim() !== ''" class="px-3 py-2 text-sm text-center">
+                                                        <div class="mb-2 text-gray-500 dark:text-slate-400">Lokasi "<span x-text="search" class="font-semibold text-gray-700 dark:text-white"></span>" tidak ditemukan.</div>
+                                                        <button type="button" @click="selectOption(search)" class="w-full px-3 py-2 bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 rounded-lg text-sm font-semibold hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors">
+                                                            + Gunakan "<span x-text="search"></span>"
+                                                        </button>
                                                     </li>
                                                 </ul>
                                             </div>

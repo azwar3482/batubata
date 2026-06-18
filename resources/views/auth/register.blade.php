@@ -165,10 +165,10 @@
                             class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-blue-600 shadow-sm focus:ring-blue-500 mt-1">
                         <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">
                             Saya setuju dengan
-                            <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Syarat &
+                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Syarat &
                                 Ketentuan</a>
                             serta
-                            <a href="#"
+                            <a href="{{ route('legal.privacy') }}" target="_blank"
                                 class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Kebijakan Privasi</a>
                             KOMPASKARIR
                         </span>

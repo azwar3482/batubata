@@ -1,5 +1,35 @@
 <x-app-layout>
 <style>@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}</style>
+
+<script>
+window.searchableDropdown = function(config) {
+    return {
+        open: false,
+        search: '',
+        selected: config.selected || '',
+        selectedLabel: '',
+        options: config.options || [],
+        placeholder: config.placeholder || '-- Pilih --',
+        required: config.required || false,
+        init() {
+            const match = this.options.find(o => o.value === this.selected);
+            if (match) this.selectedLabel = match.label;
+        },
+        get filtered() {
+            if (!this.search) return this.options;
+            const q = this.search.toLowerCase();
+            return this.options.filter(o => o.label.toLowerCase().includes(q));
+        },
+        select(opt) {
+            this.selected = opt.value;
+            this.selectedLabel = opt.label;
+            this.open = false;
+            this.search = '';
+        }
+    };
+};
+</script>
+
 <div class="max-w-4xl mx-auto px-4 sm:px-6 py-1">
     <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
         <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
@@ -26,17 +56,60 @@
                     <input type="email" name="email" id="email" required value="{{ old('email', $user->email) }}" class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
                     @error('email')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
-                <div class="md:col-span-2">
-                    <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Role <span class="text-red-500">*</span></label>
-                    <select name="role" id="role" required {{ $user->isAdmin() && auth()->id()===$user->id ? 'disabled' : '' }} class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition {{ $user->isAdmin() && auth()->id()===$user->id ? 'bg-gray-100 dark:bg-slate-600 cursor-not-allowed' : '' }}">
-                        <option value="job_seeker" {{ old('role',$user->role)=='job_seeker'?'selected':'' }}>Job Seeker</option>
-                        <option value="industry" {{ old('role',$user->role)=='industry'?'selected':'' }}>Industry</option>
-                        <option value="education" {{ old('role',$user->role)=='education'?'selected':'' }}>Education</option>
-                        <option value="admin" {{ old('role',$user->role)=='admin'?'selected':'' }}>Admin</option>
-                    </select>
-                    @if($user->isAdmin() && auth()->id()===$user->id)<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Anda tidak dapat mengubah role sendiri.</p><input type="hidden" name="role" value="{{ $user->role }}">@endif
+
+                {{-- Role Radio Cards --}}
+                @php $isSelfAdmin = $user->isAdmin() && auth()->id() === $user->id; @endphp
+                <div class="md:col-span-2" x-data="{ role: '{{ old('role', $user->role) }}', disabled: {{ $isSelfAdmin ? 'true' : 'false' }} }">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <!-- Job Seeker -->
+                        <label class="relative flex flex-col p-4 border rounded-xl transition duration-155"
+                            :class="[
+                                disabled ? 'opacity-60 cursor-not-allowed bg-gray-50 dark:bg-slate-800' : 'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50',
+                                role === 'job_seeker' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'
+                            ]">
+                            <input type="radio" name="role" value="job_seeker" class="sr-only" x-model="role" :disabled="disabled" required>
+                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Job Seeker</span>
+                            <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Pencari kerja</span>
+                        </label>
+                        <!-- Industry -->
+                        <label class="relative flex flex-col p-4 border rounded-xl transition duration-155"
+                            :class="[
+                                disabled ? 'opacity-60 cursor-not-allowed bg-gray-50 dark:bg-slate-800' : 'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50',
+                                role === 'industry' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'
+                            ]">
+                            <input type="radio" name="role" value="industry" class="sr-only" x-model="role" :disabled="disabled" required>
+                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Industry</span>
+                            <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Perusahaan/Mitra</span>
+                        </label>
+                        <!-- Education -->
+                        <label class="relative flex flex-col p-4 border rounded-xl transition duration-155"
+                            :class="[
+                                disabled ? 'opacity-60 cursor-not-allowed bg-gray-50 dark:bg-slate-800' : 'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50',
+                                role === 'education' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'
+                            ]">
+                            <input type="radio" name="role" value="education" class="sr-only" x-model="role" :disabled="disabled" required>
+                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Education</span>
+                            <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Institusi Pendidikan</span>
+                        </label>
+                        <!-- Admin -->
+                        <label class="relative flex flex-col p-4 border rounded-xl transition duration-155"
+                            :class="[
+                                disabled ? 'opacity-60 cursor-not-allowed bg-gray-50 dark:bg-slate-800' : 'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50',
+                                role === 'admin' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'
+                            ]">
+                            <input type="radio" name="role" value="admin" class="sr-only" x-model="role" :disabled="disabled" required>
+                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Admin</span>
+                            <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Administrator</span>
+                        </label>
+                    </div>
+                    @if($isSelfAdmin)
+                        <p class="mt-2 text-xs text-amber-600 dark:text-amber-400 font-medium">⚠️ Anda tidak dapat mengubah role sendiri.</p>
+                        <input type="hidden" name="role" value="{{ $user->role }}">
+                    @endif
                     @error('role')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
+
                 <div class="md:col-span-2 border-t border-gray-100 dark:border-slate-700 pt-5">
                     <h3 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">Ubah Password <span class="text-xs font-normal text-gray-400">(Opsional)</span></h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400">Biarkan kosong jika tidak ingin mengubah password.</p>

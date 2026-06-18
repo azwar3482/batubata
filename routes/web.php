@@ -27,6 +27,13 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Legal Pages
+Route::get('/kebijakan-privasi', function () {
+    return view('legal.privacy-policy');
+})->name('legal.privacy');
+Route::get('/syarat-ketentuan', function () {
+    return view('legal.terms');
+})->name('legal.terms');
 
 // Jobs
 // Route::get('/jobs', [App\Http\Controllers\DashboardController::class, 'jobs'])->name('jobs.index');
@@ -210,6 +217,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/candidates', [App\Http\Controllers\Industry\CandidateController::class, 'index'])->name('candidates');
         Route::get('/candidates/{id}', [App\Http\Controllers\Industry\CandidateController::class, 'show'])->name('candidates.show');
         Route::put('/applications/{id}/status', [App\Http\Controllers\Industry\CandidateController::class, 'updateStatus'])->name('applications.update-status');
+        Route::put('/applications/{id}/notes', [App\Http\Controllers\Industry\CandidateController::class, 'updateNotes'])->name('applications.update-notes');
         Route::post('/applications/{id}/invite-tpa', [App\Http\Controllers\Industry\CandidateController::class, 'inviteTpa'])->name('applications.invite-tpa');
         Route::get('/jobs/{id}/talent', [JobPostingController::class, 'findTalent'])->name('jobs.talent');
         Route::post('/jobs/{id}/offer/{userId}', [JobPostingController::class, 'offerJob'])->name('jobs.offer');

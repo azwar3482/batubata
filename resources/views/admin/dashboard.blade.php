@@ -236,7 +236,7 @@
                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Database skill, posisi karir, dan konfigurasi
                                     sistem.</p> --}}
                             </a>
-                            <a href="#"
+                            <a href="{{ route('admin.reports') }}"
                                 class="flex items-center p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all duration-300 group">
                                 <div
                                     class="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
@@ -248,7 +248,7 @@
                                 </div>
                                 <span class="ml-4 text-sm font-bold text-gray-700">Laporan Sistem</span>
                             </a>
-                            <a href="#"
+                            <a href="{{ route('admin.settings') }}"
                                 class="flex items-center p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all duration-300 group">
                                 <div
                                     class="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">

@@ -56,7 +56,7 @@
                     </td>
                     <td class="px-4 py-3">
                         <div class="text-sm font-medium text-gray-800">{{ Str::limit($faq->question, 80) }}</div>
-                        <div class="text-xs text-gray-500 mt-1">{{ Str::limit($faq->answer, 100) }}</div>
+                        <div class="text-xs text-gray-500 mt-1">{{ Str::limit(strip_tags($faq->answer), 100) }}</div>
                     </td>
                     <td class="px-4 py-3">
                         <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{{ $faq->category ?? 'umum' }}</span>

@@ -14,6 +14,7 @@ use App\Models\Competency;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Services\ReportExportService;
 use App\Jobs\SendDashboardReportJob;
 

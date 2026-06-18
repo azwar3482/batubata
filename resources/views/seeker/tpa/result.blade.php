@@ -339,7 +339,7 @@
                                 <span class="text-xs font-bold text-gray-400">Tidak Dijawab</span>
                             @endif
                         </div>
-                        <p class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">{{ Str::limit($answer->question->question_text, 180) }}</p>
+                        <p class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">{!! Str::limit(strip_tags($answer->question->question_text), 180) !!}</p>
 
                         @if(!$answer->is_correct)
                         <div class="mt-3 flex flex-wrap gap-3 text-xs">
@@ -358,7 +358,7 @@
 
                         @if($answer->question->explanation && !$answer->is_correct)
                         <div class="mt-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-                            <span class="font-bold text-gray-800 dark:text-gray-200">Penjelasan:</span> {{ $answer->question->explanation }}
+                            <span class="font-bold text-gray-800 dark:text-gray-200">Penjelasan:</span> {!! $answer->question->explanation !!}
                         </div>
                         @endif
                     </div>

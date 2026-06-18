@@ -66,7 +66,7 @@
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <span class="text-xs px-2 py-1 rounded bg-white">{{ $answer->question->category_label }}</span>
-                                <p class="mt-1 text-sm">{{ Str::limit($answer->question->question_text, 120) }}</p>
+                                <p class="mt-1 text-sm">{!! Str::limit(strip_tags($answer->question->question_text), 120) !!}</p>
                             </div>
                             <div class="text-right ml-3">
                                 @if($answer->is_correct)

@@ -13,6 +13,7 @@
         <table class="w-full">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">No</th>
                     <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Judul</th>
                     <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Lowongan</th>
                     <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Soal</th>
@@ -25,6 +26,7 @@
             <tbody class="divide-y">
                 @foreach($tests as $test)
                 <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-center text-sm">{{ $loop->iteration }}</td>
                     <td class="px-4 py-3 font-medium">{{ $test->title }}</td>
                     <td class="px-4 py-3 text-sm text-gray-500">{{ $test->jobListing->title ?? 'Global' }}</td>
                     <td class="px-4 py-3 text-center text-sm">{{ $test->total_questions }}</td>

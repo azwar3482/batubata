@@ -256,4 +256,24 @@ class CandidateController extends Controller
 
         return back()->with('success', "Status lamaran berhasil diperbarui menjadi {$statusLabel}!");
     }
+
+    public function updateNotes(Request $request, $id)
+    {
+        $request->validate([
+            'notes' => 'nullable|string',
+        ]);
+
+        $application = UserJobApplication::findOrFail($id);
+        
+        $job = JobListing::findOrFail($application->job_listing_id);
+        if ($job->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $application->update([
+            'notes' => $request->notes,
+        ]);
+
+        return back()->with('success', 'Catatan internal berhasil disimpan!');
+    }
 }

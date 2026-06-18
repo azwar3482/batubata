@@ -356,7 +356,7 @@
                                 {{ $questions->firstItem() + $loop->index }}
                             </td>
                             <td class="px-5 py-3.5">
-                                <div class="text-sm text-gray-800 dark:text-slate-200 max-w-md">{{ Str::limit($q->question_text, 100) }}</div>
+                                <div class="text-sm text-gray-800 dark:text-slate-200 max-w-md">{!! Str::limit(strip_tags($q->question_text), 100) !!}</div>
                             </td>
                             <td class="px-5 py-3.5 text-center">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium

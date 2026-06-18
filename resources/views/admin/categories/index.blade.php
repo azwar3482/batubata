@@ -74,7 +74,7 @@
                                         <span class="text-sm font-bold text-gray-900">{{ $category->competencies_count }}</span>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-500 max-w-xs truncate">{{ $category->description ?? '-' }}</div>
+                                        <div class="text-sm text-gray-500 max-w-xs truncate">{{ $category->description ? strip_tags($category->description) : '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex justify-end gap-2">

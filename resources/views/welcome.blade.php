@@ -566,9 +566,21 @@
                         <li><a href="#" class="hover:text-white transition">Kontak</a></li>
                     </ul>
                 </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a></li>
+                        <li><a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
                 <p>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA. Hak Cipta Dilindungi.</p>
+                <div class="mt-2 flex justify-center space-x-4 text-sm">
+                    <a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a>
+                    <span>&middot;</span>
+                    <a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a>
+                </div>
                 <p class="mt-2 text-sm">Dikembangkan oleh: Noor Syam AR & Anggitya Ayu Pertiwi</p>
             </div>
         </div>

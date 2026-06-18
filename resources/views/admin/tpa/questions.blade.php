@@ -31,6 +31,7 @@
         <table class="w-full">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-3 py-3 text-center text-sm font-medium text-gray-600 w-10">No</th>
                     <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Soal</th>
                     <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Kategori</th>
                     <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Sub</th>
@@ -41,9 +42,12 @@
                 </tr>
             </thead>
             <tbody class="divide-y">
+                @php $no = ($questions->currentPage() - 1) * $questions->perPage(); @endphp
                 @foreach($questions as $q)
+                @php $no++; @endphp
                 <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 text-sm">{{ Str::limit($q->question_text, 80) }}</td>
+                    <td class="px-3 py-3 text-center text-sm text-gray-500">{{ $no }}</td>
+                    <td class="px-4 py-3 text-sm">{!! Str::limit(strip_tags($q->question_text), 80) !!}</td>
                     <td class="px-4 py-3 text-center">
                         <span class="px-2 py-1 text-xs rounded
                             {{ $q->category === 'verbal' ? 'bg-blue-100 text-blue-700' : '' }}

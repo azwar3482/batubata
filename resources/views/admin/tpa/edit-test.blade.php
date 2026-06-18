@@ -1,11 +1,33 @@
 <x-app-layout>
+    <!-- Trix Editor -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        .trix-button-group { background: white; }
+        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+        trix-editor { min-height: 120px; }
+        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content a { color: #3b82f6; text-decoration: underline; }
+        .trix-content strong { font-weight: 700; }
+        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+    </style>
+
 <div class="max-w-3xl mx-auto px-4 py-8">
     <a href="{{ route('admin.tpa.tests') }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali</a>
     <h1 class="text-2xl font-bold mb-6">Edit Tes TPA</h1>
     <form action="{{ route('admin.tpa.tests.update', $test) }}" method="POST" class="bg-white rounded-xl shadow-sm p-6">
         @csrf @method('PUT')
         <div class="mb-4"><label class="block text-sm font-medium mb-1">Judul</label><input type="text" name="title" value="{{ $test->title }}" class="w-full border rounded-lg px-3 py-2" required></div>
-        <div class="mb-4"><label class="block text-sm font-medium mb-1">Deskripsi</label><textarea name="description" class="w-full border rounded-lg px-3 py-2" rows="2">{{ $test->description }}</textarea></div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Deskripsi</label>
+            <input type="hidden" name="description" id="description" value="{{ old('description', $test->description) }}">
+            <trix-editor input="description" class="trix-content bg-white dark:bg-slate-800 border rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100" placeholder="Tuliskan deskripsi atau instruksi tes TPA di sini..."></trix-editor>
+        </div>
         <div class="grid grid-cols-2 gap-4 mb-4">
             <div><label class="block text-sm font-medium mb-1">Waktu (menit)</label><input type="number" name="time_limit_minutes" value="{{ $test->time_limit_minutes }}" class="w-full border rounded-lg px-3 py-2" min="10" max="180" required></div>
             <div><label class="block text-sm font-medium mb-1">Passing Score (%)</label><input type="number" name="passing_score" value="{{ $test->passing_score }}" class="w-full border rounded-lg px-3 py-2" step="0.01" required></div>

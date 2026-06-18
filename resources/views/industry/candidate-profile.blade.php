@@ -1,4 +1,23 @@
 <x-app-layout>
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+<style>
+    .trix-button-group { background: white; }
+    .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+    .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+    .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+    .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+    trix-editor { min-height: 100px; }
+    .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+    .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .trix-content a { color: #3b82f6; text-decoration: underline; }
+    .trix-content strong { font-weight: 700; }
+    .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .trix-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.5rem; }
+    .trix-content p { margin-bottom: 0.5rem; }
+    .trix-content blockquote { border-left: 3px solid #cbd5e1; padding-left: 1rem; margin-left: 0; color: #64748b; }
+</style>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
@@ -655,25 +674,33 @@
                         <!-- Internal Notes -->
                         <div class="bg-white rounded-2xl shadow-lg p-6">
                             <h3 class="text-lg font-bold text-gray-900 mb-4">Catatan Internal</h3>
-                            <form action="#" method="POST" class="space-y-3">
-                                @csrf
-                                <textarea name="note" rows="4" placeholder="Tambahkan catatan tentang kandidat ini..."
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm"></textarea>
-                                <button type="submit"
-                                    class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition">
-                                    Simpan Catatan
-                                </button>
-                            </form>
+                            @if ($application)
+                                <form action="{{ route('industry.applications.update-notes', $application->id) }}" method="POST" class="space-y-3">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="notes" id="notes" value="{{ old('notes', $application->notes) }}">
+                                    <trix-editor input="notes" placeholder="Tambahkan catatan tentang kandidat ini..."
+                                        class="trix-content bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition p-3"></trix-editor>
+                                    <button type="submit"
+                                        class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition">
+                                        Simpan Catatan
+                                    </button>
+                                </form>
 
-                            @if (false)
-                            <!-- Show if notes exist -->
-                            <div class="mt-4 pt-4 border-t space-y-3">
-                                <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                                    <p class="text-xs text-yellow-800"><strong>HRD - 2 hari lalu:</strong></p>
-                                    <p class="text-sm text-gray-700 mt-1">Kandidat sangat komunikatif saat
-                                        screening call. Cocok untuk role client-facing.</p>
+                                @if ($application->notes)
+                                <div class="mt-4 pt-4 border-t space-y-3">
+                                    <div class="p-3 bg-blue-50/50 rounded-lg border border-blue-100">
+                                        <p class="text-xs text-blue-800 font-semibold">Catatan Tersimpan:</p>
+                                        <div class="text-sm text-gray-700 mt-1.5 trix-content">
+                                            {!! $application->notes !!}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                @endif
+                            @else
+                                <div class="text-center py-4 bg-gray-50 rounded-xl border border-gray-200">
+                                    <p class="text-sm text-gray-500">Catatan internal hanya tersedia untuk kandidat dengan lamaran aktif.</p>
+                                </div>
                             @endif
                         </div>
 

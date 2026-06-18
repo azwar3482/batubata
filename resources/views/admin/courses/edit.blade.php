@@ -1,5 +1,18 @@
 <x-app-layout>
-<style>@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}</style>
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+<style>
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}
+    trix-editor { min-height: 150px; }
+    .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+    .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+    .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+    .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+    .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+    .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .trix-content a { color: #3b82f6; text-decoration: underline; }
+</style>
 <div class="max-w-4xl mx-auto px-4 sm:px-6 py-1">
     <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
         <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
@@ -84,7 +97,8 @@
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Deskripsi <span class="text-red-500">*</span></label>
-                    <textarea name="description" rows="4" required class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">{{ old('description', $course->description) }}</textarea>
+                    <input type="hidden" name="description" id="description" value="{{ old('description', $course->description) }}">
+                    <trix-editor input="description" class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-lg text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Tuliskan deskripsi kursus..."></trix-editor>
                     @error('description')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
             </div>
