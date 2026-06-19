@@ -4,41 +4,28 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Breadcrumb -->
-            <div class="mb-6">
-                <nav class="flex" aria-label="Breadcrumb">
-                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                        <li class="inline-flex items-center">
-                            <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
-                                Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-                                <a href="{{ route('education.programs') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 ml-1 md:ml-2 text-sm">
-                                    Program
-                                </a>
-                            </div>
-                        </li>
-                        <li aria-current="page">
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-                                <span class="text-gray-900 dark:text-white ml-1 md:ml-2 text-sm font-medium">Tambah Program</span>
-                            </div>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
+                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="{{ route('education.programs') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Program</a>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-900 dark:text-white font-medium">Tambah</span>
+            </nav>
 
             <!-- Header -->
-            <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Tambah Program Baru</h2>
-                <p class="mt-2 text-gray-600 dark:text-slate-400">Buat program kolaborasi dengan industri untuk meningkatkan kompetensi lulusan Anda.</p>
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Program Baru</h2>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Buat program kolaborasi dengan industri untuk meningkatkan kompetensi lulusan Anda.</p>
+                </div>
+                <a href="{{ route('education.programs') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+                    &laquo; Kembali
+                </a>
             </div>
 
             <!-- Progress Steps -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-gray-100 dark:border-slate-700">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <div
@@ -77,8 +64,8 @@
                 @csrf
 
                 <!-- Section 1: Basic Information -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-6 border-b pb-4">📋 Informasi Program</h3>
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">📋 Informasi Program</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Program Name -->
@@ -168,8 +155,8 @@
                 </div>
 
                 <!-- Section 2: Description & Objectives -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-6 border-b pb-4">🎯 Deskripsi & Tujuan</h3>
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">🎯 Deskripsi & Tujuan</h3>
 
                     <div class="space-y-6">
                         <!-- Description -->
@@ -238,8 +225,8 @@
                 </div>
 
                 <!-- Section 3: Industry Partners -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-6 border-b pb-4">🤝 Mitra Industri</h3>
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">🤝 Mitra Industri</h3>
 
                     <div class="space-y-4">
                         <p class="text-sm text-gray-600">Pilih perusahaan mitra yang akan terlibat dalam program ini.
@@ -263,8 +250,8 @@
                 </div>
 
                 <!-- Section 4: Curriculum Upload -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-6 border-b pb-4">📚 Dokumen Kurikulum</h3>
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">📚 Dokumen Kurikulum</h3>
 
                     <div class="space-y-4">
                         <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-400 transition cursor-pointer"
@@ -312,7 +299,7 @@
 
                 <!-- Preview Card (Sticky on Desktop) -->
                 <div
-                    class="bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/30 rounded-xl p-6 border border-green-200 dark:border-green-800 sticky top-6">
+                    class="bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/30 rounded-xl p-6 border border-green-200 dark:border-green-800">
                     <h4 class="font-bold text-gray-900 dark:text-gray-100 mb-4">👁️ Preview Program</h4>
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
@@ -335,7 +322,7 @@
                 </div>
 
                 <!-- Submit Section -->
-                <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
                     <div class="flex items-start mb-6">
                         <input type="checkbox" name="terms" id="terms" required
                             class="rounded border-gray-300 text-green-600 focus:ring-green-500 mt-1">

@@ -65,35 +65,29 @@
         }
     </style>
 
-    <div class="px-4 sm:px-6 lg:px-8 py-8">
-        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
+    <div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
             <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <a href="{{ route('industry.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span class="text-gray-900 dark:text-white font-medium">Edit Tes</span>
         </nav>
 
-        {{-- Header --}}
-        <div class="mb-6">
-            <a href="{{ route('industry.tpa.index') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-blue-600 transition-colors mb-3">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Kembali
-            </a>
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Tes TPA</h1>
-                    <p class="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm mt-1">Sesuaikan konfigurasi tes untuk kebutuhan rekrutmen Anda.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    @if($test->is_active)
-                    <span class="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold border border-green-200">Aktif</span>
-                    @else
-                    <span class="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 dark:text-gray-500 rounded-full text-xs font-semibold border border-gray-200 dark:border-slate-700">Nonaktif</span>
-                    @endif
-                </div>
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Tes TPA</h2>
+            <div class="flex items-center gap-3">
+                @if($test->is_active)
+                <span class="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold border border-green-200">Aktif</span>
+                @else
+                <span class="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 rounded-full text-xs font-semibold border border-gray-200 dark:border-slate-700">Nonaktif</span>
+                @endif
+                <a href="{{ route('industry.tpa.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+                    &laquo; Kembali
+                </a>
             </div>
         </div>
 
@@ -512,6 +506,7 @@
                 </div>
             </div>
         </form>
+    </div>
     </div>
 
     <style>

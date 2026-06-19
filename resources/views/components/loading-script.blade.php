@@ -31,7 +31,6 @@ document.addEventListener('alpine:init', () => {
                     window.location.reload();
                 } else {
                     const data = await response.json().catch(() => ({}));
-                    this.stopLoading();
                     if (data.message) alert(data.message);
                     else if (data.errors) {
                         const messages = Object.values(data.errors).flat().join('\n');
@@ -41,8 +40,9 @@ document.addEventListener('alpine:init', () => {
                     }
                 }
             } catch (err) {
-                this.stopLoading();
                 alert('Terjadi kesalahan jaringan.');
+            } finally {
+                this.stopLoading();
             }
         },
 

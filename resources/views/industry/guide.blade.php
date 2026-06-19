@@ -1,13 +1,23 @@
 <x-app-layout>
-<div class="px-4 sm:px-6 lg:px-8 py-8">
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+    {{-- Breadcrumbs --}}
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
+        <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 dark:text-white font-medium">Panduan Penggunaan</span>
+    </nav>
+
     {{-- Header --}}
-    <div class="mb-8">
-        <a href="{{ route('industry.dashboard') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-4">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            Kembali ke Dashboard
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Panduan Penggunaan Platform</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">Pelajari cara memaksimalkan fitur-fitur KOMPASKARIR untuk proses rekrutmen yang efektif.</p>
+        </div>
+        <a href="{{ route('industry.dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+            &laquo; Kembali
         </a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Panduan Penggunaan Platform</h1>
-        <p class="text-gray-500 dark:text-gray-400 mt-1">Pelajari cara memaksimalkan fitur-fitur KOMPASKARIR untuk proses rekrutmen yang efektif.</p>
     </div>
 
     {{-- Quick Stats --}}
@@ -193,6 +203,15 @@
                     <h3 class="font-bold text-gray-800 dark:text-white text-sm">Aksi Cepat</h3>
                 </div>
                 <div class="p-4 space-y-2">
+                    <a href="{{ route('industry.dashboard') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="w-9 h-9 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-slate-600 transition-colors">
+                            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-800 dark:text-white">Dashboard</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">Kembali ke beranda</div>
+                        </div>
+                    </a>
                     <a href="{{ route('industry.jobs.create') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors group">
                         <div class="w-9 h-9 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
                             <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -276,5 +295,7 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
 </x-app-layout>
+

@@ -17,48 +17,97 @@
         .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
     </style>
 
-<div class="max-w-3xl mx-auto px-4 py-8">
-    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <a href="{{ route('admin.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <span class="text-gray-900 dark:text-white font-medium">Tambah Tes</span>
-    </nav>
-    <a href="{{ route('admin.tpa.tests') }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali</a>
-    <h1 class="text-2xl font-bold mb-6">Buat Tes TPA</h1>
-    <form action="{{ route('admin.tpa.tests.store') }}" method="POST" class="bg-white rounded-xl shadow-sm p-6">
-        @csrf
-        <div class="mb-4"><label class="block text-sm font-medium mb-1">Judul</label><input type="text" name="title" value="Tes Potensi Akademik" class="w-full border rounded-lg px-3 py-2" required></div>
-        <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Deskripsi</label>
-            <input type="hidden" name="description" id="description" value="{{ old('description') }}">
-            <trix-editor input="description" class="trix-content bg-white dark:bg-slate-800 border rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100" placeholder="Tuliskan deskripsi atau instruksi tes TPA di sini..."></trix-editor>
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="{{ route('admin.tpa.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tes TPA</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="{{ route('admin.tpa.tests') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Daftar Tes</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-gray-900 dark:text-white font-medium">Buat Tes</span>
+        </nav>
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Buat Tes TPA</h2>
+            <a href="{{ route('admin.tpa.tests') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+                &laquo; Kembali
+            </a>
         </div>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <div><label class="block text-sm font-medium mb-1">Waktu (menit)</label><input type="number" name="time_limit_minutes" value="60" class="w-full border rounded-lg px-3 py-2" min="10" max="180" required></div>
-            <div><label class="block text-sm font-medium mb-1">Passing Score (%)</label><input type="number" name="passing_score" value="60" class="w-full border rounded-lg px-3 py-2" min="0" max="100" step="0.01" required></div>
-        </div>
-        <h3 class="font-bold mt-4 mb-3">Jumlah Soal</h3>
-        <div class="grid grid-cols-4 gap-4 mb-4">
-            <div><label class="block text-sm font-medium mb-1">Verbal</label><input type="number" name="verbal_count" value="10" class="w-full border rounded-lg px-3 py-2" min="0"></div>
-            <div><label class="block text-sm font-medium mb-1">Numerik</label><input type="number" name="numerik_count" value="10" class="w-full border rounded-lg px-3 py-2" min="0"></div>
-            <div><label class="block text-sm font-medium mb-1">Logika</label><input type="number" name="logika_count" value="10" class="w-full border rounded-lg px-3 py-2" min="0"></div>
-            <div><label class="block text-sm font-medium mb-1">Spasial</label><input type="number" name="spasial_count" value="10" class="w-full border rounded-lg px-3 py-2" min="0"></div>
-        </div>
-        <h3 class="font-bold mt-4 mb-3">Bobot (%)</h3>
-        <div class="grid grid-cols-4 gap-4 mb-4">
-            <div><label class="block text-sm font-medium mb-1">Verbal</label><input type="number" name="verbal_weight" value="30" class="w-full border rounded-lg px-3 py-2" step="0.01"></div>
-            <div><label class="block text-sm font-medium mb-1">Numerik</label><input type="number" name="numerik_weight" value="30" class="w-full border rounded-lg px-3 py-2" step="0.01"></div>
-            <div><label class="block text-sm font-medium mb-1">Logika</label><input type="number" name="logika_weight" value="20" class="w-full border rounded-lg px-3 py-2" step="0.01"></div>
-            <div><label class="block text-sm font-medium mb-1">Spasial</label><input type="number" name="spasial_weight" value="20" class="w-full border rounded-lg px-3 py-2" step="0.01"></div>
-        </div>
-        <div class="space-y-2 mb-6">
-            <label class="flex items-center gap-2"><input type="checkbox" name="randomize_questions" value="1" checked class="rounded"><span class="text-sm">Acak urutan soal</span></label>
-            <label class="flex items-center gap-2"><input type="checkbox" name="randomize_options" value="1" checked class="rounded"><span class="text-sm">Acak pilihan jawaban</span></label>
-            <label class="flex items-center gap-2"><input type="checkbox" name="show_result_after" value="1" checked class="rounded"><span class="text-sm">Tampilkan hasil setelah selesai</span></label>
-        </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold">Simpan</button>
-    </form>
+
+        <form action="{{ route('admin.tpa.tests.store') }}" method="POST" class="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl shadow-sm p-6 space-y-6">
+            @csrf
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Judul <span class="text-red-500">*</span></label>
+                <input type="text" name="title" value="Tes Potensi Akademik" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Deskripsi</label>
+                <input type="hidden" name="description" id="description" value="{{ old('description') }}">
+                <trix-editor input="description" class="trix-content bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Tuliskan deskripsi atau instruksi tes TPA di sini..."></trix-editor>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-755 dark:text-slate-300 mb-1">Waktu (menit) <span class="text-red-500">*</span></label>
+                    <input type="number" name="time_limit_minutes" value="60" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" min="10" max="180" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-755 dark:text-slate-300 mb-1">Passing Score (%) <span class="text-red-500">*</span></label>
+                    <input type="number" name="passing_score" value="60" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" min="0" max="100" step="0.01" required>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-100 dark:border-slate-800 pt-6">
+                <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">Jumlah Soal</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    @foreach(['verbal' => 'Verbal', 'numerik' => 'Numerik', 'logika' => 'Logika', 'spasial' => 'Spasial'] as $key => $label)
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ $label }}</label>
+                        <input type="number" name="{{ $key }}_count" value="10" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" min="0">
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="border-t border-gray-100 dark:border-slate-800 pt-6">
+                <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">Bobot (%)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    @foreach(['verbal' => ['Verbal', 30], 'numerik' => ['Numerik', 30], 'logika' => ['Logika', 20], 'spasial' => ['Spasial', 20]] as $key => [$label, $defaultWeight])
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ $label }}</label>
+                        <input type="number" name="{{ $key }}_weight" value="{{ $defaultWeight }}" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" step="0.01">
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="border-t border-gray-100 dark:border-slate-800 pt-6 space-y-3">
+                <label class="flex items-center gap-2 text-gray-700 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" name="randomize_questions" value="1" checked class="rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm">Acak urutan soal</span>
+                </label>
+                <label class="flex items-center gap-2 text-gray-700 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" name="randomize_options" value="1" checked class="rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm">Acak pilihan jawaban</span>
+                </label>
+                <label class="flex items-center gap-2 text-gray-700 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" name="show_result_after" value="1" checked class="rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm">Tampilkan hasil setelah selesai</span>
+                </label>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold transition duration-150 shadow-sm">
+                    Simpan Tes
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 </x-app-layout>

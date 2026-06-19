@@ -16,23 +16,23 @@
         .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
     </style>
 
-<div class="px-4 sm:px-6 lg:px-8 py-8">
-    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
+<div class="py-12">
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
         <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         <a href="{{ route('industry.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         <span class="text-gray-900 dark:text-white font-medium">Tambah Soal</span>
     </nav>
 
-    {{-- Header --}}
-    <div class="mb-6">
-        <a href="{{ route('industry.tpa.questions') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-blue-600 transition-colors mb-3">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            Kembali ke Bank Soal
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Soal TPA</h2>
+        <a href="{{ route('industry.tpa.questions') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+            &laquo; Kembali
         </a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Soal TPA</h1>
-        <p class="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm mt-1">Buat soal baru untuk bank soal perusahaan Anda.</p>
     </div>
 
     <form action="{{ route('industry.tpa.questions.store') }}" method="POST" x-data="questionForm()" enctype="multipart/form-data" class="space-y-6">
@@ -381,6 +381,7 @@ Murung memiliki arti yang sama dengan sedih, yaitu perasaan tidak gembira atau s
             </div>
         </div>
     </form>
+</div>
 </div>
 
 <style>[x-cloak] { display: none !important; }</style>

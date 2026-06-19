@@ -208,7 +208,7 @@
                                             }
                                         }" class="relative w-full" @click.away="open = false">
 
-                                            <input type="text" name="location" :value="selected" required class="absolute w-0 h-0 opacity-0 pointer-events-none" style="top: 50%;">
+                                            <input type="text" name="location" :value="selected" required class="sr-only" tabindex="-1">
 
                                             <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())"
                                                 class="flex items-center justify-between w-full rounded-xl border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm sm:text-sm p-3 transition-colors cursor-pointer focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"

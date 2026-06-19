@@ -142,7 +142,7 @@
                                 }
                             }" class="relative w-full" @click.away="open = false" x-init="init()">
 
-                                <input type="text" name="partner_id" id="partner_id" :value="selected" required class="absolute w-0 h-0 opacity-0 pointer-events-none" style="top: 50%;">
+                                <input type="text" name="partner_id" id="partner_id" :value="selected" required class="sr-only" tabindex="-1">
 
                                 <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())"
                                     class="flex items-center justify-between w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 cursor-pointer transition"

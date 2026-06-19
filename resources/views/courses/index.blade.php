@@ -1,16 +1,23 @@
 <x-app-layout>
-    <div class="py-8">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
+                <a href="{{ route('dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-900 dark:text-white font-medium">Kursus & Pembelajaran</span>
+            </nav>
+
             <!-- Header -->
-            <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Kursus & Pembelajaran</h2>
-                    <p class="mt-2 text-gray-600 dark:text-slate-400">Tingkatkan kompetensi Anda dengan kursus yang direkomendasikan.</p>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Kursus & Pembelajaran</h2>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Tingkatkan kompetensi Anda dengan kursus yang direkomendasikan.</p>
                 </div>
                 <a href="{{ route('seeker.courses.my-progress') }}"
-                    class="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm shadow-sm hover:shadow">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-650 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Progres Belajar Saya

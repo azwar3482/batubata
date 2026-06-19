@@ -1,7 +1,7 @@
 <div id="chat-widget" x-data="chatWidget()" x-cloak>
     {{-- Floating Button --}}
     <button @click="toggleChat()"
-            class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
+            class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-20 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-110 flex items-center justify-center"
             :class="isOpen ? 'rotate-90' : ''">
         <svg x-show="!isOpen" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
@@ -13,7 +13,7 @@
 
     {{-- Chat Window --}}
     <div x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-         class="fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-1rem)] sm:w-96 h-[500px] sm:h-[600px] bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden max-w-[400px]">
+         class="fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-20 w-[calc(100vw-1rem)] sm:w-96 h-[500px] sm:h-[600px] bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden max-w-[400px]">
 
         {{-- Header --}}
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-4 flex items-center justify-between flex-shrink-0">
@@ -131,8 +131,25 @@ function chatWidget() {
         isLoading: false,
         sessionId: null,
         isConfigured: true,
+        loaded: false,
 
         async init() {
+            // Restore sessionId dari localStorage
+            this.sessionId = localStorage.getItem('chat_session_id') || null;
+        },
+
+        toggleChat() {
+            this.isOpen = !this.isOpen;
+            if (this.isOpen) {
+                this.loadChatData();
+            }
+            this.$nextTick(() => this.scrollToBottom());
+        },
+
+        async loadChatData() {
+            if (this.loaded) return;
+            this.loaded = true;
+
             // Cek status API
             try {
                 const res = await fetch('/chat/status');
@@ -142,24 +159,13 @@ function chatWidget() {
                 this.isConfigured = false;
             }
 
-            // Restore sessionId dari localStorage
-            this.sessionId = localStorage.getItem('chat_session_id') || null;
-
             // Load history jika ada session tersimpan
-            if (this.sessionId) {
-                this.loadHistory();
+            if (this.sessionId && this.messages.length === 0) {
+                await this.loadHistory();
             }
 
             // Load suggestions
-            this.loadSuggestions();
-        },
-
-        toggleChat() {
-            this.isOpen = !this.isOpen;
-            if (this.isOpen && this.messages.length === 0) {
-                this.loadHistory();
-            }
-            this.$nextTick(() => this.scrollToBottom());
+            await this.loadSuggestions();
         },
 
         async loadSuggestions() {
@@ -264,10 +270,10 @@ function chatWidget() {
                     content: 'Gagal menghubungi server. Periksa koneksi internet Anda.',
                     created_at: new Date().toISOString(),
                 });
+            } finally {
+                this.isLoading = false;
+                this.$nextTick(() => this.scrollToBottom());
             }
-
-            this.isLoading = false;
-            this.$nextTick(() => this.scrollToBottom());
         },
 
         async clearChat() {

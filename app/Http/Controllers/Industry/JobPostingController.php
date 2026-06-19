@@ -163,8 +163,16 @@ class JobPostingController extends Controller
         if ($status !== 'all' && in_array($status, ['applied', 'reviewed', 'interviewed', 'offered', 'rejected'])) {
             $query->where('status', $status);
         }
+
+        // Search functionality
+        if ($search = $request->input('search')) {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
         
-        $applicants = $query->orderBy('matching_percentage', 'desc')->get();
+        $applicants = $query->orderBy('matching_percentage', 'desc')->paginate(10)->withQueryString();
         
         // Hitung statistik counter untuk tab filter
         $stats = $job->applications()

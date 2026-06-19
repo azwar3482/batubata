@@ -17,86 +17,106 @@
     .dark .ql-toolbar.ql-snow button.ql-active .ql-fill { fill: #3b82f6; }
 </style>
 
-<div class="max-w-3xl mx-auto px-4 py-8">
-    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <a href="{{ route('admin.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <span class="text-gray-900 dark:text-white font-medium">Edit Soal</span>
-    </nav>
-    <a href="{{ route('admin.tpa.questions') }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali</a>
-    <h1 class="text-2xl font-bold mb-6">Edit Soal TPA</h1>
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="{{ route('admin.tpa.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tes TPA</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="{{ route('admin.tpa.questions') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Bank Soal</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-gray-900 dark:text-white font-medium">Edit Soal</span>
+        </nav>
 
-    <form action="{{ route('admin.tpa.questions.update', $question) }}" method="POST" class="bg-white rounded-xl shadow-sm p-6">
-        @csrf @method('PUT')
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Soal TPA</h2>
+            <a href="{{ route('admin.tpa.questions') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+                &laquo; Kembali
+            </a>
+        </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-4">
+        <form action="{{ route('admin.tpa.questions.update', $question) }}" method="POST" enctype="multipart/form-data" class="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl shadow-sm p-6 space-y-6">
+            @csrf @method('PUT')
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Kategori</label>
+                    <select name="category" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
+                        @foreach(['verbal','numerik','logika','spasial'] as $cat)
+                        <option value="{{ $cat }}" {{ $question->category === $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Sub-kategori</label>
+                    <input type="text" name="subcategory" value="{{ $question->subcategory }}" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Level</label>
+                    <select name="difficulty" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
+                        @foreach(['easy','medium','hard'] as $d)
+                        <option value="{{ $d }}" {{ $question->difficulty === $d ? 'selected' : '' }}>{{ ucfirst($d) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <div>
-                <label class="block text-sm font-medium mb-1">Kategori</label>
-                <select name="category" class="w-full border rounded-lg px-3 py-2" required>
-                    @foreach(['verbal','numerik','logika','spasial'] as $cat)
-                    <option value="{{ $cat }}" {{ $question->category === $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
+                <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Teks Soal</label>
+                <div id="question-editor"></div>
+                <input type="hidden" name="question_text" id="question-hidden" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Gambar Soal (opsional)</label>
+                @if($question->question_image)
+                <div class="mb-3 p-2 bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 max-w-sm">
+                    <p class="text-xs text-gray-550 dark:text-slate-400 mb-1 font-semibold">Gambar saat ini:</p>
+                    <img src="{{ asset('storage/' . $question->question_image) }}" class="h-20 rounded shadow-sm object-contain">
+                </div>
+                @endif
+                <input type="file" name="question_image" accept="image/*" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            </div>
+
+            <div class="border-t border-gray-100 dark:border-slate-800 pt-6">
+                <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Pilihan Jawaban</h3>
+                <p class="text-xs text-gray-500 dark:text-slate-400 mb-4">Pilih jawaban yang benar di radio button.</p>
+
+                <div class="space-y-4">
+                    @foreach($question->options as $i => $opt)
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="correct_answer" value="{{ $opt['key'] }}" class="rounded-full border-gray-300 dark:border-slate-650 text-blue-600 focus:ring-blue-500" {{ $question->correct_answer === $opt['key'] ? 'checked' : '' }} required>
+                        <input type="hidden" name="options[{{ $i }}][key]" value="{{ $opt['key'] }}">
+                        <span class="font-bold text-gray-750 dark:text-slate-300 w-6 text-center">{{ $opt['key'] }}.</span>
+                        <input type="text" name="options[{{ $i }}][text]" value="{{ $opt['text'] }}" class="flex-1 border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" required>
+                    </div>
                     @endforeach
-                </select>
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium mb-1">Sub-kategori</label>
-                <input type="text" name="subcategory" value="{{ $question->subcategory }}" class="w-full border rounded-lg px-3 py-2">
+
+            <div class="border-t border-gray-100 dark:border-slate-800 pt-6">
+                <label class="block text-sm font-medium text-gray-750 dark:text-slate-300 mb-1">Penjelasan</label>
+                <div id="explanation-editor"></div>
+                <input type="hidden" name="explanation" id="explanation-hidden" value="{{ $question->explanation }}">
             </div>
-            <div>
-                <label class="block text-sm font-medium mb-1">Level</label>
-                <select name="difficulty" class="w-full border rounded-lg px-3 py-2" required>
-                    @foreach(['easy','medium','hard'] as $d)
-                    <option value="{{ $d }}" {{ $question->difficulty === $d ? 'selected' : '' }}>{{ ucfirst($d) }}</option>
-                    @endforeach
-                </select>
+
+            <div class="border-t border-gray-100 dark:border-slate-800 pt-6">
+                <label class="flex items-center gap-2 text-gray-700 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" name="is_active" value="1" {{ $question->is_active ? 'checked' : '' }} class="rounded border-gray-300 dark:border-slate-650 text-blue-600 focus:ring-blue-500">
+                    <span class="text-sm">Aktif</span>
+                </label>
             </div>
-        </div>
 
-        <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Teks Soal</label>
-            <div id="question-editor"></div>
-            <input type="hidden" name="question_text" id="question-hidden" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Gambar Soal (opsional)</label>
-            @if($question->question_image)
-            <div class="mb-2"><img src="{{ asset('storage/' . $question->question_image) }}" class="h-20"></div>
-            @endif
-            <input type="file" name="question_image" accept="image/*" class="w-full border rounded-lg px-3 py-2">
-        </div>
-
-        <h3 class="font-bold mb-3">Pilihan Jawaban</h3>
-        <div class="space-y-2 mb-4">
-            @foreach($question->options as $i => $opt)
-            <div class="flex items-center gap-2">
-                <input type="radio" name="correct_answer" value="{{ $opt['key'] }}" {{ $question->correct_answer === $opt['key'] ? 'checked' : '' }} required>
-                <input type="hidden" name="options[{{ $i }}][key]" value="{{ $opt['key'] }}">
-                <span class="font-bold w-8">{{ $opt['key'] }}.</span>
-                <input type="text" name="options[{{ $i }}][text]" value="{{ $opt['text'] }}" class="flex-1 border rounded-lg px-3 py-2" required>
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold transition duration-150 shadow-sm">
+                    Update Soal
+                </button>
             </div>
-            @endforeach
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Penjelasan</label>
-            <div id="explanation-editor"></div>
-            <input type="hidden" name="explanation" id="explanation-hidden" value="{{ $question->explanation }}">
-        </div>
-
-        <div class="mb-6">
-            <label class="flex items-center gap-2">
-                <input type="checkbox" name="is_active" value="1" {{ $question->is_active ? 'checked' : '' }} class="rounded">
-                <span class="text-sm">Aktif</span>
-            </label>
-        </div>
-
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold">
-            Update Soal
-        </button>
-    </form>
+        </form>
+    </div>
 </div>
 
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
