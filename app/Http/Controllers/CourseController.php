@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\CourseService;
+use App\Models\Course;
+use App\Models\AdminCourseChapter;
+use App\Models\AdminCourseMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +58,6 @@ class CourseController extends Controller
                 if (!empty($weakCompetencyIds)) {
                     $recommendedCourses = $this->courseService->getRecommendedCourses($weakCompetencyIds);
                     
-                    // Add match score and reason to each recommendation
                     $recommendedCourses = $recommendedCourses->map(function ($course) use ($weakCompetencies) {
                         $relatedGap = $weakCompetencies->firstWhere('competency_id', $course->competency_id);
                         $matchScore = $relatedGap ? max(0, 100 - $relatedGap->gap_percentage) : 70;
@@ -102,8 +104,10 @@ class CourseController extends Controller
             return view('courses.show_teacher', compact('course', 'progress'));
         }
 
+        // Admin course with chapters
         $course = $this->courseService->getCourseDetails($id);
         $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
+        $completedMaterialIds = $progress ? $this->courseService->getCompletedMaterialIds(Auth::id(), $course->id) : [];
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -113,10 +117,10 @@ class CourseController extends Controller
             ]);
         }
 
-        return view('courses.show', compact('course', 'progress'));
+        return view('courses.show', compact('course', 'progress', 'completedMaterialIds'));
     }
 
-    public function learn($id)
+    public function learn($id, Request $request)
     {
         $course = $this->courseService->getCourseDetails($id);
         $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
@@ -125,7 +129,200 @@ class CourseController extends Controller
             return redirect()->route('seeker.courses.show', $id)->with('error', 'Anda harus mendaftar kursus ini terlebih dahulu.');
         }
 
-        return view('courses.learn', compact('course', 'progress'));
+        $completedMaterialIds = $this->courseService->getCompletedMaterialIds(Auth::id(), $course->id);
+
+        // Get current material (first incomplete or first)
+        $currentMaterial = null;
+        $allMaterials = $course->chapters->flatMap->materials;
+        foreach ($allMaterials as $material) {
+            if (!in_array($material->id, $completedMaterialIds)) {
+                $currentMaterial = $material;
+                break;
+            }
+        }
+        if (!$currentMaterial && $allMaterials->count() > 0) {
+            $currentMaterial = $allMaterials->first();
+        }
+
+        // Override with specific material if requested
+        if ($materialId = $request->query('material')) {
+            $currentMaterial = AdminCourseMaterial::with(['chapter', 'quizQuestions'])->find($materialId);
+        }
+
+        return view('courses.learn', compact('course', 'progress', 'completedMaterialIds', 'currentMaterial'));
+    }
+
+    public function learnMaterial($courseId, $materialId)
+    {
+        $course = $this->courseService->getCourseDetails($courseId);
+        $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
+
+        if (!$progress) {
+            return redirect()->route('seeker.courses.show', $courseId)->with('error', 'Anda harus mendaftar kursus ini terlebih dahulu.');
+        }
+
+        $currentMaterial = AdminCourseMaterial::with(['chapter', 'quizQuestions'])->findOrFail($materialId);
+        $completedMaterialIds = $this->courseService->getCompletedMaterialIds(Auth::id(), $course->id);
+
+        return view('courses.learn', compact('course', 'progress', 'completedMaterialIds', 'currentMaterial'));
+    }
+
+    public function downloadMaterial($courseId, $materialId)
+    {
+        $course = $this->courseService->getCourseDetails($courseId);
+        $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
+
+        if (!$progress) {
+            abort(403, 'Anda harus mendaftar kursus ini terlebih dahulu.');
+        }
+
+        $material = AdminCourseMaterial::findOrFail($materialId);
+
+        if (!$material->file_path || !\Illuminate\Support\Facades\Storage::disk('public')->exists($material->file_path)) {
+            abort(404);
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->download($material->file_path, $material->file_name);
+    }
+
+    public function viewMaterial($courseId, $materialId)
+    {
+        $course = $this->courseService->getCourseDetails($courseId);
+        $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
+
+        if (!$progress) {
+            abort(403, 'Anda harus mendaftar kursus ini terlebih dahulu.');
+        }
+
+        $material = AdminCourseMaterial::findOrFail($materialId);
+
+        if (!$material->file_path || !\Illuminate\Support\Facades\Storage::disk('public')->exists($material->file_path)) {
+            abort(404);
+        }
+
+        $filePath = \Illuminate\Support\Facades\Storage::disk('public')->path($material->file_path);
+        $mimeType = $material->mime_type ?: mime_content_type($filePath);
+
+        $headers = [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . $material->file_name . '"',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ];
+
+        return new \Symfony\Component\HttpFoundation\BinaryFileResponse($filePath, 200, $headers, true);
+    }
+
+    public function completeMaterial(Request $request, $courseId, $materialId)
+    {
+        $result = $this->courseService->toggleMaterialCompletion(Auth::id(), $materialId, $courseId);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'data' => $result,
+            ]);
+        }
+
+        if ($result['course_completed']) {
+            return back()->with('success', 'Selamat! Anda telah menyelesaikan semua materi kursus ini!');
+        }
+
+        return back()->with('success', $result['material_completed'] ? 'Materi ditandai selesai.' : 'Materi ditandai belum selesai.');
+    }
+
+    public function submitQuiz(Request $request, $courseId, $materialId)
+    {
+        $material = AdminCourseMaterial::with('quizQuestions')->findOrFail($materialId);
+
+        $validated = $request->validate([
+            'answers' => 'required|array',
+            'answers.*' => 'required|string',
+        ]);
+
+        $questions = $material->quizQuestions;
+        $correctCount = 0;
+        $totalPoints = 0;
+        $earnedPoints = 0;
+
+        foreach ($questions as $question) {
+            $totalPoints += $question->points;
+            if (isset($validated['answers'][$question->id]) && $validated['answers'][$question->id] === $question->correct_answer) {
+                $correctCount++;
+                $earnedPoints += $question->points;
+            }
+        }
+
+        $score = $totalPoints > 0 ? round(($earnedPoints / $totalPoints) * 100) : 0;
+        $passed = $score >= 70;
+
+        $attempt = \App\Models\AdminQuizAttempt::create([
+            'user_id' => Auth::id(),
+            'material_id' => $materialId,
+            'course_id' => $courseId,
+            'answers' => $validated['answers'],
+            'score' => $score,
+            'total_points' => $totalPoints,
+            'correct_count' => $correctCount,
+            'total_questions' => $questions->count(),
+            'passed' => $passed,
+            'submitted_at' => now(),
+        ]);
+
+        if ($passed) {
+            $this->courseService->toggleMaterialCompletion(Auth::id(), $materialId, $courseId);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'score' => $score,
+                    'correct_count' => $correctCount,
+                    'total_questions' => $questions->count(),
+                    'passed' => $passed,
+                ],
+            ]);
+        }
+
+        $message = $passed
+            ? "Selamat! Anda lulus kuis dengan skor {$score}%."
+            : "Skor Anda {$score}%. Minimal 70% untuk lulus. Silakan coba lagi.";
+
+        return back()->with($passed ? 'success' : 'error', $message);
+    }
+
+    public function submitAssignment(Request $request, $courseId, $materialId)
+    {
+        $validated = $request->validate([
+            'content' => 'nullable|string',
+            'file' => 'nullable|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,webp,zip,rar',
+        ]);
+
+        $validated['user_id'] = Auth::id();
+        $validated['material_id'] = $materialId;
+        $validated['course_id'] = $courseId;
+        $validated['submitted_at'] = now();
+        $validated['status'] = 'submitted';
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $validated['file_path'] = $file->store('assignments', 'public');
+            $validated['file_name'] = $file->getClientOriginalName();
+            $validated['file_size'] = $file->getSize();
+        }
+
+        \App\Models\AdminAssignmentSubmission::create($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tugas berhasil dikumpulkan.',
+            ]);
+        }
+
+        return back()->with('success', 'Tugas berhasil dikumpulkan. Menunggu review.');
     }
 
     public function enroll($id, Request $request)
@@ -203,11 +400,6 @@ class CourseController extends Controller
 
         $user = Auth::user();
 
-        // Keamanan/Otorisasi:
-        // 1. Siswa yang memiliki sertifikat
-        // 2. Guru dari kelas tersebut
-        // 3. Admin
-        // 4. Perusahaan/Recruiter (Role: industry atau staffing roles)
         if ($enrollment->user_id !== $user->id &&
             !$user->isAdmin() &&
             !($user->isTeacher() && $enrollment->classRoom->teacher_id === $user->id) &&
@@ -216,7 +408,6 @@ class CourseController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk melihat sertifikat ini.');
         }
 
-        // Kriteria: Status harus completed dan nilai >= 70
         if ($enrollment->status !== 'completed' || is_null($enrollment->final_score) || floatval($enrollment->final_score) < 70) {
             if ($user->isJobSeeker()) {
                 return redirect()->route('seeker.courses.my-progress')
@@ -235,10 +426,6 @@ class CourseController extends Controller
 
         $user = Auth::user();
 
-        // Keamanan/Otorisasi:
-        // 1. Siswa yang memiliki sertifikat
-        // 2. Admin
-        // 3. Perusahaan/Recruiter (Role: industry atau staffing roles)
         if ($progress->user_id !== $user->id &&
             !$user->isAdmin() &&
             !$user->isIndustry() &&
@@ -246,7 +433,6 @@ class CourseController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk melihat sertifikat ini.');
         }
 
-        // Kriteria: Status harus completed
         if ($progress->status !== 'completed') {
             if ($user->isJobSeeker()) {
                 return redirect()->route('seeker.courses.my-progress')
@@ -265,7 +451,6 @@ class CourseController extends Controller
 
         $user = Auth::user();
 
-        // Keamanan/Otorisasi
         if ($enrollment->user_id !== $user->id &&
             !$user->isAdmin() &&
             !($user->isTeacher() && $enrollment->classRoom->teacher_id === $user->id) &&
@@ -292,7 +477,6 @@ class CourseController extends Controller
 
         $user = Auth::user();
 
-        // Keamanan/Otorisasi
         if ($progress->user_id !== $user->id &&
             !$user->isAdmin() &&
             !$user->isIndustry() &&

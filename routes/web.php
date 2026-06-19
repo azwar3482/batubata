@@ -128,6 +128,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/courses/my-progress', [CourseController::class, 'myProgress'])->name('courses.my-progress');
         Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
         Route::get('/courses/{id}/learn', [CourseController::class, 'learn'])->name('courses.learn');
+        Route::get('/courses/{courseId}/materials/{materialId}', [CourseController::class, 'learnMaterial'])->name('courses.learn-material');
+        Route::get('/courses/{courseId}/materials/{materialId}/view', [CourseController::class, 'viewMaterial'])->name('courses.view-material');
+        Route::get('/courses/{courseId}/materials/{materialId}/download', [CourseController::class, 'downloadMaterial'])->name('courses.download-material');
+        Route::post('/courses/{courseId}/materials/{materialId}/complete', [CourseController::class, 'completeMaterial'])->name('courses.complete-material');
+        Route::post('/courses/{courseId}/materials/{materialId}/quiz', [CourseController::class, 'submitQuiz'])->name('courses.submit-quiz');
+        Route::post('/courses/{courseId}/materials/{materialId}/assignment', [CourseController::class, 'submitAssignment'])->name('courses.submit-assignment');
         Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
         Route::put('/courses/{id}/progress', [CourseController::class, 'updateProgress'])->name('courses.update-progress');
         Route::post('/courses/{id}/complete', [CourseController::class, 'complete'])->name('courses.complete');
@@ -370,6 +376,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Courses
         Route::resource('courses', \App\Http\Controllers\Admin\CourseController::class);
+
+        // Course Chapter Management
+        Route::post('/courses/{course}/chapters', [\App\Http\Controllers\Admin\CourseController::class, 'storeChapter'])->name('courses.store-chapter');
+        Route::put('/chapters/{chapter}', [\App\Http\Controllers\Admin\CourseController::class, 'updateChapter'])->name('courses.update-chapter');
+        Route::delete('/chapters/{chapter}', [\App\Http\Controllers\Admin\CourseController::class, 'destroyChapter'])->name('courses.destroy-chapter');
+
+        // Course Material Management
+        Route::post('/chapters/{chapter}/materials', [\App\Http\Controllers\Admin\CourseController::class, 'storeMaterial'])->name('courses.store-material');
+        Route::put('/materials/{material}', [\App\Http\Controllers\Admin\CourseController::class, 'updateMaterial'])->name('courses.update-material');
+        Route::delete('/materials/{material}', [\App\Http\Controllers\Admin\CourseController::class, 'destroyMaterial'])->name('courses.destroy-material');
+        Route::get('/materials/{material}/download', [\App\Http\Controllers\Admin\CourseController::class, 'downloadMaterial'])->name('courses.download-material');
+
+        // Quiz Question Management
+        Route::post('/materials/{material}/questions', [\App\Http\Controllers\Admin\CourseController::class, 'storeQuizQuestion'])->name('courses.store-question');
+        Route::put('/questions/{question}', [\App\Http\Controllers\Admin\CourseController::class, 'updateQuizQuestion'])->name('courses.update-question');
+        Route::delete('/questions/{question}', [\App\Http\Controllers\Admin\CourseController::class, 'destroyQuizQuestion'])->name('courses.destroy-question');
 
         // Skill Keywords
         Route::resource('skill-keywords', \App\Http\Controllers\Admin\SkillKeywordController::class);

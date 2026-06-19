@@ -36,6 +36,16 @@ class Course extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function chapters()
+    {
+        return $this->hasMany(AdminCourseChapter::class, 'course_id')->orderBy('order_number');
+    }
+
+    public function getTotalMaterialsAttribute()
+    {
+        return AdminCourseMaterial::whereIn('chapter_id', $this->chapters()->pluck('id'))->count();
+    }
+
     public function scopeFree($query)
     {
         return $query->where('is_free', true);

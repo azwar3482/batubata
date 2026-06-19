@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Course;
 use App\Models\UserCourseProgress;
+use App\Models\UserMaterialProgress;
+use App\Models\AdminCourseMaterial;
 
 class CourseService
 {
@@ -57,7 +59,7 @@ class CourseService
      */
     public function getCourseDetails($id)
     {
-        return Course::with('competency', 'creator')->findOrFail($id);
+        return Course::with('competency', 'creator', 'chapters.materials')->findOrFail($id);
     }
 
     /**
@@ -126,5 +128,73 @@ class CourseService
             ->where('user_id', $userId)
             ->orderByDesc('updated_at')
             ->get();
+    }
+
+    /**
+     * Toggle material completion status and auto-update course progress.
+     */
+    public function toggleMaterialCompletion(int $userId, int $materialId, int $courseId): array
+    {
+        $materialProgress = UserMaterialProgress::firstOrCreate(
+            ['user_id' => $userId, 'material_id' => $materialId],
+            ['course_id' => $courseId, 'is_completed' => false]
+        );
+
+        $materialProgress->update([
+            'is_completed' => !$materialProgress->is_completed,
+            'completed_at' => !$materialProgress->is_completed ? now() : null,
+        ]);
+
+        // Auto-calculate course progress
+        $course = Course::with('chapters.materials')->findOrFail($courseId);
+        $totalMaterials = $course->total_materials;
+
+        if ($totalMaterials > 0) {
+            $completedMaterials = UserMaterialProgress::where('user_id', $userId)
+                ->where('course_id', $courseId)
+                ->where('is_completed', true)
+                ->count();
+
+            $progressPercentage = min(100, round(($completedMaterials / $totalMaterials) * 100));
+
+            $courseProgress = UserCourseProgress::firstOrCreate(
+                ['user_id' => $userId, 'course_id' => $courseId],
+                ['status' => 'in_progress', 'started_at' => now(), 'progress_percentage' => 0]
+            );
+
+            $courseProgress->update([
+                'progress_percentage' => $progressPercentage,
+                'status' => $progressPercentage >= 100 ? 'completed' : 'in_progress',
+                'completed_at' => $progressPercentage >= 100 ? now() : null,
+            ]);
+
+            return [
+                'material_completed' => $materialProgress->is_completed,
+                'progress_percentage' => $progressPercentage,
+                'completed_materials' => $completedMaterials,
+                'total_materials' => $totalMaterials,
+                'course_completed' => $progressPercentage >= 100,
+            ];
+        }
+
+        return [
+            'material_completed' => $materialProgress->is_completed,
+            'progress_percentage' => 0,
+            'completed_materials' => 0,
+            'total_materials' => 0,
+            'course_completed' => false,
+        ];
+    }
+
+    /**
+     * Get completed material IDs for a user in a course.
+     */
+    public function getCompletedMaterialIds(int $userId, int $courseId): array
+    {
+        return UserMaterialProgress::where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->where('is_completed', true)
+            ->pluck('material_id')
+            ->toArray();
     }
 }
