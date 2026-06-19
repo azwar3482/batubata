@@ -1,37 +1,40 @@
 <x-app-layout>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
-    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
-    <style>
-        .trix-button-group { background: white; }
-        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
-        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
-        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
-        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
-        trix-editor { min-height: 150px; }
-        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
-        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-        .trix-content a { color: #3b82f6; text-decoration: underline; }
-        .trix-content strong { font-weight: 700; }
-        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
-    </style>
+    @include('partials.trix-styles')
 
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            <!-- Breadcrumb -->
+            <div class="mb-6">
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                                <a href="{{ route('education.programs') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 ml-1 md:ml-2 text-sm">
+                                    Program
+                                </a>
+                            </div>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                                <span class="text-gray-900 dark:text-white ml-1 md:ml-2 text-sm font-medium">Tambah Program</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
 
             <!-- Header -->
             <div class="mb-8">
-                <a href="{{ route('education.programs') }}"
-                    class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Kembali ke Daftar Program
-                </a>
-                <h2 class="text-3xl font-extrabold text-gray-900">Tambah Program Baru</h2>
-                <p class="mt-2 text-gray-600">Buat program kolaborasi dengan industri untuk meningkatkan kompetensi
-                    lulusan Anda.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Tambah Program Baru</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">Buat program kolaborasi dengan industri untuk meningkatkan kompetensi lulusan Anda.</p>
             </div>
 
             <!-- Progress Steps -->
@@ -409,8 +412,12 @@
             document.getElementById('preview-name').textContent = name;
             document.getElementById('preview-type').textContent = type;
             document.getElementById('preview-duration').textContent = duration;
-            document.getElementById('preview-description').innerHTML = description.length > 100 ? description.substring(0,
-                100) + '...' : description;
+            
+            // Strip HTML tags and truncate safely
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = description;
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
+            document.getElementById('preview-description').textContent = plainText.length > 150 ? plainText.substring(0, 150) + '...' : (plainText || '-');
         }
 
         document.addEventListener('trix-change', function(e) {

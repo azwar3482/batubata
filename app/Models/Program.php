@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Program extends Model
 {
     protected $fillable = [
-        'name', 'type', 'description', 'duration', 'max_students',
+        'name', 'type', 'description', 'learning_objectives', 'duration', 'max_students',
         'status', 'start_date', 'end_date', 'institution_id',
         'industry_partners', 'curriculum_path',
     ];
 
     protected $casts = [
         'industry_partners' => 'array',
+        'learning_objectives' => 'array',
         'start_date' => 'date',
         'end_date' => 'date',
     ];

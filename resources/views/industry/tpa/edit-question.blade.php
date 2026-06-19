@@ -1,5 +1,13 @@
 <x-app-layout>
 <div class="max-w-3xl mx-auto px-4 py-8">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
+        <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('industry.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 dark:text-white font-medium">Edit Soal</span>
+    </nav>
+
     <a href="{{ route('industry.tpa.questions') }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali ke Bank Soal</a>
     <h1 class="text-2xl font-bold mb-6">Edit Soal TPA</h1>
 

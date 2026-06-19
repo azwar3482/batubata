@@ -22,9 +22,9 @@ class ChatFaqController extends Controller
             });
         }
 
-        $faqs = $query->orderBy('priority', 'desc')->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        $chat_faqs = $query->orderBy('priority', 'desc')->orderBy('id', 'desc')->paginate(10)->withQueryString();
 
-        return view('admin.chat-faqs.index', compact('faqs'));
+        return view('admin.chat-faqs.index', compact('chat_faqs'));
     }
 
     public function create()
@@ -63,12 +63,12 @@ class ChatFaqController extends Controller
         return redirect()->route('admin.chat-faqs.index')->with('success', 'FAQ berhasil ditambahkan!');
     }
 
-    public function edit(ChatFaq $faq)
+    public function edit(ChatFaq $chat_faq)
     {
-        return view('admin.chat-faqs.edit', compact('faq'));
+        return view('admin.chat-faqs.edit', compact('chat_faq'));
     }
 
-    public function update(Request $request, ChatFaq $faq)
+    public function update(Request $request, ChatFaq $chat_faq)
     {
         $validated = $request->validate([
             'question' => 'required|string|max:500',
@@ -92,14 +92,14 @@ class ChatFaqController extends Controller
 
         $validated['is_active'] = $request->boolean('is_active', true);
 
-        $faq->update($validated);
+        $chat_faq->update($validated);
 
         return redirect()->route('admin.chat-faqs.index')->with('success', 'FAQ berhasil diupdate!');
     }
 
-    public function destroy(ChatFaq $faq)
+    public function destroy(ChatFaq $chat_faq)
     {
-        $faq->delete();
+        $chat_faq->delete();
         return redirect()->route('admin.chat-faqs.index')->with('success', 'FAQ berhasil dihapus!');
     }
 }

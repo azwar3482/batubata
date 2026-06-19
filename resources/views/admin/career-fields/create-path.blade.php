@@ -20,6 +20,13 @@
 </style>
 <div class="px-4 sm:px-6 lg:px-8 py-8">
     <div class="max-w-3xl mx-auto">
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="{{ route('admin.career-fields.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Bidang Karir</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-gray-900 dark:text-white font-medium">Tambah Jalur</span>
+        </nav>
         <a href="{{ route('admin.career-fields.paths', $careerField) }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali</a>
         <h1 class="text-2xl font-bold mb-6">Tambah Level Karir</h1>
 

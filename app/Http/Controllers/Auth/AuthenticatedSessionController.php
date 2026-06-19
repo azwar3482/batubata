@@ -30,18 +30,17 @@ class AuthenticatedSessionController extends Controller
 
         $user = auth()->user();
 
-        $route = 'dashboard'; // Default untuk job_seeker
         if ($user->isAdmin()) {
             return redirect()->route('admin.dashboard');
         } elseif ($user->isIndustryOrStaff()) {
             return redirect()->route('industry.dashboard');
         } elseif ($user->isEducation()) {
-            $route = 'education.dashboard';
+            return redirect()->route('education.dashboard');
         } elseif ($user->isTeacher()) {
-            $route = 'teacher.dashboard';
+            return redirect()->route('teacher.dashboard');
         }
-        // return redirect()->intended(route('dashboard', absolute: false)); //FIXME : dashboard default
-        return redirect()->intended(route($route, absolute: false));
+        
+        return redirect()->route('dashboard');
     }
 
     /**

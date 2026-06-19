@@ -41,10 +41,49 @@
             @endif
 
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-slate-700">
+                    <form action="{{ route('education.courses.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <input type="text" name="search" value="{{ request('search') }}" 
+                                placeholder="Cari judul kursus, deskripsi..."
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <select name="status" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg text-sm">
+                            <option value="">Semua Status</option>
+                            <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
+                            <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                        </select>
+                        <select name="level" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg text-sm">
+                            <option value="">Semua Level</option>
+                            <option value="beginner" {{ request('level') === 'beginner' ? 'selected' : '' }}>Beginner</option>
+                            <option value="intermediate" {{ request('level') === 'intermediate' ? 'selected' : '' }}>Intermediate</option>
+                            <option value="advanced" {{ request('level') === 'advanced' ? 'selected' : '' }}>Advanced</option>
+                        </select>
+                        <select name="category" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg text-sm">
+                            <option value="">Semua Kategori</option>
+                            <option value="technical" {{ request('category') === 'technical' ? 'selected' : '' }}>Teknis</option>
+                            <option value="soft_skill" {{ request('category') === 'soft_skill' ? 'selected' : '' }}>Soft Skill</option>
+                        </select>
+                        <div class="flex gap-2">
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                                Cari
+                            </button>
+                            @if(request('search') || request('status') || request('level') || request('category'))
+                            <a href="{{ route('education.courses.index') }}" class="px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition text-sm font-medium">
+                                Reset
+                            </a>
+                            @endif
+                        </div>
+                    </form>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
                         <thead class="bg-gray-50 dark:bg-slate-900/50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kursus</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kategori</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Level</th>
@@ -57,6 +96,7 @@
                         <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
                             @forelse($courses as $course)
                             <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">{{ $loop->iteration + ($courses->firstItem() ?: 1) - 1 }}</td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $course->title }}</div>
                                     <div class="text-xs text-gray-500 dark:text-slate-400">{{ Str::limit($course->description, 60) }}</div>
@@ -112,8 +152,18 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">
-                                    Belum ada kursus. <a href="{{ route('education.courses.create') }}" class="text-blue-600 hover:underline">Tambahkan sekarang</a>.
+                                <td colspan="8" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">
+                                    @if(request('search') || request('status') || request('level') || request('category'))
+                                        <div class="flex flex-col items-center">
+                                            <svg class="w-12 h-12 text-gray-300 dark:text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                            </svg>
+                                            <p class="font-medium">Tidak ada kursus yang sesuai dengan pencarian</p>
+                                            <p class="text-sm mt-1">Coba gunakan kata kunci yang berbeda atau <a href="{{ route('education.courses.index') }}" class="text-blue-600 hover:underline">reset pencarian</a></p>
+                                        </div>
+                                    @else
+                                        Belum ada kursus. <a href="{{ route('education.courses.create') }}" class="text-blue-600 hover:underline">Tambahkan sekarang</a>.
+                                    @endif
                                 </td>
                             </tr>
                             @endforelse

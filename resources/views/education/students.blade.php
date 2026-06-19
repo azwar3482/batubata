@@ -43,8 +43,36 @@
 
             <!-- Table -->
             <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden">
-                <div class="p-6 border-b border-gray-200 dark:border-slate-800 flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Daftar Siswa {{ $institution->name }}</h3>
+                <div class="p-6 border-b border-gray-200 dark:border-slate-800">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Daftar Siswa {{ $institution->name }}</h3>
+                        <form action="{{ route('education.students') }}" method="GET" class="flex flex-col sm:flex-row gap-2">
+                            <div class="relative">
+                                <input type="text" name="search" value="{{ request('search') }}" 
+                                    placeholder="Cari nama, email, jurusan..."
+                                    class="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+                            <select name="status" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg text-sm">
+                                <option value="">Semua Status</option>
+                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
+                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
+                                <option value="employed" {{ request('status') === 'employed' ? 'selected' : '' }}>Bekerja</option>
+                            </select>
+                            <div class="flex gap-2">
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                                    Cari
+                                </button>
+                                @if(request('search') || request('status'))
+                                <a href="{{ route('education.students') }}" class="px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition text-sm font-medium">
+                                    Reset
+                                </a>
+                                @endif
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
@@ -103,13 +131,23 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right text-sm font-medium">
-                                        <a href="#" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">Detail</a>
+                                        <a href="{{ route('education.students.show', $student) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">Detail</a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-slate-400">
-                                        Belum ada data siswa untuk institusi ini.
+                                        @if(request('search') || request('status'))
+                                            <div class="flex flex-col items-center">
+                                                <svg class="w-12 h-12 text-gray-300 dark:text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                                </svg>
+                                                <p class="font-medium">Tidak ada siswa yang sesuai dengan pencarian</p>
+                                                <p class="text-sm mt-1">Coba gunakan kata kunci yang berbeda atau <a href="{{ route('education.students') }}" class="text-blue-600 hover:underline">reset pencarian</a></p>
+                                            </div>
+                                        @else
+                                            Belum ada data siswa untuk institusi ini.
+                                        @endif
                                     </td>
                                 </tr>
                             @endforelse

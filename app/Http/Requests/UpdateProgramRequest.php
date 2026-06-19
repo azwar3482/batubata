@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProgramRequest extends FormRequest
+class UpdateProgramRequest extends FormRequest
 {
     public function authorize()
     {
@@ -21,7 +21,8 @@ class StoreProgramRequest extends FormRequest
             'learning_objectives' => 'required|array',
             'learning_objectives.*' => 'required|string|max:5000',
             'target_students' => 'required|integer|min:1|max:500',
-            'start_date' => 'required|date|after:today',
+            'start_date' => 'required|date',
+            'status' => 'required|string|in:active,upcoming,completed',
             'industry_partners' => 'nullable|array',
             'curriculum_file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
         ];

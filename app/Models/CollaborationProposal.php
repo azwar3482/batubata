@@ -15,7 +15,8 @@ class CollaborationProposal extends Model
         'title',
         'description',
         'expected_outcome',
-        'timeline',
+        'timeline_start',
+        'timeline_end',
         'contact_person',
         'contact_email',
         'contact_phone',
@@ -27,6 +28,8 @@ class CollaborationProposal extends Model
 
     protected $casts = [
         'collaboration_types' => 'array',
+        'timeline_start' => 'date',
+        'timeline_end' => 'date',
         'response_at' => 'datetime',
     ];
 

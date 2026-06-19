@@ -30,8 +30,9 @@ window.searchableDropdown = function(config) {
 };
 </script>
 
-<div class="max-w-4xl mx-auto px-4 sm:px-6 py-1">
-    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
         <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         <a href="{{ route('admin.users') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Pengguna</a>
@@ -130,5 +131,6 @@ window.searchableDropdown = function(config) {
             </div>
         </form>
     </div>
+</div>
 </div>
 </x-app-layout>

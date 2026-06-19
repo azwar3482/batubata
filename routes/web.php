@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Education\DashboardController as EducationDashboardController;
 use App\Http\Controllers\Education\PartnersController;
 use App\Http\Controllers\Industry\DashboardController as IndustryDashboardController;
-use App\Http\Controllers\Industry\DashboardController as IndustryDashboard;
 use App\Http\Controllers\Industry\JobPostingController;
 
 
@@ -58,18 +57,6 @@ Route::get('/syarat-ketentuan', function () {
 
 
 
-// Group Industri
-Route::prefix('industry')->name('industry.')->middleware(['auth', 'verified', 'role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer'])->group(function () {
-    Route::get('/dashboard', [IndustryDashboard::class, 'index'])->name('dashboard');
-    Route::get('/jobs', [JobPostingController::class, 'index'])->name('jobs.index');
-    Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create');
-    Route::post('/jobs/store', [JobPostingController::class, 'store'])->name('jobs.store');
-    Route::get('/jobs/{id}', [JobPostingController::class, 'show'])->name('jobs.show');
-    Route::get('/jobs/{id}/edit', [JobPostingController::class, 'edit'])->name('jobs.edit');
-    Route::put('/jobs/{id}', [JobPostingController::class, 'update'])->name('jobs.update');
-    Route::delete('/jobs/{id}', [JobPostingController::class, 'destroy'])->name('jobs.destroy');
-    Route::get('/jobs/{id}/report', [JobPostingController::class, 'downloadReport'])->name('jobs.report');
-});
 
 
 
@@ -173,47 +160,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // =====================
-    // ADMIN ROUTES
-    // =====================
-    Route::prefix('admin')->name('admin.')->middleware('can:access-admin', 'role:admin')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
-        Route::get('/competencies', [AdminDashboardController::class, 'competencies'])->name('competencies');
-        Route::get('/reports', [AdminDashboardController::class, 'reports'])->name('reports');
-
-        // Settings & Competency Management
-        Route::get('/settings', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');
-        Route::post('/settings/competency/{id}', [App\Http\Controllers\Admin\SettingsController::class, 'updateCompetency'])->name('settings.competency.update');
-        Route::post('/settings/system', [App\Http\Controllers\Admin\SettingsController::class, 'updateSystemSettings'])->name('settings.system');
-        Route::post('/settings/sync', [App\Http\Controllers\Admin\SettingsController::class, 'syncCompetencies'])->name('settings.sync');
-
-        // TPA Management
-        Route::get('/tpa', [App\Http\Controllers\Admin\TpaController::class, 'dashboard'])->name('tpa.dashboard');
-        Route::get('/tpa/questions', [App\Http\Controllers\Admin\TpaController::class, 'questions'])->name('tpa.questions');
-        Route::get('/tpa/questions/create', [App\Http\Controllers\Admin\TpaController::class, 'createQuestion'])->name('tpa.questions.create');
-        Route::post('/tpa/questions', [App\Http\Controllers\Admin\TpaController::class, 'storeQuestion'])->name('tpa.questions.store');
-        Route::get('/tpa/questions/{question}/edit', [App\Http\Controllers\Admin\TpaController::class, 'editQuestion'])->name('tpa.questions.edit');
-        Route::put('/tpa/questions/{question}', [App\Http\Controllers\Admin\TpaController::class, 'updateQuestion'])->name('tpa.questions.update');
-        Route::delete('/tpa/questions/{question}', [App\Http\Controllers\Admin\TpaController::class, 'destroyQuestion'])->name('tpa.questions.destroy');
-        Route::get('/tpa/tests', [App\Http\Controllers\Admin\TpaController::class, 'tests'])->name('tpa.tests');
-        Route::get('/tpa/tests/create', [App\Http\Controllers\Admin\TpaController::class, 'createTest'])->name('tpa.tests.create');
-        Route::post('/tpa/tests', [App\Http\Controllers\Admin\TpaController::class, 'storeTest'])->name('tpa.tests.store');
-        Route::get('/tpa/tests/{test}/edit', [App\Http\Controllers\Admin\TpaController::class, 'editTest'])->name('tpa.tests.edit');
-        Route::put('/tpa/tests/{test}', [App\Http\Controllers\Admin\TpaController::class, 'updateTest'])->name('tpa.tests.update');
-        Route::delete('/tpa/tests/{test}', [App\Http\Controllers\Admin\TpaController::class, 'destroyTest'])->name('tpa.tests.destroy');
-        Route::get('/tpa/results', [App\Http\Controllers\Admin\TpaController::class, 'results'])->name('tpa.results');
-        Route::get('/tpa/results/{result}', [App\Http\Controllers\Admin\TpaController::class, 'showResult'])->name('tpa.results.show');
-        Route::get('/tpa/results/{result}/pdf', [App\Http\Controllers\Admin\TpaController::class, 'downloadPdf'])->name('tpa.results.pdf');
-    });
-
-    // =====================
     // INDUSTRY ROUTES
     // =====================
     Route::prefix('industry')->name('industry.')->middleware('role:industry,staf_hr_manager,staf_recruiter,staf_talent_sourcer,staf_interviewer')->group(function () {
         Route::get('/dashboard', [IndustryDashboardController::class, 'index'])->name('dashboard');
         Route::get('/dashboard/report', [IndustryDashboardController::class, 'downloadReport'])->name('dashboard.report');
+        Route::get('/jobs', [JobPostingController::class, 'index'])->name('jobs.index');
         Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create');
         Route::post('/jobs/store', [JobPostingController::class, 'store'])->name('jobs.store');
+        Route::get('/jobs/{id}', [JobPostingController::class, 'show'])->name('jobs.show');
+        Route::get('/jobs/{id}/edit', [JobPostingController::class, 'edit'])->name('jobs.edit');
+        Route::put('/jobs/{id}', [JobPostingController::class, 'update'])->name('jobs.update');
+        Route::delete('/jobs/{id}', [JobPostingController::class, 'destroy'])->name('jobs.destroy');
+        Route::get('/jobs/{id}/report', [JobPostingController::class, 'downloadReport'])->name('jobs.report');
         Route::get('/candidates', [App\Http\Controllers\Industry\CandidateController::class, 'index'])->name('candidates');
         Route::get('/candidates/{id}', [App\Http\Controllers\Industry\CandidateController::class, 'show'])->name('candidates.show');
         Route::put('/applications/{id}/status', [App\Http\Controllers\Industry\CandidateController::class, 'updateStatus'])->name('applications.update-status');
@@ -324,7 +283,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/analytics', function () {
             return view('education.analytics');
         })->name('analytics');
+        Route::get('/analytics/export/excel', [\App\Http\Controllers\Education\AnalyticsController::class, 'exportExcel'])->name('analytics.export.excel');
+        Route::get('/analytics/export/pdf', [\App\Http\Controllers\Education\AnalyticsController::class, 'exportPdf'])->name('analytics.export.pdf');
         Route::get('/students', [\App\Http\Controllers\Education\StudentController::class, 'index'])->name('students');
+        Route::get('/students/{student}', [\App\Http\Controllers\Education\StudentController::class, 'show'])->name('students.show');
 
         // Course Management (Education role - using teacher_courses table)
         Route::get('/courses', [\App\Http\Controllers\Education\CourseController::class, 'index'])->name('courses.index');
@@ -341,6 +303,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/programs', [App\Http\Controllers\Education\ProgramController::class, 'index'])->name('programs');
         Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('programs.create');
         Route::post('/programs', [App\Http\Controllers\Education\ProgramController::class, 'store'])->name('programs.store');
+        Route::get('/programs/{program}/edit', [App\Http\Controllers\Education\ProgramController::class, 'edit'])->name('programs.edit');
+        Route::put('/programs/{program}', [App\Http\Controllers\Education\ProgramController::class, 'update'])->name('programs.update');
+        Route::delete('/programs/{program}', [App\Http\Controllers\Education\ProgramController::class, 'destroy'])->name('programs.destroy');
+        Route::get('/programs/{program}/report', [App\Http\Controllers\Education\ProgramController::class, 'report'])->name('programs.report');
 
         // ⭐ Partners & Collaboration Routes ⭐
         Route::get('/partners', [\App\Http\Controllers\Education\PartnersController::class, 'index'])->name('partners');
@@ -432,6 +398,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/career-fields/{careerField}/paths/{path}/edit', [\App\Http\Controllers\Admin\CareerFieldController::class, 'editPath'])->name('career-fields.edit-path');
         Route::put('/career-fields/{careerField}/paths/{path}', [\App\Http\Controllers\Admin\CareerFieldController::class, 'updatePath'])->name('career-fields.update-path');
         Route::delete('/career-fields/{careerField}/paths/{path}', [\App\Http\Controllers\Admin\CareerFieldController::class, 'destroyPath'])->name('career-fields.destroy-path');
+
+        // TPA Management
+        Route::get('/tpa', [\App\Http\Controllers\Admin\TpaController::class, 'dashboard'])->name('tpa.dashboard');
+        Route::get('/tpa/questions', [\App\Http\Controllers\Admin\TpaController::class, 'questions'])->name('tpa.questions');
+        Route::get('/tpa/questions/create', [\App\Http\Controllers\Admin\TpaController::class, 'createQuestion'])->name('tpa.questions.create');
+        Route::post('/tpa/questions', [\App\Http\Controllers\Admin\TpaController::class, 'storeQuestion'])->name('tpa.questions.store');
+        Route::get('/tpa/questions/{question}/edit', [\App\Http\Controllers\Admin\TpaController::class, 'editQuestion'])->name('tpa.questions.edit');
+        Route::put('/tpa/questions/{question}', [\App\Http\Controllers\Admin\TpaController::class, 'updateQuestion'])->name('tpa.questions.update');
+        Route::delete('/tpa/questions/{question}', [\App\Http\Controllers\Admin\TpaController::class, 'destroyQuestion'])->name('tpa.questions.destroy');
+        Route::get('/tpa/tests', [\App\Http\Controllers\Admin\TpaController::class, 'tests'])->name('tpa.tests');
+        Route::get('/tpa/tests/create', [\App\Http\Controllers\Admin\TpaController::class, 'createTest'])->name('tpa.tests.create');
+        Route::post('/tpa/tests', [\App\Http\Controllers\Admin\TpaController::class, 'storeTest'])->name('tpa.tests.store');
+        Route::get('/tpa/tests/{test}/edit', [\App\Http\Controllers\Admin\TpaController::class, 'editTest'])->name('tpa.tests.edit');
+        Route::put('/tpa/tests/{test}', [\App\Http\Controllers\Admin\TpaController::class, 'updateTest'])->name('tpa.tests.update');
+        Route::delete('/tpa/tests/{test}', [\App\Http\Controllers\Admin\TpaController::class, 'destroyTest'])->name('tpa.tests.destroy');
+        Route::get('/tpa/results', [\App\Http\Controllers\Admin\TpaController::class, 'results'])->name('tpa.results');
+        Route::get('/tpa/results/{result}', [\App\Http\Controllers\Admin\TpaController::class, 'showResult'])->name('tpa.results.show');
+        Route::get('/tpa/results/{result}/pdf', [\App\Http\Controllers\Admin\TpaController::class, 'downloadPdf'])->name('tpa.results.pdf');
     });
 
 

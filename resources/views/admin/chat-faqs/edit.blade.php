@@ -12,126 +12,184 @@
     .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
     .trix-content a { color: #3b82f6; text-decoration: underline; }
 </style>
-<div class="px-4 sm:px-6 lg:px-8 py-8">
-    <div class="max-w-3xl mx-auto">
-        <a href="{{ route('admin.chat-faqs.index') }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali</a>
-        <h1 class="text-2xl font-bold mb-6">Edit FAQ</h1>
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="{{ route('admin.chat-faqs.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Chat FAQs</a>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-gray-900 dark:text-white font-medium">Edit</span>
+        </nav>
 
-        <form action="{{ route('admin.chat-faqs.update', $faq) }}" method="POST" x-data="faqForm()" class="bg-white rounded-xl shadow-sm p-6 space-y-5">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit FAQ</h2>
+            <a href="{{ route('admin.chat-faqs.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+                &laquo; Kembali
+            </a>
+        </div>
+
+        <form action="{{ route('admin.chat-faqs.update', $chat_faq) }}" method="POST" x-data="faqForm()" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             @csrf @method('PUT')
 
-            <div>
-                <label class="block text-sm font-medium mb-1">Pertanyaan <span class="text-red-500">*</span></label>
-                <input type="text" name="question" value="{{ old('question', $faq->question) }}" class="w-full border rounded-lg px-3 py-2" required>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Jawaban <span class="text-red-500">*</span></label>
-                <input type="hidden" name="answer" id="answer" value="{{ old('answer', $faq->answer) }}">
-                <trix-editor input="answer" class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-lg text-sm" placeholder="Tuliskan jawaban yang lengkap dan jelas..."></trix-editor>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">Kategori</label>
-                    <select name="category" class="w-full border rounded-lg px-3 py-2">
-                        @foreach(['umum', 'job_seeker', 'industry', 'education', 'tpa'] as $cat)
-                        <option value="{{ $cat }}" {{ old('category', $faq->category) === $cat ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $cat)) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Prioritas (0-100)</label>
-                    <input type="number" name="priority" value="{{ old('priority', $faq->priority) }}" class="w-full border rounded-lg px-3 py-2" min="0" max="100">
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Role yang Bisa Melihat</label>
-                <div class="flex gap-4">
-                    @foreach(['job_seeker', 'industry', 'education', 'admin'] as $role)
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox" name="roles[]" value="{{ $role }}" class="rounded" {{ in_array($role, old('roles', $faq->roles ?? [])) ? 'checked' : '' }}>
-                        <span class="text-sm">{{ ucfirst(str_replace('_', ' ', $role)) }}</span>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Keywords (pisahkan koma)</label>
-                <input type="text" name="keywords" value="{{ old('keywords', implode(', ', $faq->keywords ?? [])) }}" class="w-full border rounded-lg px-3 py-2" placeholder="lamar, apply, melamar">
-            </div>
-
-            {{-- Deep Links Builder --}}
-            <div>
-                <label class="block text-sm font-medium mb-1">Link Menu Terkait</label>
-                <p class="text-xs text-gray-500 mb-2">Tambahkan link ke menu yang relevan agar user bisa langsung navigasi</p>
-
-                <div class="space-y-2">
-                    <template x-for="(link, index) in links" :key="index">
-                        <div class="flex items-center gap-2 bg-gray-50 p-2 rounded-lg">
-                            <input type="text" x-model="link.label" class="flex-1 border rounded px-2 py-1.5 text-sm" placeholder="Label">
-                            <select x-model="link.url" class="border rounded px-2 py-1.5 text-sm w-48" @change="if($event.target.value) link.url = $event.target.value">
-                                <option value="">-- Pilih Menu --</option>
-                                <optgroup label="Job Seeker">
-                                    <option value="/dashboard">Dashboard</option>
-                                    <option value="/profile">Profil</option>
-                                    <option value="/seeker/assessment">Assessment</option>
-                                    <option value="/seeker/roadmap">Roadmap</option>
-                                    <option value="/seeker/jobs">Cari Lowongan</option>
-                                    <option value="/seeker/jobs/my-applications">Lamaran Saya</option>
-                                    <option value="/seeker/courses">Kursus</option>
-                                    <option value="/seeker/tpa">Tes TPA</option>
-                                    <option value="/notifications">Notifikasi</option>
-                                </optgroup>
-                                <optgroup label="Industry">
-                                    <option value="/industry/dashboard">Dashboard Industry</option>
-                                    <option value="/industry/jobs">Posting Lowongan</option>
-                                    <option value="/industry/candidates">Kandidat</option>
-                                    <option value="/industry/tpa">Tes TPA</option>
-                                    <option value="/industry/tpa/questions">Bank Soal</option>
-                                    <option value="/industry/tpa/results">Hasil TPA</option>
-                                    <option value="/industry/team">Kelola Tim</option>
-                                </optgroup>
-                                <optgroup label="Education">
-                                    <option value="/education/dashboard">Dashboard Education</option>
-                                    <option value="/education/courses">Kelola Kursus</option>
-                                    <option value="/education/programs">Program</option>
-                                    <option value="/education/partners">Mitra</option>
-                                </optgroup>
-                                <optgroup label="Admin">
-                                    <option value="/admin/dashboard">Dashboard Admin</option>
-                                    <option value="/admin/users">Kelola User</option>
-                                    <option value="/admin/competencies">Kompetensi</option>
-                                    <option value="/admin/tpa">Tes TPA</option>
-                                    <option value="/admin/chat-faqs">Chat FAQ</option>
-                                </optgroup>
-                            </select>
-                            <input type="text" x-model="link.url" class="flex-1 border rounded px-2 py-1.5 text-sm" placeholder="URL">
-                            <button type="button" @click="removeLink(index)" class="text-red-500 hover:text-red-700 p-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </button>
+            <!-- Main Left Column (2/3) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Card: Isi FAQ -->
+                <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Isi FAQ</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Pertanyaan <span class="text-red-500">*</span></label>
+                            <input type="text" name="question" value="{{ old('question', $chat_faq->question) }}" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors" required>
                         </div>
-                    </template>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Jawaban <span class="text-red-500">*</span></label>
+                            <input type="hidden" name="answer" id="answer" value="{{ old('answer', $chat_faq->answer) }}">
+                            <trix-editor input="answer" class="trix-content bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" placeholder="Tuliskan jawaban yang lengkap dan jelas..."></trix-editor>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="button" @click="addLink()" class="mt-2 text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Tambah Link
-                </button>
+                <!-- Card: Deep Links Builder -->
+                <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 border-b pb-2 border-gray-100 dark:border-slate-800">Link Menu Terkait</h3>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mb-4">Tambahkan tautan navigasi instan untuk membantu pengguna berpindah menu secara langsung.</p>
 
-                <input type="hidden" name="deep_links" :value="JSON.stringify(links.filter(l => l.label && l.url))">
+                    <div class="space-y-3">
+                        <template x-for="(link, index) in links" :key="index">
+                            <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 bg-gray-50 dark:bg-slate-800/40 p-4 rounded-xl border border-gray-100 dark:border-slate-800">
+                                <div class="flex-1">
+                                    <input type="text" x-model="link.label" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Label Link (cth: Profil Saya)">
+                                </div>
+                                <div>
+                                    <select x-model="link.url" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm md:w-48" @change="if($event.target.value) link.url = $event.target.value">
+                                        <option value="">-- Pilih Menu --</option>
+                                        <optgroup label="Job Seeker">
+                                            <option value="/dashboard">Dashboard</option>
+                                            <option value="/profile">Profil</option>
+                                            <option value="/seeker/assessment">Assessment</option>
+                                            <option value="/seeker/roadmap">Roadmap</option>
+                                            <option value="/seeker/jobs">Cari Lowongan</option>
+                                            <option value="/seeker/jobs/my-applications">Lamaran Saya</option>
+                                            <option value="/seeker/courses">Kursus</option>
+                                            <option value="/seeker/tpa">Tes TPA</option>
+                                            <option value="/notifications">Notifikasi</option>
+                                        </optgroup>
+                                        <optgroup label="Industry">
+                                            <option value="/industry/dashboard">Dashboard Industry</option>
+                                            <option value="/industry/jobs">Posting Lowongan</option>
+                                            <option value="/industry/candidates">Kandidat</option>
+                                            <option value="/industry/tpa">Tes TPA</option>
+                                            <option value="/industry/tpa/questions">Bank Soal</option>
+                                            <option value="/industry/tpa/results">Hasil TPA</option>
+                                            <option value="/industry/team">Kelola Tim</option>
+                                        </optgroup>
+                                        <optgroup label="Education">
+                                            <option value="/education/dashboard">Dashboard Education</option>
+                                            <option value="/education/courses">Kelola Kursus</option>
+                                            <option value="/education/programs">Program</option>
+                                            <option value="/education/partners">Mitra</option>
+                                        </optgroup>
+                                        <optgroup label="Admin">
+                                            <option value="/admin/dashboard">Dashboard Admin</option>
+                                            <option value="/admin/users">Kelola User</option>
+                                            <option value="/admin/competencies">Kompetensi</option>
+                                            <option value="/admin/tpa">Tes TPA</option>
+                                            <option value="/admin/chat-faqs">Chat FAQ</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="flex-1">
+                                    <input type="text" x-model="link.url" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="URL Kustom (cth: /seeker/roadmap)">
+                                </div>
+                                <button type="button" @click="removeLink(index)" class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors flex items-center justify-center">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+
+                    <button type="button" @click="addLink()" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Tambah Link
+                    </button>
+
+                    <input type="hidden" name="deep_links" :value="JSON.stringify(links.filter(l => l.label && l.url))">
+                </div>
             </div>
 
-            <div>
-                <label class="flex items-center gap-2">
-                    <input type="checkbox" name="is_active" value="1" {{ old('is_active', $faq->is_active) ? 'checked' : '' }} class="rounded">
-                    <span class="text-sm">Aktif</span>
-                </label>
-            </div>
+            <!-- Right Column (1/3) -->
+            <div class="lg:col-span-1 space-y-6">
+                
+                <!-- Card: Klasifikasi & Akses -->
+                <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Klasifikasi &amp; Urutan</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Kategori</label>
+                            <select name="category" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors">
+                                @foreach(['umum', 'job_seeker', 'industry', 'education', 'tpa'] as $cat)
+                                <option value="{{ $cat }}" {{ old('category', $chat_faq->category) === $cat ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $cat)) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Prioritas (0-100)</label>
+                            <input type="number" name="priority" value="{{ old('priority', $chat_faq->priority) }}" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors" min="0" max="100">
+                        </div>
+                    </div>
+                </div>
 
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold">Update FAQ</button>
+                <!-- Card: Otoritas Role -->
+                <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Target Role</h3>
+                    
+                    <div class="space-y-3">
+                        @foreach(['job_seeker', 'industry', 'education', 'admin'] as $role)
+                        <label class="flex items-center gap-2.5 cursor-pointer">
+                            <input type="checkbox" name="roles[]" value="{{ $role }}" class="rounded border-gray-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500 bg-white dark:bg-slate-800" {{ in_array($role, old('roles', $chat_faq->roles ?? [])) ? 'checked' : '' }}>
+                            <span class="text-sm font-medium text-gray-700 dark:text-slate-300">{{ ucfirst(str_replace('_', ' ', $role)) }}</span>
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Card: Pencarian & Metadata -->
+                <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Metadata &amp; Aksi</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Keywords (pisahkan koma)</label>
+                            <input type="text" name="keywords" value="{{ old('keywords', implode(', ', $chat_faq->keywords ?? [])) }}" class="w-full rounded-lg border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors" placeholder="lamar, apply, melamar">
+                        </div>
+
+                        <div>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="is_active" value="1" {{ old('is_active', $chat_faq->is_active) ? 'checked' : '' }} class="rounded border-gray-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500 bg-white dark:bg-slate-800">
+                                <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Tampilkan FAQ (Aktif)</span>
+                            </label>
+                        </div>
+
+                        <div class="space-y-3 pt-2">
+                            <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg text-sm font-bold transition shadow-sm hover:scale-[1.01]">
+                                Update FAQ
+                            </button>
+                            <a href="{{ route('admin.chat-faqs.index') }}" class="w-full inline-flex justify-center items-center px-4 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
+                                Batal
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </form>
     </div>
 </div>
@@ -139,7 +197,7 @@
 <script>
 document.addEventListener('alpine:init', () => {
     Alpine.data('faqForm', () => ({
-        links: @json(old('deep_links', $faq->deep_links ?? [{ label: '', url: '' }])),
+        links: @json(old('deep_links', $chat_faq->deep_links ?? [['label' => '', 'url' => '']])),
         init() {
             if (!this.links || this.links.length === 0) {
                 this.links = [{ label: '', url: '' }];
@@ -158,3 +216,4 @@ document.addEventListener('alpine:init', () => {
 });
 </script>
 </x-app-layout>
+

@@ -49,30 +49,30 @@
                 </tr>
             </thead>
             <tbody class="divide-y">
-                @forelse($faqs as $faq)
+                @forelse($chat_faqs as $chat_faq)
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-3 text-center text-sm text-gray-600">
-                        {{ ($faqs->currentPage() - 1) * $faqs->perPage() + $loop->iteration }}
+                        {{ ($chat_faqs->currentPage() - 1) * $chat_faqs->perPage() + $loop->iteration }}
                     </td>
                     <td class="px-4 py-3">
-                        <div class="text-sm font-medium text-gray-800">{{ Str::limit($faq->question, 80) }}</div>
-                        <div class="text-xs text-gray-500 mt-1">{{ Str::limit(strip_tags($faq->answer), 100) }}</div>
+                        <div class="text-sm font-medium text-gray-800">{{ Str::limit($chat_faq->question, 80) }}</div>
+                        <div class="text-xs text-gray-500 mt-1">{{ Str::limit(strip_tags($chat_faq->answer), 100) }}</div>
                     </td>
                     <td class="px-4 py-3">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{{ $faq->category ?? 'umum' }}</span>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{{ $chat_faq->category ?? 'umum' }}</span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                        @if($faq->roles)
-                            @foreach($faq->roles as $role)
+                        @if($chat_faq->roles)
+                            @foreach($chat_faq->roles as $role)
                             <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">{{ $role }}</span>
                             @endforeach
                         @else
                         <span class="text-xs text-gray-400">Semua</span>
                         @endif
                     </td>
-                    <td class="px-4 py-3 text-center text-sm">{{ $faq->priority }}</td>
+                    <td class="px-4 py-3 text-center text-sm">{{ $chat_faq->priority }}</td>
                     <td class="px-4 py-3 text-center">
-                        @if($faq->is_active)
+                        @if($chat_faq->is_active)
                         <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Aktif</span>
                         @else
                         <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded text-xs">Nonaktif</span>
@@ -80,8 +80,8 @@
                     </td>
                     <td class="px-4 py-3 text-center">
                         <div class="flex items-center justify-center gap-2">
-                            <a href="{{ route('admin.chat-faqs.edit', $faq) }}" class="text-blue-600 hover:underline text-sm">Edit</a>
-                            <form action="{{ route('admin.chat-faqs.destroy', $faq) }}" method="POST" onsubmit="return confirm('Hapus FAQ ini?')">
+                            <a href="{{ route('admin.chat-faqs.edit', $chat_faq) }}" class="text-blue-600 hover:underline text-sm">Edit</a>
+                            <form action="{{ route('admin.chat-faqs.destroy', $chat_faq) }}" method="POST" onsubmit="return confirm('Hapus FAQ ini?')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:underline text-sm">Hapus</button>
                             </form>
@@ -98,6 +98,6 @@
             </tbody>
         </table>
     </div>
-    <div class="mt-4">{{ $faqs->appends(request()->query())->links() }}</div>
+    <div class="mt-4">{{ $chat_faqs->appends(request()->query())->links() }}</div>
 </div>
 </x-app-layout>

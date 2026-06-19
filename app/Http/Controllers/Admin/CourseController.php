@@ -9,9 +9,32 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('competency')->latest()->paginate(10);
+        $query = Course::with('competency');
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('platform', 'like', "%{$search}%")
+                  ->orWhere('category', 'like', "%{$search}%")
+                  ->orWhereHas('competency', function ($cq) use ($search) {
+                      $cq->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        if ($level = $request->input('level')) {
+            $query->where('level', $level);
+        }
+
+        if ($category = $request->input('category')) {
+            $query->where('category', $category);
+        }
+
+        $courses = $query->latest()->paginate(10)->appends($request->query());
+
         return view('admin.courses.index', compact('courses'));
     }
 

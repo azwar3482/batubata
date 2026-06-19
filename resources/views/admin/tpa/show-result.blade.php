@@ -1,5 +1,12 @@
 <x-app-layout>
 <div class="max-w-4xl mx-auto px-4 py-8">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
+        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('admin.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 dark:text-white font-medium">Hasil</span>
+    </nav>
     <div class="flex items-center justify-between mb-6">
         <a href="{{ route('admin.tpa.results') }}" class="text-blue-600 hover:underline text-sm">&laquo; Kembali</a>
         <a href="{{ route('admin.tpa.results.pdf', $result) }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">

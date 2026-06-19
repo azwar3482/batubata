@@ -1,20 +1,57 @@
 <x-app-layout>
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+        .trix-button-group { background: white; }
+        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
+        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
+        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
+        trix-editor { min-height: 150px; }
+        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
+        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .trix-content a { color: #3b82f6; text-decoration: underline; }
+        .trix-content strong { font-weight: 700; }
+        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
+        .trix-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.5rem; }
+        .trix-content p { margin-bottom: 0.5rem; }
+        .trix-content blockquote { border-left: 3px solid #cbd5e1; padding-left: 1rem; margin-left: 0; color: #64748b; }
+    </style>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            <!-- Breadcrumb -->
+            <div class="mb-6">
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                                <a href="{{ route('education.partners') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 ml-1 md:ml-2 text-sm">
+                                    Mitra
+                                </a>
+                            </div>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                                <span class="text-gray-900 dark:text-white ml-1 md:ml-2 text-sm font-medium">Ajukan Kolaborasi</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
 
             <!-- Header -->
             <div class="mb-8">
-                <a href="{{ route('education.partners') }}"
-                    class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Kembali ke Daftar Mitra
-                </a>
-                <h2 class="text-3xl font-extrabold text-gray-900">Ajukan Kolaborasi</h2>
-                <p class="mt-2 text-gray-600">Isi formulir berikut untuk mengajukan proposal kolaborasi dengan mitra
-                    industri pilihan Anda.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Ajukan Kolaborasi</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">Isi formulir berikut untuk mengajukan proposal kolaborasi dengan mitra industri pilihan Anda.</p>
             </div>
 
             <form action="{{ route('education.collaboration.store') }}" method="POST" enctype="multipart/form-data"
@@ -65,17 +102,89 @@
                             <label for="partner_id" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                 Nama Perusahaan <span class="text-red-500">*</span>
                             </label>
-                            <select name="partner_id" id="partner_id" required
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                                onchange="updatePartnerInfo(this.value)">
-                                <option value="">-- Pilih Perusahaan --</option>
-                                @foreach ($partners as $partner)
-                                    <option value="{{ $partner['id'] }}"
-                                        {{ old('partner_id') == $partner['id'] || request('partner') == $partner['id'] ? 'selected' : '' }}>
-                                        {{ $partner['name'] }} - {{ $partner['industry'] }}
-                                    </option>
-                                @endforeach
-                            </select>
+
+                            <div x-data="{
+                                open: false,
+                                search: '',
+                                selected: '{{ old('partner_id', request('partner')) }}',
+                                selectedLabel: '-- Pilih Perusahaan --',
+                                options: [
+                                    @foreach ($partners as $partner)
+                                        { id: '{{ $partner['id'] }}', name: '{{ addslashes($partner['name']) }}', industry: '{{ addslashes($partner['industry']) }}' },
+                                    @endforeach
+                                ],
+                                get filteredOptions() {
+                                    if (this.search === '') return this.options;
+                                    return this.options.filter(i => i.name.toLowerCase().includes(this.search.toLowerCase()) || i.industry.toLowerCase().includes(this.search.toLowerCase()));
+                                },
+                                selectOption(opt) {
+                                    this.selected = opt.id;
+                                    this.selectedLabel = opt.name + ' - ' + opt.industry;
+                                    this.open = false;
+                                    this.search = '';
+                                    if (typeof updatePartnerInfo === 'function') {
+                                        updatePartnerInfo(this.selected);
+                                    }
+                                },
+                                init() {
+                                    if (this.selected) {
+                                        const match = this.options.find(o => o.id == this.selected);
+                                        if (match) {
+                                            this.selectedLabel = match.name + ' - ' + match.industry;
+                                            // Delay to ensure global function is declared
+                                            setTimeout(() => {
+                                                if (typeof updatePartnerInfo === 'function') {
+                                                    updatePartnerInfo(this.selected);
+                                                }
+                                            }, 50);
+                                        }
+                                    }
+                                }
+                            }" class="relative w-full" @click.away="open = false" x-init="init()">
+
+                                <input type="text" name="partner_id" id="partner_id" :value="selected" required class="absolute w-0 h-0 opacity-0 pointer-events-none" style="top: 50%;">
+
+                                <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())"
+                                    class="flex items-center justify-between w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 cursor-pointer transition"
+                                    :class="{'ring-2 ring-indigo-500 border-indigo-500': open}">
+                                    <span x-text="selected ? selectedLabel : '-- Pilih Perusahaan --'" :class="{'text-gray-400 dark:text-gray-500': !selected}"></span>
+                                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+
+                                <div x-show="open" style="display: none;"
+                                    x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="transform opacity-0 scale-95"
+                                    x-transition:enter-end="transform opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="transform opacity-100 scale-100"
+                                    x-transition:leave-end="transform opacity-0 scale-95"
+                                    class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg">
+
+                                    <div class="p-2 border-b border-gray-100 dark:border-slate-700">
+                                        <input type="text" x-model="search" placeholder="Cari perusahaan atau industri..."
+                                            class="w-full text-sm rounded-lg border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                                            @keydown.escape="open = false"
+                                            @keydown.enter.prevent="if(filteredOptions.length > 0) { selectOption(filteredOptions[0]) }"
+                                            x-ref="searchInput">
+                                    </div>
+
+                                    <ul class="max-h-60 overflow-y-auto p-1 custom-scrollbar">
+                                        <template x-for="option in filteredOptions" :key="option.id">
+                                            <li @click="selectOption(option)"
+                                                class="cursor-pointer px-3 py-2 rounded-lg text-sm transition-colors hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-slate-700 dark:hover:text-indigo-400"
+                                                :class="{'bg-indigo-50 text-indigo-600 dark:bg-slate-700 dark:text-indigo-400 font-semibold': selected == option.id, 'text-gray-700 dark:text-slate-200': selected != option.id}">
+                                                <span x-text="option.name + ' - ' + option.industry"></span>
+                                            </li>
+                                        </template>
+                                        <li x-show="filteredOptions.length === 0" class="px-3 py-2 text-sm text-gray-500 dark:text-slate-400 text-center">
+                                            Perusahaan tidak ditemukan
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
                             @error('partner_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -142,10 +251,10 @@
                             <label for="description" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                 Deskripsi Proposal <span class="text-red-500">*</span>
                             </label>
-                            <textarea name="description" id="description" rows="4" required
-                                placeholder="Jelaskan secara detail rencana kolaborasi yang Anda ajukan..."
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">{{ old('description') }}</textarea>
-                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Maksimal 1000 karakter</p>
+                            <input type="hidden" name="description" id="description" value="{{ old('description') }}" required>
+                            <trix-editor input="description"
+                                class="trix-content bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm"
+                                placeholder="Jelaskan secara detail rencana kolaborasi yang Anda ajukan..."></trix-editor>
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -156,9 +265,10 @@
                             <label for="expected_outcome" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                 Hasil yang Diharapkan <span class="text-red-500">*</span>
                             </label>
-                            <textarea name="expected_outcome" id="expected_outcome" rows="3" required
-                                placeholder="Apa manfaat yang diharapkan dari kolaborasi ini untuk kedua belah pihak?"
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">{{ old('expected_outcome') }}</textarea>
+                            <input type="hidden" name="expected_outcome" id="expected_outcome" value="{{ old('expected_outcome') }}" required>
+                            <trix-editor input="expected_outcome"
+                                class="trix-content bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm"
+                                placeholder="Apa manfaat yang diharapkan dari kolaborasi ini untuk kedua belah pihak?"></trix-editor>
                             @error('expected_outcome')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -166,15 +276,29 @@
 
                         <!-- Timeline -->
                         <div>
-                            <label for="timeline" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                 Timeline Pelaksanaan <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="timeline" id="timeline" value="{{ old('timeline') }}"
-                                required placeholder="Contoh: Januari - Juni 2024"
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                            @error('timeline')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="timeline_start" class="block text-xs text-gray-500 dark:text-slate-400 mb-1">Tanggal Mulai</label>
+                                    <input type="date" name="timeline_start" id="timeline_start" value="{{ old('timeline_start') }}"
+                                        required
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    @error('timeline_start')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="timeline_end" class="block text-xs text-gray-500 dark:text-slate-400 mb-1">Tanggal Selesai</label>
+                                    <input type="date" name="timeline_end" id="timeline_end" value="{{ old('timeline_end') }}"
+                                        required
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    @error('timeline_end')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -277,7 +401,7 @@
 
     <!-- Partner Info Data for JavaScript -->
     <script>
-        const partnerData = @json($partners);
+        const partnerData = @json($partners instanceof \Illuminate\Contracts\Pagination\Paginator ? $partners->items() : $partners);
 
         function updatePartnerInfo(partnerId) {
             const preview = document.getElementById('partnerPreview');

@@ -1,10 +1,30 @@
 <x-app-layout>
-    <div class="py-8">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
+
+            <!-- Breadcrumb -->
+            <div class="mb-6">
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                                <span class="text-gray-900 dark:text-white ml-1 md:ml-2 text-sm font-medium">Analitik</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Header -->
             <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900">Analitik Kompetensi Lulusan</h2>
-                <p class="mt-2 text-gray-600">Dashboard monitoring kompetensi dan skill gap rata-rata lulusan.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Analitik Kompetensi Lulusan</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">Dashboard monitoring kompetensi dan skill gap rata-rata lulusan.</p>
             </div>
 
             <!-- Info Card -->
@@ -68,6 +88,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kompetensi</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gap Rata-rata</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rekomendasi</th>
@@ -76,6 +97,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr>
+                                <td class="px-6 py-4 text-sm text-gray-500">1</td>
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">Data Analysis</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">52%</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">Tambah mata kuliah praktis Data Analytics</td>
@@ -84,6 +106,7 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="px-6 py-4 text-sm text-gray-500">2</td>
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">Digital Marketing</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">45%</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">Kolaborasi dengan industri untuk studi kasus</td>
@@ -92,6 +115,7 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="px-6 py-4 text-sm text-gray-500">3</td>
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">Project Management</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">38%</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">Integrasi metode Agile/Scrum dalam pembelajaran</td>
@@ -100,6 +124,7 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="px-6 py-4 text-sm text-gray-500">4</td>
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">Communication</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">25%</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">Workshop presentasi dan public speaking</td>
@@ -114,12 +139,14 @@
 
             <!-- Export Actions -->
             <div class="mt-8 flex justify-end gap-4">
-                <button class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium">
+                <a href="{{ route('education.analytics.export.excel') }}"
+                    class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium inline-flex items-center">
                     📊 Export Excel
-                </button>
-                <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+                </a>
+                <a href="{{ route('education.analytics.export.pdf') }}"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium inline-flex items-center">
                     📄 Download Laporan PDF
-                </button>
+                </a>
             </div>
         </div>
     </div>

@@ -54,9 +54,19 @@
             </div>
 
             <!-- Team Members Table -->
-            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden mb-8">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden mb-8" x-data="{ search: '' }">
                 <div class="p-6 border-b border-gray-100 dark:border-slate-800">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.team_management') }}</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.team_management') }}</h3>
+                        <div class="relative">
+                            <input type="text" x-model="search" 
+                                placeholder="Cari nama, email, atau role..."
+                                class="w-full sm:w-80 pl-10 pr-4 py-2.5 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition">
+                            <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-100 dark:divide-slate-800/50">
@@ -73,7 +83,10 @@
                         </thead>
                         <tbody class="bg-white dark:bg-slate-900 divide-y divide-gray-100 dark:divide-slate-800/50">
                             @foreach ($teamMembers as $member)
-                            <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors group">
+                            @php
+                                $searchData = strtolower($member['name'] . ' ' . $member['email'] . ' ' . $member['role']);
+                            @endphp
+                            <tr x-show="search === '' || '{{ $searchData }}'.includes(search.toLowerCase())" class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors group">
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-slate-300">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
@@ -157,6 +170,15 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <!-- No Results Message -->
+                            <tr x-show="search !== '' && !$el.parentElement.querySelector('tr:not([style*=&quot;display: none&quot;])')">
+                                <td colspan="7" class="px-6 py-12 text-center">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">Tidak ada anggota tim yang sesuai dengan pencarian "<span x-text="search"></span>"</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
