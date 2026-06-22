@@ -1,68 +1,22 @@
 <x-app-layout>
-    <!-- Trix Editor -->
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
-    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     <style>
-        .trix-button-group {
-            background: white;
-        }
-
-        .dark .trix-button-group {
-            background: #1e293b;
-            border-color: #334155;
-        }
-
-        .dark trix-toolbar [data-trix-button] {
-            color: #cbd5e1;
-            border-color: #334155;
-        }
-
-        .dark trix-toolbar [data-trix-button]:hover {
-            background: #334155;
-        }
-
-        .dark trix-toolbar [data-trix-button].trix-active {
-            background: #475569;
-            color: white;
-        }
-
-        trix-editor {
-            min-height: 150px;
-        }
-
-        .dark trix-editor {
-            background-color: #1e293b;
-            color: #f8fafc;
-            border-color: #334155;
-        }
-
-        .trix-content ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .trix-content ol {
-            list-style-type: decimal;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .trix-content a {
-            color: #3b82f6;
-            text-decoration: underline;
-        }
-
-        .trix-content strong {
-            font-weight: 700;
-        }
-
-        .trix-content h1 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
+.ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
+.ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
+.ql-editor { min-height: 150px; }
+.dark .ql-toolbar.ql-snow { background: #1e293b; border-color: #334155; }
+.dark .ql-toolbar.ql-snow .ql-stroke { stroke: #cbd5e1; }
+.dark .ql-toolbar.ql-snow .ql-fill { fill: #cbd5e1; }
+.dark .ql-toolbar.ql-snow button:hover .ql-stroke { stroke: #60a5fa; }
+.dark .ql-toolbar.ql-snow button:hover .ql-fill { fill: #60a5fa; }
+.dark .ql-toolbar.ql-snow .ql-active .ql-stroke { stroke: #3b82f6; }
+.dark .ql-toolbar.ql-snow .ql-active .ql-fill { fill: #3b82f6; }
+.dark .ql-container.ql-snow { background: #1e293b; border-color: #334155; color: #f8fafc; }
+.dark .ql-editor.ql-blank::before { color: #64748b; }
+.dark .ql-snow .ql-picker { color: #cbd5e1; }
+.dark .ql-snow .ql-picker-options { background: #1e293b; border-color: #334155; }
+.ql-snow .ql-tooltip { z-index: 50; }
     </style>
 
     <div class="py-12" x-data="tpaForm()">
@@ -123,7 +77,7 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1.5">Deskripsi <span class="text-gray-400 dark:text-slate-500 font-normal">(Opsional)</span></label>
                                 <input id="description" type="hidden" name="description" value="{{ old('description') }}">
-                                <trix-editor input="description" class="trix-content rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-purple-500 focus:ring-purple-500 transition-colors" placeholder="Jelaskan instruksi khusus atau tujuan tes ini..."></trix-editor>
+                                <div id="quill-description"></div>
                             </div>
 
                             <div>
@@ -533,5 +487,30 @@
                 }
             }))
         })
+    </script>
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill('#quill-description', {
+            theme: 'snow',
+            placeholder: 'Jelaskan instruksi khusus atau tujuan tes ini...',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'blockquote'],
+                    ['clean']
+                ]
+            }
+        });
+        var existing = document.getElementById('description').value;
+        if (existing) quill.root.innerHTML = existing;
+        var form = document.getElementById('quill-description').closest('form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                document.getElementById('description').value = quill.root.innerHTML;
+            });
+        }
+    });
     </script>
 </x-app-layout>

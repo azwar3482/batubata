@@ -1,5 +1,5 @@
 <x-app-layout>
-    @include('partials.trix-styles')
+    @include('partials.quill-styles')
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -165,9 +165,7 @@
                                 Deskripsi Program <span class="text-red-500">*</span>
                             </label>
                             <input id="description" type="hidden" name="description" value="{{ old('description') }}">
-                            <trix-editor input="description"
-                                class="trix-content w-full border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-                                placeholder="Jelaskan secara detail tentang program ini, manfaat bagi peserta, dan outline kegiatan..."></trix-editor>
+                            <div id="quill-description"></div>
                             <p class="text-xs text-gray-500 mt-1">Maksimal 2000 karakter. Gunakan bahasa yang jelas dan
                                 menarik.</p>
                             @error('description')
@@ -190,8 +188,7 @@
                                             class="flex-shrink-0 flex items-center justify-center w-8 h-10 bg-gray-100 rounded-lg text-sm font-medium text-gray-600">{{ $index + 1 }}.</span>
                                         <div class="flex-1">
                                             <input id="objective_{{ $index }}" type="hidden" name="learning_objectives[]" value="{{ $objective }}">
-                                            <trix-editor input="objective_{{ $index }}"
-                                                class="trix-content border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"></trix-editor>
+                                            <div id="quill-objective_{{ $index }}"></div>
                                         </div>
                                         @if ($index > 0)
                                             <button type="button" onclick="removeObjective(this)"
@@ -316,7 +313,7 @@
                         </div>
                         <div class="pt-3 border-t dark:border-slate-700">
                             <p class="text-gray-500 dark:text-gray-400 mb-2">Deskripsi Singkat:</p>
-                            <div class="text-gray-700 dark:text-gray-300 line-clamp-3 trix-content" id="preview-description">-</div>
+                            <div class="text-gray-700 dark:text-gray-300 line-clamp-3" id="preview-description">-</div>
                         </div>
                     </div>
                 </div>
@@ -362,19 +359,33 @@
             const container = document.getElementById('objectives-container');
             const index = container.children.length + 1;
             const id = 'objective_new_' + Date.now();
+            const quillId = 'quill-' + id;
             const div = document.createElement('div');
             div.className = 'flex items-start gap-3';
             div.innerHTML = `
                 <span class="flex-shrink-0 flex items-center justify-center w-8 h-10 bg-gray-100 rounded-lg text-sm font-medium text-gray-600">${index}.</span>
                 <div class="flex-1">
                     <input id="${id}" type="hidden" name="learning_objectives[]" required>
-                    <trix-editor input="${id}" class="trix-content border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" placeholder="Contoh: Mampu membuat kampanye digital marketing..."></trix-editor>
+                    <div id="${quillId}"></div>
                 </div>
                 <button type="button" onclick="removeObjective(this)" class="flex-shrink-0 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                 </button>
             `;
             container.appendChild(div);
+            var newQuill = new Quill('#' + quillId, {
+                theme: 'snow',
+                placeholder: 'Contoh: Mampu membuat kampanye digital marketing...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['link', 'blockquote'],
+                        ['clean']
+                    ]
+                }
+            });
+            window.quillEditors[id] = newQuill;
         }
 
         // Remove Learning Objective Field
@@ -407,12 +418,6 @@
             document.getElementById('preview-description').textContent = plainText.length > 150 ? plainText.substring(0, 150) + '...' : (plainText || '-');
         }
 
-        document.addEventListener('trix-change', function(e) {
-            if(e.target.getAttribute('input') === 'description') {
-                updatePreview();
-            }
-        });
-
         // File Preview
         function previewFile(input) {
             if (input.files && input.files[0]) {
@@ -425,5 +430,63 @@
 
         // Initialize preview on load
         document.addEventListener('DOMContentLoaded', updatePreview);
+    </script>
+
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script>
+    window.quillEditors = {};
+    document.addEventListener('DOMContentLoaded', function() {
+        var quillDesc = new Quill('#quill-description', {
+            theme: 'snow',
+            placeholder: 'Jelaskan secara detail tentang program ini, manfaat bagi peserta, dan outline kegiatan...',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'blockquote'],
+                    ['clean']
+                ]
+            }
+        });
+        var existingDesc = document.getElementById('description').value;
+        if (existingDesc) quillDesc.root.innerHTML = existingDesc;
+        quillDesc.on('text-change', function() {
+            updatePreview();
+        });
+
+        document.querySelectorAll('[id^="objective_"]').forEach(function(input) {
+            var quillId = 'quill-' + input.id;
+            var quillContainer = document.getElementById(quillId);
+            if (quillContainer) {
+                var q = new Quill('#' + quillId, {
+                    theme: 'snow',
+                    placeholder: 'Contoh: Mampu membuat kampanye digital marketing...',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link', 'blockquote'],
+                            ['clean']
+                        ]
+                    }
+                });
+                if (input.value) q.root.innerHTML = input.value;
+                window.quillEditors[input.id] = q;
+            }
+        });
+
+        var form = document.getElementById('quill-description').closest('form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                document.getElementById('description').value = quillDesc.root.innerHTML;
+                Object.keys(window.quillEditors).forEach(function(key) {
+                    var hiddenInput = document.getElementById(key);
+                    if (hiddenInput) {
+                        hiddenInput.value = window.quillEditors[key].root.innerHTML;
+                    }
+                });
+            });
+        }
+    });
     </script>
 </x-app-layout>

@@ -1,27 +1,25 @@
 <x-app-layout>
-<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
-<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <style>
     @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}
-    .trix-button-group { background: white; }
-    .dark .trix-button-group { background: #1e293b; border-color: #334155; }
-    .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
-    .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
-    .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
-    trix-editor { min-height: 150px; }
-    .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
-    .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-    .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-    .trix-content a { color: #3b82f6; text-decoration: underline; }
-    .trix-content strong { font-weight: 700; }
-    .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
-    .trix-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.5rem; }
-    .trix-content p { margin-bottom: 0.5rem; }
-    .trix-content blockquote { border-left: 3px solid #cbd5e1; padding-left: 1rem; margin-left: 0; color: #64748b; }
+    .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
+    .ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
+    .ql-editor { min-height: 150px; }
+    .dark .ql-toolbar.ql-snow { background: #1e293b; border-color: #334155; }
+    .dark .ql-toolbar.ql-snow .ql-stroke { stroke: #cbd5e1; }
+    .dark .ql-toolbar.ql-snow .ql-fill { fill: #cbd5e1; }
+    .dark .ql-toolbar.ql-snow button:hover .ql-stroke { stroke: #60a5fa; }
+    .dark .ql-toolbar.ql-snow button:hover .ql-fill { fill: #60a5fa; }
+    .dark .ql-toolbar.ql-snow .ql-active .ql-stroke { stroke: #3b82f6; }
+    .dark .ql-toolbar.ql-snow .ql-active .ql-fill { fill: #3b82f6; }
+    .dark .ql-container.ql-snow { background: #1e293b; border-color: #334155; color: #f8fafc; }
+    .dark .ql-editor.ql-blank::before { color: #64748b; }
+    .dark .ql-snow .ql-picker { color: #cbd5e1; }
+    .dark .ql-snow .ql-picker-options { background: #1e293b; border-color: #334155; }
+    .ql-snow .ql-tooltip { z-index: 50; }
 </style>
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Breadcrumbs -->
         <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4 anim-1">
             <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -30,7 +28,6 @@
             <span class="text-gray-900 dark:text-white font-medium">Tambah</span>
         </nav>
 
-        <!-- Header -->
         <div class="flex justify-between items-center mb-6 anim-1">
             <div>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Buat Jabatan Baru</h2>
@@ -42,7 +39,7 @@
         </div>
         <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-2xl border border-gray-100 dark:border-slate-700 anim-2">
             <div class="p-6 text-gray-900 dark:text-gray-100">
-            <form action="{{ route('admin.positions.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.positions.store') }}" method="POST" class="space-y-6" id="positionForm">
             @csrf
             <div class="space-y-5">
                 <div>
@@ -84,10 +81,9 @@
                     @error('category')<p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Deskripsi <span class="text-gray-400 font-normal">(Opsional)</span></label>
-                    <input type="hidden" name="description" id="description" value="">
-                    <trix-editor input="description" class="trix-content bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-lg text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Jelaskan tanggung jawab, kualifikasi, dan benefit jabatan ini..."></trix-editor>
-                    <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Gunakan toolbar di atas untuk memformat teks. Mendukung heading, list, link, dan blockquote.</p>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Deskripsi <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                    <input type="hidden" name="description" id="description">
+                    <div id="quill-editor"></div>
                 </div>
             </div>
             <div class="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-3">
@@ -126,5 +122,27 @@ window.searchableDropdown = function(config) {
         }
     };
 };
+</script>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        placeholder: 'Jelaskan tanggung jawab, kualifikasi, dan benefit jabatan ini...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'header': [2, 3, false] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'blockquote'],
+                ['clean']
+            ]
+        }
+    });
+
+    document.getElementById('positionForm').addEventListener('submit', function() {
+        document.getElementById('description').value = quill.root.innerHTML;
+    });
+});
 </script>
 </x-app-layout>

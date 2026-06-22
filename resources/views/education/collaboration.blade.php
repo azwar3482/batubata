@@ -1,22 +1,21 @@
 <x-app-layout>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
-    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     <style>
-        .trix-button-group { background: white; }
-        .dark .trix-button-group { background: #1e293b; border-color: #334155; }
-        .dark trix-toolbar [data-trix-button] { color: #cbd5e1; border-color: #334155; }
-        .dark trix-toolbar [data-trix-button]:hover { background: #334155; }
-        .dark trix-toolbar [data-trix-button].trix-active { background: #475569; color: white; }
-        trix-editor { min-height: 150px; }
-        .dark trix-editor { background-color: #1e293b; color: #f8fafc; border-color: #334155; }
-        .trix-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-        .trix-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-        .trix-content a { color: #3b82f6; text-decoration: underline; }
-        .trix-content strong { font-weight: 700; }
-        .trix-content h1 { font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; }
-        .trix-content h2 { font-size: 1.25rem; font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.5rem; }
-        .trix-content p { margin-bottom: 0.5rem; }
-        .trix-content blockquote { border-left: 3px solid #cbd5e1; padding-left: 1rem; margin-left: 0; color: #64748b; }
+        .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
+        .ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
+        .ql-editor { min-height: 150px; }
+        .dark .ql-toolbar.ql-snow { background: #1e293b; border-color: #334155; }
+        .dark .ql-toolbar.ql-snow .ql-stroke { stroke: #cbd5e1; }
+        .dark .ql-toolbar.ql-snow .ql-fill { fill: #cbd5e1; }
+        .dark .ql-toolbar.ql-snow button:hover .ql-stroke { stroke: #60a5fa; }
+        .dark .ql-toolbar.ql-snow button:hover .ql-fill { fill: #60a5fa; }
+        .dark .ql-toolbar.ql-snow .ql-active .ql-stroke { stroke: #3b82f6; }
+        .dark .ql-toolbar.ql-snow .ql-active .ql-fill { fill: #3b82f6; }
+        .dark .ql-container.ql-snow { background: #1e293b; border-color: #334155; color: #f8fafc; }
+        .dark .ql-editor.ql-blank::before { color: #64748b; }
+        .dark .ql-snow .ql-picker { color: #cbd5e1; }
+        .dark .ql-snow .ql-picker-options { background: #1e293b; border-color: #334155; }
+        .ql-snow .ql-tooltip { z-index: 50; }
     </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -252,9 +251,7 @@
                                 Deskripsi Proposal <span class="text-red-500">*</span>
                             </label>
                             <input type="hidden" name="description" id="description" value="{{ old('description') }}" required>
-                            <trix-editor input="description"
-                                class="trix-content bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm"
-                                placeholder="Jelaskan secara detail rencana kolaborasi yang Anda ajukan..."></trix-editor>
+                            <div id="quill-description"></div>
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -266,9 +263,7 @@
                                 Hasil yang Diharapkan <span class="text-red-500">*</span>
                             </label>
                             <input type="hidden" name="expected_outcome" id="expected_outcome" value="{{ old('expected_outcome') }}" required>
-                            <trix-editor input="expected_outcome"
-                                class="trix-content bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm"
-                                placeholder="Apa manfaat yang diharapkan dari kolaborasi ini untuk kedua belah pihak?"></trix-editor>
+                            <div id="quill-expected_outcome"></div>
                             @error('expected_outcome')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -431,5 +426,48 @@
                 updatePartnerInfo(partnerSelect.value);
             }
         });
+    </script>
+
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quillDescription = new Quill('#quill-description', {
+            theme: 'snow',
+            placeholder: 'Jelaskan secara detail rencana kolaborasi yang Anda ajukan...',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'blockquote'],
+                    ['clean']
+                ]
+            }
+        });
+        var existingDesc = document.getElementById('description').value;
+        if (existingDesc) quillDescription.root.innerHTML = existingDesc;
+
+        var quillOutcome = new Quill('#quill-expected_outcome', {
+            theme: 'snow',
+            placeholder: 'Apa manfaat yang diharapkan dari kolaborasi ini untuk kedua belah pihak?',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'blockquote'],
+                    ['clean']
+                ]
+            }
+        });
+        var existingOutcome = document.getElementById('expected_outcome').value;
+        if (existingOutcome) quillOutcome.root.innerHTML = existingOutcome;
+
+        var form = document.getElementById('quill-description').closest('form');
+        if (form) {
+            form.addEventListener('submit', function() {
+                document.getElementById('description').value = quillDescription.root.innerHTML;
+                document.getElementById('expected_outcome').value = quillOutcome.root.innerHTML;
+            });
+        }
+    });
     </script>
 </x-app-layout>

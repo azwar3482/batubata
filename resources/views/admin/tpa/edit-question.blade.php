@@ -4,20 +4,23 @@
     .ql-toolbar.ql-snow { border: 1px solid #e2e8f0; border-radius: 0.5rem 0.5rem 0 0; background: #f8fafc; }
     .ql-container.ql-snow { border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 0.5rem 0.5rem; min-height: 120px; font-size: 14px; }
     .ql-editor { min-height: 120px; }
-    .dark .ql-toolbar.ql-snow { background: #1e293b; border-color: #475569; }
-    .dark .ql-container.ql-snow { border-color: #475569; background: #0f172a; color: #e2e8f0; }
+    .dark .ql-toolbar.ql-snow { background: #0f172a; border-color: #334155; }
+    .dark .ql-container.ql-snow { border-color: #334155; background: #1e293b; }
+    .dark .ql-editor { color: #f8fafc; }
+    .dark .ql-editor.ql-blank::before { color: #94a3b8; font-style: normal; }
     .dark .ql-snow .ql-stroke { stroke: #94a3b8; }
     .dark .ql-snow .ql-fill { fill: #94a3b8; }
     .dark .ql-snow .ql-picker-label { color: #94a3b8; }
-    .dark .ql-snow .ql-picker-options { background: #1e293b; border-color: #475569; }
+    .dark .ql-snow .ql-picker-options { background: #1e293b; border-color: #334155; }
     .dark .ql-snow .ql-picker-item { color: #e2e8f0; }
+    .dark .ql-snow .ql-picker-item:hover { color: #60a5fa; }
     .dark .ql-toolbar.ql-snow button:hover .ql-stroke { stroke: #60a5fa; }
     .dark .ql-toolbar.ql-snow button:hover .ql-fill { fill: #60a5fa; }
     .dark .ql-toolbar.ql-snow button.ql-active .ql-stroke { stroke: #3b82f6; }
     .dark .ql-toolbar.ql-snow button.ql-active .ql-fill { fill: #3b82f6; }
 </style>
 
-<div class="py-12">
+<div class="py-8">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Breadcrumbs -->
         <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">

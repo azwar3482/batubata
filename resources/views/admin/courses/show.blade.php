@@ -1,5 +1,5 @@
 <x-app-layout>
-    @include('partials.trix-styles')
+    @include('partials.quill-styles')
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

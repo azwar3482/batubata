@@ -4,7 +4,7 @@
     .anim-1{animation:fadeInUp .4s ease-out}
     .anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}
 </style>
-<div class="py-12">
+<div class="py-8">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
         <!-- Breadcrumbs -->

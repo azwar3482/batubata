@@ -37,7 +37,7 @@ class TpaController extends Controller
             $query->where('question_text', 'like', '%' . $request->search . '%');
         }
 
-        $questions = $query->paginate(20)->withQueryString();
+        $questions = $query->paginate(10)->withQueryString();
 
         return view('admin.tpa.questions', compact('questions'));
     }
@@ -209,7 +209,7 @@ class TpaController extends Controller
             $query->where('is_passed', $request->passed === '1');
         }
 
-        $results = $query->paginate(20)->withQueryString();
+        $results = $query->paginate(10)->withQueryString();
         $tests = TpaTest::all();
 
         return view('admin.tpa.results', compact('results', 'tests'));

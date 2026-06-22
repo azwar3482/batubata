@@ -1,5 +1,22 @@
 <x-app-layout>
-    @include('partials.trix-styles')
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
+        .ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
+        .ql-editor { min-height: 150px; }
+        .dark .ql-toolbar.ql-snow { background: #1e293b; border-color: #334155; }
+        .dark .ql-toolbar.ql-snow .ql-stroke { stroke: #cbd5e1; }
+        .dark .ql-toolbar.ql-snow .ql-fill { fill: #cbd5e1; }
+        .dark .ql-toolbar.ql-snow button:hover .ql-stroke { stroke: #60a5fa; }
+        .dark .ql-toolbar.ql-snow button:hover .ql-fill { fill: #60a5fa; }
+        .dark .ql-toolbar.ql-snow .ql-active .ql-stroke { stroke: #3b82f6; }
+        .dark .ql-toolbar.ql-snow .ql-active .ql-fill { fill: #3b82f6; }
+        .dark .ql-container.ql-snow { background: #1e293b; border-color: #334155; color: #f8fafc; }
+        .dark .ql-editor.ql-blank::before { color: #64748b; }
+        .dark .ql-snow .ql-picker { color: #cbd5e1; }
+        .dark .ql-snow .ql-picker-options { background: #1e293b; border-color: #334155; }
+        .ql-snow .ql-tooltip { z-index: 50; }
+    </style>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -179,9 +196,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Deskripsi <span class="text-red-500">*</span></label>
                         <input type="hidden" name="description" id="description" value="{{ old('description', $course->description) }}">
-                        <trix-editor input="description"
-                            class="trix-content bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-sm"
-                            placeholder="Tuliskan deskripsi kursus..."></trix-editor>
+                        <div id="quill-description"></div>
                         @error('description')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
                 </div>
@@ -205,4 +220,29 @@
             </form>
         </div>
     </div>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var quill = new Quill('#quill-description', {
+        theme: 'snow',
+        placeholder: 'Tuliskan deskripsi kursus...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'blockquote'],
+                ['clean']
+            ]
+        }
+    });
+    var existing = document.getElementById('description').value;
+    if (existing) quill.root.innerHTML = existing;
+    var form = document.getElementById('quill-description').closest('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            document.getElementById('description').value = quill.root.innerHTML;
+        });
+    }
+});
+</script>
 </x-app-layout>
