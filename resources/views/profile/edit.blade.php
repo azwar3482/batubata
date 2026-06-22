@@ -139,6 +139,68 @@
                 this.saving = false;
             }
         }));
+
+        Alpine.data('customDocs', () => ({
+            showForm: false,
+            newLabel: '',
+            uploading: false,
+
+            async uploadCustom() {
+                if (!this.newLabel.trim()) return;
+                const fileInput = this.$refs.newFile;
+                if (!fileInput.files.length) {
+                    alert('Pilih file terlebih dahulu.');
+                    return;
+                }
+
+                this.uploading = true;
+                const formData = new FormData();
+                formData.append('label', this.newLabel.trim());
+                formData.append('file', fileInput.files[0]);
+
+                try {
+                    const res = await fetch('{{ route("profile.custom-document.upload") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                        body: formData,
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Gagal mengunggah dokumen.');
+                    }
+                } catch (e) {
+                    alert('Terjadi kesalahan jaringan.');
+                }
+                this.uploading = false;
+            },
+
+            async deleteCustom(id) {
+                if (!confirm('Hapus dokumen ini?')) return;
+                try {
+                    const res = await fetch(`/profile/custom-document/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        const el = document.getElementById(`custom-doc-${id}`);
+                        if (el) el.remove();
+                    } else {
+                        alert(data.message || 'Gagal menghapus dokumen.');
+                    }
+                } catch (e) {
+                    alert('Terjadi kesalahan jaringan.');
+                }
+            }
+        }));
     });
     </script>
     <style>
@@ -661,21 +723,21 @@
                                             <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Belum diunggah</p>
                                             @endif
                                         </div>
-                                        <div class="ml-4 shrink-0 flex items-center space-x-2">
+                                        <div class="ml-2 sm:ml-4 shrink-0 flex items-center space-x-1.5 sm:space-x-2">
                                             @if($userDocs->has($type))
-                                            <label class="cursor-pointer text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-white dark:bg-slate-800 px-2 py-1 border border-blue-200 dark:border-blue-900/40 rounded shadow-sm transition-all">
-                                                Ubah
+                                            <label title="Ubah Dokumen" class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-white dark:bg-slate-800 p-1.5 border border-blue-200 dark:border-blue-900/40 rounded-md shadow-sm transition-all flex items-center justify-center">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                                 <input type="file" name="documents[{{ $type }}]" class="hidden" accept=".pdf" @change="selectedFiles['{{ $type }}'] = $event.target.files.length > 0 ? $event.target.files[0].name : null">
                                             </label>
-                                            <a href="{{ Storage::url($userDocs[$type]->file_path) }}" target="_blank" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 bg-white dark:bg-slate-800 px-2 py-1 border border-indigo-200 dark:border-indigo-800/40 rounded shadow-sm transition-all">
-                                                Preview
+                                            <a href="{{ Storage::url($userDocs[$type]->file_path) }}" target="_blank" title="Lihat Dokumen" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 bg-white dark:bg-slate-800 p-1.5 border border-indigo-200 dark:border-indigo-800/40 rounded-md shadow-sm transition-all flex items-center justify-center">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             </a>
-                                            <button type="button" onclick="event.preventDefault(); if(confirm('Yakin ingin menghapus dokumen ini?')) document.getElementById('delete-doc-{{ $userDocs[$type]->id }}').submit();" class="text-xs font-bold text-red-600 dark:text-rose-400 hover:text-red-800 dark:hover:text-rose-350 bg-white dark:bg-slate-800 px-2 py-1 border border-red-200 dark:border-rose-900/40 rounded shadow-sm transition-all">
-                                                Hapus
+                                            <button type="button" title="Hapus Dokumen" onclick="event.preventDefault(); if(confirm('Yakin ingin menghapus dokumen ini?')) document.getElementById('delete-doc-{{ $userDocs[$type]->id }}').submit();" class="text-red-600 dark:text-rose-400 hover:text-red-800 dark:hover:text-rose-350 bg-white dark:bg-slate-800 p-1.5 border border-red-200 dark:border-rose-900/40 rounded-md shadow-sm transition-all flex items-center justify-center">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                             @else
-                                            <label class="cursor-pointer text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-white dark:bg-slate-800 px-2 py-1 border border-blue-200 dark:border-blue-900/40 rounded shadow-sm transition-all">
-                                                Pilih
+                                            <label title="Unggah Dokumen" class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-white dark:bg-slate-800 p-1.5 border border-blue-200 dark:border-blue-900/40 rounded-md shadow-sm transition-all flex items-center justify-center">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                                                 <input type="file" name="documents[{{ $type }}]" class="hidden" accept=".pdf" @change="selectedFiles['{{ $type }}'] = $event.target.files.length > 0 ? $event.target.files[0].name : null">
                                             </label>
                                             @endif
@@ -718,6 +780,87 @@
                         @endforeach
                     </div>
                     @endif
+
+                    <!-- Dokumen Lainnya (Custom Documents) -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6" x-data="customDocs()">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg text-cyan-600 dark:text-cyan-400 mr-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">Dokumen Lainnya</h3>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Upload dokumen tambahan dengan nama bebas</p>
+                                </div>
+                            </div>
+                            <button @click="showForm = !showForm" class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                Tambah
+                            </button>
+                        </div>
+
+                        <!-- Upload Form -->
+                        <div x-show="showForm" x-transition class="mb-4 p-4 border border-cyan-200 dark:border-cyan-900/40 rounded-xl bg-cyan-50/50 dark:bg-cyan-950/10">
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5">Nama Dokumen</label>
+                                    <input type="text" x-model="newLabel" placeholder="Contoh: KTP, NPWP, Sertifikat Pelatihan..."
+                                        class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-lg focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 block p-2.5 transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5">File</label>
+                                    <input type="file" x-ref="newFile" accept=".pdf,.jpg,.jpeg,.png,.webp"
+                                        class="w-full text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 dark:file:bg-cyan-900/30 dark:file:text-cyan-400 hover:file:bg-cyan-100 transition-all">
+                                    <p class="text-[10px] text-slate-400 mt-1">PDF, JPG, PNG, WEBP (Maks 5MB)</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button @click="uploadCustom()" :disabled="uploading || !newLabel.trim()"
+                                        class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 text-white text-sm font-semibold rounded-lg transition-colors flex items-center gap-2">
+                                        <svg x-show="uploading" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                        <span x-text="uploading ? 'Mengunggah...' : 'Upload'"></span>
+                                    </button>
+                                    <button @click="showForm = false; newLabel = ''; $refs.newFile.value = ''" class="px-4 py-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm font-medium transition-colors">Batal</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Documents List -->
+                        <div class="space-y-2">
+                            @php $customDocs = \App\Models\UserDocument::where('user_id', Auth::id())->where('document_type', \App\Models\UserDocument::TYPE_CUSTOM)->latest()->get(); @endphp
+                            @forelse($customDocs as $doc)
+                            <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-800 rounded-lg bg-slate-50 dark:bg-slate-850/40" id="custom-doc-{{ $doc->id }}">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 {{ Str::endsWith($doc->original_name, '.pdf') ? 'bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400' : 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' }}">
+                                        @if(Str::endsWith($doc->original_name, '.pdf'))
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        @else
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        @endif
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 truncate">{{ $doc->display_name }}</p>
+                                        <p class="text-[10px] text-slate-400">{{ $doc->file_size_human }} &middot; {{ $doc->created_at->format('d M Y') }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1 flex-shrink-0">
+                                    <a href="{{ Storage::url($doc->file_path) }}" target="_blank" class="p-1.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" title="Preview">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"/></svg>
+                                    </a>
+                                    <button @click="deleteCustom({{ $doc->id }})" class="p-1.5 text-slate-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Hapus">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="text-center py-6 text-slate-400 dark:text-slate-500">
+                                <svg class="w-10 h-10 mx-auto mb-2 text-slate-200 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                <p class="text-xs">Belum ada dokumen tambahan</p>
+                            </div>
+                            @endforelse
+                        </div>
+                    </div>
 
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
                         <div class="flex items-center mb-6">

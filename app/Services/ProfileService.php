@@ -196,5 +196,30 @@ class ProfileService
 
         return $user;
     }
+
+    /**
+     * Upload dokumen custom dengan label bebas.
+     */
+    public function uploadCustomDocument(User $user, UploadedFile $file, string $label): UserDocument
+    {
+        $allowedMimes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+
+        if (!in_array($file->getMimeType(), $allowedMimes)) {
+            throw new \InvalidArgumentException('Tipe file tidak diizinkan. Hanya PDF, JPG, PNG, WEBP.');
+        }
+
+        $path = $file->store('documents/custom', 'public');
+
+        return UserDocument::create([
+            'user_id'       => $user->id,
+            'document_type' => UserDocument::TYPE_CUSTOM,
+            'label'         => $label,
+            'original_name' => $file->getClientOriginalName(),
+            'file_path'     => $path,
+            'mime_type'     => $file->getMimeType(),
+            'file_size'     => $file->getSize(),
+            'status'        => UserDocument::STATUS_COMPLETED,
+        ]);
+    }
 }
 

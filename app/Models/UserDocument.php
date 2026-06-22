@@ -16,6 +16,7 @@ class UserDocument extends Model
     const TYPE_SERTIFIKAT   = 'sertifikat';
     const TYPE_PORTOFOLIO   = 'portofolio';
     const TYPE_PHOTO        = 'photo';
+    const TYPE_CUSTOM       = 'custom';
 
     const TYPES = [
         self::TYPE_CV         => 'Curriculum Vitae (CV)',
@@ -35,6 +36,7 @@ class UserDocument extends Model
     protected $fillable = [
         'user_id',
         'document_type',
+        'label',
         'original_name',
         'file_path',
         'mime_type',
@@ -91,5 +93,13 @@ class UserDocument extends Model
             $i++;
         }
         return round($size, 2) . ' ' . $units[$i];
+    }
+
+    public function getDisplayNameAttribute(): string
+    {
+        if ($this->label) {
+            return $this->label;
+        }
+        return self::TYPES[$this->document_type] ?? ucfirst(str_replace('_', ' ', $this->document_type));
     }
 }

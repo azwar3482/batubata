@@ -173,6 +173,57 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function uploadCustomDocument(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            'label' => 'required|string|max:100',
+            'file'  => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png,webp',
+        ]);
+
+        try {
+            $doc = $this->profileService->uploadCustomDocument(
+                $request->user(),
+                $request->file('file'),
+                $validated['label']
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Dokumen berhasil diunggah!',
+                'document' => [
+                    'id'    => $doc->id,
+                    'label' => $doc->display_name,
+                    'url'   => \Storage::url($doc->file_path),
+                    'size'  => $doc->file_size_human,
+                    'status'=> $doc->status_label,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengunggah dokumen: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function deleteCustomDocument($id): \Illuminate\Http\JsonResponse
+    {
+        $document = \App\Models\UserDocument::where('user_id', \Auth::id())
+            ->where('document_type', \App\Models\UserDocument::TYPE_CUSTOM)
+            ->findOrFail($id);
+
+        if (\Storage::disk('public')->exists($document->file_path)) {
+            \Storage::disk('public')->delete($document->file_path);
+        }
+
+        $document->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dokumen berhasil dihapus.',
+        ]);
+    }
+
     public function extractIjazahData(Request $request, DocumentExtractionService $extractionService)
     {
         try {

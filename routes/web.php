@@ -80,6 +80,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile/documents/{id}', [ProfileController::class, 'deleteDocument'])->name('profile.documents.destroy');
     Route::post('/profile/update-location', [ProfileController::class, 'updateLocation'])->middleware('throttle:30,1')->name('profile.location.update');
     Route::patch('/profile/mobile-layout', [ProfileController::class, 'updateMobileLayout'])->name('profile.mobile-layout.update');
+    Route::post('/profile/custom-document', [ProfileController::class, 'uploadCustomDocument'])->name('profile.custom-document.upload');
+    Route::delete('/profile/custom-document/{id}', [ProfileController::class, 'deleteCustomDocument'])->name('profile.custom-document.delete');
 
     // =====================
     // JOB SEEKER ROUTES
