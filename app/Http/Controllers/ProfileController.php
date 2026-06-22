@@ -153,6 +153,23 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
+    public function updateMobileLayout(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            'mobile_layout' => 'required|in:sidebar,bottombar',
+        ]);
+
+        $request->user()->update([
+            'mobile_layout' => $validated['mobile_layout'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tata letak mobile berhasil diperbarui!',
+            'mobile_layout' => $validated['mobile_layout'],
+        ]);
+    }
+
     public function extractIjazahData(Request $request, DocumentExtractionService $extractionService)
     {
         try {

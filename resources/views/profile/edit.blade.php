@@ -519,6 +519,63 @@
                         </form>
                     </div>
 
+                    <!-- Mobile Layout Setting -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6" x-data="{ mobileLayout: '{{ Auth::user()->mobile_layout ?? 'sidebar' }}', saving: false, saveLayout(layout) { this.saving = true; fetch('{{ route('profile.mobile-layout.update') }}', { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }, body: JSON.stringify({ mobile_layout: layout }) }).then(r => r.json()).then(data => { this.saving = false; if (data.success) { setTimeout(() => location.reload(), 500); } }).catch(() => { this.saving = false; }); } }">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-violet-50 dark:bg-violet-950/20 rounded-lg text-violet-600 dark:text-violet-400 mr-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">Tata Letak Mobile</h3>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Pilih tampilan navigasi di HP</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Sidebar Option -->
+                            <label class="flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all duration-200" :class="mobileLayout === 'sidebar' ? 'border-violet-500 bg-violet-50/50 dark:bg-violet-950/20 dark:border-violet-400' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'">
+                                <input type="radio" name="mobile_layout" value="sidebar" x-model="mobileLayout" class="mt-1 text-violet-600 focus:ring-violet-500" @change="saveLayout('sidebar')">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sidebar Kiri</span>
+                                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium">Default</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Menu navigasi di sisi kiri, geser untuk buka/tutup</p>
+                                </div>
+                            </label>
+
+                            <!-- Bottom Bar Option -->
+                            <label class="flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all duration-200" :class="mobileLayout === 'bottombar' ? 'border-violet-500 bg-violet-50/50 dark:bg-violet-950/20 dark:border-violet-400' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'">
+                                <input type="radio" name="mobile_layout" value="bottombar" x-model="mobileLayout" class="mt-1 text-violet-600 focus:ring-violet-500" @change="saveLayout('bottombar')">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Bottom Tab Bar</span>
+                                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-medium">Baru</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Navigasi di bawah layar seperti aplikasi mobile</p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div x-show="saving" x-transition class="mt-3 flex items-center gap-2 text-xs text-violet-600 dark:text-violet-400">
+                            <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Menyimpan...
+                        </div>
+                    </div>
+
 
                     @if(Auth::user()->isJobSeeker())
 

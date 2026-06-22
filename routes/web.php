@@ -79,6 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/documents-upload', [ProfileController::class, 'uploadDocuments'])->middleware('throttle:10,1')->name('profile.documents.upload');
     Route::delete('/profile/documents/{id}', [ProfileController::class, 'deleteDocument'])->name('profile.documents.destroy');
     Route::post('/profile/update-location', [ProfileController::class, 'updateLocation'])->middleware('throttle:30,1')->name('profile.location.update');
+    Route::patch('/profile/mobile-layout', [ProfileController::class, 'updateMobileLayout'])->name('profile.mobile-layout.update');
 
     // =====================
     // JOB SEEKER ROUTES
