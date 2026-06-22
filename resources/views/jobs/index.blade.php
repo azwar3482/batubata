@@ -41,11 +41,52 @@
                        class="{{ request('tab', 'all') == 'all' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
                         Semua Lowongan
                     </a>
-                    <a href="{{ request()->fullUrlWithQuery(['tab' => 'matched', 'sort' => 'kecocokan']) }}" 
-                       class="{{ request('tab') == 'matched' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center gap-2">
-                        Sesuai Kriteria
-                        <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Rekomendasi AI</span>
-                    </a>
+
+                    <div class="relative inline-block" x-data="{ showTip: false, tipX: 0, tipY: 0 }" 
+                         @mouseenter="
+                            let rect = $refs.trigger.getBoundingClientRect(); 
+                            tipX = rect.left + (rect.width / 2); 
+                            tipY = rect.top;
+                            showTip = true;
+                         " 
+                         @mouseleave="showTip = false">
+                        <a x-ref="trigger" href="{{ request()->fullUrlWithQuery(['tab' => 'matched', 'sort' => 'kecocokan']) }}" 
+                           class="{{ request('tab') == 'matched' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center gap-2">
+                            Sesuai Kriteria
+                            <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Rekomendasi AI</span>
+                            @if(count($profileWarnings) > 0)
+                            <span class="w-4 h-4 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-[10px] font-bold animate-pulse">!</span>
+                            @endif
+                        </a>
+                        @if(count($profileWarnings) > 0)
+                        <div x-show="showTip" x-cloak 
+                             class="fixed z-[100] -translate-x-1/2 -translate-y-full pb-2"
+                             :style="`left: ${tipX}px; top: ${tipY}px;`"
+                             x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
+                            <div class="bg-slate-800 text-white text-xs rounded-lg px-3 py-2 shadow-lg w-64">
+                                <div class="font-bold text-amber-300 mb-1.5 flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                    Profil belum lengkap
+                                </div>
+                                <ul class="space-y-0.5 mb-1.5">
+                                    @foreach($profileWarnings as $warning)
+                                    <li class="flex items-start gap-1 text-slate-300">
+                                        <span class="text-amber-400">&#8226;</span>
+                                        <span>{{ $warning }}</span>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                <div class="border-t border-slate-600 pt-1.5 mt-1.5">
+                                    <a href="{{ route('profile.edit') }}" class="text-blue-300 hover:text-blue-200 font-semibold inline-block w-full">
+                                        Lengkapi Profil &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-[2px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-slate-800"></div>
+                        </div>
+                        @endif
+                    </div>
+
                     <a href="{{ request()->fullUrlWithQuery(['tab' => 'applying', 'sort' => request('sort', 'terbaru')]) }}" 
                        class="{{ request('tab') == 'applying' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
                         Sedang Dilamar

@@ -30,9 +30,9 @@ class DashboardController extends Controller
 
         $validated = $request->validate([
             'search' => 'nullable|string|max:100',
-            'sort' => 'nullable|in:terbaru,terlama,relevansi',
+            'sort' => 'nullable|in:terbaru,terlama,relevansi,kecocokan,gaji',
             'per_page' => 'nullable|integer|min:5|max:50',
-            'tab' => 'nullable|in:all,saved,applied',
+            'tab' => 'nullable|in:all,matched,applying,applied',
         ]);
 
         $search = $validated['search'] ?? null;
@@ -45,7 +45,16 @@ class DashboardController extends Controller
         $latestAssessment = \App\Models\UserAssessment::where('user_id', $user->id)->latest('assessment_date')->first();
         $avgGap = $latestAssessment ? $latestAssessment->total_gap_percentage : 0;
 
-        return view('jobs.index', compact('jobs', 'avgGap'));
+        $profileWarnings = [];
+        if (!$user->gender) $profileWarnings[] = 'Jenis kelamin belum diisi';
+        if (!$user->birth_date) $profileWarnings[] = 'Tanggal lahir belum diisi';
+        if (!$user->blood_type) $profileWarnings[] = 'Golongan darah belum diisi';
+        if (empty($user->expected_jobs)) $profileWarnings[] = 'Posisi yang diharapkan belum diisi';
+        if (empty($user->languages)) $profileWarnings[] = 'Bahasa yang dikuasai belum diisi';
+        $hasAssessment = $latestAssessment !== null;
+        if (!$hasAssessment) $profileWarnings[] = 'Asesmen kompetensi belum dilakukan';
+
+        return view('jobs.index', compact('jobs', 'avgGap', 'profileWarnings', 'hasAssessment'));
     }
 
     public function jobDetail($id, JobMatchingService $matchingService)
