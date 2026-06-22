@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sertifikat - {{ $progress->user->name }}</title>
+    <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg" class="h-8 w-auto mr-2 rounded-lg">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +33,9 @@
                 color: black;
                 padding: 0 !important;
                 margin: 0 !important;
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
             }
             .no-print {
                 display: none !important;
@@ -41,16 +45,33 @@
                 box-shadow: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                border-radius: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+            #cert-wrapper {
                 width: 100vw !important;
                 height: 100vh !important;
-                position: absolute;
-                top: 0;
-                left: 0;
-                border-radius: 0 !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+            }
+            #cert-content {
+                width: 1123px !important;
+                height: 794px !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform-origin: top left !important;
+                transform: scale(min(calc(100vw / 1123), calc(100vh / 794))) !important;
             }
             .cert-border-inner {
                 margin: 0 !important;
-                height: calc(100vh - 40px) !important;
             }
             @page {
                 size: A4 landscape;
@@ -94,8 +115,9 @@
     </div>
 
     <!-- Certificate Container -->
-    <div class="print-container max-w-5xl mx-auto w-full aspect-[1.414/1] bg-white shadow-2xl relative overflow-hidden flex flex-col justify-between cert-border rounded-xl">
-        <div class="m-4 flex-1 cert-border-inner cert-bg p-8 sm:p-12 relative flex flex-col justify-between">
+    <div id="cert-wrapper" class="print-container max-w-5xl mx-auto w-full aspect-[1123/794] bg-white shadow-2xl relative overflow-hidden rounded-xl">
+        <div id="cert-content" class="absolute top-0 left-0 w-[1123px] h-[794px] origin-top-left flex flex-col p-8 cert-border bg-white">
+            <div class="flex-1 cert-border-inner cert-bg p-12 relative flex flex-col justify-between">
             
             <!-- Corner Decorations -->
             <div class="absolute top-2 left-2 text-[#d4af37] opacity-60">
@@ -124,15 +146,15 @@
                 <div class="flex justify-center items-center gap-2 mb-2">
                     <span class="text-2xl font-extrabold tracking-widest text-slate-800 font-sans">BATUBATA</span>
                 </div>
-                <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-800 tracking-wider mb-2">SERTIFIKAT APRESIASI</h1>
-                <p class="text-xs sm:text-sm font-semibold tracking-widest text-[#d4af37] uppercase">Certificate of Appreciation</p>
-                <div class="w-24 h-0.5 bg-[#d4af37] mx-auto mt-3"></div>
+                <h1 class="text-5xl font-serif font-bold text-slate-800 tracking-wider mb-2">SERTIFIKAT APRESIASI</h1>
+                <p class="text-sm font-semibold tracking-widest text-[#d4af37] uppercase">Certificate of Appreciation</p>
+                <div class="w-24 h-0.5 bg-[#d4af37] mx-auto mt-2"></div>
             </div>
 
             <!-- Recipient -->
-            <div class="text-center my-6">
+            <div class="text-center my-4">
                 <p class="text-slate-500 font-serif italic mb-2">Sertifikat ini diberikan kepada:</p>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 border-b border-slate-200 inline-block px-8 pb-1 mb-2">
+                <h2 class="text-4xl font-serif font-bold text-slate-900 border-b border-slate-200 inline-block px-8 pb-1 mb-2">
                     {{ $progress->user->name }}
                 </h2>
                 <p class="text-xs text-slate-500 font-medium tracking-wide">
@@ -141,8 +163,8 @@
             </div>
 
             <!-- Course / Class Details -->
-            <div class="text-center my-4">
-                <h3 class="text-2xl sm:text-3xl font-serif font-bold text-indigo-950 mb-2">
+            <div class="text-center my-2">
+                <h3 class="text-3xl font-serif font-bold text-indigo-950 mb-2">
                     {{ $progress->course->title }}
                 </h3>
                 <p class="text-sm text-slate-600 font-medium">
@@ -155,10 +177,10 @@
             @endphp
 
             <!-- Footer & Signatures -->
-            <div class="grid grid-cols-4 items-end text-center mt-6">
+            <div class="grid grid-cols-4 items-end text-center mt-4">
                 <!-- Student Photo -->
                 <div class="flex flex-col items-center">
-                    <div class="relative w-16 h-22 sm:w-20 sm:h-28 border-2 border-[#d4af37] p-0.5 bg-white shadow-md flex items-center justify-center overflow-hidden">
+                    <div class="relative w-20 h-28 border-2 border-[#d4af37] p-0.5 bg-white shadow-md flex items-center justify-center overflow-hidden">
                         @if($photoDoc)
                             <img src="{{ asset('storage/' . $photoDoc->file_path) }}" alt="{{ $progress->user->name }}" class="w-full h-full object-cover">
                         @else
@@ -181,14 +203,14 @@
                             Batubata Director
                         </span>
                     </div>
-                    <div class="w-28 sm:w-36 h-px bg-slate-300 my-1"></div>
+                    <div class="w-36 h-px bg-slate-300 my-1"></div>
                     <p class="text-xs font-bold text-slate-850">Direktur Eksekutif</p>
                     <p class="text-[10px] text-slate-500">Batubata Academy</p>
                 </div>
 
                 <!-- Gold Seal -->
                 <div class="flex justify-center relative -bottom-2">
-                    <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+                    <div class="relative w-24 h-24 flex items-center justify-center">
                         <svg class="w-full h-full text-[#d4af37] drop-shadow-md" fill="currentColor" viewBox="0 0 100 100">
                             <!-- Outer spikes -->
                             <polygon points="50,5 53,15 63,10 63,21 73,18 70,29 79,29 73,38 80,41 72,48 77,54 68,58 71,67 61,68 62,78 52,76 50,86 48,76 38,78 39,68 29,67 32,58 23,54 28,48 20,41 27,38 21,29 30,29 27,18 37,21 37,10 47,15" />
@@ -199,9 +221,9 @@
                             <circle cx="50" cy="50" r="24" fill="#ffffff" />
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-[#c5a028] text-center p-2 leading-none font-bold">
-                            <span class="text-[6px] sm:text-[7px] tracking-wider uppercase font-sans">OFFICIAL</span>
-                            <span class="text-[7px] sm:text-[8px] font-extrabold tracking-widest my-0.5 font-sans">SEAL</span>
-                            <span class="text-[5px] sm:text-[6px] tracking-widest font-sans">BATUBATA</span>
+                            <span class="text-[7px] tracking-wider uppercase font-sans">OFFICIAL</span>
+                            <span class="text-[8px] font-extrabold tracking-widest my-0.5 font-sans">SEAL</span>
+                            <span class="text-[6px] tracking-widest font-sans">BATUBATA</span>
                         </div>
                     </div>
                 </div>
@@ -211,14 +233,14 @@
                     <div class="h-12 flex items-end">
                         <span class="font-signature text-4xl text-indigo-800 leading-none">Tim Akademik</span>
                     </div>
-                    <div class="w-28 sm:w-36 h-px bg-slate-300 my-1"></div>
+                    <div class="w-36 h-px bg-slate-300 my-1"></div>
                     <p class="text-xs font-bold text-slate-850 font-sans">Tim Kurikulum</p>
                     <p class="text-[10px] text-slate-500 font-sans">Batubata Academy</p>
                 </div>
             </div>
 
             <!-- Bottom Code -->
-            <div class="mt-6 flex justify-between items-center text-[10px] text-slate-400 font-mono pt-4 border-t border-slate-100">
+            <div class="mt-4 flex justify-between items-center text-[10px] text-slate-400 font-mono pt-4 border-t border-slate-100">
                 <div>
                     Tanggal Penyelesaian: {{ $progress->completed_at ? $progress->completed_at->format('d M Y') : '-' }}
                 </div>
@@ -233,6 +255,9 @@
                 </div>
             </div>
             
+            </div>
+            
+        </div>
         </div>
     </div>
 
@@ -241,5 +266,26 @@
         <p>&copy; {{ date('Y') }} Batubata. Semua hak cipta dilindungi.</p>
     </div>
 
+    <script>
+        function scaleCertificate() {
+            const wrapper = document.getElementById('cert-wrapper');
+            const content = document.getElementById('cert-content');
+            if (wrapper && content) {
+                if (window.matchMedia && window.matchMedia('print').matches) return;
+                const scale = wrapper.clientWidth / 1123;
+                content.style.transform = `scale(${scale})`;
+            }
+        }
+        window.addEventListener('resize', scaleCertificate);
+        window.addEventListener('load', scaleCertificate);
+        scaleCertificate();
+        
+        if (window.matchMedia) {
+            window.matchMedia('print').addEventListener('change', (e) => {
+                if (!e.matches) scaleCertificate();
+                else document.getElementById('cert-content').style.transform = 'scale(1)';
+            });
+        }
+    </script>
 </body>
 </html>

@@ -489,7 +489,8 @@ class CourseController extends Controller
         }
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.platform_certificate', compact('progress'));
-        $pdf->setPaper('A4', 'landscape');
+        $pdf->setPaper([0, 0, 842, 595]);
+        $pdf->setOption('isRemoteEnabled', true);
         
         $filename = 'Sertifikat_Kursus_' . str_replace(' ', '_', $progress->course->title) . '.pdf';
         return $pdf->download($filename);
