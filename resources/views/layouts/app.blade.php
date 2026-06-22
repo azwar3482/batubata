@@ -1,3 +1,12 @@
+@php
+    $dashboardRoute = route('dashboard');
+    if (Auth::check()) {
+        if (Auth::user()->isAdmin()) $dashboardRoute = route('admin.dashboard');
+        elseif (Auth::user()->isIndustryOrStaff()) $dashboardRoute = route('industry.dashboard');
+        elseif (Auth::user()->isTeacher()) $dashboardRoute = route('teacher.dashboard');
+        elseif (Auth::user()->isEducation()) $dashboardRoute = route('education.dashboard');
+    }
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -858,15 +867,6 @@
             <div class="flex-none">
                 <!-- Logo & Close Button (Mobile) -->
                 <div class="flex items-center justify-between px-4 sm:px-6 h-14 sm:h-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-700 text-white font-extrabold text-lg tracking-wider shadow-sm logo-container transition-[width,opacity] duration-300">
-                    @php
-                        $dashboardRoute = route('dashboard');
-                        if (Auth::check()) {
-                            if (Auth::user()->isAdmin()) $dashboardRoute = route('admin.dashboard');
-                            elseif (Auth::user()->isIndustryOrStaff()) $dashboardRoute = route('industry.dashboard');
-                            elseif (Auth::user()->isTeacher()) $dashboardRoute = route('teacher.dashboard');
-                            elseif (Auth::user()->isEducation()) $dashboardRoute = route('education.dashboard');
-                        }
-                    @endphp
                     <a href="{{ $dashboardRoute }}" class="flex items-center">
                         <img src="{{ asset('logo.jpg') }}" alt="Logo" class="h-8 w-auto mr-2 sm:mr-3 rounded-lg ring-2 ring-white/20 transition-transform duration-300 hover:rotate-6 sidebar-icon dark:bg-white dark:p-1">
                         <span class="logo-text transition-[opacity] duration-300 text-sm sm:text-base">KOMPASKARIR</span>
@@ -1775,6 +1775,10 @@
                 <a href="{{ route('teacher.courses.index') }}" class="bottom-nav-item {{ request()->routeIs('teacher.courses.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     <span class="text-[10px] mt-0.5">Kursus</span>
+                </a>
+                <a href="{{ route('teacher.classes.index') }}" class="bottom-nav-item {{ request()->routeIs('teacher.classes.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                    <span class="text-[10px] mt-0.5">Kelas</span>
                 </a>
             @elseif(Auth::user()->role === 'education')
                 <a href="{{ route('education.students') }}" class="bottom-nav-item {{ request()->routeIs('education.students*') ? 'active' : '' }}">

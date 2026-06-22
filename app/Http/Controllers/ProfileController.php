@@ -115,6 +115,9 @@ class ProfileController extends Controller
             \Illuminate\Support\Facades\Storage::disk('public')->delete($document->file_path);
         }
         
+        // Hapus skor dokumen terkait untuk mencegah matching score usang (ghost data)
+        \App\Models\UserDocumentScore::where('document_id', $id)->delete();
+        
         $document->delete();
         
         return back()->with('success', 'Dokumen berhasil dihapus.');

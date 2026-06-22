@@ -340,6 +340,10 @@ class ProfileController extends Controller
         }
 
         Storage::disk('public')->delete($doc->file_path);
+        
+        // Hapus skor dokumen terkait untuk mencegah matching score usang (ghost data)
+        \App\Models\UserDocumentScore::where('document_id', $doc->id)->delete();
+        
         $doc->delete();
 
         return response()->json([

@@ -22,115 +22,122 @@ class RoadmapService
         'creative' => ['creative', 'kreativitas', 'problem solving', 'design thinking'],
         'analytical' => ['analytical', 'analisis', 'data-driven'],
         'management' => ['time management', 'project management', 'leadership'],
+        'programming' => ['programming', 'coding', 'web development', 'software development', 'laravel', 'php', 'javascript', 'python', 'java', 'c++', 'database', 'sql'],
+        'finance_accounting' => ['finance', 'accounting', 'pembukuan', 'tax', 'perpajakan', 'auditing', 'budgeting', 'financial analysis'],
+        'engineering' => ['engineering', 'mechanical', 'electrical', 'civil', 'autocad', 'design engineering', 'pemeliharaan', 'maintenance'],
+        'healthcare' => ['healthcare', 'medis', 'nursing', 'keperawatan', 'farmasi', 'pharmacy', 'klinis', 'clinical'],
+        'sales_customer_service' => ['sales', 'penjualan', 'customer service', 'negotiation', 'negosiasi', 'telemarketing'],
     ];
 
     public function generateRoadmap(UserAssessment $assessment)
     {
-        $deleteQuery = CareerRoadmap::where('user_id', $assessment->user_id);
-        if ($assessment->position_id) {
-            $deleteQuery->where('position_id', $assessment->position_id);
-        }
-        $deleteQuery->delete();
+        return DB::transaction(function () use ($assessment) {
+            $deleteQuery = CareerRoadmap::where('user_id', $assessment->user_id);
+            if ($assessment->position_id) {
+                $deleteQuery->where('position_id', $assessment->position_id);
+            }
+            $deleteQuery->delete();
 
-        // Ambil SEMUA skill yang memiliki gap > 0
-        $scores = $assessment->scores()
-            ->with('competency')
-            ->where('gap_percentage', '>', 0)
-            ->orderByDesc('gap_percentage')
-            ->get();
+            // Ambil SEMUA skill yang memiliki gap > 0
+            $scores = $assessment->scores()
+                ->with('competency')
+                ->where('gap_percentage', '>', 0)
+                ->orderByDesc('gap_percentage')
+                ->get();
 
-        if ($scores->isEmpty()) {
-            $this->createGenericRoadmap($assessment);
-            return true;
-        }
-
-        // Kelompokkan kompetensi berdasarkan kesamaan topik
-        $grouped = $this->groupCompetenciesByTheme($scores);
-
-        // Distribusikan ke 6 bulan
-        $monthBuckets = $this->distributeToMonths($grouped, 6);
-
-        $roadmaps = [];
-        $targetName = $assessment->target_name;
-
-        foreach ($monthBuckets as $monthNumber => $bucket) {
-            // Bulan 5 & 6: Portofolio & Persiapan Karir (special handling)
-            if (isset($bucket['is_portfolio']) || isset($bucket['is_career'])) {
-                $roadmaps[] = [
-                    'month_number' => $monthNumber,
-                    'title' => "Bulan {$monthNumber}: {$bucket['theme']}",
-                    'desc' => $bucket['description'],
-                    'competency_ids' => [],
-                    'skills_data' => [],
-                ];
-                continue;
+            if ($scores->isEmpty()) {
+                $this->createGenericRoadmap($assessment);
+                return true;
             }
 
-            if (empty($bucket['skills'])) continue;
+            // Kelompokkan kompetensi berdasarkan kesamaan topik
+            $grouped = $this->groupCompetenciesByTheme($scores);
 
-            $skillNames = collect($bucket['skills'])->pluck('name')->join(', ');
-            $avgGap = collect($bucket['skills'])->avg('gap_percentage');
-            $maxGap = collect($bucket['skills'])->max('gap_percentage');
-            $themeName = $bucket['theme'];
+            // Distribusikan ke 6 bulan
+            $monthBuckets = $this->distributeToMonths($grouped, 6);
 
-            // Bangun deskripsi detail dengan semua kompetensi di bulan ini
-            $descLines = [];
-            $descLines[] = "Fokus bulan ini: {$themeName}";
-            $descLines[] = "";
-            $descLines[] = "Kompetensi yang harus dipelajari:";
+            $roadmaps = [];
+            $targetName = $assessment->target_name;
 
-            $allCourses = [];
-            foreach ($bucket['skills'] as $skill) {
-                $levelInfo = "Level {$skill['current_level']} → {$skill['target_level']}";
-                $descLines[] = "• {$skill['name']} (gap: {$skill['gap_formatted']}%, {$levelInfo})";
+            foreach ($monthBuckets as $monthNumber => $bucket) {
+                // Bulan 5 & 6: Portofolio & Persiapan Karir (special handling)
+                if (isset($bucket['is_portfolio']) || isset($bucket['is_career'])) {
+                    $roadmaps[] = [
+                        'month_number' => $monthNumber,
+                        'title' => "Bulan {$monthNumber}: {$bucket['theme']}",
+                        'desc' => $bucket['description'],
+                        'competency_ids' => [],
+                        'skills_data' => [],
+                    ];
+                    continue;
+                }
 
-                // Ambil kursus untuk kompetensi ini
-                if (!empty($skill['courses'])) {
-                    foreach ($skill['courses'] as $course) {
-                        $allCourses[] = $course;
+                if (empty($bucket['skills'])) continue;
+
+                $skillNames = collect($bucket['skills'])->pluck('name')->join(', ');
+                $avgGap = collect($bucket['skills'])->avg('gap_percentage');
+                $maxGap = collect($bucket['skills'])->max('gap_percentage');
+                $themeName = $bucket['theme'];
+
+                // Bangun deskripsi detail dengan semua kompetensi di bulan ini
+                $descLines = [];
+                $descLines[] = "Fokus bulan ini: {$themeName}";
+                $descLines[] = "";
+                $descLines[] = "Kompetensi yang harus dipelajari:";
+
+                $allCourses = [];
+                foreach ($bucket['skills'] as $skill) {
+                    $levelInfo = "Level {$skill['current_level']} → {$skill['target_level']}";
+                    $descLines[] = "• {$skill['name']} (gap: {$skill['gap_formatted']}%, {$levelInfo})";
+
+                    // Ambil kursus untuk kompetensi ini
+                    if (!empty($skill['courses'])) {
+                        foreach ($skill['courses'] as $course) {
+                            $allCourses[] = $course;
+                        }
                     }
                 }
-            }
 
-            // Tambahkan rekomendasi kursus
-            if (!empty($allCourses)) {
-                $descLines[] = "";
-                $descLines[] = "Rekomendasi kursus:";
-                $uniqueCourses = collect($allCourses)->unique('title')->take(3);
-                foreach ($uniqueCourses as $course) {
-                    $descLines[] = "- {$course['title']} ({$course['platform']}, {$course['duration_hours']}j)";
+                // Tambahkan rekomendasi kursus
+                if (!empty($allCourses)) {
+                    $descLines[] = "";
+                    $descLines[] = "Rekomendasi kursus:";
+                    $uniqueCourses = collect($allCourses)->unique('title')->take(3);
+                    foreach ($uniqueCourses as $course) {
+                        $descLines[] = "- {$course['title']} ({$course['platform']}, {$course['duration_hours']}j)";
+                    }
                 }
+
+                $descLines[] = "";
+                $descLines[] = "Alokasi: 3-5 jam/minggu untuk belajar dan praktik.";
+
+                $roadmaps[] = [
+                    'month_number' => $monthNumber,
+                    'title' => "Bulan {$monthNumber}: {$themeName}",
+                    'desc' => implode("\n", $descLines),
+                    'competency_ids' => collect($bucket['skills'])->pluck('competency_id')->toArray(),
+                    'skills_data' => $bucket['skills'],
+                ];
             }
 
-            $descLines[] = "";
-            $descLines[] = "Alokasi: 3-5 jam/minggu untuk belajar dan praktik.";
+            // Simpan ke Database
+            foreach ($roadmaps as $item) {
+                $createData = [
+                    'user_id' => $assessment->user_id,
+                    'position_id' => $assessment->position_id,
+                    'month_number' => $item['month_number'],
+                    'milestone_title' => $item['title'],
+                    'milestone_description' => $item['desc'],
+                    'is_completed' => false,
+                    'gap_percentage' => collect($item['skills_data'])->avg('gap_percentage'),
+                    'recommended_courses' => collect($item['skills_data'])->flatMap(fn($s) => $s['courses'] ?? [])->unique('title')->values()->toArray(),
+                ];
 
-            $roadmaps[] = [
-                'month_number' => $monthNumber,
-                'title' => "Bulan {$monthNumber}: {$themeName}",
-                'desc' => implode("\n", $descLines),
-                'competency_ids' => collect($bucket['skills'])->pluck('competency_id')->toArray(),
-                'skills_data' => $bucket['skills'],
-            ];
-        }
+                CareerRoadmap::create($createData);
+            }
 
-        // Simpan ke Database
-        foreach ($roadmaps as $item) {
-            $createData = [
-                'user_id' => $assessment->user_id,
-                'position_id' => $assessment->position_id,
-                'month_number' => $item['month_number'],
-                'milestone_title' => $item['title'],
-                'milestone_description' => $item['desc'],
-                'is_completed' => false,
-                'gap_percentage' => collect($item['skills_data'])->avg('gap_percentage'),
-                'recommended_courses' => collect($item['skills_data'])->flatMap(fn($s) => $s['courses'] ?? [])->unique('title')->values()->toArray(),
-            ];
-
-            CareerRoadmap::create($createData);
-        }
-
-        return true;
+            return true;
+        });
     }
 
     /**
@@ -300,6 +307,11 @@ class RoadmapService
             'creative' => 'Kreativitas & Problem Solving',
             'analytical' => 'Berpikir Analitis',
             'management' => 'Manajemen Waktu & Proyek',
+            'programming' => 'Programming & Software Development',
+            'finance_accounting' => 'Finance & Accounting',
+            'engineering' => 'Engineering & Maintenance',
+            'healthcare' => 'Healthcare & Clinical Skills',
+            'sales_customer_service' => 'Sales & Customer Service',
             default => 'Kompetensi Pendukung',
         };
     }

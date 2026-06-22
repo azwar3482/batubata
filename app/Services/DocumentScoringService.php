@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Log;
 class DocumentScoringService
 {
     /**
+     * Cache request-level untuk mempercepat matching loop (Anti N+1)
+     */
+    private array $userDocumentScoresCache = [];
+    private array $companyWeightsCache = [];
+
+    /**
      * TAHAP 2: Hitung skor kecocokan final antara User dan Lowongan.
      *
      * Metode ini ringan dan cepat karena hanya melakukan:
@@ -33,10 +39,13 @@ class DocumentScoringService
         $weightArray = $weights->toWeightArray();
 
         // 2. Ambil semua dokumen user yang sudah selesai diproses dengan satu query (Anti N+1)
-        $documentScores = UserDocumentScore::where('user_id', $user->id)
-            ->with('document:id,document_type')
-            ->get()
-            ->keyBy(fn($score) => $score->document->document_type);
+        if (!isset($this->userDocumentScoresCache[$user->id])) {
+            $this->userDocumentScoresCache[$user->id] = UserDocumentScore::where('user_id', $user->id)
+                ->with('document:id,document_type')
+                ->get()
+                ->keyBy(fn($score) => $score->document->document_type);
+        }
+        $documentScores = $this->userDocumentScoresCache[$user->id];
 
         if ($documentScores->isEmpty()) {
             // Fallback ke perhitungan lama jika dokumen belum diproses
@@ -81,6 +90,9 @@ class DocumentScoringService
 
         // Update status dokumen menjadi 'completed'
         $document->update(['status' => UserDocument::STATUS_COMPLETED]);
+
+        // Invalidate cache
+        unset($this->userDocumentScoresCache[$document->user_id]);
 
         Log::info("DocumentScoringService: Skor dokumen ID {$document->id} ({$document->document_type}) berhasil disimpan.");
     }
@@ -130,6 +142,9 @@ class DocumentScoringService
         );
 
         $document->update(['status' => UserDocument::STATUS_COMPLETED]);
+
+        // Invalidate cache
+        unset($this->userDocumentScoresCache[$document->user_id]);
     }
 
     /**
@@ -138,17 +153,28 @@ class DocumentScoringService
      */
     private function getWeightsForJob(JobListing $job): ?CompanyDocumentWeight
     {
-        // Coba ambil bobot spesifik perusahaan
-        if ($job->company_id) {
-            $specific = CompanyDocumentWeight::where('company_id', $job->company_id)
-                ->where('is_active', true)
-                ->first();
-            if ($specific) return $specific;
+        $cacheKey = $job->company_id ?? 'default';
+
+        if (!array_key_exists($cacheKey, $this->companyWeightsCache)) {
+            $weights = null;
+
+            // Coba ambil bobot spesifik perusahaan
+            if ($job->company_id) {
+                $weights = CompanyDocumentWeight::where('company_id', $job->company_id)
+                    ->where('is_active', true)
+                    ->first();
+            }
+
+            // Fallback ke bobot default (company_id = null)
+            if (!$weights) {
+                $weights = CompanyDocumentWeight::whereNull('company_id')
+                    ->where('is_active', true)
+                    ->first();
+            }
+
+            $this->companyWeightsCache[$cacheKey] = $weights;
         }
 
-        // Fallback ke bobot default (company_id = null)
-        return CompanyDocumentWeight::whereNull('company_id')
-            ->where('is_active', true)
-            ->first();
+        return $this->companyWeightsCache[$cacheKey];
     }
 }

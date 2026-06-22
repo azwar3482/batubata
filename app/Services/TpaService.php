@@ -70,6 +70,14 @@ class TpaService
      */
     public function inviteCandidate(UserJobApplication $application, TpaTest $test): TpaTestSession
     {
+        $existingSession = TpaTestSession::where('job_application_id', $application->id)
+            ->whereIn('status', ['invited', 'in_progress'])
+            ->first();
+
+        if ($existingSession) {
+            throw new \Exception('Kandidat ini sudah memiliki undangan TPA yang aktif.');
+        }
+
         $deadlineHours = $application->jobListing->tpa_deadline_hours ?? 48;
 
         $session = TpaTestSession::create([
@@ -103,6 +111,14 @@ class TpaService
      */
     public function inviteOffline(UserJobApplication $application, ?TpaTest $test, array $offlineData): TpaTestSession
     {
+        $existingSession = TpaTestSession::where('job_application_id', $application->id)
+            ->whereIn('status', ['invited', 'in_progress'])
+            ->first();
+
+        if ($existingSession) {
+            throw new \Exception('Kandidat ini sudah memiliki undangan TPA yang aktif.');
+        }
+
         // Untuk offline, buat dummy test jika tidak ada
         if (!$test) {
             $test = TpaTest::where('title', 'Tes TPA Offline')->first();
@@ -395,39 +411,43 @@ class TpaService
      */
     public function submitTest(TpaTestSession $session): TpaResult
     {
-        if ($session->status !== 'in_progress') {
-            throw new \Exception('Tes ini tidak dalam status dikerjakan.');
-        }
+        return DB::transaction(function () use ($session) {
+            $session = TpaTestSession::lockForUpdate()->find($session->id);
 
-        $completedAt = now();
-        $timeSpent = $session->started_at
-            ? (int) abs($session->started_at->diffInSeconds($completedAt))
-            : 0;
+            if ($session->status !== 'in_progress') {
+                throw new \Exception('Tes ini tidak dalam status dikerjakan.');
+            }
 
-        $session->update([
-            'status' => 'completed',
-            'completed_at' => $completedAt,
-            'time_spent_seconds' => $timeSpent,
-        ]);
+            $completedAt = now();
+            $timeSpent = $session->started_at
+                ? (int) abs($session->started_at->diffInSeconds($completedAt))
+                : 0;
 
-        // Hitung skor
-        $result = $this->calculateScore($session);
-
-        // Update application
-        if ($session->job_application_id) {
-            $application = $session->jobApplication;
-            $application->update([
-                'tpa_status' => $result->is_passed ? 'passed' : 'failed',
-                'tpa_score' => $result->total_score,
+            $session->update([
+                'status' => 'completed',
+                'completed_at' => $completedAt,
+                'time_spent_seconds' => $timeSpent,
             ]);
 
-            // Jika passed, otomatis update status lamaran ke reviewed
-            if ($result->is_passed && $application->status === 'applied') {
-                $application->update(['status' => 'reviewed']);
-            }
-        }
+            // Hitung skor
+            $result = $this->calculateScore($session);
 
-        return $result;
+            // Update application
+            if ($session->job_application_id) {
+                $application = $session->jobApplication;
+                $application->update([
+                    'tpa_status' => $result->is_passed ? 'passed' : 'failed',
+                    'tpa_score' => $result->total_score,
+                ]);
+
+                // Jika passed, otomatis update status lamaran ke reviewed
+                if ($result->is_passed && $application->status === 'applied') {
+                    $application->update(['status' => 'reviewed']);
+                }
+            }
+
+            return $result;
+        });
     }
 
     /**
@@ -495,26 +515,30 @@ class TpaService
      */
     public function checkAndExpireSession(TpaTestSession $session): bool
     {
-        if ($session->status === 'in_progress' && $session->started_at) {
-            $limitSeconds = $session->tpaTest->time_limit_minutes * 60;
-            $elapsed = now()->diffInSeconds($session->started_at);
+        return DB::transaction(function () use ($session) {
+            $session = TpaTestSession::lockForUpdate()->find($session->id);
 
-            if ($elapsed >= $limitSeconds) {
-                // Auto-submit jika melewati batas waktu
-                $this->submitTest($session);
+            if ($session->status === 'in_progress' && $session->started_at) {
+                $limitSeconds = $session->tpaTest->time_limit_minutes * 60;
+                $elapsed = now()->diffInSeconds($session->started_at);
+
+                if ($elapsed >= $limitSeconds) {
+                    // Auto-submit jika melewati batas waktu
+                    $this->submitTest($session);
+                    return true;
+                }
+            }
+
+            if ($session->status === 'invited' && $session->expires_at && $session->expires_at->isPast()) {
+                $session->update(['status' => 'expired']);
+                if ($session->job_application_id) {
+                    $session->jobApplication->update(['tpa_status' => 'failed']);
+                }
                 return true;
             }
-        }
 
-        if ($session->status === 'invited' && $session->expires_at && $session->expires_at->isPast()) {
-            $session->update(['status' => 'expired']);
-            if ($session->job_application_id) {
-                $session->jobApplication->update(['tpa_status' => 'failed']);
-            }
-            return true;
-        }
-
-        return false;
+            return false;
+        });
     }
 
     /**

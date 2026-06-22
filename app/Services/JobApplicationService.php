@@ -8,6 +8,7 @@ use App\Models\UserJobApplication;
 use App\Services\JobMatchingService;
 use App\Notifications\JobNoLongerAvailable;
 use App\Notifications\ApplicationStatusNotification;
+use Illuminate\Support\Facades\DB;
 
 class JobApplicationService
 {
@@ -29,37 +30,40 @@ class JobApplicationService
             return ['success' => false, 'message' => $reason ?? 'Lowongan ini sudah tidak tersedia.'];
         }
 
-        $application = UserJobApplication::where('user_id', $user->id)
-            ->where('job_listing_id', $jobId)
-            ->first();
+        return DB::transaction(function () use ($user, $jobId, $job) {
+            $application = UserJobApplication::where('user_id', $user->id)
+                ->where('job_listing_id', $jobId)
+                ->lockForUpdate()
+                ->first();
 
-        if ($application) {
-            if ($application->status !== 'saved') {
-                return ['success' => false, 'message' => 'Anda sudah melamar lowongan ini sebelumnya.'];
+            if ($application) {
+                if ($application->status !== 'saved') {
+                    return ['success' => false, 'message' => 'Anda sudah melamar lowongan ini sebelumnya.'];
+                }
+
+                $matchPercentage = $this->matchingService->calculateMatch($user, $job);
+
+                $application->update([
+                    'status' => 'applied',
+                    'matching_percentage' => $matchPercentage,
+                    'applied_at' => now(),
+                ]);
+
+                return ['success' => true, 'message' => 'Lamaran berhasil dikirim!'];
             }
 
             $matchPercentage = $this->matchingService->calculateMatch($user, $job);
 
-            $application->update([
-                'status' => 'applied',
+            UserJobApplication::create([
+                'user_id' => $user->id,
+                'job_listing_id' => $jobId,
                 'matching_percentage' => $matchPercentage,
                 'applied_at' => now(),
+                'status' => 'applied',
             ]);
 
             return ['success' => true, 'message' => 'Lamaran berhasil dikirim!'];
-        }
-
-        $matchPercentage = $this->matchingService->calculateMatch($user, $job);
-
-        UserJobApplication::create([
-            'user_id' => $user->id,
-            'job_listing_id' => $jobId,
-            'matching_percentage' => $matchPercentage,
-            'applied_at' => now(),
-            'status' => 'applied',
-        ]);
-
-        return ['success' => true, 'message' => 'Lamaran berhasil dikirim!'];
+        });
     }
 
     public function toggleSaveJob(User $user, int $jobId)
@@ -137,12 +141,19 @@ class JobApplicationService
             return ['success' => false, 'message' => 'Lamaran tidak ditemukan.'];
         }
 
-        $applicationClone = clone $application;
-        $application->delete();
+        return DB::transaction(function () use ($application) {
+            // Batalkan semua sesi TPA yang masih aktif untuk lamaran ini (diset ke 'abandoned')
+            \App\Models\TpaTestSession::where('job_application_id', $application->id)
+                ->whereIn('status', ['invited', 'in_progress'])
+                ->update(['status' => 'abandoned']);
 
-        event(new \App\Events\JobApplicationWithdrawn($applicationClone));
+            $applicationClone = clone $application;
+            $application->delete();
 
-        return ['success' => true, 'message' => 'Lamaran berhasil ditarik!'];
+            event(new \App\Events\JobApplicationWithdrawn($applicationClone));
+
+            return ['success' => true, 'message' => 'Lamaran berhasil ditarik!'];
+        });
     }
 
     public function respondToOffer(User $user, int $jobId, string $response)
@@ -168,7 +179,14 @@ class JobApplicationService
             // Notify the company/industry user
             $jobOwner = $application->jobListing->user;
             if ($jobOwner) {
-                $jobOwner->notify(new \App\Notifications\JobOfferResponseNotification($application, 'accepted'));
+                try {
+                    $jobOwner->notify(new \App\Notifications\JobOfferResponseNotification($application, 'accepted'));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::warning('Gagal kirim notifikasi offer response (accepted)', [
+                        'application_id' => $application->id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
             return ['success' => true, 'message' => 'Penawaran kerja berhasil diterima! Selamat!'];
@@ -181,7 +199,14 @@ class JobApplicationService
             // Notify the company/industry user
             $jobOwner = $application->jobListing->user;
             if ($jobOwner) {
-                $jobOwner->notify(new \App\Notifications\JobOfferResponseNotification($application, 'declined'));
+                try {
+                    $jobOwner->notify(new \App\Notifications\JobOfferResponseNotification($application, 'declined'));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::warning('Gagal kirim notifikasi offer response (declined)', [
+                        'application_id' => $application->id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
             return ['success' => true, 'message' => 'Penawaran kerja telah ditolak.'];

@@ -123,6 +123,21 @@ class AssessmentController extends Controller
             return back()->with('error', 'Silakan pilih posisi atau lowongan.');
         }
 
+        // Cek apakah user sudah melakukan asesmen untuk posisi/lowongan ini dalam 7 hari terakhir (Audit 3.3)
+        $userId = Auth::id();
+        $query = UserAssessment::where('user_id', $userId)
+            ->where('assessment_date', '>=', now()->subDays(7));
+
+        if ($request->position_id) {
+            $query->where('position_id', $request->position_id);
+        } else {
+            $query->where('job_listing_id', $request->job_listing_id);
+        }
+
+        if ($query->exists()) {
+            return back()->with('error', 'Anda sudah melakukan asesmen untuk posisi/lowongan ini dalam 7 hari terakhir.');
+        }
+
         session()->put('assessment_data', [
             'position_id' => $request->position_id,
             'job_listing_id' => $request->job_listing_id,

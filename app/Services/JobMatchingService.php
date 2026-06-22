@@ -87,7 +87,8 @@ class JobMatchingService
      */
     public function getMatchedJobs(User $user, int $limit = 10)
     {
-        $jobs = JobListing::where('is_active', true)
+        $jobs = JobListing::with(['company', 'position'])
+            ->where('is_active', true)
             ->where('expires_date', '>', now())
             ->get();
 
@@ -104,7 +105,8 @@ class JobMatchingService
      */
     public function getMatchedJobsPaginated(User $user, int $perPage = 10, $search = null, $sort = 'terbaru', $tab = 'all')
     {
-        $query = JobListing::where('is_active', true)
+        $query = JobListing::with(['company', 'position'])
+            ->where('is_active', true)
             ->where('expires_date', '>', now());
 
         if ($search) {

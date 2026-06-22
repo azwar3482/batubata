@@ -364,8 +364,8 @@ PROMPT;
     protected function getRoleMenus(string $role): string
     {
         return match ($role) {
-            'job_seeker' => 'Dashboard, Competency Assessment, Career Roadmap, Job Vacancies, Courses, Tes TPA, Profile, Notifications',
-            'industry' => 'Dashboard, Post Job, Search Candidates, Tes TPA, Bank Soal TPA, Kelola Tim, Hasil TPA, Profile, Notifications',
+            'job_seeker' => 'Dashboard, Competency Assessment, Career Roadmap, Job Vacancies, Courses, Tes TPA, Profile, Notifications, Career Fields (Bidang Karir), Direct Chats (Pesan Langsung)',
+            'industry' => 'Dashboard, Post Job, Search Candidates, Tes TPA, Bank Soal TPA, Kelola Tim, Hasil TPA, Profile, Notifications, Direct Chats (Pesan Langsung)',
             'education' => 'Dashboard, Analytics, Students, Courses, Programs, Partners, Collaboration, Profile',
             'admin' => 'Dashboard, Users, Competencies, Courses, Categories, Positions, Skill Keywords, Document Weights, AI Workflow, Tes TPA, Reports, Settings',
             default => 'Dashboard, Profile',
@@ -694,7 +694,12 @@ PROMPT;
      */
     protected function isPromptInjection(string $message): bool
     {
-        $messageLower = strtolower($message);
+        // Normalisasi teks: lowercase, normalize unicode lookalikes, dan bersihkan whitespace berlebih (Audit 2.5)
+        $messageLower = mb_strtolower($message, 'UTF-8');
+        if (class_exists('Normalizer')) {
+            $messageLower = \Normalizer::normalize($messageLower, \Normalizer::FORM_C);
+        }
+        $messageLower = preg_replace('/\s+/', ' ', $messageLower);
 
         $injectionPatterns = [
             // Perintah untuk mengubah system prompt
