@@ -1396,6 +1396,28 @@
                     @endif
 
                 </nav>
+
+                <!-- Kata Mutiara Card -->
+                @php $quote = \App\Models\Quote::getRandom(); @endphp
+                @if($quote)
+                <div class="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 sidebar-text transition-[opacity,margin] duration-300">
+                    <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 border border-indigo-100 dark:border-indigo-800/30">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-indigo-400 dark:text-indigo-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/>
+                            </svg>
+                            <div class="min-w-0">
+                                <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 italic line-clamp-3">"{{ $quote->content }}"</p>
+                                <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 font-medium">
+                                    @if($quote->author){{ $quote->author }}@endif
+                                    @if($quote->author && $quote->category) <span class="mx-1">|</span> @endif
+                                    @if($quote->category){{ ucfirst(str_replace('_', ' ', $quote->category)) }}@endif
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </aside>
 
