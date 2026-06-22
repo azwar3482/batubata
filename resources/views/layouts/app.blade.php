@@ -174,13 +174,9 @@
             transform: none !important;
         }
 
-        /* Saat sidebar sedang bertransisi, blokir semua pointer events di dalam sidebar
-           agar klik tidak mendarat di posisi yang salah selama animasi 300ms */
-        aside.sidebar-transitioning {
-            pointer-events: none !important;
-        }
-
-        aside.sidebar-transitioning .menu-link {
+        /* Saat sidebar sedang bertransisi, hanya blokir toggle button,
+           menu link tetap bisa diklik agar navigasi tidak terganggu */
+        aside.sidebar-transitioning .sidebar-toggle-btn {
             pointer-events: none !important;
             cursor: not-allowed !important;
         }
@@ -871,7 +867,7 @@
                         <img src="{{ asset('logo.jpg') }}" alt="Logo" class="h-8 w-auto mr-2 sm:mr-3 rounded-lg ring-2 ring-white/20 transition-transform duration-300 hover:rotate-6 sidebar-icon dark:bg-white dark:p-1">
                         <span class="logo-text transition-[opacity] duration-300 text-sm sm:text-base">KOMPASKARIR</span>
                     </a>
-                    <button @click="sidebarToggle()" class="text-white/80 hover:text-white focus:outline-none lg:hidden p-1.5 rounded-lg hover:bg-white/10 transition-colors" aria-label="Close Sidebar">
+                    <button @click="sidebarToggle()" class="sidebar-toggle-btn text-white/80 hover:text-white focus:outline-none lg:hidden p-1.5 rounded-lg hover:bg-white/10 transition-colors" aria-label="Close Sidebar">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -904,7 +900,7 @@
             <!-- Scrollable Navigation Wrapper -->
             <div class="flex-1 pb-3 sm:pb-4" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
                 <!-- Navigation Menu -->
-                <nav class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav h-full">
+                <nav @click="$event.target.closest('a') && window.innerWidth < 1024 && (sidebarOpen = false, localStorage.setItem('sidebarOpen', 'false'))" class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav h-full">
 
                     @if (Auth::user()->role === 'job_seeker')
                     <!-- Menu Job Seeker -->
@@ -1421,7 +1417,7 @@
                 <!-- Left Side: Burger & Mobile Logo -->
                 <div class="flex items-center gap-2">
                     <!-- Animated Burger Button -->
-                    <button @click="sidebarToggle()" x-show="mobileLayout === 'sidebar'" class="text-slate-500 focus:outline-none hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 active:scale-95 relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center lg:hidden" aria-label="Toggle Sidebar">
+                    <button @click="sidebarToggle()" x-show="mobileLayout === 'sidebar'" class="sidebar-toggle-btn text-slate-500 focus:outline-none hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 active:scale-95 relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center lg:hidden" aria-label="Toggle Sidebar">
                         <div class="w-5 h-4 sm:w-6 sm:h-5 flex flex-col justify-between relative">
                             <span :class="sidebarOpen ? 'rotate-45 translate-y-[7px] sm:translate-y-[9px]' : ''" class="w-full h-[2px] bg-slate-600 dark:bg-slate-400 rounded-full transition-[opacity,margin] duration-300 transform origin-center"></span>
                             <span :class="sidebarOpen ? 'opacity-0 translate-x-2' : ''" class="w-full h-[2px] bg-slate-600 dark:bg-slate-400 rounded-full transition-[opacity,margin] duration-300 transform"></span>
@@ -1430,7 +1426,7 @@
                     </button>
 
                     <!-- Sidebar Toggle for Desktop -->
-                    <button @click="sidebarToggle()" class="hidden lg:flex text-slate-500 focus:outline-none hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 active:scale-95 relative w-10 h-10 items-center justify-center" aria-label="Toggle Sidebar">
+                    <button @click="sidebarToggle()" class="sidebar-toggle-btn hidden lg:flex text-slate-500 focus:outline-none hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 active:scale-95 relative w-10 h-10 items-center justify-center" aria-label="Toggle Sidebar">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
                         </svg>
