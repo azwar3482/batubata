@@ -1008,7 +1008,13 @@
             <!-- Scrollable Navigation Wrapper -->
             <div class="flex-1 pb-3 sm:pb-4 flex flex-col" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
                 <!-- Navigation Menu -->
-                <nav @click="$event.target.closest('a') && window.innerWidth < 1024 && (sidebarOpen = false, localStorage.setItem('sidebarOpen', 'false'))" class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav">
+                <nav @click="
+                    const link = $event.target.closest('a');
+                    if (link && window.innerWidth < 1024) {
+                        sidebarOpen = false;
+                        localStorage.setItem('sidebarOpen', 'false');
+                    }
+                " class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav">
 
                     @if (Auth::user()->role === 'job_seeker')
                     <!-- Menu Job Seeker -->
