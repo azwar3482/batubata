@@ -364,7 +364,8 @@ class AssessmentController extends Controller
             ]);
         }
 
-        return view('assessment.result', compact('assessment', 'recommendations', 'roadmapExists', 'roadmapMilestones', 'radarData', 'targetName'));
+        return view('assessment.result', compact('assessment', 'recommendations', 'roadmapExists', 'roadmapMilestones', 'radarData', 'targetName'))
+            ->with('paginatedScores', $assessment->scores()->with('competency')->orderByRaw("CASE WHEN gap_percentage > 0 THEN 0 ELSE 1 END")->orderByDesc('gap_percentage')->paginate(10));
     }
 
     public function history()

@@ -82,9 +82,9 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($assessment->scores->sortByDesc('gap_percentage') as $score)
+                                    @foreach ($paginatedScores as $score)
                                     <tr class="hover:bg-gray-50 transition">
-                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $loop->iteration }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">{{ ($paginatedScores->currentPage() - 1) * $paginatedScores->perPage() + $loop->iteration }}</td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm font-medium text-gray-900">
                                                 {{ $score->competency->name }}
@@ -136,6 +136,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Pagination -->
+                        @if($paginatedScores->hasPages())
+                        <div class="px-6 py-4 border-t border-gray-200">
+                            {{ $paginatedScores->links() }}
+                        </div>
+                        @endif
                     </div>
 
                     <!-- Radar Chart Placeholder -->

@@ -22,7 +22,16 @@ class JobController extends Controller
         $jobs = $this->jobSearchService->searchJobs($request->all(), $user);
         $filters = $this->jobSearchService->getFilters();
 
-        return view('jobs.index', array_merge(['jobs' => $jobs], $filters));
+        $profileWarnings = [];
+        if (!$user->gender) $profileWarnings[] = 'Jenis kelamin belum diisi';
+        if (!$user->birth_date) $profileWarnings[] = 'Tanggal lahir belum diisi';
+        if (empty($user->expected_jobs)) $profileWarnings[] = 'Posisi yang diharapkan belum diisi';
+        if (empty($user->languages)) $profileWarnings[] = 'Bahasa yang dikuasai belum diisi';
+
+        $hasAssessment = $user->assessments()->exists();
+        if (!$hasAssessment) $profileWarnings[] = 'Asesmen kompetensi belum dilakukan';
+
+        return view('jobs.index', array_merge(['jobs' => $jobs, 'profileWarnings' => $profileWarnings, 'hasAssessment' => $hasAssessment], $filters));
     }
 
     public function show($id)

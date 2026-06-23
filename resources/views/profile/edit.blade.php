@@ -359,7 +359,7 @@
                         </div>
                     </div>
                     @if(Auth::user()->role === 'job_seeker')
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300">
                         <div class="flex items-center mb-6">
                             <div class="p-2 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg text-indigo-600 dark:text-indigo-400 mr-3">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -438,7 +438,7 @@
                     @endif
 
                     <!-- Update Password Card -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center">
                                 <div class="p-2 bg-rose-50 dark:bg-rose-950/20 rounded-lg text-rose-600 dark:text-rose-400 mr-3">
@@ -680,7 +680,7 @@
 
                     @if(Auth::user()->isJobSeeker())
                     <!-- Dokumen Lainnya (Custom Documents) -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6" x-data="customDocs()">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300" x-data="customDocs()">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center">
                                 <div class="p-2 bg-cyan-50 dark:bg-cyan-950/20 rounded-lg text-cyan-600 dark:text-cyan-400 mr-3">
@@ -837,7 +837,7 @@
                             </div>
 
                             {{-- AJAX Success Message --}}
-                            <div x-show="successMessage" x-transition x-cloak class="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl flex items-center gap-3">
+                            <div x-show="successMessage" x-transition x-cloak class="p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl flex items-center gap-3">
                                 <div class="p-1 bg-green-500 text-white rounded-full">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                 </div>
@@ -845,7 +845,7 @@
                             </div>
 
                             {{-- AJAX Error Message --}}
-                            <div x-show="errorMessage" x-transition x-cloak class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl flex items-start gap-3">
+                            <div x-show="errorMessage" x-transition x-cloak class="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl flex items-start gap-3">
                                 <div class="p-1 bg-red-500 text-white rounded-full mt-0.5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                 </div>
@@ -856,7 +856,7 @@
                             </div>
 
                             @if($errors->any() && !$errors->hasAny(['documents', 'documents.*', 'current_password', 'password']))
-                            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r shadow-sm">
+                            <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r shadow-sm">
                                 <div class="flex items-center text-red-800 font-bold mb-2 text-sm">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
@@ -1008,8 +1008,8 @@
                             </div>
 
                             @if(Auth::user()->role === 'job_seeker')
-                            <!-- CV Preview Accordion -->
-                            <div x-data="{ open: false }" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 hover:shadow-md transition-all duration-300 mb-6">
+                            <!-- Accordion: Pratinjau CV, Ekspor Data, Kontrol Berbagi -->
+                            <div x-data="{ open: false, activeTab: 'cv' }" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 hover:shadow-md transition-all duration-300 mt-6">
                                 <button @click="open = !open" type="button" class="flex items-center justify-between w-full focus:outline-none">
                                     <div class="flex items-center">
                                         <div class="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg text-blue-600 dark:text-blue-400 mr-3">
@@ -1017,20 +1017,132 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path>
                                             </svg>
                                         </div>
-                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Pratinjau CV</h3>
+                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Pratinjau CV & Pengaturan Data</h3>
                                     </div>
                                     <svg class="w-5 h-5 text-slate-500 dark:text-slate-400 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </button>
                                 <div x-show="open" x-transition.opacity.duration.300ms style="display: none;" class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                    <x-cv-preview :user="Auth::user()" />
+                                    <!-- Tabs -->
+                                    <div class="flex border-b border-slate-200 dark:border-slate-700 mb-4">
+                                        <button @click="activeTab = 'cv'" type="button"
+                                            :class="activeTab === 'cv' ? 'text-blue-600 dark:text-blue-400 border-blue-600 dark:border-blue-400' : 'text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-700 dark:hover:text-slate-300'"
+                                            class="px-4 py-2 text-sm font-semibold border-b-2 transition-colors">
+                                            Pratinjau CV
+                                        </button>
+                                        <button @click="activeTab = 'export'" type="button"
+                                            :class="activeTab === 'export' ? 'text-emerald-600 dark:text-emerald-400 border-emerald-600 dark:border-emerald-400' : 'text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-700 dark:hover:text-slate-300'"
+                                            class="px-4 py-2 text-sm font-semibold border-b-2 transition-colors">
+                                            Ekspor Data
+                                        </button>
+                                        <button @click="activeTab = 'sharing'" type="button"
+                                            :class="activeTab === 'sharing' ? 'text-violet-600 dark:text-violet-400 border-violet-600 dark:border-violet-400' : 'text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-700 dark:hover:text-slate-300'"
+                                            class="px-4 py-2 text-sm font-semibold border-b-2 transition-colors">
+                                            Kontrol Berbagi
+                                        </button>
+                                    </div>
+
+                                    <!-- Tab: Pratinjau CV -->
+                                    <div x-show="activeTab === 'cv'">
+                                        <x-cv-preview :user="Auth::user()" />
+                                    </div>
+
+                                    <!-- Tab: Ekspor Data Pribadi -->
+                                    <div x-show="activeTab === 'export'">
+                                        <div class="flex items-center mb-4">
+                                            <div class="p-2 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg text-emerald-600 dark:text-emerald-400 mr-3">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-200">Ekspor Data Pribadi</h4>
+                                                <p class="text-xs text-slate-500 dark:text-slate-400">Hak portabilitas data sesuai UU PDP</p>
+                                            </div>
+                                        </div>
+                                        <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                                            <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Unduh salinan seluruh data pribadi Anda:</p>
+                                            <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4 pl-4 list-disc">
+                                                <li>Data profil, pendidikan, pengalaman kerja</li>
+                                                <li>Dokumen (CV, ijazah, transkrip, sertifikat)</li>
+                                                <li>Hasil asesmen, skor TPA, career roadmap</li>
+                                                <li>Riwayat kursus dan log persetujuan</li>
+                                            </ul>
+                                            <div class="flex flex-wrap gap-3">
+                                                <a href="{{ route('profile.export', ['format' => 'json']) }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition-all">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                                    Unduh JSON
+                                                </a>
+                                                <a href="{{ route('profile.export', ['format' => 'csv']) }}" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 rounded-xl transition-colors">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                    Unduh CSV
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tab: Kontrol Berbagi Data -->
+                                    <div x-show="activeTab === 'sharing'">
+                                        @php
+                                            $sharingPrefs = \App\Models\DataSharingPreference::getForUser(Auth::id());
+                                        @endphp
+                                        <div class="flex items-center mb-4">
+                                            <div class="p-2 bg-violet-50 dark:bg-violet-950/20 rounded-lg text-violet-600 dark:text-violet-400 mr-3">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-base font-bold text-slate-800 dark:text-slate-200">Kontrol Berbagi Data</h4>
+                                                <p class="text-xs text-slate-500 dark:text-slate-400">Atur data yang dibagikan ke perusahaan</p>
+                                            </div>
+                                        </div>
+                                        <form id="sharing-prefs-form" action="{{ route('profile.sharing.update') }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="space-y-3">
+                                                @php
+                                                    $sharingFields = [
+                                                        'share_profile' => ['label' => 'Profil Dasar', 'desc' => 'Nama, foto, bio, jenis kelamin'],
+                                                        'share_contact' => ['label' => 'Informasi Kontak', 'desc' => 'Email, nomor telepon'],
+                                                        'share_education' => ['label' => 'Pendidikan', 'desc' => 'Jenjang, jurusan, tahun lulus'],
+                                                        'share_experience' => ['label' => 'Pengalaman Kerja', 'desc' => 'Riwayat pekerjaan'],
+                                                        'share_skills' => ['label' => 'Keahlian', 'desc' => 'Skills, bahasa, LinkedIn/GitHub'],
+                                                        'share_documents' => ['label' => 'Dokumen', 'desc' => 'CV, ijazah, transkrip'],
+                                                        'share_assessments' => ['label' => 'Hasil Asesmen', 'desc' => 'Skor kompetensi'],
+                                                        'share_tpa_scores' => ['label' => 'Skor TPA', 'desc' => 'Hasil Tes Potensi Akademik'],
+                                                        'share_blood_type' => ['label' => 'Golongan Darah', 'desc' => 'Data kesehatan'],
+                                                        'share_location' => ['label' => 'Lokasi', 'desc' => 'Alamat dan koordinat GPS'],
+                                                    ];
+                                                @endphp
+                                                @foreach($sharingFields as $field => $info)
+                                                <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                                                    <div class="flex-1">
+                                                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $info['label'] }}</span>
+                                                        <p class="text-[11px] text-slate-500 dark:text-slate-400">{{ $info['desc'] }}</p>
+                                                    </div>
+                                                    <div class="relative">
+                                                        <input type="checkbox" name="{{ $field }}" value="1" {{ $sharingPrefs->$field ? 'checked' : '' }} class="sr-only peer sharing-toggle" data-field="{{ $field }}">
+                                                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-violet-300 dark:peer-focus:ring-violet-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-violet-600"></div>
+                                                    </div>
+                                                </label>
+                                                @endforeach
+                                            </div>
+                                            <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                                                <p class="text-xs text-amber-700 dark:text-amber-300"><strong>Catatan:</strong> Menonaktifkan data yang diperlukan perusahaan dapat mempengaruhi peluang Anda.</p>
+                                            </div>
+                                            <div class="mt-4 flex justify-end">
+                                                <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Simpan Preferensi</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             @endif
 
                             @if(Auth::user()->role === 'job_seeker')
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
                                 <div class="mb-2">
                                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Ringkasan Pribadi</label>
                                     <input id="bio" type="hidden" name="bio" form="profile-update-form" value="{{ Auth::user()->bio ?? '' }}">
@@ -1041,7 +1153,7 @@
                             @endif
 
                             @if(Auth::user()->role === 'job_seeker')
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
                                 <div class="flex items-center mb-6">
                                     <div class="p-2 bg-purple-50 dark:bg-purple-950/20 rounded-lg text-purple-600 dark:text-purple-400 mr-3">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1128,7 +1240,7 @@
 
                                 <!-- Riwayat Karier -->
                             </div>
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
                                 <div class="flex items-center mb-6">
                                     <div class="p-2 bg-green-50 dark:bg-green-950/20 rounded-lg text-green-600 dark:text-green-400 mr-3">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1204,7 +1316,7 @@
                                 </div>
                                 <!-- Preferensi Pekerjaan -->
                             </div>
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
                                 <div class="flex items-center mb-6">
                                     <div class="p-2 bg-teal-50 dark:bg-teal-950/20 rounded-lg text-teal-600 dark:text-teal-400 mr-3">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1317,127 +1429,6 @@
                             @endif
 
 
-
-                            <!-- Data Export Section (UU PDP Compliance) -->
-                            @if(Auth::user()->role === 'job_seeker')
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
-                                <div class="flex items-center mb-6">
-                                    <div class="p-2 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg text-emerald-600 dark:text-emerald-400 mr-3">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Ekspor Data Pribadi</h3>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Hak portabilitas data sesuai UU No. 27 Tahun 2022 (UU PDP)</p>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
-                                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                                            Anda berhak mendapatkan salinan seluruh data pribadi yang kami simpan dalam format JSON (dapat dibaca mesin). File ekspor mencakup:
-                                        </p>
-                                        <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4 pl-4 list-disc">
-                                            <li>Data profil dan informasi dasar</li>
-                                            <li>Riwayat pendidikan dan pengalaman kerja</li>
-                                            <li>Dokumen yang diunggah (CV, ijazah, transkrip, sertifikat)</li>
-                                            <li>Hasil asesmen kompetensi dan skor TPA</li>
-                                            <li>Riwayat lamaran pekerjaan</li>
-                                            <li>Career roadmap dan rekomendasi</li>
-                                            <li>Riwayat kursus dan progres pembelajaran</li>
-                                            <li>Log persetujuan (consent)</li>
-                                        </ul>
-
-                                        <div class="flex flex-wrap gap-3">
-                                            <a href="{{ route('profile.export', ['format' => 'json']) }}" 
-                                                class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition-all duration-200">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                                </svg>
-                                                Unduh JSON
-                                            </a>
-                                            <a href="{{ route('profile.export', ['format' => 'csv']) }}" 
-                                                class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                                </svg>
-                                                Unduh CSV
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-
-                            <!-- Data Sharing Preferences (UU PDP Compliance) -->
-                            @if(Auth::user()->role === 'job_seeker')
-                            @php
-                                $sharingPrefs = \App\Models\DataSharingPreference::getForUser(Auth::id());
-                            @endphp
-                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
-                                <div class="flex items-center mb-6">
-                                    <div class="p-2 bg-violet-50 dark:bg-violet-950/20 rounded-lg text-violet-600 dark:text-violet-400 mr-3">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Kontrol Berbagi Data</h3>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Atur data mana yang dibagikan ke perusahaan saat melamar</p>
-                                    </div>
-                                </div>
-
-                                <form id="sharing-prefs-form" action="{{ route('profile.sharing.update') }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    
-                                    <div class="space-y-3">
-                                        @php
-                                            $sharingFields = [
-                                                'share_profile' => ['label' => 'Profil Dasar', 'desc' => 'Nama, foto, bio, jenis kelamin'],
-                                                'share_contact' => ['label' => 'Informasi Kontak', 'desc' => 'Email, nomor telepon'],
-                                                'share_education' => ['label' => 'Pendidikan', 'desc' => 'Jenjang, jurusan, tahun lulus, institusi'],
-                                                'share_experience' => ['label' => 'Pengalaman Kerja', 'desc' => 'Riwayat pekerjaan dan pengalaman'],
-                                                'share_skills' => ['label' => 'Keahlian', 'desc' => 'Skills, bahasa, URL LinkedIn/GitHub/portfolio'],
-                                                'share_documents' => ['label' => 'Dokumen', 'desc' => 'CV, ijazah, transkrip, sertifikat'],
-                                                'share_assessments' => ['label' => 'Hasil Asesmen', 'desc' => 'Skor kompetensi dan gap analysis'],
-                                                'share_tpa_scores' => ['label' => 'Skor TPA', 'desc' => 'Hasil Tes Potensi Akademik'],
-                                                'share_blood_type' => ['label' => 'Golongan Darah', 'desc' => 'Data kesehatan (memerlukan consent terpisah)'],
-                                                'share_location' => ['label' => 'Lokasi', 'desc' => 'Alamat dan koordinat GPS'],
-                                            ];
-                                        @endphp
-
-                                        @foreach($sharingFields as $field => $info)
-                                        <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                                            <div class="flex-1">
-                                                <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $info['label'] }}</span>
-                                                <p class="text-[11px] text-slate-500 dark:text-slate-400">{{ $info['desc'] }}</p>
-                                            </div>
-                                            <div class="relative">
-                                                <input type="checkbox" name="{{ $field }}" value="1" 
-                                                    {{ $sharingPrefs->$field ? 'checked' : '' }}
-                                                    class="sr-only peer sharing-toggle" data-field="{{ $field }}">
-                                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-violet-300 dark:peer-focus:ring-violet-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-violet-600"></div>
-                                            </div>
-                                        </label>
-                                        @endforeach
-                                    </div>
-
-                                    <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-                                        <p class="text-xs text-amber-700 dark:text-amber-300">
-                                            <strong>Catatan:</strong> Beberapa perusahaan mungkin memerlukan data tertentu untuk proses rekrutmen. Menonaktifkan data yang diperlukan dapat mempengaruhi peluang Anda.
-                                        </p>
-                                    </div>
-
-                                    <div class="mt-4 flex justify-end">
-                                        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">
-                                            Simpan Preferensi
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            @endif
 
                             <div class="flex items-center justify-end gap-3 pt-6">
                                 <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
