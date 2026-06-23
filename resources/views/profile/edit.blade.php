@@ -678,6 +678,7 @@
                     </div>
                     @endif
 
+                    @if(Auth::user()->isJobSeeker())
                     <!-- Dokumen Lainnya (Custom Documents) -->
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6" x-data="customDocs()">
                         <div class="flex items-center justify-between mb-4">
@@ -758,6 +759,7 @@
                             @endforelse
                         </div>
                     </div>
+                    @endif
 
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8">
                         <div class="flex items-center mb-6">
@@ -947,23 +949,9 @@
                                         bloodConsent: {{ \App\Models\Consent::hasConsent(Auth::id(), 'blood_type') ? 'true' : 'false' }}, 
                                         showConsent: {{ Auth::user()->blood_type ? 'false' : 'true' }}
                                     }">
-                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
-                                            Golongan Darah 
-                                            <span class="text-[10px] normal-case tracking-normal text-slate-400 dark:text-slate-500 font-normal">(Opsional)</span>
-                                        </label>
-                                        <select name="blood_type" 
-                                            @change="if($event.target.value && !bloodConsent) { showConsent = true }"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                            <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Tidak perlu diisi</option>
-                                            <option value="A" {{ Auth::user()->blood_type == 'A' ? 'selected' : '' }}>A</option>
-                                            <option value="B" {{ Auth::user()->blood_type == 'B' ? 'selected' : '' }}>B</option>
-                                            <option value="AB" {{ Auth::user()->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
-                                            <option value="O" {{ Auth::user()->blood_type == 'O' ? 'selected' : '' }}>O</option>
-                                        </select>
-                                        @error('blood_type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                                        
-                                        <!-- Consent checkbox for blood type -->
-                                        <div x-show="showConsent" x-transition class="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                                        <!-- Consent checkbox - tampil PERTAMA, sebelum select -->
+                                        @if(!\App\Models\Consent::hasConsent(Auth::id(), 'blood_type'))
+                                        <div x-show="showConsent" x-transition class="mb-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
                                             <div class="flex items-start gap-2">
                                                 <input type="checkbox" name="blood_type_consent" id="blood_type_consent" value="1"
                                                     x-model="bloodConsent"
@@ -972,10 +960,26 @@
                                                     Saya menyetujui pengumpulan dan pemrosesan data golongan darah saya untuk keperluan pencocokan pekerjaan. Data ini termasuk kategori <strong>data kesehatan</strong> sesuai UU No. 27 Tahun 2022 (UU PDP). Saya dapat menarik persetujuan ini kapan saja.
                                                 </label>
                                             </div>
-                                            <p x-show="!bloodConsent && showConsent" class="text-[10px] text-amber-600 dark:text-amber-400 mt-1 ml-6">
+                                            <p x-show="!bloodConsent" class="text-[10px] text-amber-600 dark:text-amber-400 mt-1 ml-6">
                                                 Centang persetujuan di atas jika ingin mengisi golongan darah.
                                             </p>
                                         </div>
+                                        @endif
+
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
+                                            Golongan Darah 
+                                            <span class="text-[10px] normal-case tracking-normal text-slate-400 dark:text-slate-500 font-normal">(Opsional)</span>
+                                        </label>
+                                        <select name="blood_type" 
+                                            :disabled="!bloodConsent"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Tidak perlu diisi</option>
+                                            <option value="A" {{ Auth::user()->blood_type == 'A' ? 'selected' : '' }}>A</option>
+                                            <option value="B" {{ Auth::user()->blood_type == 'B' ? 'selected' : '' }}>B</option>
+                                            <option value="AB" {{ Auth::user()->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
+                                            <option value="O" {{ Auth::user()->blood_type == 'O' ? 'selected' : '' }}>O</option>
+                                        </select>
+                                        @error('blood_type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                         
                                         @if(\App\Models\Consent::hasConsent(Auth::id(), 'blood_type'))
                                         <p class="text-[10px] text-green-600 dark:text-green-400 mt-1">

@@ -28,16 +28,16 @@
                         @csrf
 
                         <div class="mb-4">
-                            <label for="category" class="block text-sm font-medium text-gray-700">Kategori (contoh: programming, soft_skills)</label>
-                            <input type="text" name="category" id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('category') }}" required>
+                            <label for="category" class="block text-sm font-medium text-gray-700 dark:text-slate-300">Kategori (contoh: programming, soft_skills)</label>
+                            <input type="text" name="category" id="category" class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('category') }}" required>
                             @error('category')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="keyword" class="block text-sm font-medium text-gray-700">Keyword (huruf kecil, contoh: python, time management)</label>
-                            <input type="text" name="keyword" id="keyword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('keyword') }}" required>
+                            <label for="keyword" class="block text-sm font-medium text-gray-700 dark:text-slate-300">Keyword (huruf kecil, contoh: python, time management)</label>
+                            <input type="text" name="keyword" id="keyword" class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('keyword') }}" required>
                             @error('keyword')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -45,8 +45,8 @@
 
                         <div class="mb-4">
                             <label class="flex items-center">
-                                <input type="checkbox" name="is_active" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" checked>
-                                <span class="ml-2 text-sm text-gray-600">Aktif (akan dibaca oleh AI Module)</span>
+                                <input type="checkbox" name="is_active" class="rounded border-gray-300 dark:border-slate-500 dark:bg-slate-700 dark:checked:bg-indigo-500 text-indigo-600 shadow-sm focus:ring-indigo-500" checked>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-slate-300">Aktif (akan dibaca oleh AI Module)</span>
                             </label>
                         </div>
 

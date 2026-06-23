@@ -454,7 +454,7 @@
             border-color: #334155 !important;
         }
 
-        /* 6. Form Inputs & Selects */
+        /* 6. Form Inputs, Selects & Checkboxes */
         .dark input[type="text"],
         .dark input[type="email"],
         .dark input[type="number"],
@@ -465,6 +465,26 @@
             background-color: #0f172a !important;
             color: #f8fafc !important;
             border-color: #334155 !important;
+        }
+
+        .dark input[type="checkbox"] {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+        }
+
+        .dark input[type="checkbox"]:checked {
+            background-color: #6366f1 !important;
+            border-color: #6366f1 !important;
+        }
+
+        .dark input[type="radio"] {
+            background-color: #334155 !important;
+            border-color: #475569 !important;
+        }
+
+        .dark input[type="radio"]:checked {
+            background-color: #6366f1 !important;
+            border-color: #6366f1 !important;
         }
 
         .dark input[type="text"]:focus,
@@ -883,6 +903,27 @@
             document.documentElement.classList.remove('dark')
         }
     </script>
+    <script>
+        // Prevent sidebar width FOUC - set correct initial width/transform before browser paints
+        (function() {
+            var s = localStorage.getItem('sidebarOpen');
+            var isOpen = s !== null ? s === 'true' : window.innerWidth >= 1024;
+            var pos = '{{ Auth::user()->sidebar_position ?? "left" }}';
+            var css = '';
+            if (isOpen) {
+                css = 'aside{width:' + (window.innerWidth >= 640 ? '16rem' : '17.5rem') + '}';
+            } else if (window.innerWidth >= 1024) {
+                css = 'aside{width:5rem}';
+            } else {
+                css = 'aside{transform:translateX(' + (pos === 'right' ? '100%' : '-100%') + ')}';
+            }
+            if (css) {
+                var w = document.createElement('style');
+                w.textContent = css;
+                document.head.appendChild(w);
+            }
+        })();
+    </script>
 </head>
 
 <body class="antialiased bg-[#f8fafc] dark:bg-slate-900 text-slate-800 dark:text-slate-200 relative overflow-hidden transition-colors duration-300" data-mobile-layout="{{ Auth::user()->mobile_layout ?? 'sidebar' }}" data-sidebar-position="{{ Auth::user()->sidebar_position ?? 'left' }}">
@@ -922,7 +963,7 @@
         }" class="flex h-screen overflow-hidden">
 
         <!-- Sidebar -->
-        <aside :class="getSidebarClasses()"
+        <aside id="app-sidebar" :class="getSidebarClasses()"
             class="fixed inset-y-0 z-40 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 shadow-xl lg:shadow-none transform transition-[width,transform] duration-300 ease-in-out lg:static flex flex-col h-full"
             x-show="mobileLayout === 'sidebar'"
             x-transition>

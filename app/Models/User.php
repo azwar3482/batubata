@@ -53,13 +53,73 @@ class User extends Authenticatable implements MustVerifyEmail
         'languages' => 'array',
         'expected_jobs' => 'array',
         'custom_permissions' => 'array',
-        'phone' => 'encrypted',
-        'address' => 'encrypted',
-        'birth_date' => 'encrypted',
-        'blood_type' => 'encrypted',
-        'latitude' => 'encrypted',
-        'longitude' => 'encrypted',
     ];
+
+    protected function phone(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: function ($value) {
+                if (empty($value)) return null;
+                try { return decrypt($value); } catch (\Exception $e) { return $value; }
+            },
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
+
+    protected function address(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: function ($value) {
+                if (empty($value)) return null;
+                try { return decrypt($value); } catch (\Exception $e) { return $value; }
+            },
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
+
+    protected function birthDate(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: function ($value) {
+                if (empty($value)) return null;
+                try { return decrypt($value); } catch (\Exception $e) { return $value; }
+            },
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
+
+    protected function bloodType(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: function ($value) {
+                if (empty($value)) return null;
+                try { return decrypt($value); } catch (\Exception $e) { return $value; }
+            },
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
+
+    protected function latitude(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: function ($value) {
+                if (empty($value)) return null;
+                try { return decrypt($value); } catch (\Exception $e) { return $value; }
+            },
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
+
+    protected function longitude(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: function ($value) {
+                if (empty($value)) return null;
+                try { return decrypt($value); } catch (\Exception $e) { return $value; }
+            },
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
 
     // Relasi
     public function careerHistories()

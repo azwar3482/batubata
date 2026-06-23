@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transfer Impact Assessment - KOMPASKARIR</title>
+     <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg" class="h-8 w-auto mr-2 rounded-lg">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -425,6 +426,14 @@
         <p>Dokumen ini merupakan bagian dari kepatuhan KOMPASKARIR INDONESIA terhadap Undang-Undang No. 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP).</p>
         <p>© {{ date('Y') }} KOMPASKARIR INDONESIA. Hak Cipta Dilindungi.</p>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto download after 1 second
+            setTimeout(function() {
+                window.location.href = '/transfer-impact-assessment/download';
+            }, 1000);
+        });
+    </script>
 </body>
 
 </html>
