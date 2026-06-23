@@ -570,6 +570,7 @@
                     <ul class="space-y-2 text-gray-400">
                         <li><a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a></li>
                         <li><a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                        <li><a href="{{ route('legal.tia') }}" class="hover:text-white transition">Transfer Impact Assessment</a></li>
                     </ul>
                 </div>
             </div>
@@ -579,6 +580,8 @@
                     <a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a>
                     <span>&middot;</span>
                     <a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a>
+                    <span>&middot;</span>
+                    <a href="{{ route('legal.tia') }}" class="hover:text-white transition">TIA</a>
                 </div>
                 <p class="mt-2 text-sm">Dikembangkan oleh: Noor Syam AR & Anggitya Ayu Pertiwi</p>
             </div>

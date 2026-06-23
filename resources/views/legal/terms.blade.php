@@ -259,6 +259,7 @@
             <div class="mt-4 flex justify-center space-x-6 text-sm">
                 <a href="{{ route('legal.privacy') }}" class="text-gray-400 hover:text-white transition">Kebijakan Privasi</a>
                 <a href="{{ route('legal.terms') }}" class="text-gray-400 hover:text-white transition">Syarat & Ketentuan</a>
+                <a href="{{ route('legal.tia') }}" class="text-gray-400 hover:text-white transition">TIA</a>
                 <a href="/" class="text-gray-400 hover:text-white transition">Beranda</a>
             </div>
         </div>

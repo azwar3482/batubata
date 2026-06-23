@@ -189,6 +189,7 @@
 
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">10. Transfer Data Internasional</h2>
                 <p>Data Anda mungkin diproses di server yang terletak di luar Indonesia, termasuk oleh penyedia layanan pihak ketiga seperti Google. Kami memastikan bahwa transfer data dilakukan dengan perlindungan yang memadai sesuai dengan standar keamanan yang berlaku.</p>
+                <p class="mt-3">Untuk informasi lebih detail tentang dampak transfer data internasional dan langkah mitigasi yang kami ambil, silakan lihat <a href="{{ route('legal.tia') }}" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">Transfer Impact Assessment (TIA)</a> kami.</p>
 
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">11. Dasar Hukum Pemrosesan</h2>
                 <p>Kami memproses data pribadi Anda berdasarkan:</p>
@@ -323,6 +324,7 @@
             <div class="mt-4 flex justify-center space-x-6 text-sm">
                 <a href="{{ route('legal.privacy') }}" class="text-gray-400 hover:text-white transition">Kebijakan Privasi</a>
                 <a href="{{ route('legal.terms') }}" class="text-gray-400 hover:text-white transition">Syarat & Ketentuan</a>
+                <a href="{{ route('legal.tia') }}" class="text-gray-400 hover:text-white transition">TIA</a>
                 <a href="/" class="text-gray-400 hover:text-white transition">Beranda</a>
             </div>
         </div>

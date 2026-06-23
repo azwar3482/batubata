@@ -1803,6 +1803,13 @@
                     <div class="border-t border-slate-200 dark:border-slate-800/60 pt-4 sm:pt-6">
                        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
                 <p>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA. Hak Cipta Dilindungi.</p>
+                <div class="mt-2 flex justify-center space-x-4 text-sm">
+                    <a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a>
+                    <span>&middot;</span>
+                    <a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a>
+                    <span>&middot;</span>
+                    <a href="{{ route('legal.tia') }}" class="hover:text-white transition">TIA</a>
+                </div>
                 <p class="mt-2 text-sm">Dikembangkan oleh: Noor Syam  AR & Anggitya Ayu Pertiwi</p>
             </div>
                     </div>
