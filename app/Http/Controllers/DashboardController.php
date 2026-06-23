@@ -48,7 +48,6 @@ class DashboardController extends Controller
         $profileWarnings = [];
         if (!$user->gender) $profileWarnings[] = 'Jenis kelamin belum diisi';
         if (!$user->birth_date) $profileWarnings[] = 'Tanggal lahir belum diisi';
-        if (!$user->blood_type) $profileWarnings[] = 'Golongan darah belum diisi';
         if (empty($user->expected_jobs)) $profileWarnings[] = 'Posisi yang diharapkan belum diisi';
         if (empty($user->languages)) $profileWarnings[] = 'Bahasa yang dikuasai belum diisi';
         $hasAssessment = $latestAssessment !== null;

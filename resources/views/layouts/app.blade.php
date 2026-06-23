@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @stack('head-scripts')
 
     <style>
         [x-cloak] { display: none !important; }
@@ -2490,6 +2490,76 @@
 
     {{-- Loading Script --}}
     <x-loading-script />
+
+    {{-- Cookie Consent Banner (UU PDP Compliance) --}}
+    @if(!isset($_COOKIE['cookie_consent']))
+    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-lg p-4 md:p-6" style="display: none;">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="flex-1">
+                <div class="flex items-start gap-3">
+                    <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400 shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">Penggunaan Cookie</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Kami menggunakan cookie untuk menjaga sesi login, menyimpan preferensi, dan meningkatkan pengalaman Anda. Dengan melanjutkan penggunaan situs ini, Anda menyetujui penggunaan cookie sesuai 
+                            <a href="{{ route('legal.privacy') }}" class="text-blue-600 dark:text-blue-400 hover:underline">Kebijakan Privasi</a> kami.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+                <button onclick="rejectCookies()" class="px-4 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors">
+                    Tolak
+                </button>
+                <button onclick="acceptCookies()" class="px-5 py-2 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                    Terima Cookie
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show cookie banner after page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById('cookie-consent-banner').style.display = 'block';
+            }, 1000);
+        });
+
+        function acceptCookies() {
+            setCookie('cookie_consent', 'accepted', 365);
+            // Log consent
+            fetch('/profile/consent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    consent_type: 'cookies',
+                    granted: true
+                })
+            });
+            document.getElementById('cookie-consent-banner').style.display = 'none';
+        }
+
+        function rejectCookies() {
+            setCookie('cookie_consent', 'rejected', 30);
+            document.getElementById('cookie-consent-banner').style.display = 'none';
+        }
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/;SameSite=Lax';
+        }
+    </script>
+    @endif
 </body>
 
 </html>

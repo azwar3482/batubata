@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Tes TPA - {{ $session->tpaTest->title }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ asset('build/assets/app-DpCQjRl9.css') }}">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .timer-warning { color: #ef4444; animation: pulse 1s infinite; }

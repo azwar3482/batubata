@@ -28,17 +28,20 @@ class CVAnalysisService
         $extension = $cvFile->getClientOriginalExtension();
         $cvText = $this->extractTextFromCV($fullPath, $extension);
 
-        // 3. Panggil Python AI Service untuk analisis
+        // 3. Filter data sensitif dari teks CV (UU PDP compliance)
+        $filteredCvText = \App\Services\SensitiveDataFilter::filter($cvText);
+
+        // 4. Panggil Python AI Service untuk analisis
         $analysisResult = $this->pythonAIService->analyzeSkillGap([
-            'cv_text' => $cvText,
+            'cv_text' => $filteredCvText,
             'target_position' => $targetPosition,
             'user_id' => $userId
         ]);
 
-        // 4. Simpan hasil analisis ke database
+        // 5. Simpan hasil analisis ke database (dengan teks yang sudah difilter)
         SkillAnalysis::create([
             'user_id' => $userId,
-            'cv_text' => $cvText,
+            'cv_text' => $filteredCvText,
             'extracted_skills' => json_encode($analysisResult['extracted_skills']),
             'target_skills' => json_encode($analysisResult['target_skills']),
             'skill_gap' => json_encode($analysisResult['skill_gap']),

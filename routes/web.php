@@ -83,6 +83,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/custom-document', [ProfileController::class, 'uploadCustomDocument'])->name('profile.custom-document.upload');
     Route::delete('/profile/custom-document/{id}', [ProfileController::class, 'deleteCustomDocument'])->name('profile.custom-document.delete');
 
+    // Consent Management (UU PDP)
+    Route::post('/profile/consent', [ProfileController::class, 'updateConsent'])->name('profile.consent.update');
+    Route::post('/profile/consent/revoke', [ProfileController::class, 'revokeConsent'])->name('profile.consent.revoke');
+
+    // Data Sharing Preferences (UU PDP)
+    Route::patch('/profile/sharing', [ProfileController::class, 'updateSharingPreferences'])->name('profile.sharing.update');
+
+    // Data Export (UU PDP - Hak Portabilitas)
+    Route::get('/profile/export', [App\Http\Controllers\DataExportController::class, 'export'])->name('profile.export');
+
     // =====================
     // JOB SEEKER ROUTES
     // =====================

@@ -191,15 +191,126 @@
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">10. Transfer Data Internasional</h2>
                 <p>Data Anda mungkin diproses di server yang terletak di luar Indonesia, termasuk oleh penyedia layanan pihak ketiga seperti Google. Kami memastikan bahwa transfer data dilakukan dengan perlindungan yang memadai sesuai dengan standar keamanan yang berlaku.</p>
 
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">11. Perubahan pada Kebijakan Privasi</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">11. Dasar Hukum Pemrosesan</h2>
+                <p>Kami memproses data pribadi Anda berdasarkan:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Persetujuan (Consent):</strong> Anda memberikan persetujuan eksplisit untuk pemrosesan data tertentu, termasuk data kesehatan (golongan darah)</li>
+                    <li><strong>Pelaksanaan Kontrak:</strong> Pemrosesan diperlukan untuk penyediaan layanan platform KOMPASKARIR</li>
+                    <li><strong>Kepentingan Sah:</strong> Pemrosesan untuk keamanan, pencegahan penipuan, dan peningkatan layanan</li>
+                    <li><strong>Kewajiban Hukum:</strong> Pemrosesan yang diwajibkan oleh peraturan perundang-undangan</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">12. Data Pribadi Spesifik</h2>
+                <p>Beberapa data yang kami kumpulkan termasuk kategori <strong>data pribadi spesifik</strong> sesuai UU PDP:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Golongan Darah:</strong> Hanya dikumpulkan dengan persetujuan eksplisit terpisah dan bersifat opsional</li>
+                    <li><strong>Foto Wajah:</strong> Digunakan untuk identifikasi profil dengan persetujuan Anda</li>
+                    <li><strong>Lokasi GPS:</strong> Digunakan untuk pencocokan pekerjaan berdasarkan lokasi dengan persetujuan Anda</li>
+                </ul>
+                <p>Anda dapat menarik persetujuan untuk data spesifik kapan saja melalui halaman profil.</p>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">13. Hak-Hak Anda sebagai Subjek Data</h2>
+                <p>Sesuai UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi, Anda memiliki hak-hak berikut:</p>
+                
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mt-4 space-y-3">
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">1. Hak Akses (Pasal 16 ayat 1)</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda berhak mendapatkan salinan data pribadi Anda. Gunakan fitur "Ekspor Data" di halaman profil untuk mengunduh data Anda dalam format JSON atau CSV.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">2. Hak Koreksi (Pasal 16 ayat 1)</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda dapat memperbarui atau memperbaiki data yang tidak akurat melalui halaman profil.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">3. Hak Penghapusan (Pasal 16 ayat 1)</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda dapat menghapus akun dan seluruh data pribadi Anda melalui halaman profil. Data akan dihapus permanen dari sistem kami.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">4. Hak Pembatasan Pemrosesan (Pasal 16 ayat 2)</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda dapat membatasi pemrosesan data Anda untuk tujuan tertentu dengan mengatur preferensi berbagi data di halaman profil.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">5. Hak Keberatan (Pasal 16 ayat 3)</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda berhak menolak pemrosesan data Anda untuk tujuan tertentu. Hubungi kami untuk menyampaikan keberatan.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">6. Hak Portabilitas Data (Pasal 16 ayat 1)</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda berhak mendapatkan data Anda dalam format yang dapat dibaca mesin (JSON/CSV).</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-800 dark:text-blue-300">7. Hak Menarik Persetujuan</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-400">Anda dapat menarik persetujuan kapan saja melalui halaman profil tanpa mempengaruhi pemrosesan yang telah dilakukan sebelumnya.</p>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">14. Pengendalian Berbagi Data</h2>
+                <p>Anda memiliki kontrol penuh atas data yang dibagikan kepada perusahaan/HRD saat melamar pekerjaan. Melalui halaman profil, Anda dapat mengatur data mana yang ingin Anda bagikan:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Profil dasar dan foto</li>
+                    <li>Informasi kontak (email, telepon)</li>
+                    <li>Informasi pendidikan</li>
+                    <li>Pengalaman kerja</li>
+                    <li>Keahlian dan bahasa</li>
+                    <li>Dokumen (CV, ijazah, transkrip, sertifikat)</li>
+                    <li>Hasil asesmen kompetensi</li>
+                    <li>Skor TPA</li>
+                    <li>Golongan darah</li>
+                    <li>Lokasi</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">15. Retensi Data</h2>
+                <p>Kami menyimpan data pribadi Anda selama diperlukan untuk tujuan pengumpulan:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Akun aktif:</strong> Selama akun Anda aktif</li>
+                    <li><strong>Akun nonaktif:</strong> Data akan dianonimkan setelah 2 tahun tidak aktif</li>
+                    <li><strong>Pesan chat:</strong> Disimpan maksimal 1 tahun</li>
+                    <li><strong>Session data:</strong> Disimpan maksimal 30 hari</li>
+                    <li><strong>Log persetujuan:</strong> Disimpan 3 tahun setelah pencabutan</li>
+                    <li><strong>Audit log:</strong> Disimpan 3 tahun</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">16. Pelanggaran Data</h2>
+                <p>Dalam hal terjadi pelanggaran data pribadi yang menimbulkan kerugian material atau immaterial bagi Anda, kami akan:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Memberitahukan kepada Anda dalam waktu <strong>3×24 jam</strong> sejak diketahuinya pelanggaran</li>
+                    <li>Melaporkan kepada otoritas yang berwenang sesuai ketentuan peraturan</li>
+                    <li>Mengambil langkah-langkah mitigasi untuk meminimalkan dampak</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">17. Perlindungan Anak</h2>
+                <p>Layanan kami ditujukan untuk pengguna berusia 17 tahun ke atas. Kami tidak secara sengaja mengumpulkan data pribadi dari anak di bawah usia 17 tahun. Jika Anda adalah orang tua atau wali dan mengetahui bahwa anak Anda telah memberikan data pribadi kepada kami, silakan hubungi kami agar kami dapat menghapus informasi tersebut.</p>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">18. Perubahan pada Kebijakan Privasi</h2>
                 <p>Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Perubahan signifikan akan diberitahukan melalui email atau notifikasi di platform. Tanggal "Terakhir diperbarui" di bagian atas akan diubah sesuai dengan revisi terbaru.</p>
 
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">12. Hubungi Kami</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">19. Petugas Perlindungan Data (DPO)</h2>
+                <p>Kami telah menunjuk Petugas Perlindungan Data (Data Protection Officer/DPO) yang bertanggung jawab atas kepatuhan perlindungan data pribadi. Anda dapat menghubungi DPO untuk:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Pertanyaan tentang pemrosesan data pribadi Anda</li>
+                    <li>Menyampaikan keluhan terkait privasi</li>
+                    <li>Menggunakan hak-hak Anda sebagai subjek data</li>
+                    <li>Melaporkan pelanggaran data</li>
+                </ul>
+                <div class="bg-gray-100 dark:bg-slate-700 rounded-lg p-4 mt-4">
+                    <p class="font-semibold">Petugas Perlindungan Data (DPO)</p>
+                    <p>KOMPASKARIR INDONESIA</p>
+                    <p>Email: <a href="mailto:dpo@kompaskarir.id" class="text-blue-600 dark:text-blue-400 hover:underline">dpo@kompaskarir.id</a></p>
+                    <p>Waktu respons: Maksimal 3 hari kerja</p>
+                </div>
+
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8">20. Hubungi Kami</h2>
                 <p>Jika Anda memiliki pertanyaan, keluhan, atau permintaan terkait Kebijakan Privasi ini atau data pribadi Anda, silakan hubungi kami:</p>
                 <div class="bg-gray-100 dark:bg-slate-700 rounded-lg p-4 mt-4">
                     <p class="font-semibold">KOMPASKARIR INDONESIA</p>
                     <p>Email: <a href="mailto:privacy@kompaskarir.id" class="text-blue-600 dark:text-blue-400 hover:underline">privacy@kompaskarir.id</a></p>
+                    <p>DPO: <a href="mailto:dpo@kompaskarir.id" class="text-blue-600 dark:text-blue-400 hover:underline">dpo@kompaskarir.id</a></p>
                     <p>Instagram: <a href="https://instagram.com/_azwar" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">@_azwar</a></p>
+                </div>
+
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-6">
+                    <p class="text-sm text-yellow-800 dark:text-yellow-300">
+                        <strong>Catatan Hukum:</strong> Kebijakan Privasi ini disusun berdasarkan Undang-Undang No. 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP) dan peraturan pelaksanaannya. Jika terjadi perbedaan antara versi bahasa Indonesia dan terjemahan, versi bahasa Indonesia yang berlaku.
+                    </p>
                 </div>
 
             </div>

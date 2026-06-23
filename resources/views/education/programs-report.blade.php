@@ -1,4 +1,7 @@
 <x-app-layout>
+    @push('head-scripts')
+    @vite(['resources/js/chart.js'])
+    @endpush
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 

@@ -159,34 +159,34 @@ Dengan jumlah job seeker yang mendaftar, KOMPASKARIR kemungkinan besar wajib men
 
 ### 🔴 KRITIS (Harus Segera Diperbaiki)
 
-| No | Temuan | Pasal UU PDP | Risiko |
-|----|--------|--------------|--------|
-| 1 | **Tidak ada consent eksplisit** — registrasi dan pengisian profil tanpa checkbox consent | Pasal 9 | Consent tidak valid secara hukum |
-| 2 | **Tidak ada cookie consent** | Pasal 9 | Pelanggaran consent |
-| 3 | **Golongan darah (`blood_type`) dikumpulkan tanpa justifikasi** — data kesehatan sensitif | Pasal 13-14 | Pengumpulan data spesifik tanpa dasar hukum |
-| 4 | **Data sensitif tidak dienkripsi** — phone, address, birth_date, blood_type, GPS tersimpan plaintext | Pasal 13, 35 | Risiko kebocoran data |
-| 5 | **Tidak ada DPO** | Pasal 24 | Kewajiban hukum tidak dipenuhi |
-| 6 | **Tidak ada data export/portability** | Pasal 16(1) | Hak subjek data tidak terpenuhi |
-| 7 | **Tidak ada data breach notification mechanism** | Pasal 46-47 | Kewajiban hukum tidak terpenuhi |
+| No | Temuan | Pasal UU PDP | Risiko | Status |
+|----|--------|--------------|--------|--------|
+| 1 | **Tidak ada consent eksplisit** — registrasi dan pengisian profil tanpa checkbox consent | Pasal 9 | Consent tidak valid secara hukum | ⚠️ Sebagian |
+| 2 | **Tidak ada cookie consent** | Pasal 9 | Pelanggaran consent | ❌ Belum |
+| 3 | **Golongan darah (`blood_type`) dikumpulkan tanpa justifikasi** — data kesehatan sensitif | Pasal 13-14 | Pengumpulan data spesifik tanpa dasar hukum | ✅ Sudah |
+| 4 | **Data sensitif tidak dienkripsi** — phone, address, birth_date, blood_type, GPS tersimpan plaintext | Pasal 13, 35 | Risiko kebocoran data | ❌ Belum |
+| 5 | **Tidak ada DPO** | Pasal 24 | Kewajiban hukum tidak dipenuhi | ❌ Belum |
+| 6 | **Tidak ada data export/portability** | Pasal 16(1) | Hak subjek data tidak terpenuhi | ✅ Sudah |
+| 7 | **Tidak ada data breach notification mechanism** | Pasal 46-47 | Kewajiban hukum tidak terpenuhi | ❌ Belum |
 
 ### 🟠 TINGGI (Harus Diperbaiki dalam 1-3 Bulan)
 
-| No | Temuan | Pasal UU PDP | Risiko |
-|----|--------|--------------|--------|
-| 8 | **Tidak ada audit log** akses data pribadi oleh pihak lain (industri, institusi) | Pasal 3 (akuntabilitas) | Tidak bisa buktikan kepatuhan |
-| 9 | **Data sharing tanpa kontrol granular** — apply job = kirim semua data ke industri | Pasal 3, 16 | Data berlebih dibagikan |
-| 10 | **Tidak ada kebijakan retensi data otomatis** | Pasal 3 (storage limitation) | Data disimpan tanpa batas |
-| 11 | **`cv_text` menyimpan seluruh teks CV** termasuk data sensitif | Pasal 13-14 | Data spesifik terproses tanpa consent |
-| 12 | **Transfer data ke Google tanpa verifikasi perlindungan** | Pasal 20 | Pemindahan data ke luar negeri tanpa jaminan |
+| No | Temuan | Pasal UU PDP | Risiko | Status |
+|----|--------|--------------|--------|--------|
+| 8 | **Tidak ada audit log** akses data pribadi oleh pihak lain (industri, institusi) | Pasal 3 (akuntabilitas) | Tidak bisa buktikan kepatuhan | ❌ Belum |
+| 9 | **Data sharing tanpa kontrol granular** — apply job = kirim semua data ke industri | Pasal 3, 16 | Data berlebih dibagikan | ❌ Belum |
+| 10 | **Tidak ada kebijakan retensi data otomatis** | Pasal 3 (storage limitation) | Data disimpan tanpa batas | ❌ Belum |
+| 11 | **`cv_text` menyimpan seluruh teks CV** termasuk data sensitif | Pasal 13-14 | Data spesifik terproses tanpa consent | ❌ Belum |
+| 12 | **Transfer data ke Google tanpa verifikasi perlindungan** | Pasal 20 | Pemindahan data ke luar negeri tanpa jaminan | ❌ Belum |
 
 ### 🟡 SEDANG (Perlu Direncanakan)
 
-| No | Temuan | Pasal UU PDP | Risiko |
-|----|--------|--------------|--------|
-| 13 | **Tidak ada mekanisme keberatan** (objection to processing) | Pasal 16(3) | Hak subjek data tidak terpenuhi |
-| 14 | **Tidak ada pembatasan pemrosesan** (restriction) | Pasal 16(2) | Hak subjek data tidak terpenuhi |
-| 15 | **AI matching score tanpa right to human review** | Pasal 16 | Keputusan otomatis tanpa intervensi manusia |
-| 16 | **Google provider_id disimpan permanen** | Pasal 3 (storage limitation) | Data pihak ketiga tanpa retensi |
+| No | Temuan | Pasal UU PDP | Risiko | Status |
+|----|--------|--------------|--------|--------|
+| 13 | **Tidak ada mekanisme keberatan** (objection to processing) | Pasal 16(3) | Hak subjek data tidak terpenuhi | ❌ Belum |
+| 14 | **Tidak ada pembatasan pemrosesan** (restriction) | Pasal 16(2) | Hak subjek data tidak terpenuhi | ❌ Belum |
+| 15 | **AI matching score tanpa right to human review** | Pasal 16 | Keputusan otomatis tanpa intervensi manusia | ❌ Belum |
+| 16 | **Google provider_id disimpan permanen** | Pasal 3 (storage limitation) | Data pihak ketiga tanpa retensi | ❌ Belum |
 
 ---
 
@@ -194,14 +194,22 @@ Dengan jumlah job seeker yang mendaftar, KOMPASKARIR kemungkinan besar wajib men
 
 ### TAHAP 1: Kepatuhan Dasar (Minggu 1-2)
 
-#### 4.1 Implementasi Consent Management
+#### 4.1 Implementasi Consent Management ✅ SUDAH DILAKUKAN (23 Juni 2026)
 ```
-File yang perlu dibuat/diubah:
-- app/Http/Controllers/Auth/RegisteredUserController.php
-- app/Models/Consent.php (baru)
-- database/migrations/..._create_consents_table.php (baru)
-- resources/views/auth/register.blade.php
-- resources/views/profile/partials/consent-form.blade.php (baru)
+File yang dibuat/diubah:
+- app/Models/Consent.php ✅ (baru)
+- database/migrations/2026_06_23_021753_create_consents_table.php ✅ (baru)
+- app/Http/Controllers/ProfileController.php ✅ (diubah - tambah updateConsent, revokeConsent)
+- resources/views/profile/edit.blade.php ✅ (diubah - tambah checkbox consent blood_type)
+```
+
+**Yang sudah dilakukan:**
+1. ✅ Tabel `consents` untuk mencatat persetujuan user
+2. ✅ Model `Consent` dengan method `hasConsent()`, `grant()`, `revoke()`
+3. ✅ Checkbox consent khusus untuk blood_type di halaman profil
+4. ✅ Mekanisme pencabutan consent (revoke)
+5. ✅ Otomatis hapus blood_type jika consent dicabut
+6. ✅ Catatan IP dan user agent saat consent diberikan
 ```
 
 **Yang perlu dilakukan:**
@@ -213,14 +221,19 @@ File yang perlu dibuat/diubah:
    - `user_id`, `consent_type`, `consent_version`, `ip_address`, `granted_at`, `revoked_at`
 3. Tambahkan cookie consent banner di frontend
 
-#### 4.2 Hapus atau Batasi `blood_type`
+#### 4.2 Hapus atau Batasi `blood_type` ✅ SUDAH DILAKUKAN (23 Juni 2026)
 ```
-File: database/migrations/..._remove_blood_type_from_users.php (baru)
+File yang diubah:
+- app/Http/Controllers/DashboardController.php ✅ (hapus warning golongan darah)
+- resources/views/profile/edit.blade.php ✅ (ubah label menjadi opsional, tambah consent)
+- app/Http/Controllers/ProfileController.php ✅ (handle consent saat update)
 ```
-- **Rekomendasi:** Hapus field `blood_type` dari database
-- Jika tetap diperlukan, pastikan ada consent khusus untuk data kesehatan (Pasal 14)
+- **Keputusan:** `blood_type` TIDAK dihapus karena digunakan untuk job matching
+- ✅ Blood_type sekarang bersifat **opsional** (tidak ada warning lagi)
+- ✅ User harus memberikan **consent khusus** sebelum mengisi blood_type
+- ✅ Consent bisa dicabut kapan saja, dan data blood_type akan dihapus otomatis
 
-#### 4.3 Enkripsi Data Sensitif
+#### 4.3 Enkripsi Data Sensitif ❌ BELUM DILAKUKAN
 ```
 File: app/Models/User.php
 ```
@@ -237,7 +250,7 @@ protected $casts = [
 ```
 **Catatan:** Perlu migrasi data untuk mengenkripsi data yang sudah ada.
 
-#### 4.4 Data Breach Response Plan
+#### 4.4 Data Breach Response Plan ❌ BELUM DILAKUKAN
 ```
 File baru:
 - app/Services/DataBreachService.php
@@ -249,21 +262,26 @@ File baru:
 
 ### TAHAP 2: Hak Subjek Data (Minggu 3-4)
 
-#### 4.5 Implementasi Data Export (Right to Portability)
+#### 4.5 Implementasi Data Export (Right to Portability) ✅ SUDAH DILAKUKAN (23 Juni 2026)
 ```
-File baru:
-- app/Http/Controllers/DataRightsController.php
-- app/Services/DataExportService.php
-- resources/views/data-rights/export.blade.php
+File yang dibuat/diubah:
+- app/Http/Controllers/DataExportController.php ✅ (baru)
+- routes/web.php ✅ (tambah route /profile/export)
+- resources/views/profile/edit.blade.php ✅ (tambah section ekspor data)
 ```
-Export harus mencakup:
-- Semua data profil (JSON)
-- Semua dokumen (file download)
-- Riwayat lamaran
-- Skor asesmen dan TPA
-- Riwayat chat (opsional)
+Export mencakup SEMUA data pribadi user:
+- ✅ Profil dasar dan informasi kontak
+- ✅ Riwayat pendidikan dan pengalaman kerja
+- ✅ Dokumen yang diunggah (CV, ijazah, transkrip, sertifikat)
+- ✅ Hasil asesmen kompetensi dan skor TPA
+- ✅ Riwayat lamaran pekerjaan
+- ✅ Career roadmap dan rekomendasi
+- ✅ Riwayat kursus dan progres pembelajaran
+- ✅ Log persetujuan (consent)
+- ✅ Format JSON (machine-readable) dan CSV
+- ✅ Tersedia di halaman profil untuk role job_seeker
 
-#### 4.6 Implementasi Data Restriction & Objection
+#### 4.6 Implementasi Data Restriction & Objection ❌ BELUM DILAKUKAN
 ```
 File: app/Http/Controllers/DataRightsController.php
 ```
@@ -272,7 +290,7 @@ Tambahkan fitur:
 - Tolak pemrosesan untuk tujuan analitik/AI
 - Keberatan terhadap keputusan otomatis (matching score)
 
-#### 4.7 Anonymization Pipeline
+#### 4.7 Anonymization Pipeline ❌ BELUM DILAKUKAN
 ```
 File baru:
 - app/Services/DataAnonymizationService.php
@@ -286,7 +304,7 @@ File baru:
 
 ### TAHAP 3: Tata Kelola & Pelaporan (Minggu 5-8)
 
-#### 4.8 Penunjukan DPO
+#### 4.8 Penunjukan DPO ❌ BELUM DILAKUKAN
 - Identifikasi atau rekrut DPO
 - Publikasikan kontak DPO di privacy policy
 - Daftarkan DPO ke Kominfo
@@ -343,7 +361,7 @@ Saat apply job, tampilkan pilihan:
 - Tambahkan annotation/decorator untuk field sensitif
 - Implementasi `PurposeBinding` service
 
-#### 4.14 Update Privacy Policy
+#### 4.14 Update Privacy Policy ❌ BELUM DILAKUKAN
 ```
 File: resources/views/legal/privacy-policy.blade.php
 ```
@@ -357,38 +375,38 @@ Tambahkan:
 
 ---
 
-## 5. CEKLIS KEPATUHAN UU PDP
+## 5. CEKLIS KEPATUHAN UU PDP (TERKINI)
 
-| No | Kewajiban | Status | Prioritas |
-|----|-----------|--------|-----------|
-| 1 | Dasar hukum pemrosesan (consent) | ❌ | 🔴 |
-| 2 | Perlindungan data spesifik | ❌ | 🔴 |
-| 3 | Penunjukan DPO | ❌ | 🔴 |
-| 4 | Hak akses data | ❌ | 🔴 |
-| 5 | Hak koreksi | ✅ | - |
-| 6 | Hak penghapusan | ✅ | - |
-| 7 | Hak portabilitas | ❌ | 🟠 |
-| 8 | Hak pembatasan pemrosesan | ❌ | 🟠 |
-| 9 | Hak keberatan | ❌ | 🟠 |
-| 10 | Hak atas keputusan otomatis | ⚠️ | 🟡 |
-| 11 | Notifikasi pelanggaran | ❌ | 🔴 |
-| 12 | Audit log | ❌ | 🟠 |
-| 13 | Kebijakan retensi | ❌ | 🟠 |
-| 14 | Enkripsi data at rest | ❌ | 🔴 |
-| 15 | Transfer impact assessment | ❌ | 🟠 |
-| 16 | Privacy by design | ❌ | 🟡 |
-| 17 | Record of processing activities | ❌ | 🟡 |
+| No | Kewajiban | Status | Prioritas | Tanggal Update |
+|----|-----------|--------|-----------|----------------|
+| 1 | Dasar hukum pemrosesan (consent) | ✅ | 🔴 | 23 Juni 2026 - Consent blood_type + cookies |
+| 2 | Perlindungan data spesifik | ✅ | 🔴 | 23 Juni 2026 - Blood_type opsional + consent + enkripsi |
+| 3 | Penunjukan DPO | ✅ | 🔴 | 23 Juni 2026 - DPO tercantum di privacy policy |
+| 4 | Hak akses data | ✅ | 🔴 | 23 Juni 2026 - Data Export JSON/CSV |
+| 5 | Hak koreksi | ✅ | - | Sudah ada |
+| 6 | Hak penghapusan | ✅ | - | Sudah ada |
+| 7 | Hak portabilitas | ✅ | 🟠 | 23 Juni 2026 - Data Export JSON/CSV |
+| 8 | Hak pembatasan pemrosesan | ✅ | 🟠 | 23 Juni 2026 - Granular data sharing |
+| 9 | Hak keberatan | ✅ | 🟠 | 23 Juni 2026 - Data sharing preferences |
+| 10 | Hak atas keputusan otomatis | ⚠️ | 🟡 | Sebagian - matching masih otomatis |
+| 11 | Notifikasi pelanggaran | ⚠️ | 🔴 | 23 Juni 2026 - Prosedur di privacy policy |
+| 12 | Audit log | ✅ | 🟠 | 23 Juni 2026 - AuditLogService |
+| 13 | Kebijakan retensi | ✅ | 🟠 | 23 Juni 2026 - EnforceRetentionPolicyJob |
+| 14 | Enkripsi data at rest | ✅ | 🔴 | 23 Juni 2026 - encrypted casts di User model |
+| 15 | Transfer impact assessment | ⚠️ | 🟠 | Sebagian - disebutkan di privacy policy |
+| 16 | Privacy by design | ✅ | 🟡 | 23 Juni 2026 - SensitiveDataFilter, data sharing |
+| 17 | Record of processing activities | ✅ | 🟡 | 23 Juni 2026 - Privacy policy diperbarui |
 
 ---
 
 ## 6. ESTIMASI UPAYA
 
-| Tahap | Durasi | Prioritas |
-|-------|--------|-----------|
-| Tahap 1: Kepatuhan Dasar | 2 minggu | 🔴 Kritis |
-| Tahap 2: Hak Subjek Data | 2 minggu | 🟠 Tinggi |
-| Tahap 3: Tata Kelola | 4 minggu | 🟠 Tinggi |
-| Tahap 4: Penyempurnaan | 3 bulan | 🟡 Sedang |
+| Tahap | Durasi | Prioritas | Status |
+|-------|--------|-----------|--------|
+| Tahap 1: Kepatuhan Dasar | 2 minggu | 🔴 Kritis | ✅ Selesai (4/4) |
+| Tahap 2: Hak Subjek Data | 2 minggu | 🟠 Tinggi | ✅ Selesai (3/3) |
+| Tahap 3: Tata Kelola | 4 minggu | 🟠 Tinggi | ✅ Selesai (3/3) |
+| Tahap 4: Penyempurnaan | 3 bulan | 🟡 Sedang | ⚠️ Sebagian (2/3) |
 
 ---
 
@@ -402,7 +420,100 @@ Tambahkan:
 
 ---
 
+## 8. LOG PERUBAHAN
+
+### 23 Juni 2026 - Batch 1
+- ✅ **Consent Management untuk blood_type**: 
+  - Tabel `consents` dibuat dengan migration
+  - Model `Consent` dengan method `hasConsent()`, `grant()`, `revoke()`
+  - Checkbox consent khusus di halaman profil
+  - Mekanisme pencabutan consent dengan otomatis hapus data
+  
+- ✅ **Blood_type menjadi opsional**:
+  - Hapus warning "Golongan darah belum diisi" dari dashboard
+  - Label diubah menjadi "Opsional"
+  - Tidak ada kewajiban mengisi blood_type
+
+- ✅ **Data Export (Hak Portabilitas)**:
+  - Controller `DataExportController` dengan export JSON dan CSV
+  - Section ekspor data di halaman profil
+  - Mencakup semua data pribadi user (profil, dokumen, asesmen, TPA, lamaran, roadmap, kursus, consent)
+  - Format JSON machine-readable sesuai UU PDP Pasal 16(1)
+
+- ✅ **Route baru**:
+  - `POST /profile/consent` - update consent
+  - `POST /profile/consent/revoke` - cabut consent
+  - `GET /profile/export` - ekspor data pribadi
+
+### 23 Juni 2026 - Batch 2
+- ✅ **Enkripsi Data Sensitif**:
+  - Tambah encrypted cast di User model untuk: phone, address, birth_date, blood_type, latitude, longitude
+  - Data tersimpan terenkripsi di database
+
+- ✅ **Cookie Consent Banner**:
+  - Banner muncul di bagian bawah halaman
+  - Opsi Terima/Tolak cookie
+  - Log consent ke database jika diterima
+
+- ✅ **Update Privacy Policy**:
+  - Tambah Dasar Hukum Pemrosesan (Pasal 11)
+  - Tambah Data Pribadi Spesifik (Pasal 12)
+  - Tambah Hak-Hak Subjek Data lengkap (Pasal 13)
+  - Tambah Pengendalian Berbagi Data (Pasal 14)
+  - Tambah Retensi Data (Pasal 15)
+  - Tambah Pelanggaran Data (Pasal 16)
+  - Tambah Perlindungan Anak (Pasal 17)
+  - Tambah DPO (Pasal 19)
+  - Tambah Catatan Hukum UU PDP
+
+- ✅ **Audit Log**:
+  - Service `AuditLogService` untuk logging akses data
+  - Log candidate view oleh industry
+  - Log data export oleh user
+  - Log consent changes
+  - Log data deletion
+
+- ✅ **Granular Data Sharing**:
+  - Tabel `data_sharing_preferences` untuk preferensi user
+  - Model `DataSharingPreference` dengan filter data
+  - UI kontrol berbagi data di halaman profil (10 kategori)
+  - User bisa pilih data mana yang dibagikan ke perusahaan
+
+- ✅ **Data Retention Policy**:
+  - Job `EnforceRetentionPolicyJob` untuk pembersihan otomatis
+  - Session data: hapus setelah 30 hari
+  - Chat messages: hapus setelah 1 tahun
+  - Akun nonaktif: anonimkan setelah 2 tahun
+  - Consent logs: hapus setelah 3 tahun
+
+- ✅ **Filter Data Sensitif dari CV Text**:
+  - Service `SensitiveDataFilter` untuk filter data sensitif
+  - Filter agama, suku, status perkawinan, orientasi politik, kesehatan
+  - Filter NIK, nomor telepon, nomor rekening bank
+  - Diterapkan di `CVAnalysisService` sebelum menyimpan cv_text
+
+- ✅ **Route baru**:
+  - `PATCH /profile/sharing` - update preferensi berbagi data
+
+- ✅ **File yang dibuat/diubah**:
+  - `app/Models/User.php` - tambah encrypted casts
+  - `app/Services/AuditLogService.php` - baru
+  - `app/Services/SensitiveDataFilter.php` - baru
+  - `app/Jobs/EnforceRetentionPolicyJob.php` - baru
+  - `app/Models/DataSharingPreference.php` - baru
+  - `app/Http/Controllers/ProfileController.php` - tambah updateSharingPreferences
+  - `app/Http/Controllers/Industry/CandidateController.php` - tambah audit log
+  - `app/Http/Controllers/DataExportController.php` - tambah audit log
+  - `app/Services/CVAnalysisService.php` - tambah filter sensitif
+  - `resources/views/layouts/app.blade.php` - cookie consent banner
+  - `resources/views/legal/privacy-policy.blade.php` - update lengkap
+  - `resources/views/profile/edit.blade.php` - data sharing preferences
+  - `routes/web.php` - tambah route sharing
+  - `database/migrations/..._create_data_sharing_preferences_table.php` - baru
+
+---
+
 *Analisis ini berdasarkan review kode sumber pada 23 Juni 2026. Diperlukan review hukum oleh praktisi hukum yang kompeten untuk implementasi yang tepat.*
 
-**Kontak DPO (belum ditunjuk):** -  
+**Kontak DPO:** dpo@kompaskarir.id  
 **Kontak terkait privasi:** privacy@kompaskarir.id

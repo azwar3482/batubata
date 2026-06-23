@@ -17,6 +17,8 @@ use App\Jobs\DeleteUserDataJob;
 
 use App\Models\Position;
 use App\Models\UserDocument;
+use App\Models\Consent;
+use App\Models\DataSharingPreference;
 use App\Services\DocumentExtractionService;
 
 class ProfileController extends Controller
@@ -47,6 +49,23 @@ class ProfileController extends Controller
                 $request->file('photo'), 
                 $request->file('cv')
             );
+
+            // Handle blood_type consent
+            $bloodType = $request->input('blood_type');
+            $bloodConsent = $request->boolean('blood_type_consent');
+
+            if ($bloodType && $bloodConsent) {
+                // User wants to set blood_type and has given consent
+                Consent::grant(
+                    $request->user()->id,
+                    'blood_type',
+                    $request->ip(),
+                    $request->userAgent()
+                );
+            } elseif ($bloodType && !$bloodConsent && !Consent::hasConsent($request->user()->id, 'blood_type')) {
+                // User tried to set blood_type without consent - clear it
+                $request->user()->update(['blood_type' => null]);
+            }
 
             // Return JSON for AJAX requests
             if ($request->expectsJson() || $request->ajax()) {
@@ -286,5 +305,90 @@ class ProfileController extends Controller
                 'message' => 'Gagal mengekstrak data dari ijazah. Silakan coba lagi atau input manual.'
             ], 500);
         }
+    }
+
+    public function updateConsent(Request $request)
+    {
+        $request->validate([
+            'consent_type' => 'required|string|in:blood_type,data_processing,data_sharing,cookies',
+            'granted' => 'required|boolean',
+        ]);
+
+        $type = $request->input('consent_type');
+        $granted = $request->input('granted');
+
+        if ($granted) {
+            Consent::grant(
+                $request->user()->id,
+                $type,
+                $request->ip(),
+                $request->userAgent()
+            );
+        } else {
+            Consent::revoke($request->user()->id, $type);
+        }
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => $granted ? 'Persetujuan telah diberikan.' : 'Persetujuan telah dicabut.',
+            ]);
+        }
+
+        return back()->with('success', $granted ? 'Persetujuan telah diberikan.' : 'Persetujuan telah dicabut.');
+    }
+
+    public function revokeConsent(Request $request)
+    {
+        $request->validate([
+            'consent_type' => 'required|string|in:blood_type,data_processing,data_sharing,cookies',
+        ]);
+
+        $type = $request->input('consent_type');
+        Consent::revoke($request->user()->id, $type);
+
+        // If revoking blood_type consent, also clear the blood_type value
+        if ($type === 'blood_type') {
+            $request->user()->update(['blood_type' => null]);
+        }
+
+        return back()->with('success', 'Persetujuan telah dicabut dan data terkait telah dihapus.');
+    }
+
+    public function updateSharingPreferences(Request $request)
+    {
+        $user = $request->user();
+        
+        $sharingFields = [
+            'share_profile',
+            'share_contact',
+            'share_education',
+            'share_experience',
+            'share_skills',
+            'share_documents',
+            'share_assessments',
+            'share_tpa_scores',
+            'share_blood_type',
+            'share_location',
+        ];
+
+        $data = ['user_id' => $user->id];
+        foreach ($sharingFields as $field) {
+            $data[$field] = $request->boolean($field);
+        }
+
+        DataSharingPreference::updateOrCreate(
+            ['user_id' => $user->id],
+            $data
+        );
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Preferensi berbagi data berhasil diperbarui!',
+            ]);
+        }
+
+        return back()->with('success', 'Preferensi berbagi data berhasil diperbarui!');
     }
 }

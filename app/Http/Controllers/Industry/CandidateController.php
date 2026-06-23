@@ -12,6 +12,7 @@ use App\Models\TpaTest;
 use App\Models\TpaTestSession;
 use App\Services\TpaService;
 use App\Services\JobMatchingService;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Auth;
 
 class CandidateController extends Controller
@@ -184,6 +185,9 @@ class CandidateController extends Controller
         if (!$candidate) {
             abort(404, 'Kandidat tidak ditemukan');
         }
+
+        // Log akses data kandidat (UU PDP compliance)
+        AuditLogService::logCandidateViewed(Auth::id(), $candidateId, $jobId);
 
         // Hitung match percentage dari assessment terbaru (gunakan eager loaded data)
         $latestAssessment = $candidate->assessments->sortByDesc('assessment_date')->first();

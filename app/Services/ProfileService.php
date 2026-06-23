@@ -6,11 +6,19 @@ use App\Jobs\ProcessDocumentsJob;
 use App\Models\User;
 use App\Models\UserDocument;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
 class ProfileService
 {
+    protected FileCompressionService $compressionService;
+
+    public function __construct(FileCompressionService $compressionService)
+    {
+        $this->compressionService = $compressionService;
+    }
+
     public function updateProfile(User $user, array $validatedData, ?UploadedFile $photo, ?UploadedFile $cv)
     {
         if ($photo) {
@@ -69,6 +77,13 @@ class ProfileService
             throw new \InvalidArgumentException('Tipe file tidak diizinkan untuk ' . $docType);
         }
 
+        // Compress images before storing
+        $originalSize = $file->getSize();
+        if (str_starts_with($file->getMimeType(), 'image/')) {
+            $file = $this->compressionService->compressImage($file);
+        }
+        $compressedSize = $file->getSize();
+
         $oldDocs = UserDocument::where('user_id', $user->id)
             ->where('document_type', $docType)
             ->get();
@@ -82,6 +97,14 @@ class ProfileService
 
         $path = $file->store("documents/{$docType}", 'public');
 
+        $reduction = $originalSize > 0 ? round((1 - $compressedSize / $originalSize) * 100, 1) : 0;
+        Log::info("Document uploaded for user {$user->id}", [
+            'type' => $docType,
+            'original_size' => $this->formatBytes($originalSize),
+            'compressed_size' => $this->formatBytes($compressedSize),
+            'reduction' => $reduction . '%',
+        ]);
+
         UserDocument::create([
             'user_id'       => $user->id,
             'document_type' => $docType,
@@ -91,6 +114,16 @@ class ProfileService
             'file_size'     => $file->getSize(),
             'status'        => UserDocument::STATUS_COMPLETED,
         ]);
+    }
+
+    private function formatBytes(int $bytes, int $precision = 2): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
     public function updateCvOnly(User $user, UploadedFile $cv)
@@ -126,6 +159,12 @@ class ProfileService
             // Validasi tipe dokumen yang diizinkan
             if (!array_key_exists($docType, UserDocument::TYPES)) {
                 continue;
+            }
+
+            // Compress images before storing
+            $originalSize = $file->getSize();
+            if (str_starts_with($file->getMimeType(), 'image/')) {
+                $file = $this->compressionService->compressImage($file);
             }
 
             // Hapus dokumen lama jika ada
@@ -206,6 +245,11 @@ class ProfileService
 
         if (!in_array($file->getMimeType(), $allowedMimes)) {
             throw new \InvalidArgumentException('Tipe file tidak diizinkan. Hanya PDF, JPG, PNG, WEBP.');
+        }
+
+        // Compress images before storing
+        if (str_starts_with($file->getMimeType(), 'image/')) {
+            $file = $this->compressionService->compressImage($file);
         }
 
         $path = $file->store('documents/custom', 'public');

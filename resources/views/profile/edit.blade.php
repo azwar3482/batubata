@@ -942,17 +942,50 @@
                                         @error('gender') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                                     </div>
 
-                                    <!-- Golongan Darah -->
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Golongan Darah</label>
-                                        <select name="blood_type" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                            <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Belum Diketahui</option>
+                                    <!-- Golongan Darah (Opsional - Data Sensitif) -->
+                                    <div x-data="{ 
+                                        bloodConsent: {{ \App\Models\Consent::hasConsent(Auth::id(), 'blood_type') ? 'true' : 'false' }}, 
+                                        showConsent: {{ Auth::user()->blood_type ? 'false' : 'true' }}
+                                    }">
+                                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
+                                            Golongan Darah 
+                                            <span class="text-[10px] normal-case tracking-normal text-slate-400 dark:text-slate-500 font-normal">(Opsional)</span>
+                                        </label>
+                                        <select name="blood_type" 
+                                            @change="if($event.target.value && !bloodConsent) { showConsent = true }"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
+                                            <option value="" {{ empty(Auth::user()->blood_type) ? 'selected' : '' }}>Tidak perlu diisi</option>
                                             <option value="A" {{ Auth::user()->blood_type == 'A' ? 'selected' : '' }}>A</option>
                                             <option value="B" {{ Auth::user()->blood_type == 'B' ? 'selected' : '' }}>B</option>
                                             <option value="AB" {{ Auth::user()->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
                                             <option value="O" {{ Auth::user()->blood_type == 'O' ? 'selected' : '' }}>O</option>
                                         </select>
                                         @error('blood_type') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                                        
+                                        <!-- Consent checkbox for blood type -->
+                                        <div x-show="showConsent" x-transition class="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                                            <div class="flex items-start gap-2">
+                                                <input type="checkbox" name="blood_type_consent" id="blood_type_consent" value="1"
+                                                    x-model="bloodConsent"
+                                                    class="mt-0.5 h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                                                <label for="blood_type_consent" class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+                                                    Saya menyetujui pengumpulan dan pemrosesan data golongan darah saya untuk keperluan pencocokan pekerjaan. Data ini termasuk kategori <strong>data kesehatan</strong> sesuai UU No. 27 Tahun 2022 (UU PDP). Saya dapat menarik persetujuan ini kapan saja.
+                                                </label>
+                                            </div>
+                                            <p x-show="!bloodConsent && showConsent" class="text-[10px] text-amber-600 dark:text-amber-400 mt-1 ml-6">
+                                                Centang persetujuan di atas jika ingin mengisi golongan darah.
+                                            </p>
+                                        </div>
+                                        
+                                        @if(\App\Models\Consent::hasConsent(Auth::id(), 'blood_type'))
+                                        <p class="text-[10px] text-green-600 dark:text-green-400 mt-1">
+                                            &#10003; Persetujuan telah diberikan. <a href="#" onclick="event.preventDefault(); document.getElementById('revoke-blood-consent-form').submit();" class="underline hover:text-green-800">Tarik persetujuan</a>
+                                        </p>
+                                        <form id="revoke-blood-consent-form" action="{{ route('profile.consent.revoke') }}" method="POST" class="hidden">
+                                            @csrf
+                                            <input type="hidden" name="consent_type" value="blood_type">
+                                        </form>
+                                        @endif
                                     </div>
 
                                     <!-- Pengalaman -->
@@ -1280,6 +1313,127 @@
                             @endif
 
 
+
+                            <!-- Data Export Section (UU PDP Compliance) -->
+                            @if(Auth::user()->role === 'job_seeker')
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
+                                <div class="flex items-center mb-6">
+                                    <div class="p-2 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg text-emerald-600 dark:text-emerald-400 mr-3">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Ekspor Data Pribadi</h3>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Hak portabilitas data sesuai UU No. 27 Tahun 2022 (UU PDP)</p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                                            Anda berhak mendapatkan salinan seluruh data pribadi yang kami simpan dalam format JSON (dapat dibaca mesin). File ekspor mencakup:
+                                        </p>
+                                        <ul class="text-xs text-slate-500 dark:text-slate-400 space-y-1 mb-4 pl-4 list-disc">
+                                            <li>Data profil dan informasi dasar</li>
+                                            <li>Riwayat pendidikan dan pengalaman kerja</li>
+                                            <li>Dokumen yang diunggah (CV, ijazah, transkrip, sertifikat)</li>
+                                            <li>Hasil asesmen kompetensi dan skor TPA</li>
+                                            <li>Riwayat lamaran pekerjaan</li>
+                                            <li>Career roadmap dan rekomendasi</li>
+                                            <li>Riwayat kursus dan progres pembelajaran</li>
+                                            <li>Log persetujuan (consent)</li>
+                                        </ul>
+
+                                        <div class="flex flex-wrap gap-3">
+                                            <a href="{{ route('profile.export', ['format' => 'json']) }}" 
+                                                class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition-all duration-200">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                Unduh JSON
+                                            </a>
+                                            <a href="{{ route('profile.export', ['format' => 'csv']) }}" 
+                                                class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                </svg>
+                                                Unduh CSV
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+
+                            <!-- Data Sharing Preferences (UU PDP Compliance) -->
+                            @if(Auth::user()->role === 'job_seeker')
+                            @php
+                                $sharingPrefs = \App\Models\DataSharingPreference::getForUser(Auth::id());
+                            @endphp
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 md:p-8 mt-6">
+                                <div class="flex items-center mb-6">
+                                    <div class="p-2 bg-violet-50 dark:bg-violet-950/20 rounded-lg text-violet-600 dark:text-violet-400 mr-3">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Kontrol Berbagi Data</h3>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Atur data mana yang dibagikan ke perusahaan saat melamar</p>
+                                    </div>
+                                </div>
+
+                                <form id="sharing-prefs-form" action="{{ route('profile.sharing.update') }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    
+                                    <div class="space-y-3">
+                                        @php
+                                            $sharingFields = [
+                                                'share_profile' => ['label' => 'Profil Dasar', 'desc' => 'Nama, foto, bio, jenis kelamin'],
+                                                'share_contact' => ['label' => 'Informasi Kontak', 'desc' => 'Email, nomor telepon'],
+                                                'share_education' => ['label' => 'Pendidikan', 'desc' => 'Jenjang, jurusan, tahun lulus, institusi'],
+                                                'share_experience' => ['label' => 'Pengalaman Kerja', 'desc' => 'Riwayat pekerjaan dan pengalaman'],
+                                                'share_skills' => ['label' => 'Keahlian', 'desc' => 'Skills, bahasa, URL LinkedIn/GitHub/portfolio'],
+                                                'share_documents' => ['label' => 'Dokumen', 'desc' => 'CV, ijazah, transkrip, sertifikat'],
+                                                'share_assessments' => ['label' => 'Hasil Asesmen', 'desc' => 'Skor kompetensi dan gap analysis'],
+                                                'share_tpa_scores' => ['label' => 'Skor TPA', 'desc' => 'Hasil Tes Potensi Akademik'],
+                                                'share_blood_type' => ['label' => 'Golongan Darah', 'desc' => 'Data kesehatan (memerlukan consent terpisah)'],
+                                                'share_location' => ['label' => 'Lokasi', 'desc' => 'Alamat dan koordinat GPS'],
+                                            ];
+                                        @endphp
+
+                                        @foreach($sharingFields as $field => $info)
+                                        <label class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                                            <div class="flex-1">
+                                                <span class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ $info['label'] }}</span>
+                                                <p class="text-[11px] text-slate-500 dark:text-slate-400">{{ $info['desc'] }}</p>
+                                            </div>
+                                            <div class="relative">
+                                                <input type="checkbox" name="{{ $field }}" value="1" 
+                                                    {{ $sharingPrefs->$field ? 'checked' : '' }}
+                                                    class="sr-only peer sharing-toggle" data-field="{{ $field }}">
+                                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-violet-300 dark:peer-focus:ring-violet-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-violet-600"></div>
+                                            </div>
+                                        </label>
+                                        @endforeach
+                                    </div>
+
+                                    <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                                        <p class="text-xs text-amber-700 dark:text-amber-300">
+                                            <strong>Catatan:</strong> Beberapa perusahaan mungkin memerlukan data tertentu untuk proses rekrutmen. Menonaktifkan data yang diperlukan dapat mempengaruhi peluang Anda.
+                                        </p>
+                                    </div>
+
+                                    <div class="mt-4 flex justify-end">
+                                        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">
+                                            Simpan Preferensi
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            @endif
 
                             <div class="flex items-center justify-end gap-3 pt-6">
                                 <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">

@@ -53,6 +53,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'languages' => 'array',
         'expected_jobs' => 'array',
         'custom_permissions' => 'array',
+        'phone' => 'encrypted',
+        'address' => 'encrypted',
+        'birth_date' => 'encrypted',
+        'blood_type' => 'encrypted',
+        'latitude' => 'encrypted',
+        'longitude' => 'encrypted',
     ];
 
     // Relasi
@@ -131,6 +137,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function receivedConversations()
     {
         return $this->hasMany(DirectConversation::class, 'job_seeker_id');
+    }
+
+    public function dataSharingPreference()
+    {
+        return $this->hasOne(DataSharingPreference::class);
     }
 
     public function totalUnreadMessages()
