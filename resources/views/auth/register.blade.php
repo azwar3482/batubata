@@ -161,16 +161,13 @@
                 <!-- Terms & Conditions -->
                 <div class="mt-6">
                     <label class="flex items-start">
-                        <input type="checkbox" name="terms" required
-                            class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-blue-600 shadow-sm focus:ring-blue-500 mt-1">
+                        <input id="terms" type="checkbox" name="terms" required
+                            class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-blue-600 shadow-sm focus:ring-blue-500 mt-1 transition-colors">
                         <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">
                             Saya setuju dengan
-                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Syarat &
-                                Ketentuan</a>
-                            serta
-                            <a href="{{ route('legal.privacy') }}" target="_blank"
-                                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Kebijakan Privasi</a>
-                            KOMPASKARIR
+                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Syarat & Ketentuan</a>,
+                            <a href="{{ route('legal.privacy') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Kebijakan Privasi</a>,
+                            serta pemrosesan data untuk keperluan profil dan industri.
                         </span>
                     </label>
                     @error('terms')
@@ -321,6 +318,16 @@
                 alert('Silahkan pilih role Anda terlebih dahulu');
                 return;
             }
+
+            const terms = document.getElementById('terms');
+            if (terms && !terms.checked) {
+                alert('Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi sebelum mendaftar.');
+                terms.focus();
+                terms.classList.add('ring-2', 'ring-red-500', 'border-red-500');
+                setTimeout(() => terms.classList.remove('ring-2', 'ring-red-500', 'border-red-500'), 2000);
+                return;
+            }
+
             window.location.href = "{{ route('auth.google') }}?role=" + role.value;
         }
     </script>
