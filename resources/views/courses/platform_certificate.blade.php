@@ -168,7 +168,7 @@
                 <div class="flex flex-col items-center">
                     <div class="relative w-20 h-28 border-2 border-[#d4af37] p-0.5 bg-white shadow-md flex items-center justify-center overflow-hidden">
                         @if($photoDoc)
-                            <img src="{{ asset('storage/' . $photoDoc->file_path) }}" alt="{{ $progress->user->name }}" class="w-full h-full object-cover">
+                            <img src="{{ asset('storage/' . $photoDoc->file_path) }}" alt="{{ $progress->user->name }}" class="w-full h-full object-cover" loading="lazy">
                         @else
                             <!-- Beautiful Silhouette Placeholder -->
                             <div class="w-full h-full bg-slate-50 flex flex-col items-center justify-center text-slate-300 relative">
@@ -236,7 +236,7 @@
                         <span class="font-mono text-[10px]">ID: {{ $progress->certificate_code }}</span>
                     </div>
                     <div class="w-12 h-12 border border-[#d4af37] bg-white p-0.5 rounded shadow-sm flex items-center justify-center">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode($progress->certificate_code) }}" alt="QR Code" class="w-full h-full object-contain">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode($progress->certificate_code) }}" alt="QR Code" class="w-full h-full object-contain" loading="lazy">
                     </div>
                 </div>
             </div>

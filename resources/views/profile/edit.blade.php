@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Quill Editor -->
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    @include('partials.quill-styles')
     
     <script>
     document.addEventListener('alpine:init', () => {
@@ -292,7 +292,7 @@
                                 <div class="w-full h-full rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-4xl font-bold overflow-hidden ring-4 ring-white dark:ring-slate-900">
                                     @php $photoDoc = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
                                     @if ($photoDoc)
-                                    <img src="{{ Storage::url($photoDoc->file_path) }}" alt="Photo" class="w-full h-full object-cover">
+                                    <x-webp-image :storagePath="$photoDoc->file_path" alt="Photo" class="w-full h-full object-cover" loading="lazy" />
                                     @else
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                     @endif
@@ -1545,7 +1545,7 @@ document.addEventListener('alpine:init', () => {
 });
 </script>
 
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+@vite(['resources/js/quill.js'])
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var quillBio = new Quill('#quill-bio', {

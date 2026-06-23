@@ -74,7 +74,7 @@
 
                 @if($questionData['question_image'])
                 <div class="mb-6">
-                    <img src="{{ asset('storage/' . $questionData['question_image']) }}" alt="Gambar Soal" class="max-w-full rounded">
+                    <img src="{{ asset('storage/' . $questionData['question_image']) }}" alt="Gambar Soal" class="max-w-full rounded" loading="lazy">
                 </div>
                 @endif
 

@@ -50,6 +50,29 @@ class CompressExistingPhotos extends Command
                     $needsResize = $origWidth > 1200 || $origHeight > 1200;
 
                     if (!$needsResize && $originalSize < 500 * 1024) {
+                        // Still generate WebP if needed
+                        if ($ext !== 'webp' && !$dryRun) {
+                            $webpPath = pathinfo($filePath, PATHINFO_DIRNAME) . '/' . pathinfo($filename, PATHINFO_FILENAME) . '.webp';
+                            if (!file_exists($webpPath)) {
+                                $webpSource = match ($imageInfo[2]) {
+                                    IMAGETYPE_JPEG => imagecreatefromjpeg($filePath),
+                                    IMAGETYPE_PNG => imagecreatefrompng($filePath),
+                                    default => null,
+                                };
+                                if ($webpSource) {
+                                    if ($imageInfo[2] === IMAGETYPE_PNG) {
+                                        imagealphablending($webpSource, false);
+                                        imagesavealpha($webpSource, true);
+                                    }
+                                    ob_start();
+                                    imagewebp($webpSource, null, 80);
+                                    $webpData = ob_get_clean();
+                                    imagedestroy($webpSource);
+                                    file_put_contents($webpPath, $webpData);
+                                    $this->line("  [WEBP] {$dir}/" . pathinfo($filename, PATHINFO_FILENAME) . ".webp generated ({$this->formatBytes(strlen($webpData))})");
+                                }
+                            }
+                        }
                         $this->line("  [OK] {$dir}/{$filename} - sudah optimal");
                         continue;
                     }
@@ -110,6 +133,30 @@ class CompressExistingPhotos extends Command
                         $count++;
                     } else {
                         $this->line("  [OK] {$dir}/{$filename} - sudah optimal");
+                    }
+
+                    // Generate WebP version
+                    if ($ext !== 'webp' && !$dryRun) {
+                        $webpPath = pathinfo($filePath, PATHINFO_DIRNAME) . '/' . pathinfo($filename, PATHINFO_FILENAME) . '.webp';
+                        if (!file_exists($webpPath)) {
+                            $webpSource = match ($imageInfo[2]) {
+                                IMAGETYPE_JPEG => imagecreatefromjpeg($filePath),
+                                IMAGETYPE_PNG => imagecreatefrompng($filePath),
+                                default => null,
+                            };
+                            if ($webpSource) {
+                                if ($imageInfo[2] === IMAGETYPE_PNG) {
+                                    imagealphablending($webpSource, false);
+                                    imagesavealpha($webpSource, true);
+                                }
+                                ob_start();
+                                imagewebp($webpSource, null, 80);
+                                $webpData = ob_get_clean();
+                                imagedestroy($webpSource);
+                                file_put_contents($webpPath, $webpData);
+                                $this->line("  [WEBP] {$dir}/" . pathinfo($filename, PATHINFO_FILENAME) . ".webp generated ({$this->formatBytes(strlen($webpData))})");
+                            }
+                        }
                     }
 
                 } catch (\Exception $e) {

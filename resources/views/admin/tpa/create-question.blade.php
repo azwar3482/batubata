@@ -1,5 +1,5 @@
 <x-app-layout>
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@include('partials.quill-styles')
 <style>
     .ql-toolbar.ql-snow { border: 1px solid #e2e8f0; border-radius: 0.5rem 0.5rem 0 0; background: #f8fafc; }
     .ql-container.ql-snow { border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 0.5rem 0.5rem; min-height: 120px; font-size: 14px; }
@@ -110,7 +110,7 @@
     </div>
 </div>
 
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+@vite(['resources/js/quill.js'])
 <script>
     const toolbarOptions = [
         [{ 'header': [1, 2, 3, false] }],

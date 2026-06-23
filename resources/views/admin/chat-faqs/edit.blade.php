@@ -1,5 +1,5 @@
 <x-app-layout>
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@include('partials.quill-styles')
 <style>
     .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
     .ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
@@ -199,7 +199,7 @@
     </div>
 </div>
 
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+@vite(['resources/js/quill.js'])
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var quill = new Quill('#quill-answer', {

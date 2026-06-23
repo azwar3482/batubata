@@ -370,7 +370,7 @@
                             <div class="border-b dark:border-slate-700 pb-2 sm:pb-3 last:border-0 flex items-start gap-2 sm:gap-3 group hover:bg-gray-50 dark:hover:bg-slate-800/50 -mx-1 sm:-mx-2 px-1 sm:px-2 py-1.5 sm:py-2 rounded-lg transition-colors">
                                 @if($job->banner_image)
                                     <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg overflow-hidden shrink-0">
-                                        <img src="{{ Storage::url($job->banner_image) }}" alt="Banner {{ $job->title }}" class="w-full h-full object-cover">
+                                        <img src="{{ Storage::url($job->banner_image) }}" alt="Banner {{ $job->title }}" class="w-full h-full object-cover" loading="lazy">
                                     </div>
                                 @else
                                     <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center shrink-0">
@@ -552,11 +552,10 @@
     </script>
 
     {{-- Driver.js Tour --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    @vite(['resources/js/driver.js'])
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const driver = window.driver.js.driver;
+            const driver = driver;
             const driverObj = driver({
                 showProgress: true,
                 nextBtnText: 'Lanjut ➔',

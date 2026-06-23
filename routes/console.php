@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Schedule;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,7 @@ Artisan::command('send-mail', function () {
         $this->error('❌ GAGAL! Terjadi kesalahan: ' . $e->getMessage());
     }
 })->purpose('Kirim email tes menggunakan konfigurasi SMTP Laravel');
+
+// Scheduled Jobs (UU PDP Compliance - Data Retention)
+Schedule::job(new \App\Jobs\EnforceRetentionPolicyJob)->daily()->at('02:00')->name('enforce-retention-policy')
+    ->description('Enforce data retention policy - clean old sessions, chats, anonymize inactive users');

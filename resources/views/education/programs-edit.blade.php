@@ -281,7 +281,7 @@
         }
     </script>
 
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    @vite(['resources/js/quill.js'])
     <script>
     window.quillEditors = {};
     document.addEventListener('DOMContentLoaded', function() {

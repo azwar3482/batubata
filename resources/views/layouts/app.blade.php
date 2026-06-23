@@ -948,7 +948,7 @@
                         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200 shrink-0 text-sm sm:text-base overflow-hidden">
                             @php $navPhoto1 = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
                             @if($navPhoto1)
-                                <img src="{{ Storage::url($navPhoto1->file_path) }}" alt="Photo" class="w-full h-full object-cover">
+                                <x-webp-image :storagePath="$navPhoto1->file_path" alt="Photo" class="w-full h-full object-cover" loading="lazy" />
                             @else
                                 {{ substr(Auth::user()->name, 0, 1) }}
                             @endif
@@ -1685,7 +1685,7 @@
                             <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-sm group-hover:shadow-md transition-[opacity,margin] duration-300 group-hover:scale-105 overflow-hidden">
                                 @php $navPhoto2 = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
                                 @if($navPhoto2)
-                                    <img src="{{ Storage::url($navPhoto2->file_path) }}" alt="Photo" class="w-full h-full object-cover">
+                                    <x-webp-image :storagePath="$navPhoto2->file_path" alt="Photo" class="w-full h-full object-cover" loading="lazy" />
                                 @else
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                 @endif
@@ -1934,7 +1934,7 @@
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md text-sm overflow-hidden">
                     @php $navPhoto3 = Auth::user()->documents->where('document_type', 'photo')->first(); @endphp
                     @if($navPhoto3)
-                        <img src="{{ Storage::url($navPhoto3->file_path) }}" alt="Photo" class="w-full h-full object-cover">
+                        <x-webp-image :storagePath="$navPhoto3->file_path" alt="Photo" class="w-full h-full object-cover" loading="lazy" />
                     @else
                         {{ substr(Auth::user()->name, 0, 1) }}
                     @endif

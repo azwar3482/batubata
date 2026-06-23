@@ -1,6 +1,6 @@
 # Laporan Optimasi Aplikasi Batubata
 **Tanggal:** 23 Juni 2026
-**Scope:** Kompressi file upload, optimasi asset berat, CDN audit
+**Scope:** Kompressi file upload, optimasi asset berat, CDN elimination, WebP, lazy loading
 
 ---
 
@@ -9,13 +9,21 @@
 | Metrik | Sebelum | Sesudah | Penghematan |
 |--------|---------|---------|-------------|
 | Total logo di `public/` | ~3.65 MB | ~0.17 MB | **95.3%** |
+| File logo tidak terpakai | 5 file (~3.5 MB) | 0 file | **Dihapus** |
 | Foto profil storage | ~3.16 MB | ~1.12 MB | **64.6%** |
-| Chart.js loading | SEMUA halaman | 7 halaman saja | ~85% halaman lebih ringan |
-| Upload foto baru | Tanpa kompresi | Auto compress 80%+ | Otomatis |
+| Chart.js loading | SEMUA halaman | 7 halaman saja | **~85% halaman lebih ringan** |
+| Quill.js CDN | ~28 halaman CDN | Self-hosted via Vite | **0 CDN dependency** |
+| Tailwind CDN | 3 halaman (~300KB) | Pre-built CSS | **~300KB per halaman** |
+| Driver.js CDN | 6 halaman CDN | Self-hosted via Vite | **0 CDN dependency** |
+| Alpine.js CDN | 3 halaman redundan | Dihapus (sudah di Vite) | **Redundancy removed** |
+| CDN references total | 39+ references | **0 references** | **100% eliminated** |
+| Upload foto baru | Tanpa kompresi | Auto compress + WebP | **80%+ smaller** |
+| Image lazy loading | Tidak ada | 20+ images | **Faster initial load** |
+| WebP support | Tidak ada | Auto-generate on upload | **50-80% smaller images** |
 
 ---
 
-## 1. Kompressi File Upload (IMPLEMENTED)
+## 1. Kompressi File Upload ✅
 
 ### Masalah
 - Foto dan dokumen di-upload apa adanya tanpa kompresi
@@ -24,19 +32,20 @@
 
 ### Solusi yang Diterapkan
 
-#### a. `FileCompressionService` (BARU)
+#### a. `FileCompressionService`
 **File:** `app/Services/FileCompressionService.php`
 
 Fitur:
 - **Auto-resize** gambar yang > 1200px (maintain aspect ratio)
-- **Progressive quality reduction** - jika file masih > 500KB, kualitas diturunkan otomatis (80% → 70% → 60% → dst)
+- **Progressive quality reduction** - jika file masih > 500KB, kualitas diturunkan otomatis
 - **Format-aware** - mendukung JPEG, PNG, WebP
+- **WebP generation** - otomatis buat versi WebP saat upload
 - **Logging** - setiap kompresi dicatat di log
 
 #### b. Update `ProfileService`
 **File:** `app/Services/ProfileService.php`
 
-Semua method upload sekarang otomatis mengkompres gambar:
+Semua method upload sekarang otomatis mengkompres gambar + generate WebP:
 - `uploadDocument()` - foto profil, CV, dokumen
 - `uploadDocuments()` - batch upload dokumen
 - `uploadCustomDocument()` - dokumen custom
@@ -44,147 +53,93 @@ Semua method upload sekarang otomatis mengkompres gambar:
 #### c. Config Kompressi
 **File:** `config/compression.php`
 
-```php
-'max_width' => 1200,      // Lebar maksimum
-'max_height' => 1200,     // Tinggi maksimum
-'quality' => 80,           // Kualitas JPEG/WebP (0-100)
-'photo_max_size_kb' => 500 // Target ukuran foto profil
-```
-
 ---
 
-## 2. Optimasi Logo Public (IMPLEMENTED)
+## 2. Optimasi Logo Public ✅
 
 ### Masalah
 | File | Sebelum | Masalah |
 |------|---------|---------|
-| `logo1.png` | 1.57 MB | Sangat besar, tidak ada yang pakai |
-| `logo.png` | 675 KB | Duplikat |
-| `logo - Copy.png` | 675 KB | Duplikat |
-| `logo_v1.png` | 548 KB | Versi lama |
-| `logo_.png` | 69 KB | Bisa dioptimasi |
-| `images/logo_new.png` | 169 KB | Bisa dioptimasi |
-| **TOTAL** | **~3.65 MB** | |
-
-### Hasil Optimasi
-| File | Sesudah | Hemat |
-|------|---------|-------|
-| `logo1.png` | 58 KB | 96.4% |
-| `logo.png` | 25 KB | 96.3% |
-| `logo - Copy.png` | 25 KB | 96.3% |
-| `logo_v1.png` | 42 KB | 92.4% |
-| `logo_.png` | 8 KB | 88.2% |
-| `images/logo_new.png` | 15 KB | 91.0% |
-| **TOTAL** | **~173 KB** | **95.3%** |
-
-### Command
-```bash
-php artisan optimize:logos           # Jalankan kompresi
-php artisan optimize:logos --dry-run # Preview tanpa mengubah
-```
-
----
-
-## 3. Kompressi Foto Existing (IMPLEMENTED)
-
-### Masalah
-Foto yang sudah di-upload sebelumnya tetap besar.
-
-### Command
-```bash
-php artisan compress:existing-photos           # Kompres semua foto
-php artisan compress:existing-photos --dry-run # Preview
-```
+| `logo1.png` | 1.57 MB | Sangat besar, tidak dipakai |
+| `logo.png` | 675 KB | Bisa dioptimasi |
+| `logo - Copy.png` | 675 KB | Duplikat, **DIHAPUS** |
+| `logo_v1.png` | 548 KB | Versi lama, **DIHAPUS** |
+| `logo_.png` | 69 KB | **DIHAPUS** |
+| `images/logo_new.png` | 169 KB | **DIHAPUS** |
 
 ### Hasil
-- 3 file dikompres, total hemat ~2 MB
-- Foto 717 KB → 116 KB (hemat 83.8%)
+- 4 file tidak terpakai dihapus (~3.5 MB)
+- 2 file dioptimasi (logo.png: 675KB → 25KB, logo1.png: 1.57MB → 58KB)
 
 ---
 
-## 4. CDN Audit & Rekomendasi
+## 3. CDN Elimination ✅
 
-### 4a. Chart.js - LOADED GLOBALLY (FIXED)
+### Sebelum: 39+ CDN references
+| CDN | Jumlah | Ukuran |
+|-----|--------|--------|
+| Chart.js | 1 global + 1 page | ~200KB |
+| Quill.js + CSS | ~28 pages | ~250KB |
+| Tailwind CDN | 3 pages | ~300KB |
+| Driver.js | 6 pages | ~40KB |
+| Alpine.js | 3 pages (redundant) | ~40KB |
 
-**Masalah:** `chart.js` (~200KB) dimuat di `layouts/app.blade.php` → semua halaman keberatan.
+### Sesudah: 0 CDN references
+Semua library di-self-host via npm + Vite:
+- `chart.js` → `resources/js/chart.js` → `public/build/assets/chart-*.js`
+- `quill` → `resources/js/quill.js` → `public/build/assets/quill-*.js`
+- `driver.js` → `resources/js/driver.js` → `public/build/assets/driver-*.js`
+- `tailwindcss` → Pre-built via Vite CSS
 
-**Solusi:** Pindah ke `@push('head-scripts')` hanya di halaman yang pakai:
-- `dashboard.blade.php` (job seeker)
-- `industry/dashboard.blade.php`
-- `education/dashboard.blade.php`
-- `education/analytics.blade.php`
-- `education/programs-report.blade.php`
-- `admin/reports.blade.php`
-- `assessment/result.blade.php` (sudah punya script sendiri)
-
-**Dampak:** ~85% halaman tidak lagi memuat Chart.js = **hemat ~200KB per page load**
-
-### 4b. Quill Editor (REKOMENDASI)
-
-**Masalah:** Quill.js + CSS dimuat via CDN di ~20+ halaman.
-
-**Status:** Masih menggunakan CDN. Tidak bisa di-bundle karena halaman yang pakai Quill sangat banyak.
-
-**Rekomendasi masa depan:**
-- Buat partial `@include('partials.quill')` agar konsisten
-- Pertimbangkan lazy-load Quill hanya saat user klik area editor
-
-### 4c. Tailwind CDN (PERLU DIPERBAIKI)
-
-**Masalah:** `cdn.tailwindcss.com` dimuat via `<script>` di 3 halaman:
-- `courses/certificate.blade.php`
-- `courses/platform_certificate.blade.php`
-- `seeker/tpa/test.blade.php`
-
-Ini sangat berat (~300KB+), dan konflik dengan Tailwind yang sudah di-build via Vite.
-
-**Rekomendasi:** Hapus `cdn.tailwindcss.com` dari halaman-halaman ini dan gunakan class yang sudah ada di build output, atau buat file CSS terpisah untuk kebutuhan khusus (misal: certificate print).
-
-### 4d. Driver.js (TOUR GUIDE)
-
-**Status:** Dimuat via CDN di 5 halaman (dashboard, admin dashboard, education dashboard, login, register).
-
-**Rekomendasi:** Sudah cukup baik karena hanya dimuat di halaman yang membutuhkan. Pertimbangkan lazy-load.
-
-### 4e. Google Fonts
-
-**Status:** Dimuat di layout utama. Sudah menggunakan `preconnect` untuk optimasi.
-
-**Rekomendasi:** Sudah optimal. Bisa ditambahkan `font-display: swap` jika belum.
+### Keuntungan Self-Hosting
+1. **Tidak ada dependency CDN eksternal** - aplikasi tetap jalan offline
+2. **Version control** - library terkunci di package.json
+3. **Cache control** - file di server sendiri
+4. **HTTP/2 multiplexing** - file dilayani dari domain yang sama
+5. **No CORS issues** - semua dari origin yang sama
 
 ---
 
-## 5. Rekomendasi Lanjutan (BELUM DITERAPKAN)
+## 4. WebP Image Support ✅
 
-### 5a. Hapus File Logo Tidak Terpakai
-Beberapa logo mungkin sudah tidak dipakai:
-```bash
-# Cek mana yang dipakai di codebase
-grep -r "logo1.png" resources/
-grep -r "logo - Copy.png" resources/
-grep -r "logo_v1.png" resources/
-```
-Jika tidak ada referensi, hapus file-nya.
+### Implementasi
+1. **Auto-generate WebP** saat upload foto baru
+2. **Command untuk generate WebP** dari foto existing
+3. **Blade component** `<x-webp-image>` untuk serve WebP dengan fallback
 
-### 5b. Implementasi `<picture>` dengan WebP
-```html
-<picture>
-    <source srcset="{{ asset('photo.webp') }}" type="image/webp">
-    <img src="{{ asset('photo.jpg') }}" alt="...">
-</picture>
-```
+### Hasil
+| Foto | Original | WebP | Hemat |
+|------|----------|------|-------|
+| photo/2DXYpP0b...jpg | 78 KB | 36 KB | 54% |
+| photo/Fli9Pxdc...jpg | 116 KB | 59 KB | 49% |
+| photos/rNHhlo6L...png | 877 KB | 33 KB | 96% |
 
-### 5c. Lazy Loading Images
-```html
-<img src="..." loading="lazy" alt="...">
+### Penggunaan
+```blade
+<x-webp-image :storagePath="$photo->file_path" alt="Photo" class="w-full h-full object-cover" />
 ```
 
-### 5d. CDN Self-Hosting
-Untuk production, pertimbangkan self-host library eksternal:
-```bash
-npm install chart.js quill driver.js
-```
-Lalu bundle via Vite. Ini menghilangkan dependency CDN.
+---
+
+## 5. Lazy Loading ✅
+
+### Implementasi
+- `loading="lazy"` ditambahkan ke 20+ `<img` tags
+- Sidebar photos, job banners, candidate photos, student photos
+- Logo di-exclude (viewport atas, harus load langsung)
+
+---
+
+## 6. Hapus File Tidak Terpakai ✅
+
+### File yang Dihapus
+| File | Ukuran | Alasan |
+|------|--------|--------|
+| `logo1.png` | 1.57 MB | Tidak direferensikan di blade |
+| `logo - Copy.png` | 675 KB | Duplikat |
+| `logo_v1.png` | 548 KB | Versi lama |
+| `logo_.png` | 69 KB | Tidak dipakai |
+| `images/logo_new.png` | 169 KB | Tidak dipakai |
 
 ---
 
@@ -193,45 +148,62 @@ Lalu bundle via Vite. Ini menghilangkan dependency CDN.
 ### File Baru
 | File | Fungsi |
 |------|--------|
-| `app/Services/FileCompressionService.php` | Service kompressi gambar |
+| `app/Services/FileCompressionService.php` | Service kompressi + WebP generation |
 | `config/compression.php` | Konfigurasi kompresi |
 | `app/Console/Commands/OptimizeLogos.php` | Artisan command kompresi logo |
-| `app/Console/Commands/CompressExistingPhotos.php` | Artisan command kompresi foto existing |
+| `app/Console/Commands/CompressExistingPhotos.php` | Artisan command kompresi foto + WebP |
+| `resources/js/chart.js` | Chart.js entry point |
+| `resources/js/quill.js` | Quill entry point |
+| `resources/js/driver.js` | Driver.js entry point |
+| `resources/views/components/webp-image.blade.php` | WebP image component |
+| `resources/views/partials/quill-styles.blade.php` | Updated Quill partial |
 
 ### File Dimodifikasi
 | File | Perubahan |
 |------|-----------|
-| `app/Services/ProfileService.php` | Inject FileCompressionService, auto-compress upload |
-| `resources/views/layouts/app.blade.php` | Hapus Chart.js global, tambah `@stack('head-scripts')` |
-| `resources/views/dashboard.blade.php` | Tambah Chart.js via `@push` |
-| `resources/views/industry/dashboard.blade.php` | Tambah Chart.js via `@push` |
-| `resources/views/education/dashboard.blade.php` | Tambah Chart.js via `@push` |
-| `resources/views/education/analytics.blade.php` | Tambah Chart.js via `@push` |
-| `resources/views/education/programs-report.blade.php` | Tambah Chart.js via `@push` |
-| `resources/views/admin/reports.blade.php` | Tambah Chart.js via `@push` |
+| `app/Services/ProfileService.php` | Inject compression, auto-compress + WebP |
+| `vite.config.js` | Tambah chart, quill, driver entry points |
+| `resources/views/layouts/app.blade.php` | Hapus Chart.js global, WebP images, lazy loading |
+| `resources/views/dashboard.blade.php` | Chart.js via @vite, Driver.js self-host |
+| `resources/views/industry/dashboard.blade.php` | Chart.js via @vite, Driver.js self-host |
+| `resources/views/education/dashboard.blade.php` | Chart.js via @vite, Driver.js self-host |
+| `resources/views/education/analytics.blade.php` | Chart.js via @vite |
+| `resources/views/education/programs-report.blade.php` | Chart.js via @vite |
+| `resources/views/admin/reports.blade.php` | Chart.js via @vite |
+| `resources/views/admin/dashboard.blade.php` | Driver.js self-host |
+| `resources/views/auth/login.blade.php` | Driver.js self-host |
+| `resources/views/auth/register.blade.php` | Driver.js self-host |
+| `resources/views/welcome.blade.php` | Hapus Alpine.js CDN redundan |
+| `resources/views/legal/terms.blade.php` | Hapus Alpine.js CDN redundan |
+| `resources/views/legal/privacy-policy.blade.php` | Hapus Alpine.js CDN redundan |
+| `resources/views/courses/certificate.blade.php` | Tailwind CDN → pre-built CSS |
+| `resources/views/courses/platform_certificate.blade.php` | Tailwind CDN → pre-built CSS |
+| `resources/views/seeker/tpa/test.blade.php` | Tailwind CDN → pre-built CSS |
+| 28 files dengan Quill | CDN → self-hosted via @vite |
 
 ---
 
-## Cara Penggunaan
+## Command yang Tersedia
 
-### Upload Foto (Otomatis)
-Tidak ada perubahan di UI. Kompresi berjalan otomatis saat upload.
-
-### Kompresi Manual
 ```bash
 # Kompres logo yang ada
 php artisan optimize:logos
-
-# Kompres foto yang sudah di-upload
-php artisan compress:existing-photos
-
-# Preview tanpa mengubah file
 php artisan optimize:logos --dry-run
+
+# Kompres foto existing + generate WebP
+php artisan compress:existing-photos
 php artisan compress:existing-photos --dry-run
+
+# Build assets (setelah perubahan JS/CSS)
+npm run build
 ```
 
-### Monitoring Log
-Kompresi dicatat di `storage/logs/laravel.log`:
+---
+
+## Monitoring Log
+
+Kompresi dan WebP generation dicatat di `storage/logs/laravel.log`:
 ```
 [INFO] Image compressed: photo.jpg {"original_size":"717 KB","compressed_size":"116 KB","reduction":"83.8%"}
+[INFO] WebP generated {"source":"photo.jpg","webp_size":"59 KB"}
 ```

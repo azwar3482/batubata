@@ -84,7 +84,7 @@
                             <div class="flex justify-center -mt-12">
                                 @php $photoDoc = $student->documents->where('document_type', 'photo')->first(); @endphp
                                 @if($photoDoc)
-                                    <img src="{{ asset('storage/' . $photoDoc->file_path) }}" class="h-24 w-24 rounded-full object-cover border-4 border-white dark:border-slate-900 shadow-lg">
+                                    <img src="{{ asset('storage/' . $photoDoc->file_path) }}" class="h-24 w-24 rounded-full object-cover border-4 border-white dark:border-slate-900 shadow-lg" loading="lazy">
                                 @else
                                     <div class="h-24 w-24 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white text-3xl font-bold border-4 border-white dark:border-slate-900 shadow-lg">
                                         {{ strtoupper(substr($student->name, 0, 1)) }}

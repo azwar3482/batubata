@@ -243,6 +243,86 @@ class FileCompressionService
         return ob_get_clean();
     }
 
+    /**
+     * Generate a WebP version of an image file.
+     * Returns the path to the WebP file, or null if generation fails.
+     */
+    public function generateWebP(string $sourcePath, ?string $targetDir = null): ?string
+    {
+        if (!file_exists($sourcePath)) {
+            return null;
+        }
+
+        $imageInfo = @getimagesize($sourcePath);
+        if (!$imageInfo || $imageInfo[2] === IMAGETYPE_WEBP) {
+            return null; // Already WebP or not an image
+        }
+
+        try {
+            $source = match ($imageInfo[2]) {
+                IMAGETYPE_JPEG => imagecreatefromjpeg($sourcePath),
+                IMAGETYPE_PNG => imagecreatefrompng($sourcePath),
+                default => null,
+            };
+
+            if (!$source) {
+                return null;
+            }
+
+            // Preserve transparency for PNG
+            if ($imageInfo[2] === IMAGETYPE_PNG) {
+                imagealphablending($source, false);
+                imagesavealpha($source, true);
+            }
+
+            $webpPath = ($targetDir ?? dirname($sourcePath)) . '/' . pathinfo($sourcePath, PATHINFO_FILENAME) . '.webp';
+
+            ob_start();
+            imagewebp($source, null, $this->quality);
+            $webpData = ob_get_clean();
+            imagedestroy($source);
+
+            file_put_contents($webpPath, $webpData);
+
+            Log::info("WebP generated", [
+                'source' => basename($sourcePath),
+                'webp_size' => $this->formatBytes(strlen($webpData)),
+            ]);
+
+            return $webpPath;
+        } catch (\Exception $e) {
+            Log::warning('WebP generation failed', ['error' => $e->getMessage()]);
+            return null;
+        }
+    }
+
+    /**
+     * Get the WebP URL for a given image storage path.
+     * Returns the WebP URL if it exists, otherwise the original URL.
+     */
+    public static function getWebpUrl(string $storagePath): string
+    {
+        $fullPath = storage_path('app/public/' . $storagePath);
+        $webpPath = pathinfo($fullPath, PATHINFO_DIRNAME) . '/' . pathinfo($fullPath, PATHINFO_FILENAME) . '.webp';
+
+        if (file_exists($webpPath)) {
+            $webpRelative = str_replace(storage_path('app/public/'), '', $webpPath);
+            return \Storage::url($webpRelative);
+        }
+
+        return \Storage::url($storagePath);
+    }
+
+    /**
+     * Check if a WebP version exists for a given storage path.
+     */
+    public static function hasWebP(string $storagePath): bool
+    {
+        $fullPath = storage_path('app/public/' . $storagePath);
+        $webpPath = pathinfo($fullPath, PATHINFO_DIRNAME) . '/' . pathinfo($fullPath, PATHINFO_FILENAME) . '.webp';
+        return file_exists($webpPath);
+    }
+
     private function formatBytes(int $bytes, int $precision = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB'];

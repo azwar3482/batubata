@@ -1,5 +1,5 @@
 <x-app-layout>
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@include('partials.quill-styles')
 <style>
     .ql-toolbar.ql-snow { border: 1px solid #e2e8f0; border-radius: 0.5rem 0.5rem 0 0; background: #f8fafc; }
     .ql-container.ql-snow { border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 0.5rem 0.5rem; min-height: 120px; font-size: 14px; }
@@ -78,7 +78,7 @@
                 @if($question->question_image)
                 <div class="mb-3 p-2 bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 max-w-sm">
                     <p class="text-xs text-gray-550 dark:text-slate-400 mb-1 font-semibold">Gambar saat ini:</p>
-                    <img src="{{ asset('storage/' . $question->question_image) }}" class="h-20 rounded shadow-sm object-contain">
+                    <img src="{{ asset('storage/' . $question->question_image) }}" class="h-20 rounded shadow-sm object-contain" loading="lazy">
                 </div>
                 @endif
                 <input type="file" name="question_image" accept="image/*" class="w-full border border-gray-300 dark:border-slate-650 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -122,7 +122,7 @@
     </div>
 </div>
 
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+@vite(['resources/js/quill.js'])
 <script>
     const toolbarOptions = [
         [{ 'header': [1, 2, 3, false] }],

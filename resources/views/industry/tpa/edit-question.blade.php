@@ -45,7 +45,7 @@
         <div class="mb-4">
             <label class="block text-sm font-medium mb-1">Gambar Soal (opsional)</label>
             @if($question->question_image)
-            <div class="mb-2"><img src="{{ asset('storage/' . $question->question_image) }}" class="h-20"></div>
+            <div class="mb-2"><img src="{{ asset('storage/' . $question->question_image) }}" class="h-20" loading="lazy"></div>
             @endif
             <input type="file" name="question_image" accept="image/*" class="w-full border rounded-lg px-3 py-2">
         </div>

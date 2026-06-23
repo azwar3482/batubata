@@ -7,7 +7,6 @@
     <title>Kebijakan Privasi - KOMPASKARIR</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         if (localStorage.getItem('color-theme') === 'dark' || !('color-theme' in localStorage)) {
             document.documentElement.classList.add('dark');

@@ -97,6 +97,12 @@ class ProfileService
 
         $path = $file->store("documents/{$docType}", 'public');
 
+        // Generate WebP version for images
+        if (str_starts_with($file->getMimeType(), 'image/')) {
+            $fullPath = storage_path('app/public/' . $path);
+            $this->compressionService->generateWebP($fullPath);
+        }
+
         $reduction = $originalSize > 0 ? round((1 - $compressedSize / $originalSize) * 100, 1) : 0;
         Log::info("Document uploaded for user {$user->id}", [
             'type' => $docType,
@@ -181,6 +187,12 @@ class ProfileService
 
             // Simpan file ke storage
             $path = $file->store("documents/{$docType}", 'public');
+
+            // Generate WebP version for images
+            if (str_starts_with($file->getMimeType(), 'image/')) {
+                $fullPath = storage_path('app/public/' . $path);
+                $this->compressionService->generateWebP($fullPath);
+            }
 
             $documentsToInsert[] = [
                 'user_id'       => $user->id,

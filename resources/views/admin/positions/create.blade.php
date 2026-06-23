@@ -1,5 +1,5 @@
 <x-app-layout>
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@include('partials.quill-styles')
 <style>
     @keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.anim-1{animation:fadeInUp .4s ease-out}.anim-2{animation:fadeInUp .4s ease-out .1s forwards;opacity:0}
     .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
@@ -123,7 +123,7 @@ window.searchableDropdown = function(config) {
     };
 };
 </script>
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+@vite(['resources/js/quill.js'])
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var quill = new Quill('#quill-editor', {

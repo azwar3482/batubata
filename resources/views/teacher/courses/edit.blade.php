@@ -91,7 +91,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Thumbnail</label>
                             @if($course->thumbnail_path)
-                            <img src="{{ asset('storage/' . $course->thumbnail_path) }}" alt="Thumbnail" class="w-32 h-20 object-cover rounded-lg mb-2">
+                            <img src="{{ asset('storage/' . $course->thumbnail_path) }}" alt="Thumbnail" class="w-32 h-20 object-cover rounded-lg mb-2" loading="lazy">
                             @endif
                             <input type="file" name="thumbnail" accept="image/*" class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                         </div>

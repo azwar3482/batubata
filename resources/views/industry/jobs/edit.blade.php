@@ -19,7 +19,7 @@
             </div>
 
             <!-- Quill Editor -->
-            <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+            @include('partials.quill-styles')
             <style>
 .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
 .ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
@@ -323,7 +323,7 @@
                                     </div>
                                     <!-- Image Preview -->
                                     <div id="image-preview" class="{{ $job->banner_image ? '' : 'hidden' }} mt-4 relative rounded-xl overflow-hidden border border-gray-200 shadow-sm max-w-sm mx-auto">
-                                        <img src="{{ $job->banner_image ? Storage::url($job->banner_image) : '' }}" alt="Banner Preview" class="w-full h-auto object-cover max-h-48">
+                                        <img src="{{ $job->banner_image ? Storage::url($job->banner_image) : '' }}" alt="Banner Preview" class="w-full h-auto object-cover max-h-48" loading="lazy">
                                         <button type="button" id="remove-image" class="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1.5 shadow-md hover:bg-red-700 transition">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -578,7 +578,7 @@
             });
         });
     </script>
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    @vite(['resources/js/quill.js'])
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var quill = new Quill('#quill-description', {

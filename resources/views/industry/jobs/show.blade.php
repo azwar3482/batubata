@@ -41,7 +41,7 @@
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-xl border border-gray-100 dark:border-slate-700">
                 @if($job->banner_image)
                 <div class="w-full h-64 overflow-hidden bg-gray-100 dark:bg-slate-700 flex items-center justify-center">
-                    <img src="{{ Storage::url($job->banner_image) }}" alt="Banner Lowongan" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($job->banner_image) }}" alt="Banner Lowongan" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 @endif
                 <div class="p-6">

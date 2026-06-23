@@ -156,7 +156,7 @@
                                     </div>
                                     @elseif(in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                                     <div class="text-center">
-                                        <img src="{{ route('seeker.courses.view-material', [$course->id, $currentMaterial->id]) }}" alt="{{ $currentMaterial->title }}" class="max-w-full h-auto rounded-lg mx-auto">
+                                        <img src="{{ route('seeker.courses.view-material', [$course->id, $currentMaterial->id]) }}" alt="{{ $currentMaterial->title }}" class="max-w-full h-auto rounded-lg mx-auto" loading="lazy">
                                     </div>
                                     @else
                                     <div class="text-center py-12">

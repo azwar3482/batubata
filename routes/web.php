@@ -34,6 +34,10 @@ Route::get('/syarat-ketentuan', function () {
     return view('legal.terms');
 })->name('legal.terms');
 
+// TIA Document
+Route::get('/transfer-impact-assessment', [App\Http\Controllers\TIAController::class, 'show'])->name('legal.tia');
+Route::get('/transfer-impact-assessment/download', [App\Http\Controllers\TIAController::class, 'download'])->name('legal.tia.download');
+
 // Jobs
 // Route::get('/jobs', [App\Http\Controllers\DashboardController::class, 'jobs'])->name('jobs.index');
 
@@ -92,6 +96,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Data Export (UU PDP - Hak Portabilitas)
     Route::get('/profile/export', [App\Http\Controllers\DataExportController::class, 'export'])->name('profile.export');
+
+    // Manual Review (Premium Feature)
+    Route::get('/manual-review', [App\Http\Controllers\ManualReviewController::class, 'index'])->name('manual-review.index');
+    Route::post('/manual-review', [App\Http\Controllers\ManualReviewController::class, 'store'])->name('manual-review.store');
+    Route::get('/manual-review/{id}/payment', [App\Http\Controllers\ManualReviewController::class, 'payment'])->name('manual-review.payment');
+    Route::post('/manual-review/{id}/payment', [App\Http\Controllers\ManualReviewController::class, 'processPayment'])->name('manual-review.process-payment');
+    Route::post('/manual-review/{id}/cancel', [App\Http\Controllers\ManualReviewController::class, 'cancel'])->name('manual-review.cancel');
 
     // =====================
     // JOB SEEKER ROUTES
@@ -386,6 +397,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Positions
         Route::resource('positions', \App\Http\Controllers\Admin\PositionController::class);
+
+        // Security Monitoring
+        Route::get('/security', [\App\Http\Controllers\Admin\SecurityController::class, 'index'])->name('security.index');
+        Route::get('/security/{id}', [\App\Http\Controllers\Admin\SecurityController::class, 'show'])->name('security.show');
+        Route::post('/security/{id}/resolve', [\App\Http\Controllers\Admin\SecurityController::class, 'resolve'])->name('security.resolve');
 
         // Courses
         Route::resource('courses', \App\Http\Controllers\Admin\CourseController::class);

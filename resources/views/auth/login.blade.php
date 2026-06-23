@@ -463,15 +463,14 @@
     </script>
 
     <!-- Driver.js for Tour -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
-    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    @vite(['resources/js/driver.js'])
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const startTourBtn = document.getElementById('start-tour-btn');
             if (startTourBtn) {
                 startTourBtn.addEventListener('click', () => {
-                    const driver = window.driver.js.driver;
+                    const driver = driver;
                     const driverObj = driver({
                         showProgress: true,
                         nextBtnText: 'Lanjut ➔',

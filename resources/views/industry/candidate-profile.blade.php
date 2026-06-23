@@ -1,5 +1,5 @@
 <x-app-layout>
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@include('partials.quill-styles')
 <style>
 .ql-toolbar.ql-snow { border-color: #e5e7eb; border-radius: 0.5rem 0.5rem 0 0; background: #f9fafb; }
 .ql-container.ql-snow { border-color: #e5e7eb; border-radius: 0 0 0.5rem 0.5rem; min-height: 150px; font-size: 0.875rem; }
@@ -90,7 +90,7 @@
                                     <div
                                         class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-2xl font-bold border-4 border-white shadow-lg overflow-hidden">
                                         @if($photoDoc)
-                                            <img src="{{ Storage::url($photoDoc->file_path) }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover">
+                                            <img src="{{ Storage::url($photoDoc->file_path) }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover" loading="lazy">
                                         @else
                                             {{ substr($candidate->name, 0, 2) }}
                                         @endif
@@ -1004,7 +1004,7 @@
 
         </div>
     </div>
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+@vite(['resources/js/quill.js'])
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var quill = new Quill('#quill-notes', {

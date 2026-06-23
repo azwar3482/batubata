@@ -160,7 +160,7 @@
                                     <div class="flex items-start gap-4">
                                         @if($job->banner_image)
                                         <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 hidden sm:block border border-gray-200">
-                                            <img src="{{ Storage::url($job->banner_image) }}" alt="Banner" class="w-full h-full object-cover">
+                                            <img src="{{ Storage::url($job->banner_image) }}" alt="Banner" class="w-full h-full object-cover" loading="lazy">
                                         </div>
                                         @endif
                                         <div>
