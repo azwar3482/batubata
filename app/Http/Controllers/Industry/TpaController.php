@@ -39,7 +39,7 @@ class TpaController extends Controller
             ->orWhere('created_by', $user->id)
             ->with('jobListing')
             ->latest()
-            ->paginate(15);
+            ->paginate(10);
 
         return view('industry.tpa.index', compact('tests'));
     }
@@ -395,7 +395,7 @@ class TpaController extends Controller
             $query->where('is_passed', $request->passed === '1');
         }
 
-        $results = $query->paginate(20)->withQueryString();
+        $results = $query->paginate(10)->withQueryString();
         $tests = TpaTest::whereIn('job_listing_id', $jobIds)->get();
 
         return view('industry.tpa.results', compact('results', 'tests'));
@@ -463,7 +463,7 @@ class TpaController extends Controller
             $query->where('question_text', 'like', '%' . $request->search . '%');
         }
 
-        $questions = $query->paginate(20)->withQueryString();
+        $questions = $query->paginate(10)->withQueryString();
 
         return view('industry.tpa.questions', compact('questions'));
     }

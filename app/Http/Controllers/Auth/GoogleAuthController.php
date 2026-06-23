@@ -70,7 +70,7 @@ class GoogleAuthController extends Controller
 
             Log::info('User logged in successfully', ['user_id' => $user->id]);
 
-            return redirect()->route('dashboard');
+            return $this->redirectByRole($user);
         } catch (\Exception $e) {
             Log::error('Google OAuth callback error', [
                 'error' => $e->getMessage(),
@@ -94,6 +94,24 @@ class GoogleAuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard')->with('status', 'Logged in via Mock Google (Socialite / Credentials not detected)');
+        return $this->redirectByRole($user)->with('status', 'Logged in via Mock Google (Socialite / Credentials not detected)');
+    }
+
+    /**
+     * Redirect user based on their role.
+     */
+    protected function redirectByRole($user)
+    {
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->isIndustryOrStaff()) {
+            return redirect()->route('industry.dashboard');
+        } elseif ($user->isEducation()) {
+            return redirect()->route('education.dashboard');
+        } elseif ($user->isTeacher()) {
+            return redirect()->route('teacher.dashboard');
+        }
+
+        return redirect()->route('dashboard');
     }
 }

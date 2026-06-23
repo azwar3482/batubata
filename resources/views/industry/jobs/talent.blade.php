@@ -34,7 +34,21 @@
             <!-- List Talenta -->
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 dark:border-slate-700">
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Talenta yang Cocok</h3>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Talenta yang Cocok</h3>
+                        @if($talents->count() > 0)
+                            <div class="flex items-center gap-1 bg-gray-100 dark:bg-slate-700 rounded-lg p-1">
+                                <button onclick="switchView('card')" id="btn-card" class="view-toggle px-3 py-1.5 rounded-md text-sm font-medium transition flex items-center gap-1.5 bg-white dark:bg-slate-600 shadow-sm text-gray-900 dark:text-white">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                                    Kartu
+                                </button>
+                                <button onclick="switchView('table')" id="btn-table" class="view-toggle px-3 py-1.5 rounded-md text-sm font-medium transition flex items-center gap-1.5 text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                    Tabel
+                                </button>
+                            </div>
+                        @endif
+                    </div>
 
                     @if(session('success'))
                         <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
@@ -49,7 +63,8 @@
                     @endif
 
                     @if($talents->count() > 0)
-                        <div class="grid grid-cols-1 gap-6">
+                        <!-- Card View -->
+                        <div id="view-card" class="grid grid-cols-1 gap-6">
                             @foreach($talents as $talent)
                                 @php
                                     $user = $talent['user'];
@@ -158,6 +173,120 @@
                                 </div>
                             @endforeach
                         </div>
+
+                        <!-- Table View -->
+                        <div id="view-table" class="hidden overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-500 dark:text-slate-400 uppercase bg-gray-50 dark:bg-slate-700/50">
+                                    <tr>
+                                        <th class="px-4 py-3 font-semibold">Kandidat</th>
+                                        <th class="px-4 py-3 font-semibold">Pendidikan</th>
+                                        <th class="px-4 py-3 font-semibold">Keahlian</th>
+                                        <th class="px-4 py-3 font-semibold">Skill Gap</th>
+                                        <th class="px-4 py-3 font-semibold text-center">Kecocokan</th>
+                                        <th class="px-4 py-3 font-semibold text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                                    @foreach($talents as $talent)
+                                        @php
+                                            $user = $talent['user'];
+                                            $match = $talent['match_percentage'];
+                                            $shortcomings = $talent['shortcomings'];
+                                            $existingApp = $talent['existing_app'];
+                                        @endphp
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <!-- Kandidat -->
+                                            <td class="px-4 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm flex-shrink-0">
+                                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-semibold text-gray-900 dark:text-white">{{ $user->name }}</div>
+                                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300">
+                                                            100% Lengkap
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- Pendidikan -->
+                                            <td class="px-4 py-4">
+                                                <div class="text-gray-900 dark:text-white font-medium">{{ $user->major ?? '-' }}</div>
+                                                <div class="text-gray-500 dark:text-slate-400 text-xs">{{ $user->education_level ?? '-' }}</div>
+                                            </td>
+                                            <!-- Keahlian -->
+                                            <td class="px-4 py-4">
+                                                <div class="flex flex-wrap gap-1 max-w-xs">
+                                                    @if(is_array($user->skills) && count($user->skills) > 0)
+                                                        @foreach(array_slice($user->skills, 0, 3) as $userSkill)
+                                                            <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 rounded text-[11px] font-medium">{{ $userSkill }}</span>
+                                                        @endforeach
+                                                        @if(count($user->skills) > 3)
+                                                            <span class="px-2 py-0.5 text-gray-400 text-[11px]">+{{ count($user->skills) - 3 }}</span>
+                                                        @endif
+                                                    @else
+                                                        <span class="text-xs text-gray-400">-</span>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <!-- Skill Gap -->
+                                            <td class="px-4 py-4">
+                                                @if(count($shortcomings) > 0)
+                                                    <div class="flex flex-wrap gap-1 max-w-xs">
+                                                        @foreach(array_slice($shortcomings, 0, 2) as $short)
+                                                            <span class="px-2 py-0.5 bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 rounded text-[11px] font-medium border border-rose-100 dark:border-rose-900/30">{{ $short }}</span>
+                                                        @endforeach
+                                                        @if(count($shortcomings) > 2)
+                                                            <span class="px-2 py-0.5 text-gray-400 text-[11px]">+{{ count($shortcomings) - 2 }}</span>
+                                                        @endif
+                                                    </div>
+                                                @else
+                                                    <span class="inline-flex items-center text-xs font-bold text-green-600 dark:text-green-400">
+                                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                                        0% Gap
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <!-- Kecocokan -->
+                                            <td class="px-4 py-4 text-center">
+                                                <span class="text-lg font-black text-blue-600 dark:text-blue-400">{{ round($match) }}%</span>
+                                            </td>
+                                            <!-- Aksi -->
+                                            <td class="px-4 py-4 text-center">
+                                                @if($existingApp)
+                                                    @if($existingApp->is_direct_offer)
+                                                        @if($existingApp->direct_offer_status === 'pending')
+                                                            <span class="inline-flex items-center px-3 py-1.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 rounded-lg text-xs font-semibold">
+                                                                Menunggu
+                                                            </span>
+                                                        @elseif($existingApp->direct_offer_status === 'accepted')
+                                                            <span class="inline-flex items-center px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-lg text-xs font-semibold">
+                                                                Diterima
+                                                            </span>
+                                                        @elseif($existingApp->direct_offer_status === 'declined')
+                                                            <button onclick="openOfferModal('{{ $user->name }}', '{{ route('industry.jobs.offer', [$job->id, $user->id]) }}')" 
+                                                                    class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition">
+                                                                Tawarkan Lagi
+                                                            </button>
+                                                        @endif
+                                                    @else
+                                                        <span class="inline-flex items-center px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 rounded-lg text-xs font-semibold">
+                                                            Melamar ({{ ucfirst($existingApp->status) }})
+                                                        </span>
+                                                    @endif
+                                                @else
+                                                    <button onclick="openOfferModal('{{ $user->name }}', '{{ route('industry.jobs.offer', [$job->id, $user->id]) }}')" 
+                                                            class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg text-xs font-semibold shadow transition">
+                                                        Tawarkan
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <div class="text-center py-12 text-gray-500 dark:text-slate-400">
                             <svg class="mx-auto h-16 w-16 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,5 +364,38 @@
             document.getElementById('offerModal').classList.add('hidden');
             document.getElementById('notes').value = '';
         }
+
+        function switchView(mode) {
+            const cardView = document.getElementById('view-card');
+            const tableView = document.getElementById('view-table');
+            const btnCard = document.getElementById('btn-card');
+            const btnTable = document.getElementById('btn-table');
+
+            if (mode === 'card') {
+                cardView.classList.remove('hidden');
+                tableView.classList.add('hidden');
+                btnCard.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-gray-900', 'dark:text-white');
+                btnCard.classList.remove('text-gray-500', 'dark:text-slate-400', 'hover:text-gray-700', 'dark:hover:text-slate-300');
+                btnTable.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-gray-900', 'dark:text-white');
+                btnTable.classList.add('text-gray-500', 'dark:text-slate-400', 'hover:text-gray-700', 'dark:hover:text-slate-300');
+                localStorage.setItem('talent_view', 'card');
+            } else {
+                cardView.classList.add('hidden');
+                tableView.classList.remove('hidden');
+                btnTable.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-gray-900', 'dark:text-white');
+                btnTable.classList.remove('text-gray-500', 'dark:text-slate-400', 'hover:text-gray-700', 'dark:hover:text-slate-300');
+                btnCard.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-gray-900', 'dark:text-white');
+                btnCard.classList.add('text-gray-500', 'dark:text-slate-400', 'hover:text-gray-700', 'dark:hover:text-slate-300');
+                localStorage.setItem('talent_view', 'table');
+            }
+        }
+
+        // Restore saved view preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedView = localStorage.getItem('talent_view') || 'card';
+            if (savedView === 'table') {
+                switchView('table');
+            }
+        });
     </script>
 </x-app-layout>

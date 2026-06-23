@@ -65,7 +65,7 @@ Route::get('/transfer-impact-assessment/download', [App\Http\Controllers\TIACont
 
 
 // Route yang butuh Auth & Redirect Role
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
 
     // Dashboard Umum (Akan di-redirect oleh middleware sesuai role)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

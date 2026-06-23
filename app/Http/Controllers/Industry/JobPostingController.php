@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Position;
 use App\Events\JobVacancyCreated;
 use App\Services\JobMatchingService;
+use App\Models\UserJobApplication;
 
 
 class JobPostingController extends Controller

@@ -146,7 +146,7 @@ class CandidateController extends Controller
         $combinedCandidates = $combinedCandidates->sortByDesc('matching_percentage')->values();
 
         // 7. Paginate the collection manually
-        $perPage = 15;
+        $perPage = 10;
         $currentPage = \Illuminate\Pagination\Paginator::resolveCurrentPage() ?: 1;
         $currentItems = $combinedCandidates->slice(($currentPage - 1) * $perPage, $perPage)->all();
 
