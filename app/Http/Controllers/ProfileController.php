@@ -159,17 +159,24 @@ class ProfileController extends Controller
     public function updateMobileLayout(Request $request): \Illuminate\Http\JsonResponse
     {
         $validated = $request->validate([
-            'mobile_layout' => 'required|in:sidebar,bottombar',
+            'mobile_layout' => 'nullable|in:sidebar,bottombar',
+            'sidebar_position' => 'nullable|in:left,right',
         ]);
 
-        $request->user()->update([
-            'mobile_layout' => $validated['mobile_layout'],
-        ]);
+        $updateData = [];
+        if ($request->has('mobile_layout')) {
+            $updateData['mobile_layout'] = $validated['mobile_layout'];
+        }
+        if ($request->has('sidebar_position')) {
+            $updateData['sidebar_position'] = $validated['sidebar_position'];
+        }
+
+        $request->user()->update($updateData);
 
         return response()->json([
             'success' => true,
-            'message' => 'Tata letak mobile berhasil diperbarui!',
-            'mobile_layout' => $validated['mobile_layout'],
+            'message' => 'Preferensi tata letak berhasil diperbarui!',
+            'data' => $updateData,
         ]);
     }
 

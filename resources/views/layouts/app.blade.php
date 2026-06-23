@@ -725,6 +725,61 @@
             background: #475569;
         }
 
+        /* ============================================ */
+        /* LEFT-HANDED MODE (Sidebar Right)             */
+        /* ============================================ */
+        body[data-sidebar-position="right"] > div.flex {
+            flex-direction: row-reverse !important;
+        }
+        
+        body[data-sidebar-position="right"] aside {
+            border-right: none !important;
+            border-left: 1px solid #e2e8f0 !important;
+        }
+        
+        /* Mobile: sidebar closed = translate to right */
+        @media (max-width: 1023px) {
+            body[data-sidebar-position="right"] aside.translate-x-full {
+                transform: translateX(100%) !important;
+            }
+            body[data-sidebar-position="right"] aside.translate-x-0 {
+                transform: translateX(0) !important;
+            }
+        }
+        
+        /* Desktop: always visible */
+        @media (min-width: 1024px) {
+            body[data-sidebar-position="right"] aside {
+                transform: none !important;
+            }
+        }
+        
+        .dark body[data-sidebar-position="right"] aside {
+            border-left-color: #334155 !important;
+            border-right: none !important;
+        }
+        
+        body[data-sidebar-position="right"] .sidebar-overlay {
+            left: auto !important;
+            right: 0 !important;
+        }
+        
+        body[data-sidebar-position="right"] .menu-tooltip {
+            left: auto !important;
+            right: 100% !important;
+            transform: translateY(-50%) translateX(-10px) !important;
+        }
+        
+        body[data-sidebar-position="right"] .mini-sidebar .menu-link:hover .menu-tooltip {
+            transform: translateY(-50%) translateX(0) !important;
+        }
+        
+        body[data-sidebar-position="right"] .menu-link.bg-gradient-to-r {
+            border-left: none !important;
+            border-right: 4px solid #2563eb !important;
+            background: linear-gradient(to left, #dbeafe, #e0e7ff) !important;
+        }
+
         /* Ensure sidebar is always visible on desktop */
         @media (min-width: 1024px) {
             aside[x-show] {
@@ -830,13 +885,14 @@
     </script>
 </head>
 
-<body class="antialiased bg-[#f8fafc] dark:bg-slate-900 text-slate-800 dark:text-slate-200 relative overflow-hidden transition-colors duration-300" data-mobile-layout="{{ Auth::user()->mobile_layout ?? 'sidebar' }}">
+<body class="antialiased bg-[#f8fafc] dark:bg-slate-900 text-slate-800 dark:text-slate-200 relative overflow-hidden transition-colors duration-300" data-mobile-layout="{{ Auth::user()->mobile_layout ?? 'sidebar' }}" data-sidebar-position="{{ Auth::user()->sidebar_position ?? 'left' }}">
     <!-- Ambient Blur Lighting Glows (hidden on mobile to prevent overflow) -->
     <div class="hidden md:block absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-gradient-to-br from-indigo-200/20 to-violet-300/20 blur-[100px] -z-10 pointer-events-none dark:opacity-5"></div>
     <div class="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-blue-100/30 to-indigo-100/20 blur-[120px] -z-10 pointer-events-none dark:opacity-5"></div>
 
     <div x-data="{ 
             mobileLayout: '{{ Auth::user()->mobile_layout ?? 'sidebar' }}',
+            sidebarPosition: '{{ Auth::user()->sidebar_position ?? 'left' }}',
             bottomSheetOpen: false,
             sidebarOpen: localStorage.getItem('sidebarOpen') !== null ? localStorage.getItem('sidebarOpen') === 'true' : window.innerWidth >= 1024,
             _isTransitioning: false,
@@ -851,12 +907,23 @@
                     this._isTransitioning = false;
                     if (aside) aside.classList.remove('sidebar-transitioning');
                 }, 320);
+            },
+            getSidebarClasses() {
+                if (this.sidebarOpen) {
+                    return this.sidebarPosition === 'right' 
+                        ? 'translate-x-0 w-[280px] sm:w-64 right-0' 
+                        : 'translate-x-0 w-[280px] sm:w-64 left-0';
+                } else if (this.sidebarPosition === 'right') {
+                    return 'translate-x-full lg:translate-x-0 mini-sidebar right-0';
+                } else {
+                    return '-translate-x-full lg:translate-x-0 mini-sidebar left-0';
+                }
             }
         }" class="flex h-screen overflow-hidden">
 
         <!-- Sidebar -->
-        <aside :class="sidebarOpen ? 'translate-x-0 w-[280px] sm:w-64' : '-translate-x-full lg:translate-x-0 mini-sidebar'"
-            class="fixed inset-y-0 left-0 z-40 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 shadow-xl lg:shadow-none transform transition-[width,transform] duration-300 ease-in-out lg:static flex flex-col h-full"
+        <aside :class="getSidebarClasses()"
+            class="fixed inset-y-0 z-40 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 shadow-xl lg:shadow-none transform transition-[width,transform] duration-300 ease-in-out lg:static flex flex-col h-full"
             x-show="mobileLayout === 'sidebar'"
             x-transition>
 
@@ -898,9 +965,9 @@
             </div>
 
             <!-- Scrollable Navigation Wrapper -->
-            <div class="flex-1 pb-3 sm:pb-4" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
+            <div class="flex-1 pb-3 sm:pb-4 flex flex-col" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
                 <!-- Navigation Menu -->
-                <nav @click="$event.target.closest('a') && window.innerWidth < 1024 && (sidebarOpen = false, localStorage.setItem('sidebarOpen', 'false'))" class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav h-full">
+                <nav @click="$event.target.closest('a') && window.innerWidth < 1024 && (sidebarOpen = false, localStorage.setItem('sidebarOpen', 'false'))" class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav">
 
                     @if (Auth::user()->role === 'job_seeker')
                     <!-- Menu Job Seeker -->
@@ -1400,7 +1467,7 @@
                 <!-- Kata Mutiara Card -->
                 @php $quote = \App\Models\Quote::getRandom(); @endphp
                 @if($quote)
-                <div class="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 sidebar-text transition-[opacity,margin] duration-300">
+                <div class="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 mt-auto sidebar-text transition-[opacity,margin] duration-300">
                     <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 border border-indigo-100 dark:border-indigo-800/30">
                         <div class="flex items-start gap-2">
                             <svg class="w-4 h-4 text-indigo-400 dark:text-indigo-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
@@ -1650,6 +1717,12 @@
                                     </svg>
                                     {{ __('messages.edit_profile') }}
                                 </a>
+                                <button type="button" @click="$dispatch('open-theme-modal'); openProfile = false" class="w-full group flex items-center px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 text-left">
+                                    <svg class="w-4 h-4 mr-3 text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                                    </svg>
+                                    Tema & Layout
+                                </button>
                             </div>
 
                             <div class="py-1 border-t border-slate-50 dark:border-slate-700/60">
@@ -2175,6 +2248,245 @@
     @if(Auth::check())
     <x-chat-widget />
     @endif
+
+    <!-- Theme & Layout Modal -->
+    <div x-data="{ open: false }" @open-theme-modal.window="open = true" x-show="open" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div @click.away="open = false" class="w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100 translate-y-0" x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden" x-data="{ 
+                theme: localStorage.getItem('color-theme') || 'light',
+                sidebarPosition: '{{ Auth::user()->sidebar_position ?? 'left' }}',
+                mobileLayout: '{{ Auth::user()->mobile_layout ?? 'sidebar' }}',
+                saving: false,
+                setTheme(newTheme) {
+                    this.theme = newTheme;
+                    if (newTheme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else if (newTheme === 'light') {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        localStorage.removeItem('color-theme');
+                        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                            document.documentElement.classList.add('dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                        }
+                    }
+                },
+                saveLayout(field, value) {
+                    this.saving = true;
+                    const body = {};
+                    body[field] = value;
+                    fetch('{{ route('profile.mobile-layout.update') }}', { 
+                        method: 'PATCH', 
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}', 
+                            'Accept': 'application/json' 
+                        }, 
+                        body: JSON.stringify(body) 
+                    }).then(r => r.json()).then(data => { 
+                        this.saving = false; 
+                        if (data.success) { 
+                            setTimeout(() => location.reload(), 500); 
+                        } 
+                    }).catch(() => { this.saving = false; });
+                }
+            }">
+                <!-- Header -->
+                <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-slate-800/80 dark:to-slate-800/50">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-white dark:bg-slate-700 rounded-xl shadow-sm">
+                            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">Tema & Layout</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Kustomisasi tampilan sesuai preferensi Anda</p>
+                        </div>
+                    </div>
+                    <button @click="open = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-lg hover:bg-white/50 dark:hover:bg-slate-700/50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <!-- Section 1: Tema -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">Tema Warna</h4>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <!-- Light Theme -->
+                            <button @click="setTheme('light')" :class="theme === 'light' ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/20 dark:border-amber-400 ring-2 ring-amber-200 dark:ring-amber-800' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'" class="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 text-center">
+                                <div class="w-10 h-10 mx-auto mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Terang</span>
+                                <div x-show="theme === 'light'" class="absolute top-2 right-2 w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                </div>
+                            </button>
+
+                            <!-- Dark Theme -->
+                            <button @click="setTheme('dark')" :class="theme === 'dark' ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20 dark:border-indigo-400 ring-2 ring-indigo-200 dark:ring-indigo-800' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'" class="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 text-center">
+                                <div class="w-10 h-10 mx-auto mb-2 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Gelap</span>
+                                <div x-show="theme === 'dark'" class="absolute top-2 right-2 w-4 h-4 bg-indigo-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                </div>
+                            </button>
+
+                            <!-- Auto Theme -->
+                            <button @click="setTheme('auto')" :class="theme === 'auto' ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 dark:border-emerald-400 ring-2 ring-emerald-200 dark:ring-emerald-800' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'" class="relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 text-center">
+                                <div class="w-10 h-10 mx-auto mb-2 rounded-lg bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Otomatis</span>
+                                <div x-show="theme === 'auto'" class="absolute top-2 right-2 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                </div>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-3 text-center">Mode otomatis mengikuti pengaturan sistem perangkat Anda</p>
+                    </div>
+
+                    <hr class="border-slate-100 dark:border-slate-800">
+
+                    <!-- Section 2: Desktop Layout -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">Tata Letak Desktop</h4>
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500">Pengaturan sidebar untuk layar besar</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Sidebar Left (Default) -->
+                            <label class="flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all duration-200" :class="sidebarPosition === 'left' ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-400' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'">
+                                <input type="radio" name="sidebar_position" value="left" x-model="sidebarPosition" class="mt-1 text-blue-600 focus:ring-blue-500" @change="saveLayout('sidebar_position', 'left')">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sidebar Kiri</span>
+                                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium">Default</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Menu navigasi di sisi kiri layar (standar)</p>
+                                </div>
+                            </label>
+
+                            <!-- Sidebar Right (Left-handed) -->
+                            <label class="flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all duration-200" :class="sidebarPosition === 'right' ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-400' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'">
+                                <input type="radio" name="sidebar_position" value="right" x-model="sidebarPosition" class="mt-1 text-blue-600 focus:ring-blue-500" @change="saveLayout('sidebar_position', 'right')">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sidebar Kanan</span>
+                                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 font-medium">Kidal</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Menu navigasi di sisi kanan, cocok untuk kidal</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-100 dark:border-slate-800">
+
+                    <!-- Section 3: Mobile Layout -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-1.5 bg-violet-100 dark:bg-violet-900/30 rounded-lg">
+                                <svg class="w-4 h-4 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">Tata Letak Mobile</h4>
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500">Pilih tampilan navigasi di perangkat HP</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Sidebar Option -->
+                            <label class="flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all duration-200" :class="mobileLayout === 'sidebar' ? 'border-violet-500 bg-violet-50/50 dark:bg-violet-950/20 dark:border-violet-400' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'">
+                                <input type="radio" name="mobile_layout_modal" value="sidebar" x-model="mobileLayout" class="mt-1 text-violet-600 focus:ring-violet-500" @change="saveLayout('mobile_layout', 'sidebar')">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sidebar</span>
+                                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium">Default</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Menu navigasi di sisi kiri, geser untuk buka/tutup</p>
+                                </div>
+                            </label>
+
+                            <!-- Bottom Bar Option -->
+                            <label class="flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all duration-200" :class="mobileLayout === 'bottombar' ? 'border-violet-500 bg-violet-50/50 dark:bg-violet-950/20 dark:border-violet-400' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'">
+                                <input type="radio" name="mobile_layout_modal" value="bottombar" x-model="mobileLayout" class="mt-1 text-violet-600 focus:ring-violet-500" @change="saveLayout('mobile_layout', 'bottombar')">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                                        </svg>
+                                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Bottom Tab Bar</span>
+                                        <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-medium">Baru</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Navigasi di bawah layar seperti aplikasi mobile</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Saving Indicator -->
+                    <div x-show="saving" x-transition class="flex items-center justify-center gap-2 text-xs font-medium text-violet-600 dark:text-violet-400 py-2">
+                        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Menyimpan preferensi...
+                    </div>
+
+                    <!-- Info Footer -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-3 flex items-start gap-2">
+                        <svg class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Perubahan akan disimpan secara otomatis. Halaman akan dimuat ulang untuk menerapkan perubahan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- Loading Script --}}
     <x-loading-script />
