@@ -192,14 +192,42 @@
 
                     <div class="space-y-4">
                         @if ($program->curriculum_path)
-                            <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800/50 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">File kurikulum saat ini</p>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ basename($program->curriculum_path) }}</p>
+                            @php
+                                $curriculumExt = strtolower(pathinfo($program->curriculum_path, PATHINFO_EXTENSION));
+                                $isPdf = $curriculumExt === 'pdf';
+                                $fileUrl = Storage::url($program->curriculum_path);
+                            @endphp
+                            <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800/50">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">File kurikulum saat ini</p>
+                                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ basename($program->curriculum_path) }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        @if ($isPdf)
+                                            <a href="{{ $fileUrl }}" target="_blank" rel="noopener noreferrer"
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 transition"
+                                                title="Lihat file">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                </svg>
+                                                Lihat
+                                            </a>
+                                        @endif
+                                        <a href="{{ $fileUrl }}" download="{{ basename($program->curriculum_path) }}"
+                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 transition"
+                                            title="Download file">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                            </svg>
+                                            Download
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +240,26 @@
                             </svg>
                             <p class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Upload Silabus/Kurikulum Baru</p>
                             <p class="text-xs text-gray-500 dark:text-slate-400">PDF, DOC, DOCX • Maksimal 10MB</p>
-                            <input type="file" name="curriculum_file" id="curriculum_file" accept=".pdf,.doc,.docx" class="hidden">
+                            <input type="file" name="curriculum_file" id="curriculum_file" accept=".pdf,.doc,.docx" class="hidden" onchange="previewFile(this)">
+                        </div>
+
+                        <div id="file-preview" class="hidden p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800/50">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <div>
+                                        <p id="file-preview-name" class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                                        <p id="file-preview-size" class="text-xs text-gray-500 dark:text-slate-400"></p>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeFile()" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition" title="Hapus file">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -278,6 +325,27 @@
                     el.querySelector('span').textContent = (idx + 1) + '.';
                 });
             }
+        }
+
+        function previewFile(input) {
+            const preview = document.getElementById('file-preview');
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const sizeKB = (file.size / 1024).toFixed(1);
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                const sizeText = file.size > 1024 * 1024 ? sizeMB + ' MB' : sizeKB + ' KB';
+                document.getElementById('file-preview-name').textContent = file.name;
+                document.getElementById('file-preview-size').textContent = sizeText + ' • Siap diupload';
+                preview.classList.remove('hidden');
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+
+        function removeFile() {
+            const input = document.getElementById('curriculum_file');
+            input.value = '';
+            document.getElementById('file-preview').classList.add('hidden');
         }
     </script>
 

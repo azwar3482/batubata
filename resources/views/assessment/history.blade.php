@@ -26,6 +26,17 @@
                 </div>
             </div>
 
+            @if(session('error'))
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="text-sm text-red-700">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -83,11 +94,25 @@
                                         class="text-green-600 hover:text-green-900 text-sm font-medium mr-3">
                                         📄 PDF
                                     </a>
-                                    <button
-                                        onclick="if(confirm('Ulangi asesmen ini?')) window.location='{{ route('seeker.assessment.retake', $assessment->id) }}'"
-                                        class="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                                        Ulangi
-                                    </button>
+                                    @if($assessment->can_retake)
+                                        <button
+                                            onclick="if(confirm('Ulangi asesmen ini?')) window.location='{{ route('seeker.assessment.retake', $assessment->id) }}'"
+                                            class="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                                            Ulangi
+                                        </button>
+                                    @else
+                                        <span class="relative group">
+                                            <button
+                                                disabled
+                                                class="text-gray-400 cursor-not-allowed text-sm font-medium">
+                                                Ulangi
+                                            </button>
+                                            <span class="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded py-2 px-3 whitespace-nowrap z-10">
+                                                Tersedia dalam {{ $assessment->days_remaining }} hari lagi
+                                                <span class="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></span>
+                                            </span>
+                                        </span>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

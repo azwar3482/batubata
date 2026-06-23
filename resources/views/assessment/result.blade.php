@@ -28,14 +28,24 @@
                         <p class="text-blue-100 mt-2">
                             @if ($assessment->total_gap_percentage > 50)
                             🎯 Fokus pada skill prioritas untuk meningkatkan kesiapan karir
-                            @elseif($assessment->total_gap_percentage > 25)
+                            @elseif($assessment->total_gap_percentage > 30)
                             ✨ Anda sudah cukup siap, tingkatkan beberapa skill kunci
                             @else
-                            🏆 Profil Anda sangat kompetitif! Pertahankan dan kembangkan
+                            🏆 Profil Anda sangat kompetitif! Anda siap melamar pekerjaan
                             @endif
                         </p>
                     </div>
                     <div class="flex gap-3">
+                        @if ($assessment->total_gap_percentage <= 30)
+                        <a href="{{ route('seeker.jobs.all') }}"
+                            class="px-6 py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Pilih Lowongan
+                        </a>
+                        @endif
                         <a href="{{ route('seeker.reports.assessment.pdf', $assessment->id) }}"
                             class="px-6 py-3 bg-white text-blue-700 rounded-lg font-medium hover:bg-blue-50 transition flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,6 +169,7 @@
                 <div class="lg:col-span-1">
                     <div class="sticky top-6 space-y-6">
 
+                        @if ($assessment->total_gap_percentage > 30)
                         <!-- Recommendations Card -->
                         <div class="bg-white rounded-xl shadow-lg border-2 border-indigo-200 overflow-hidden">
                             <div class="bg-gradient-to-r from-indigo-600 to-purple-700 p-4 text-white">
@@ -290,12 +301,47 @@
                             </form>
                             @endif
                         </div>
+                        @else
+                        <!-- Skill Gap Sudah OK -->
+                        <div class="bg-white rounded-xl shadow-lg border-2 border-green-200 overflow-hidden">
+                            <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 text-white">
+                                <h3 class="font-bold text-lg flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Skill Gap Rendah!
+                                </h3>
+                                <p class="text-green-100 text-sm mt-1">Anda sudah siap melamar pekerjaan</p>
+                            </div>
+                            <div class="p-4 space-y-3">
+                                <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Gap {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
+                                        <p class="text-xs text-gray-500">Di bawah batas aman 30%</p>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-600">Profil kompetensi Anda sudah memenuhi syarat untuk posisi ini. Mulai jelajahi lowongan yang tersedia!</p>
+                                <a href="{{ route('seeker.jobs.all') }}"
+                                    class="block w-full text-center px-4 py-3 bg-green-600 text-white rounded-lg text-sm font-bold hover:bg-green-700 transition">
+                                    🔍 Cari Lowongan Sekarang
+                                </a>
+                            </div>
+                        </div>
+                        @endif
 
                         <!-- Quick Tips -->
                         <div
                             class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
                             <h4 class="font-bold text-amber-900 mb-3">💡 Tips Cepat</h4>
                             <ul class="space-y-2 text-sm text-amber-800">
+                                @if ($assessment->total_gap_percentage > 30)
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
                                     <span>Fokus pada skill dengan prioritas "Tinggi" terlebih dahulu</span>
@@ -308,6 +354,20 @@
                                     <span class="mr-2">✓</span>
                                     <span>Dokumentasikan progress di portofolio Anda</span>
                                 </li>
+                                @else
+                                <li class="flex items-start">
+                                    <span class="mr-2">✓</span>
+                                    <span>Perbarui CV dan portofolio Anda secara berkala</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="mr-2">✓</span>
+                                    <span>Pelajari budaya perusahaan sebelum melamar</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="mr-2">✓</span>
+                                    <span>Latihan wawancara untuk meningkatkan kepercayaan diri</span>
+                                </li>
+                                @endif
                             </ul>
                         </div>
 

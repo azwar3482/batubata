@@ -946,7 +946,7 @@
 
                                     <!-- Golongan Darah (Opsional - Data Sensitif) -->
                                     <div x-data="{ 
-                                        bloodConsent: {{ \App\Models\Consent::hasConsent(Auth::id(), 'blood_type') ? 'true' : 'false' }}, 
+                                        bloodConsent: {{ (\App\Models\Consent::hasConsent(Auth::id(), 'blood_type') || Auth::user()->blood_type) ? 'true' : 'false' }}, 
                                         showConsent: {{ Auth::user()->blood_type ? 'false' : 'true' }}
                                     }">
                                         <!-- Consent checkbox - tampil PERTAMA, sebelum select -->
@@ -955,6 +955,7 @@
                                             <div class="flex items-start gap-2">
                                                 <input type="checkbox" name="blood_type_consent" id="blood_type_consent" value="1"
                                                     x-model="bloodConsent"
+                                                    {{ Auth::user()->blood_type ? 'checked' : '' }}
                                                     class="mt-0.5 h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
                                                 <label for="blood_type_consent" class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
                                                     Saya menyetujui pengumpulan dan pemrosesan data golongan darah saya untuk keperluan pencocokan pekerjaan. Data ini termasuk kategori <strong>data kesehatan</strong> sesuai UU No. 27 Tahun 2022 (UU PDP). Saya dapat menarik persetujuan ini kapan saja.

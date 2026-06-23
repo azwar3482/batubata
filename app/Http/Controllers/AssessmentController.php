@@ -135,7 +135,15 @@ class AssessmentController extends Controller
         }
 
         if ($query->exists()) {
-            return back()->with('error', 'Anda sudah melakukan asesmen untuk posisi/lowongan ini dalam 7 hari terakhir.');
+            $namaPosisi = '';
+            if ($request->position_id) {
+                $posisi = Position::find($request->position_id);
+                $namaPosisi = $posisi ? " (Posisi: {$posisi->name})" : '';
+            } else {
+                $lowongan = JobListing::find($request->job_listing_id);
+                $namaPosisi = $lowongan ? " (Lowongan: {$lowongan->title})" : '';
+            }
+            return back()->with('error', "Anda sudah melakukan asesmen{$namaPosisi} dalam 7 hari terakhir. Silakan pilih posisi/lowongan lain atau tunggu 7 hari.");
         }
 
         session()->put('assessment_data', [
@@ -376,6 +384,14 @@ class AssessmentController extends Controller
             ->orderBy('assessment_date', 'desc')
             ->paginate(10);
 
+        // Hitung sisa hari untuk setiap asesmen
+        $now = now();
+        foreach ($assessments as $assessment) {
+            $daysSince = (int) $assessment->assessment_date->diffInDays($now);
+            $assessment->can_retake = $daysSince >= 7;
+            $assessment->days_remaining = max(0, 7 - $daysSince);
+        }
+
         if (request()->wantsJson() || request()->is('api/*')) {
             return response()->json([
                 'success' => true,
@@ -395,6 +411,15 @@ class AssessmentController extends Controller
         $assessment = UserAssessment::findOrFail($id);
         if ($assessment->user_id !== Auth::id()) {
             abort(403);
+        }
+
+        // Cek apakah sudah 7 hari sejak asesmen terakhir untuk posisi/lowongan ini
+        $daysSince = $assessment->assessment_date->diffInDays(now());
+        if ($daysSince < 7) {
+            $daysRemaining = 7 - $daysSince;
+            $targetName = $assessment->target_name ?? 'posisi/lowongan ini';
+            return redirect()->route('seeker.assessment.history')
+                ->with('error', "Anda baru bisa mengulang asesmen untuk {$targetName} dalam {$daysRemaining} hari lagi.");
         }
 
         session()->put('previous_assessment_id', $id);

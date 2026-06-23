@@ -265,6 +265,25 @@
                                 accept=".pdf,.doc,.docx" class="hidden" onchange="previewFile(this)">
                         </div>
 
+                        <div id="file-preview" class="hidden p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <div>
+                                        <p id="file-preview-name" class="text-sm font-medium text-gray-900"></p>
+                                        <p id="file-preview-size" class="text-xs text-gray-500"></p>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeFile()" class="text-red-600 hover:text-red-800 p-1 rounded-lg hover:bg-red-50 transition" title="Hapus file">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
                         @if (old('curriculum_file') || session('curriculum_preview'))
                             <div
                                 class="p-4 bg-green-50 rounded-lg border border-green-200 flex items-center justify-between">
@@ -420,12 +439,24 @@
 
         // File Preview
         function previewFile(input) {
+            const preview = document.getElementById('file-preview');
             if (input.files && input.files[0]) {
-                const fileName = input.files[0].name;
-                const fileSize = (input.files[0].size / 1024).toFixed(1);
-                // Show preview UI (simplified)
-                alert(`File terpilih: ${fileName} (${fileSize} KB)`);
+                const file = input.files[0];
+                const sizeKB = (file.size / 1024).toFixed(1);
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                const sizeText = file.size > 1024 * 1024 ? sizeMB + ' MB' : sizeKB + ' KB';
+                document.getElementById('file-preview-name').textContent = file.name;
+                document.getElementById('file-preview-size').textContent = sizeText + ' • Siap diupload';
+                preview.classList.remove('hidden');
+            } else {
+                preview.classList.add('hidden');
             }
+        }
+
+        function removeFile() {
+            const input = document.getElementById('curriculum_file');
+            input.value = '';
+            document.getElementById('file-preview').classList.add('hidden');
         }
 
         // Initialize preview on load

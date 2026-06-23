@@ -50,12 +50,13 @@ class Consent extends Model
 
     public static function grant(int $userId, string $type, ?string $ip = null, ?string $agent = null): self
     {
-        // Revoke previous consent if exists
-        static::where('user_id', $userId)
+        // Revoke previous consent if exists (use DB to avoid Eloquent update issues)
+        \DB::table('consents')
+            ->where('user_id', $userId)
             ->where('consent_type', $type)
             ->where('granted', true)
             ->whereNull('revoked_at')
-            ->update(['revoked_at', now()]);
+            ->update(['revoked_at' => now(), 'updated_at' => now()]);
 
         return static::create([
             'user_id' => $userId,
@@ -69,10 +70,11 @@ class Consent extends Model
 
     public static function revoke(int $userId, string $type): void
     {
-        static::where('user_id', $userId)
+        \DB::table('consents')
+            ->where('user_id', $userId)
             ->where('consent_type', $type)
             ->where('granted', true)
             ->whereNull('revoked_at')
-            ->update(['revoked_at' => now()]);
+            ->update(['revoked_at' => now(), 'updated_at' => now()]);
     }
 }

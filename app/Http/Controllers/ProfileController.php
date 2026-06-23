@@ -53,18 +53,26 @@ class ProfileController extends Controller
             // Handle blood_type consent
             $bloodType = $request->input('blood_type');
             $bloodConsent = $request->boolean('blood_type_consent');
+            $hasExistingConsent = Consent::hasConsent($request->user()->id, 'blood_type');
 
-            if ($bloodType && $bloodConsent) {
-                // User wants to set blood_type and has given consent
-                Consent::grant(
-                    $request->user()->id,
-                    'blood_type',
-                    $request->ip(),
-                    $request->userAgent()
-                );
-            } elseif ($bloodType && !$bloodConsent && !Consent::hasConsent($request->user()->id, 'blood_type')) {
-                // User tried to set blood_type without consent - clear it
-                $request->user()->update(['blood_type' => null]);
+            if ($bloodType && $bloodConsent && !$hasExistingConsent) {
+                // Revoke previous consent if exists (use DB to avoid Eloquent issues)
+                \DB::table('consents')
+                    ->where('user_id', $request->user()->id)
+                    ->where('consent_type', 'blood_type')
+                    ->where('granted', true)
+                    ->whereNull('revoked_at')
+                    ->update(['revoked_at' => now(), 'updated_at' => now()]);
+
+                // Create new consent
+                Consent::create([
+                    'user_id' => $request->user()->id,
+                    'consent_type' => 'blood_type',
+                    'granted' => true,
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'granted_at' => now(),
+                ]);
             }
 
             // Return JSON for AJAX requests

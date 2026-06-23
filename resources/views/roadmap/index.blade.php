@@ -14,6 +14,28 @@
                     <span class="text-sm font-bold text-amber-900 dark:text-amber-200">{{ number_format($latestAssessment->total_gap_percentage, 1) }}%</span>
                 </div>
                 @endif
+
+                {{-- Action Buttons --}}
+                <div class="mt-5 flex flex-wrap justify-center gap-3">
+                    @if ($latestAssessment->total_gap_percentage <= 30)
+                    <a href="{{ route('seeker.jobs.all') }}"
+                        class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition shadow-lg shadow-green-500/25">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Pilih Lowongan
+                    </a>
+                    @endif
+                    <a href="{{ route('seeker.assessment.result', $latestAssessment->id) }}"
+                        class="inline-flex items-center px-6 py-3 bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition border border-gray-200 dark:border-slate-700">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Lihat Hasil Asesmen
+                    </a>
+                </div>
             </div>
 
             {{-- ===== TAB NAVIGATION ===== --}}
@@ -36,6 +58,27 @@
             <div id="content-timeline">
 
                 {{-- Info Card --}}
+                @if ($latestAssessment->total_gap_percentage <= 30)
+                <div class="mb-8 p-5 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-100 dark:border-green-800/50 rounded-xl">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">Skill Gap Rendah - Anda Siap!</h4>
+                            <p class="text-sm text-green-700 dark:text-green-300 leading-relaxed">Selamat! Skill gap Anda hanya <strong>{{ number_format($latestAssessment->total_gap_percentage, 1) }}%</strong> yang berarti Anda sudah memenuhi kualifikasi untuk posisi ini. Anda bisa langsung melamar pekerjaan atau menggunakan roadmap ini untuk meningkatkan skill lebih lanjut.</p>
+                            <a href="{{ route('seeker.jobs.all') }}" class="mt-3 inline-flex items-center text-sm font-bold text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100 transition">
+                                🔍 Cari Lowongan Sekarang
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @else
                 <div class="mb-8 p-5 bg-gradient-to-r from-purple-50 to-fuchsia-50 dark:from-purple-900/20 dark:to-fuchsia-900/20 border border-purple-100 dark:border-purple-800/50 rounded-xl">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center">
@@ -49,6 +92,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 {{-- Container Timeline --}}
                 <div class="relative pl-8 md:pl-0">
@@ -250,7 +294,22 @@
                     </div>
                 </div>
 
-                <div class="mt-12 text-center">
+                <div class="mt-12 text-center space-y-4">
+                    @if ($latestAssessment->total_gap_percentage <= 30)
+                    <div class="p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200 dark:border-green-800 max-w-md mx-auto">
+                        <div class="text-4xl mb-3">🎯</div>
+                        <h3 class="text-lg font-bold text-green-800 dark:text-green-200 mb-2">Skill Gap Anda Rendah!</h3>
+                        <p class="text-sm text-green-600 dark:text-green-400 mb-4">Anda sudah siap untuk melamar pekerjaan. Jelajahi lowongan yang tersedia sekarang!</p>
+                        <a href="{{ route('seeker.jobs.all') }}"
+                            class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition shadow-lg shadow-green-500/25">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Cari Lowongan Sekarang
+                        </a>
+                    </div>
+                    @endif
                     <a href="{{ route('dashboard') }}"
                         class="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -341,6 +400,22 @@
                 </script>
 
                 {{-- ── Info card ── --}}
+                @if ($latestAssessment->total_gap_percentage <= 30)
+                <div class="mb-6 p-5 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-100 dark:border-green-800/50 rounded-xl">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center text-xl">🌳</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">Pohon Kompetensi - Skill Gap Rendah!</h4>
+                            <p class="text-sm text-green-700 dark:text-green-300 leading-relaxed">
+                                Visualisasi menunjukkan Anda sudah menguasai sebagian besar kompetensi.
+                                <span class="font-semibold text-emerald-600 dark:text-emerald-400">Hijau</span> = dikuasai ·
+                                <span class="font-semibold text-amber-500">Kuning</span> = perlu peningkatan minor.
+                                <br><span class="font-semibold mt-1 inline-block">🎯 Anda sudah siap melamar pekerjaan!</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @else
                 <div class="mb-6 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-100 dark:border-indigo-800/50 rounded-xl">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center text-xl">🌳</div>
@@ -357,18 +432,24 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 {{-- ── Stats bar ── --}}
                 <div class="flex flex-wrap gap-3 mb-6 justify-center">
                     <div class="px-5 py-2.5 bg-indigo-600 text-white rounded-full text-sm font-bold shadow flex items-center gap-2">
                         🎯 <span>{{ $latestAssessment->target_name }}</span>
                     </div>
-                    <div class="px-5 py-2.5 bg-amber-500 text-white rounded-full text-sm font-bold shadow flex items-center gap-2">
+                    <div class="px-5 py-2.5 {{ $latestAssessment->total_gap_percentage <= 30 ? 'bg-green-500' : 'bg-amber-500' }} text-white rounded-full text-sm font-bold shadow flex items-center gap-2">
                         📊 Gap: {{ number_format($latestAssessment->total_gap_percentage, 1) }}%
                     </div>
                     <div class="px-5 py-2.5 bg-emerald-600 text-white rounded-full text-sm font-bold shadow flex items-center gap-2">
                         ✅ {{ $doneCount }}/{{ $totalCount }} Selesai
                     </div>
+                    @if ($latestAssessment->total_gap_percentage <= 30)
+                    <a href="{{ route('seeker.jobs.all') }}" class="px-5 py-2.5 bg-green-600 text-white rounded-full text-sm font-bold shadow flex items-center gap-2 hover:bg-green-700 transition">
+                        🔍 Pilih Lowongan
+                    </a>
+                    @endif
                 </div>
 
                 {{-- ── Legend ── --}}
