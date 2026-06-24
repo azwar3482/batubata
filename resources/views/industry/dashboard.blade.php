@@ -48,7 +48,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4"></path>
                                 </svg>
-                                +3 minggu ini
+                                +{{ $stats['newJobsWeek'] ?? 0 }} minggu ini
                             </p>
                         </div>
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
@@ -472,14 +472,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('recruitmentChart').getContext('2d');
+        const chartData = @json($chartData);
 
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                labels: chartData.map(d => d.label),
                 datasets: [{
                         label: 'Pelamar Baru',
-                        data: [12, 28, 19, 35],
+                        data: chartData.map(d => d.applied),
                         borderColor: 'rgb(59, 130, 246)',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         fill: true,
@@ -488,7 +489,7 @@
                     },
                     {
                         label: 'Interview',
-                        data: [3, 8, 5, 12],
+                        data: chartData.map(d => d.interview),
                         borderColor: 'rgb(147, 51, 234)',
                         backgroundColor: 'rgba(147, 51, 234, 0.1)',
                         fill: true,
@@ -497,7 +498,7 @@
                     },
                     {
                         label: 'Diterima',
-                        data: [1, 2, 1, 4],
+                        data: chartData.map(d => d.accepted),
                         borderColor: 'rgb(34, 197, 94)',
                         backgroundColor: 'rgba(34, 197, 94, 0.1)',
                         fill: true,

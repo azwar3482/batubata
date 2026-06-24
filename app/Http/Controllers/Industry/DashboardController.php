@@ -21,6 +21,11 @@ class DashboardController extends Controller
         $stats = Cache::remember($cacheKey . '.stats', 300, function () use ($user) {
             $totalJobs = JobListing::where('user_id', $user->id)->where('is_active', true)->count();
 
+            $newJobsWeek = JobListing::where('user_id', $user->id)
+                ->where('is_active', true)
+                ->where('created_at', '>=', now()->subWeek())
+                ->count();
+
             $totalApplicants = UserJobApplication::whereHas('jobListing', fn($q) => $q->where('user_id', $user->id))->count();
 
             // Kandidat dengan match > 80%
@@ -37,6 +42,7 @@ class DashboardController extends Controller
 
             return [
                 'totalJobs' => $totalJobs,
+                'newJobsWeek' => $newJobsWeek,
                 'totalApplicants' => $totalApplicants,
                 'highMatchCandidates' => $highMatchCandidates,
                 'avgHiringDays' => $avgHiringDays ? round($avgHiringDays) : 0,
@@ -73,8 +79,36 @@ class DashboardController extends Controller
             'accepted' => $totalFunnel > 0 ? round(($funnelData->get('accepted', 0) / $totalFunnel) * 100) : 0,
         ];
 
+        // Chart data: real monthly application trends (4 weeks)
+        $chartData = Cache::remember($cacheKey . '.chart', 300, function () use ($user) {
+            $jobIds = JobListing::where('user_id', $user->id)->pluck('id');
+            $weeks = [];
+            for ($i = 3; $i >= 0; $i--) {
+                $start = now()->subWeeks($i)->startOfWeek();
+                $end = now()->subWeeks($i)->endOfWeek();
+                $label = 'Minggu ' . (4 - $i);
+
+                $applied = UserJobApplication::whereIn('job_listing_id', $jobIds)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->count();
+
+                $interview = UserJobApplication::whereIn('job_listing_id', $jobIds)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('status', 'interview')
+                    ->count();
+
+                $accepted = UserJobApplication::whereIn('job_listing_id', $jobIds)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('status', 'accepted')
+                    ->count();
+
+                $weeks[] = compact('label', 'applied', 'interview', 'accepted');
+            }
+            return $weeks;
+        });
+
         return view('industry.dashboard', compact(
-            'stats', 'recentJobs', 'recentCandidates', 'funnelPercentages'
+            'stats', 'recentJobs', 'recentCandidates', 'funnelPercentages', 'chartData'
         ));
     }
 

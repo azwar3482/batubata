@@ -35,7 +35,7 @@
                                 </svg>
                             </div>
                             <span
-                                class="flex items-center text-xs font-bold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">+12.5%</span>
+                                class="flex items-center text-xs font-bold {{ ($stats['user_growth'] ?? 0) >= 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50' }} px-2.5 py-1 rounded-full">{{ ($stats['user_growth'] ?? 0) >= 0 ? '+' : '' }}{{ $stats['user_growth'] ?? 0 }}%</span>
                         </div>
                         <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Total Pengguna</h3>
                         <div class="flex items-baseline space-x-2 mt-1">
@@ -84,7 +84,7 @@
                                 </svg>
                             </div>
                             <span
-                                class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">+8
+                                class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">+{{ $stats['new_jobs_week'] ?? 0 }}
                                 Baru</span>
                         </div>
                         <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Lowongan Aktif</h3>
@@ -113,7 +113,7 @@
                         </div>
                         <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Skill Gap Rata-rata</h3>
                         <div class="flex items-baseline space-x-2 mt-1">
-                            <span class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">42</span>
+                            <span class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ $stats['avg_skill_gap'] ?? 0 }}</span>
                             <span class="text-gray-400 dark:text-slate-500 text-sm font-bold">%</span>
                         </div>
                     </div>
@@ -277,21 +277,34 @@
                                 </span>
                                 System Health
                             </h3>
+                            @php
+                                $memoryUsage = round(memory_get_usage(true) / 1024 / 1024);
+                                $memoryLimit = (int) str_replace('M', '', ini_get('memory_limit'));
+                                $memoryPercent = $memoryLimit > 0 ? round(($memoryUsage / ($memoryLimit * 1024)) * 100) : 0;
+                                $diskFree = round(disk_free_space('C:') / 1024 / 1024 / 1024, 1);
+                                $diskTotal = round(disk_total_space('C:') / 1024 / 1024 / 1024, 1);
+                                $diskUsed = $diskTotal - $diskFree;
+                                $diskPercent = $diskTotal > 0 ? round(($diskUsed / $diskTotal) * 100) : 0;
+                            @endphp
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-400 dark:text-slate-500 font-medium">Server Uptime</span>
-                                    <span class="font-bold text-green-400">99.9%</span>
+                                    <span class="text-gray-400 dark:text-slate-500 font-medium">PHP Version</span>
+                                    <span class="font-bold text-green-400">{{ phpversion() }}</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
                                     <span class="text-gray-400 dark:text-slate-500 font-medium">Memory Usage</span>
-                                    <span class="font-bold">42%</span>
+                                    <span class="font-bold">{{ $memoryUsage }}MB / {{ $memoryLimit }}MB</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-400 dark:text-slate-500 font-medium">Laravel Version</span>
+                                    <span class="font-bold">{{ app()->version() }}</span>
                                 </div>
                                 <div class="mt-6">
                                     <div class="w-full bg-gray-700 rounded-full h-1.5">
-                                        <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 70%"></div>
+                                        <div class="bg-indigo-500 h-1.5 rounded-full" style="width: {{ $diskPercent }}%"></div>
                                     </div>
                                     <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-2 uppercase tracking-widest font-bold">
-                                        Storage 240GB / 500GB</p>
+                                        Storage {{ $diskUsed }}GB / {{ $diskTotal }}GB</p>
                                 </div>
                             </div>
                         </div>

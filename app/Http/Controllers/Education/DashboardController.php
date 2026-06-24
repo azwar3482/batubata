@@ -32,6 +32,7 @@ class DashboardController extends Controller
         $skillGapByMajor = [];
         $topGapCompetencies = [];
         $recentActivities = [];
+        $curriculumRecommendations = [];
 
         if ($institution) {
             $studentIds = $institution->students()->pluck('id');
@@ -97,11 +98,49 @@ class DashboardController extends Controller
                     'priority' => $c->avg_gap > 50 ? 'Tinggi' : ($c->avg_gap > 25 ? 'Sedang' : 'Rendah'),
                 ]);
 
-            // Recent activities
+            // Curriculum recommendations based on real gap data with major context
+            $curriculumRecommendations = UserCompetencyScore::whereHas('assessment', fn($q) => $q->whereIn('user_id', $studentIds))
+                ->join('competencies', 'user_competency_scores.competency_id', '=', 'competencies.id')
+                ->join('user_assessments', 'user_competency_scores.assessment_id', '=', 'user_assessments.id')
+                ->join('users', 'user_assessments.user_id', '=', 'users.id')
+                ->select(
+                    'competencies.name',
+                    'competencies.category',
+                    'users.major',
+                    DB::raw('AVG(user_competency_scores.gap_percentage) as avg_gap'),
+                    DB::raw('COUNT(DISTINCT user_assessments.user_id) as affected_students')
+                )
+                ->whereNotNull('users.major')
+                ->groupBy('competencies.id', 'competencies.name', 'competencies.category', 'users.major')
+                ->orderByDesc('avg_gap')
+                ->take(10)
+                ->get()
+                ->map(function ($r) {
+                    $gap = round($r->avg_gap, 1);
+                    $recommendation = '';
+                    if ($gap > 50) {
+                        $recommendation = 'Revisi kurikulum mendesak - tambah mata kuliah praktis terkait ' . $r->name;
+                    } elseif ($gap > 35) {
+                        $recommendation = 'Kolaborasi dengan industri untuk magang dan proyek nyata terkait ' . $r->name;
+                    } else {
+                        $recommendation = 'Tambah workshop dan pelatihan rutin untuk ' . $r->name;
+                    }
+                    return [
+                        'name' => $r->name,
+                        'category' => $r->category === 'soft_skill' ? 'Soft Skill' : 'Technical Skill',
+                        'major' => $r->major,
+                        'avg_gap' => $gap,
+                        'affected_students' => $r->affected_students,
+                        'recommendation' => $recommendation,
+                        'priority' => $gap > 50 ? 'Tinggi' : ($gap > 25 ? 'Sedang' : 'Rendah'),
+                    ];
+                });
+
+            // Recent activities (real data)
             $recentAssessments = UserAssessment::whereIn('user_id', $studentIds)
                 ->with('user')
                 ->latest()
-                ->take(3)
+                ->take(5)
                 ->get()
                 ->map(fn($a) => [
                     'icon' => 'assessment',
@@ -111,9 +150,26 @@ class DashboardController extends Controller
                     'time' => $a->created_at->diffForHumans(),
                 ]);
 
-            $recentActivities = $recentAssessments->toArray();
+            $recentApplications = UserJobApplication::whereIn('user_id', $studentIds)
+                ->with(['user', 'jobListing'])
+                ->latest()
+                ->take(5)
+                ->get()
+                ->map(fn($a) => [
+                    'icon' => 'application',
+                    'color' => $a->status === 'offered' ? 'green' : ($a->status === 'rejected' ? 'red' : 'yellow'),
+                    'title' => "{$a->user->name} melamar posisi {$a->jobListing->title}",
+                    'detail' => "Status: " . ucfirst($a->status) . " • Match: " . round($a->matching_percentage ?? 0, 1) . "%",
+                    'time' => $a->created_at->diffForHumans(),
+                ]);
+
+            $recentActivities = $recentAssessments->merge($recentApplications)
+                ->sortByDesc('time')
+                ->take(5)
+                ->values()
+                ->toArray();
         }
 
-        return view('education.dashboard', compact('stats', 'skillGapByMajor', 'topGapCompetencies', 'recentActivities')); 
+        return view('education.dashboard', compact('stats', 'skillGapByMajor', 'topGapCompetencies', 'recentActivities', 'curriculumRecommendations')); 
     }
 }

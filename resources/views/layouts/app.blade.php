@@ -1026,13 +1026,15 @@
             </div>
 
             <!-- Scrollable Navigation Wrapper -->
-            <div class="flex-1 pb-3 sm:pb-4 flex flex-col" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
+            <div id="sidebar-scroll" class="flex-1 pb-3 sm:pb-4 flex flex-col" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
                 <!-- Navigation Menu -->
                 <nav @click="
                     const link = $event.target.closest('a');
                     if (link && window.innerWidth < 1024) {
-                        sidebarOpen = false;
-                        localStorage.setItem('sidebarOpen', 'false');
+                        setTimeout(() => {
+                            sidebarOpen = false;
+                            localStorage.setItem('sidebarOpen', 'false');
+                        }, 150);
                     }
                 " class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav">
 
@@ -2567,7 +2569,7 @@
 
     {{-- Cookie Consent Banner (UU PDP Compliance) --}}
     @if(!isset($_COOKIE['cookie_consent']))
-    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-lg p-4 md:p-6" style="display: none;">
+    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 right-0 z-[100] bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 shadow-lg p-4 md:p-6" style="display: none;">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div class="flex-1">
                 <div class="flex items-start gap-3">
@@ -2634,6 +2636,89 @@
         }
     </script>
     @endif
+
+    <script>
+        // Scroll Restoration
+        (function() {
+            console.log('[Scroll] Script loaded');
+            
+            // Beritahu browser bahwa kita akan mengatur scroll manual
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+                console.log('[Scroll] history.scrollRestoration set to manual');
+            }
+            
+            const scrollKey = 'scroll_pos_' + window.location.pathname;
+            
+            // Simpan posisi scroll saat pengguna melakukan scroll (autosave dinamis)
+            function initScrollListeners() {
+                const sidebarScroll = document.getElementById('sidebar-scroll');
+                const mainContent = document.querySelector('main');
+                
+                if (sidebarScroll && !sidebarScroll.dataset.scrollListenerAdded) {
+                    sidebarScroll.addEventListener('scroll', function() {
+                        sessionStorage.setItem('sidebar_scroll_pos', sidebarScroll.scrollTop);
+                    });
+                    sidebarScroll.dataset.scrollListenerAdded = 'true';
+                }
+                
+                if (mainContent && !mainContent.dataset.scrollListenerAdded) {
+                    mainContent.addEventListener('scroll', function() {
+                        sessionStorage.setItem(scrollKey, mainContent.scrollTop);
+                    });
+                    mainContent.dataset.scrollListenerAdded = 'true';
+                }
+            }
+            
+            // Simpan juga sebelum page unload sebagai fallback
+            window.addEventListener('beforeunload', function() {
+                const sidebarScroll = document.getElementById('sidebar-scroll');
+                const mainContent = document.querySelector('main');
+                
+                if (sidebarScroll) {
+                    sessionStorage.setItem('sidebar_scroll_pos', sidebarScroll.scrollTop);
+                }
+                if (mainContent) {
+                    sessionStorage.setItem(scrollKey, mainContent.scrollTop);
+                }
+            });
+            
+            // Restore posisi scroll
+            function restoreScroll() {
+                const sidebarScroll = document.getElementById('sidebar-scroll');
+                const mainContent = document.querySelector('main');
+                
+                // Restore sidebar scroll
+                const savedSidebarPos = sessionStorage.getItem('sidebar_scroll_pos');
+                if (sidebarScroll && savedSidebarPos !== null) {
+                    sidebarScroll.scrollTop = parseInt(savedSidebarPos);
+                    console.log('[Scroll] Sidebar restored to:', savedSidebarPos);
+                }
+                
+                // Restore main content scroll
+                const savedMainPos = sessionStorage.getItem(scrollKey);
+                if (mainContent && savedMainPos !== null) {
+                    mainContent.scrollTop = parseInt(savedMainPos);
+                    console.log('[Scroll] Main content restored to:', savedMainPos);
+                }
+            }
+            
+            // Jalankan restore dan inisialisasi listener
+            restoreScroll();
+            initScrollListeners();
+            
+            // Jalankan ulang dengan delay untuk mengantisipasi load dinamis / Alpine rendering
+            setTimeout(function() {
+                restoreScroll();
+                initScrollListeners();
+            }, 100);
+            
+            window.addEventListener('load', function() {
+                restoreScroll();
+                initScrollListeners();
+            });
+        })();
+    </script>
 </body>
 
 </html>

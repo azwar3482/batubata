@@ -30,7 +30,53 @@ class JobSeekerDashboardService
             ->count();
 
         $matchedJobs = $this->matchingService->getMatchedJobs($user, 3);
-        $recommendedJobs = JobListing::where('is_active', true)->take(3)->get();
+
+        // Try to recommend jobs based on user's expected_jobs or skills
+        $recommendedJobs = collect();
+        $expectedJobs = $user->expected_jobs ?? [];
+        $userSkills = $user->skills ?? [];
+
+        if (!empty($expectedJobs)) {
+            $recommendedJobs = JobListing::where('is_active', true)
+                ->where(function ($q) use ($expectedJobs) {
+                    foreach ($expectedJobs as $job) {
+                        $position = is_array($job) ? ($job['position'] ?? '') : $job;
+                        if ($position) {
+                            $q->orWhere('title', 'like', "%{$position}%");
+                        }
+                    }
+                })
+                ->whereNotIn('id', $matchedJobs->pluck('id'))
+                ->latest()
+                ->take(3)
+                ->get();
+        }
+
+        if ($recommendedJobs->isEmpty() && !empty($userSkills)) {
+            $recommendedJobs = JobListing::where('is_active', true)
+                ->where(function ($q) use ($userSkills) {
+                    foreach ($userSkills as $skill) {
+                        $skillName = is_array($skill) ? ($skill['name'] ?? $skill['skill'] ?? '') : $skill;
+                        if ($skillName) {
+                            $q->orWhere('title', 'like', "%{$skillName}%")
+                              ->orWhere('description', 'like', "%{$skillName}%");
+                        }
+                    }
+                })
+                ->whereNotIn('id', $matchedJobs->pluck('id'))
+                ->latest()
+                ->take(3)
+                ->get();
+        }
+
+        // Fallback: recent active jobs
+        if ($recommendedJobs->isEmpty()) {
+            $recommendedJobs = JobListing::where('is_active', true)
+                ->whereNotIn('id', $matchedJobs->pluck('id'))
+                ->latest()
+                ->take(3)
+                ->get();
+        }
 
         $radarData = $this->calculateRadarData($latestAssessment);
 

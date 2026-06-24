@@ -23,14 +23,29 @@ class DashboardController extends Controller
     public function index() 
     {
         $stats = Cache::remember('admin.dashboard.stats', 300, function () {
+            $totalUsers = User::count();
+            $lastMonthUsers = User::where('created_at', '<', now()->subMonth())->count();
+            $userGrowth = $lastMonthUsers > 0 ? round((($totalUsers - $lastMonthUsers) / $lastMonthUsers) * 100, 1) : 0;
+
+            $activeJobs = JobListing::where('is_active', true)->count();
+            $newJobsThisWeek = JobListing::where('is_active', true)->where('created_at', '>=', now()->subWeek())->count();
+
+            $avgSkillGap = round(UserAssessment::avg('total_gap_percentage') ?? 0, 1);
+
             return [
-                'total_users' => User::count(),
+                'total_users' => $totalUsers,
+                'user_growth' => $userGrowth,
                 'total_assessments' => UserAssessment::count(),
-                'active_jobs' => JobListing::where('is_active', true)->count(),
-                'latest_users' => User::latest()->take(5)->get(),
+                'active_jobs' => $activeJobs,
+                'new_jobs_week' => $newJobsThisWeek,
+                'avg_skill_gap' => $avgSkillGap,
+                'latest_users' => User::latest()->take(7)->get(),
+                'total_companies' => User::where('role', 'industry')->count(),
+                'total_institutions' => User::where('role', 'education')->count(),
+                'total_teachers' => User::where('role', 'teacher')->count(),
             ];
         });
-        
+
         return view('admin.dashboard', compact('stats'));
     }
 

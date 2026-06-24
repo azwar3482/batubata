@@ -254,148 +254,47 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Prioritas</th>
-                                <th
-                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <!-- Row 1 -->
+                            @forelse($curriculumRecommendations as $index => $rec)
                             <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">{{ $index + 1 }}</td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">Data Analysis</div>
-                                    <div class="text-xs text-gray-500 dark:text-slate-400">Technical Skill</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $rec['name'] }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-slate-400">{{ $rec['category'] }}</div>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Teknik Informatika</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ $rec['major'] }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-red-500 h-2 rounded-full" style="width: 52%"></div>
+                                            <div class="{{ $rec['avg_gap'] > 50 ? 'bg-red-500' : ($rec['avg_gap'] > 25 ? 'bg-yellow-500' : 'bg-green-500') }} h-2 rounded-full" style="width: {{ $rec['avg_gap'] }}%"></div>
                                         </div>
-                                        <span class="text-sm font-medium text-red-600">52%</span>
+                                        <span class="text-sm font-medium {{ $rec['avg_gap'] > 50 ? 'text-red-600' : ($rec['avg_gap'] > 25 ? 'text-yellow-600' : 'text-green-600') }}">{{ $rec['avg_gap'] }}%</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">
-                                    Tambah mata kuliah praktis Data Analytics dengan studi kasus industri
+                                    {{ $rec['recommendation'] }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                        Tinggi
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $rec['priority'] === 'Tinggi' ? 'bg-red-100 text-red-800' : ($rec['priority'] === 'Sedang' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
+                                        {{ $rec['priority'] }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('education.partners.show', 1) }}"
-                                        class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">Detail</a>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-500 text-sm">
+                                    Belum ada data rekomendasi kurikulum. Data akan muncul setelah lulusan melakukan asesmen kompetensi.
                                 </td>
                             </tr>
-
-                            <!-- Row 2 -->
-                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">2</td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">Digital Marketing</div>
-                                    <div class="text-xs text-gray-500 dark:text-slate-400">Technical Skill</div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Manajemen</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
-                                        </div>
-                                        <span class="text-sm font-medium text-yellow-600">45%</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
-                                    Kolaborasi dengan industri untuk magang dan proyek nyata
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        Sedang
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('education.partners.show', 1) }}"
-                                        class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">Detail</a>
-                                </td>
-                            </tr>
-
-                            <!-- Row 3 -->
-                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">3</td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">Project Management</div>
-                                    <div class="text-xs text-gray-500 dark:text-slate-400">Soft Skill</div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Sistem Informasi</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 38%"></div>
-                                        </div>
-                                        <span class="text-sm font-medium text-yellow-600">38%</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
-                                    Integrasi metode Agile/Scrum dalam pembelajaran proyek akhir
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        Sedang
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('education.partners.show', 1) }}"
-                                        class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">Detail</a>
-                                </td>
-                            </tr>
-
-                            <!-- Row 4 -->
-                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">4</td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">Communication</div>
-                                    <div class="text-xs text-gray-500 dark:text-slate-400">Soft Skill</div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">Komunikasi</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
-                                        </div>
-                                        <span class="text-sm font-medium text-green-600">25%</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
-                                    Workshop presentasi dan public speaking rutin tiap semester
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        Rendah
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('education.partners.show', 1) }}"
-                                        class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">Detail</a>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
                 <div class="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 flex items-center justify-between">
                     <div class="text-sm text-gray-500 dark:text-slate-400">
-                        Menampilkan <span class="font-medium text-gray-900 dark:text-white">1</span> sampai <span class="font-medium text-gray-900 dark:text-white">4</span> dari <span class="font-medium text-gray-900 dark:text-white">12</span> data
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button class="px-3 py-1 text-sm border border-gray-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600 disabled:opacity-50" disabled>Sebelumnya</button>
-                        <button class="px-3 py-1 text-sm border border-indigo-500 rounded-md bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">1</button>
-                        <button class="px-3 py-1 text-sm border border-gray-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600">2</button>
-                        <button class="px-3 py-1 text-sm border border-gray-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600">3</button>
-                        <button class="px-3 py-1 text-sm border border-gray-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600">Selanjutnya</button>
+                        Menampilkan <span class="font-medium text-gray-900 dark:text-white">{{ count($curriculumRecommendations) }}</span> rekomendasi berdasarkan data asesmen riil
                     </div>
                 </div>
             </div>
@@ -440,79 +339,43 @@
                     <h3 class="text-lg font-bold text-gray-900">Aktivitas Terbaru</h3>
                 </div>
                 <div class="divide-y divide-gray-200">
-                    <!-- Activity 1 -->
+                    @forelse($recentActivities as $activity)
                     <div class="p-6 flex items-start gap-4 hover:bg-gray-50 transition">
                         <div
-                            class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 flex-shrink-0">
+                            class="w-10 h-10 {{ $activity['color'] === 'blue' ? 'bg-blue-100 text-blue-600' : ($activity['color'] === 'green' ? 'bg-green-100 text-green-600' : ($activity['color'] === 'red' ? 'bg-red-100 text-red-600' : 'bg-yellow-100 text-yellow-600')) }} rounded-full flex items-center justify-center flex-shrink-0">
+                            @if($activity['icon'] === 'assessment')
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                                 </path>
                             </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900">
-                                125 lulusan Teknik Informatika menyelesaikan asesmen kompetensi
-                            </p>
-                            <p class="text-sm text-gray-500 mt-1">
-                                Rata-rata skill gap: 35.2% • Posisi target terbanyak: Software Engineer
-                            </p>
-                            <p class="text-xs text-gray-400 mt-2">2 jam yang lalu</p>
-                        </div>
-                        <a href="#"
-                            class="text-sm text-indigo-600 hover:text-indigo-800 font-medium whitespace-nowrap">
-                            Lihat Detail
-                        </a>
-                    </div>
-
-                    <!-- Activity 2 -->
-                    <div class="p-6 flex items-start gap-4 hover:bg-gray-50 transition">
-                        <div
-                            class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0">
+                            @else
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900">
-                                Laporan kompetensi semester ganjil 2024 siap diunduh
-                            </p>
-                            <p class="text-sm text-gray-500 mt-1">
-                                Berisi analisis lengkap per jurusan dan rekomendasi kurikulum
-                            </p>
-                            <p class="text-xs text-gray-400 mt-2">Kemarin</p>
-                        </div>
-                        <a href="#"
-                            class="text-sm text-indigo-600 hover:text-indigo-800 font-medium whitespace-nowrap">
-                            Unduh PDF
-                        </a>
-                    </div>
-
-                    <!-- Activity 3 -->
-                    <div class="p-6 flex items-start gap-4 hover:bg-gray-50 transition">
-                        <div
-                            class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 flex-shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                 </path>
                             </svg>
+                            @endif
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900">
-                                Tech Corp Indonesia membuka program magang untuk lulusan Manajemen
+                                {{ $activity['title'] }}
                             </p>
                             <p class="text-sm text-gray-500 mt-1">
-                                Kuota: 15 orang • Deadline: 30 Maret 2024
+                                {{ $activity['detail'] }}
                             </p>
-                            <p class="text-xs text-gray-400 mt-2">3 hari yang lalu</p>
+                            <p class="text-xs text-gray-400 mt-2">{{ $activity['time'] }}</p>
                         </div>
-                        <a href="#"
-                            class="text-sm text-indigo-600 hover:text-indigo-800 font-medium whitespace-nowrap">
-                            Sebar ke Mahasiswa
-                        </a>
                     </div>
+                    @empty
+                    <div class="p-12 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="mt-2 text-sm text-gray-500">Belum ada aktivitas terbaru</p>
+                        <p class="text-xs text-gray-400 mt-1">Aktivitas akan muncul setelah lulusan mulai menggunakan platform</p>
+                    </div>
+                    @endforelse
                 </div>
             </div>
 
