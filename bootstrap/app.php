@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role.redirect' => RoleRedirect::class,
             'role' => \App\Http\Middleware\CheckRole::class,
             'profile.complete' => \App\Http\Middleware\EnsureProfileIsCompleted::class,
+            'company.verified' => \App\Http\Middleware\EnsureCompanyIsVerified::class,
         ]);
         $middleware->validateCsrfTokens(except: [
             'logout',

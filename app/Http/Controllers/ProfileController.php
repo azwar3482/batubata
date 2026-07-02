@@ -134,6 +134,50 @@ class ProfileController extends Controller
         return back()->with('success', 'Dokumen berhasil diunggah dan sedang diproses!');
     }
 
+    public function uploadVerificationDocuments(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'nib_document' => 'nullable|file|max:2048|mimes:pdf,jpg,jpeg,png',
+            'siup_document' => 'nullable|file|max:2048|mimes:pdf,jpg,jpeg,png',
+            'npwp_document' => 'nullable|file|max:2048|mimes:pdf,jpg,jpeg,png',
+            'ktp_director_document' => 'nullable|file|max:2048|mimes:pdf,jpg,jpeg,png',
+        ]);
+
+        $user = $request->user();
+        if (!$user->isIndustry() || !$user->company) {
+            return back()->with('error', 'Akses ditolak.');
+        }
+
+        $company = $user->company;
+        $statuses = $company->document_statuses ?? [];
+
+        if ($request->hasFile('nib_document')) {
+            $company->nib_document = $request->file('nib_document')->store('verifications', 'public');
+            $statuses['nib'] = ['status' => 'pending', 'reason' => null];
+        }
+        if ($request->hasFile('siup_document')) {
+            $company->siup_document = $request->file('siup_document')->store('verifications', 'public');
+            $statuses['siup'] = ['status' => 'pending', 'reason' => null];
+        }
+        if ($request->hasFile('npwp_document')) {
+            $company->npwp_document = $request->file('npwp_document')->store('verifications', 'public');
+            $statuses['npwp'] = ['status' => 'pending', 'reason' => null];
+        }
+        if ($request->hasFile('ktp_director_document')) {
+            $company->ktp_director_document = $request->file('ktp_director_document')->store('verifications', 'public');
+            $statuses['ktp_director'] = ['status' => 'pending', 'reason' => null];
+        }
+
+        $company->document_statuses = $statuses;
+        if ($company->verification_status === 'unverified' || $company->verification_status === 'rejected') {
+            $company->verification_status = 'pending';
+        }
+        
+        $company->save();
+
+        return back()->with('success', 'Dokumen verifikasi berhasil diunggah. Silakan tunggu konfirmasi dari admin.');
+    }
+
     public function deleteDocument($id): RedirectResponse
     {
         $document = \App\Models\UserDocument::where('user_id', Auth::id())->findOrFail($id);

@@ -51,7 +51,7 @@
                             <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
                             <div>
                                 <h2 class="font-semibold text-gray-800 dark:text-gray-200">Kategori Soal</h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Tentukan jenis dan tingkat kesulitan</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Tentukan jenis dan tingkat kesulitan</p>
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                             <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
                             <div>
                                 <h2 class="font-semibold text-gray-800 dark:text-gray-200">Teks Soal</h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Tuliskan pertanyaan dengan jelas</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Tuliskan pertanyaan dengan jelas</p>
                             </div>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Gambar Soal <span class="text-gray-400 dark:text-gray-500 font-normal">(Opsional)</span></label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Gambar Soal <span class="text-gray-400 dark:text-gray-400 font-normal">(Opsional)</span></label>
                             <div class="border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl p-4 text-center hover:border-purple-400 transition-colors cursor-pointer"
                                  x-data="{ dragover: false }"
                                  @dragover.prevent="dragover = true"
@@ -160,7 +160,7 @@
                                        @change="fileName = $event.target.files[0]?.name || ''">
                                 <div x-show="!fileName">
                                     <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Klik atau drag & drop gambar</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Klik atau drag & drop gambar</p>
                                     <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">PNG, JPG, GIF (max 2MB)</p>
                                 </div>
                                 <div x-show="fileName" class="flex items-center justify-center gap-2">
@@ -180,7 +180,7 @@
                                 <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
                                 <div>
                                     <h2 class="font-semibold text-gray-800 dark:text-gray-200">Pilihan Jawaban</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Isi minimal 2 pilihan, tandai jawaban benar</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Isi minimal 2 pilihan, tandai jawaban benar</p>
                                 </div>
                             </div>
                             <span x-show="correctAnswer" class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
@@ -217,7 +217,7 @@
                         </div>
 
                         <div class="mt-4 p-3 bg-gray-50 dark:bg-slate-800/50 rounded-xl">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 flex items-center gap-1.5">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                                 <svg class="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Klik pada pilihan atau radio button untuk menandai jawaban yang benar
                             </p>
@@ -232,7 +232,7 @@
                             <span class="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
                             <div>
                                 <h2 class="font-semibold text-gray-800 dark:text-gray-200">Penjelasan Jawaban</h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Opsional - membantu kandidat belajar</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Opsional - membantu kandidat belajar</p>
                             </div>
                         </div>
                     </div>
@@ -363,7 +363,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Simpan Soal
                         </button>
-                        <a href="{{ route('industry.tpa.questions') }}" class="block w-full text-center px-6 py-3 border border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors">
+                        <a href="{{ route('industry.tpa.questions') }}" class="block w-full text-center px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                             Batal
                         </a>
                     </div>

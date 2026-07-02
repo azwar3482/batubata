@@ -13,8 +13,9 @@
                 {{ __('Dashboard Job Seeker') }}
             </h2>
             <button type="button" id="start-tour-btn"
-                class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-all duration-200 border border-blue-200 dark:border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-all duration-200 border border-blue-200 dark:border-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                aria-label="Mulai tur panduan dashboard">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Mulai Tour
@@ -47,7 +48,7 @@
             {{-- ============================================================ --}}
             {{-- SECTION 1: Welcome + Onboarding + Streak (DIGABUNGKAN) --}}
             {{-- ============================================================ --}}
-            <div class="bg-white dark:bg-slate-900 overflow-hidden shadow-sm sm:rounded-2xl mb-4 sm:mb-6 border border-slate-100 dark:border-slate-800">
+            <div class="bg-white dark:bg-slate-800 overflow-hidden rounded-xl shadow-md mb-4 sm:mb-6 border border-gray-100 dark:border-slate-700">
                 <div class="p-4 sm:p-6">
                     {{-- Welcome + Streak --}}
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -103,7 +104,7 @@
                                 <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-slate-400">Kekuatan Profil</span>
                                 <span class="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400">{{ $user->profile_completion_percentage }}%</span>
                             </div>
-                            <div class="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5 sm:h-3 overflow-hidden">
+                            <div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-2.5 sm:h-3 overflow-hidden">
                                 <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full progress-bar-animate" 
                                      style="width: {{ $user->profile_completion_percentage }}%"
                                      role="progressbar" 
@@ -118,7 +119,7 @@
 
                     {{-- Onboarding Checklist --}}
                     @if(!$user->hasCompletedProfile())
-                    <div class="border-t border-slate-100 dark:border-slate-800 pt-4 sm:pt-6">
+                    <div class="border-t border-gray-100 dark:border-slate-700 pt-4 sm:pt-6">
                         <h4 class="text-xs sm:text-sm font-bold text-gray-700 dark:text-slate-300 mb-3 sm:mb-4 flex items-center gap-2">
                             <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -142,7 +143,7 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-800 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md transition-all duration-200 cursor-pointer bg-white dark:bg-slate-900 group">
+                                <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer bg-white dark:bg-slate-800 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors">1</div>
                                     <div class="flex-1 min-w-0">
                                         <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Isi Data Diri</h5>
@@ -167,7 +168,7 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-800 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md transition-all duration-200 cursor-pointer bg-white dark:bg-slate-900 group">
+                                <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer bg-white dark:bg-slate-800 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors">2</div>
                                     <div class="flex-1 min-w-0">
                                         <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Riwayat Pendidikan</h5>
@@ -192,7 +193,7 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-800 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-md transition-all duration-200 cursor-pointer bg-white dark:bg-slate-900 group">
+                                <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer bg-white dark:bg-slate-800 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors">3</div>
                                     <div class="flex-1 min-w-0">
                                         <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Unggah CV</h5>
@@ -217,7 +218,7 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="p-3 rounded-xl border border-gray-200 dark:border-slate-800 flex items-center gap-3 bg-white dark:bg-slate-900 opacity-60">
+                                <div class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 bg-white dark:bg-slate-800 opacity-60">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-gray-400 text-gray-400 rounded-full font-bold text-xs shrink-0">4</div>
                                     <div class="flex-1 min-w-0">
                                         <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Profil 100%</h5>
@@ -229,7 +230,7 @@
                     </div>
                     @else
                         {{-- Profil Lengkap - Achievement --}}
-                        <div class="border-t border-slate-100 dark:border-slate-800 pt-6 text-center">
+                        <div class="border-t border-gray-100 dark:border-slate-700 pt-6 text-center">
                             <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/30 rounded-full">
                                 <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -238,17 +239,17 @@
                             </div>
                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Fitur pencarian kerja dan rekomendasi telah optimal.</p>
                             @if($totalAssessments == 0)
-                                <a href="{{ url('/seeker/assessment') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition transform hover:-translate-y-0.5">
+                                <a href="{{ url('/seeker/assessment') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-lg shadow-blue-500/20 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                                     Ukur Skill Sekarang
                                 </a>
                             @elseif($avgGap < 30)
-                                <a href="{{ url('/seeker/jobs') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 transition transform hover:-translate-y-0.5">
+                                <a href="{{ url('/seeker/jobs') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-lg shadow-emerald-500/20 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                     Cari Pekerjaan
                                 </a>
                             @else
-                                <a href="{{ url('/seeker/roadmap') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 transition transform hover:-translate-y-0.5">
+                                <a href="{{ url('/seeker/roadmap') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-lg shadow-amber-500/20 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
                                     Lihat Roadmap
                                 </a>
@@ -263,69 +264,79 @@
             {{-- ============================================================ --}}
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6" role="region" aria-label="Statistik ringkasan">
                 {{-- Total Asesmen --}}
-                <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                        <div class="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 border-blue-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/assessment') }}'">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Asesmen</p>
+                            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ $totalAssessments }}</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">tes telah dikerjakan</p>
+                        </div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                             </svg>
                         </div>
                     </div>
-                    <div class="text-gray-500 dark:text-slate-400 text-[10px] sm:text-xs font-medium">Total Asesmen</div>
-                    <div class="text-lg sm:text-xl md:text-2xl font-bold dark:text-white mt-0.5 sm:mt-1">{{ $totalAssessments }}</div>
                 </div>
 
                 {{-- Skill Gap --}}
-                <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl shadow-sm border {{ $avgGap > 30 ? 'border-red-200 dark:border-red-800/30' : 'border-green-200 dark:border-green-800/30' }} hover:shadow-md transition-all duration-300">
-                    <div class="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                        <div class="p-1.5 sm:p-2 {{ $avgGap > 30 ? 'bg-red-100 dark:bg-red-900/30' : 'bg-green-100 dark:bg-green-900/30' }} rounded-lg">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 {{ $avgGap > 30 ? 'border-red-500' : 'border-green-500' }} hover:shadow-lg transition">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Skill Gap</p>
+                            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ number_format($avgGap, 1) }}%</p>
                             @if($avgGap > 30)
-                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                                <p class="text-xs text-red-500 mt-1 flex items-center">
+                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                    Gap tinggi, upskill!
+                                </p>
                             @else
-                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <p class="text-xs text-green-600 dark:text-green-400 mt-1 flex items-center">
+                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    Gap aman
+                                </p>
+                            @endif
+                        </div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 {{ $avgGap > 30 ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' : 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' }} rounded-lg flex items-center justify-center">
+                            @if($avgGap > 30)
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            @else
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             @endif
                         </div>
                     </div>
-                    <div class="text-gray-500 dark:text-slate-400 text-[10px] sm:text-xs font-medium">Rata-rata Skill Gap</div>
-                    <div class="text-lg sm:text-xl md:text-2xl font-bold dark:text-white mt-0.5 sm:mt-1">{{ number_format($avgGap, 1) }}%</div>
-                    @if($avgGap > 30)
-                        <p class="text-[9px] sm:text-[10px] text-red-500 mt-1.5 sm:mt-2 leading-tight">Skill gap tinggi. Upskill sekarang!</p>
-                        <a href="{{ url('/seeker/courses') }}" class="inline-flex items-center mt-1.5 sm:mt-2 px-2 sm:px-3 py-1 sm:py-1.5 border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 rounded-md sm:rounded-lg text-[9px] sm:text-[10px] font-semibold transition">
-                            Mulai Upskill →
-                        </a>
-                    @else
-                        <p class="text-[9px] sm:text-[10px] text-green-600 mt-1.5 sm:mt-2 leading-tight">Skill gap aman. Pertahankan!</p>
-                    @endif
                 </div>
 
                 {{-- Kursus Berjalan --}}
-                <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                        <div class="p-1.5 sm:p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 border-emerald-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/courses') }}'">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Kursus</p>
+                            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ $coursesInProgress }}</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">sedang berjalan</p>
+                        </div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
                     </div>
-                    <div class="text-gray-500 dark:text-slate-400 text-[10px] sm:text-xs font-medium">Kursus Berjalan</div>
-                    <div class="text-lg sm:text-xl md:text-2xl font-bold dark:text-white mt-0.5 sm:mt-1">{{ $coursesInProgress }}</div>
                 </div>
 
                 {{-- Rekomendasi --}}
-                <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                        <div class="p-1.5 sm:p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 border-amber-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/jobs') }}'">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Lowongan Cocok</p>
+                            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ count($recommendedJobs) }}</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">rekomendasi untuk Anda</p>
+                        </div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center text-amber-600 dark:text-amber-400">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                         </div>
                     </div>
-                    <div class="text-gray-500 dark:text-slate-400 text-[10px] sm:text-xs font-medium">Rekomendasi</div>
-                    <div class="text-lg sm:text-xl md:text-2xl font-bold dark:text-white mt-0.5 sm:mt-1">{{ count($recommendedJobs) }} Lowongan</div>
                 </div>
             </div>
 
@@ -336,7 +347,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
 
                 {{-- Radar Chart --}}
-                <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 md:p-6 rounded-lg sm:rounded-xl shadow-sm lg:col-span-2 border border-slate-100 dark:border-slate-800">
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-md lg:col-span-2 border border-gray-100 dark:border-slate-700">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
                         <div>
                             <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200">Analisis Kompetensi</h4>
@@ -363,7 +374,7 @@
                 </div>
 
                 {{-- Lowongan Cocok --}}
-                <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 md:p-6 rounded-lg sm:rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-md border border-gray-100 dark:border-slate-700">
                     <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200 mb-3 sm:mb-4">Lowongan Cocok</h4>
                     <div class="space-y-2 sm:space-y-3">
                         @forelse($recommendedJobs as $job)
@@ -386,14 +397,14 @@
                         @empty
                             {{-- Empty State --}}
                             <div class="text-center py-6 sm:py-8">
-                                <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center">
                                     <svg class="w-6 h-6 sm:w-8 sm:h-8 text-gray-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <p class="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-medium">Belum ada rekomendasi</p>
                                 <p class="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500 mt-1">Lengkapi profil Anda untuk mendapatkan rekomendasi lowongan</p>
-                                <a href="{{ route('profile.edit') }}" class="inline-flex items-center mt-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white text-[11px] sm:text-xs font-medium rounded-lg hover:bg-blue-700 transition">
+                                <a href="{{ route('profile.edit') }}" class="inline-flex items-center mt-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white text-[11px] sm:text-xs font-medium rounded-lg hover:bg-blue-700 shadow-sm hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     Lengkapi Profil →
                                 </a>
                             </div>
@@ -401,7 +412,7 @@
                     </div>
                     @if(count($recommendedJobs) > 0)
                         <a href="{{ route('seeker.jobs.all') }}"
-                            class="block mt-3 sm:mt-4 w-full text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-2 sm:py-2.5 rounded-lg sm:rounded-xl hover:from-blue-700 hover:to-indigo-800 text-xs sm:text-sm font-medium transition transform hover:-translate-y-0.5">
+                            class="block mt-3 sm:mt-4 w-full text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-2 sm:py-2.5 rounded-lg sm:rounded-xl hover:from-blue-700 hover:to-indigo-800 shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 text-xs sm:text-sm font-medium transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                             Lihat Semua Lowongan →
                         </a>
                     @endif
@@ -449,6 +460,23 @@
         @keyframes achievementPulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
             50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
+        }
+
+        /* Prefers reduced motion - disable animations */
+        @media (prefers-reduced-motion: reduce) {
+            .progress-bar-animate,
+            .checklist-complete,
+            .achievement-badge {
+                animation: none !important;
+            }
+            .match-badge {
+                transition: none !important;
+            }
+            * {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
         }
 
         /* Driver.js Custom Styling */

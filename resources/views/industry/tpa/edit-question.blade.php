@@ -8,28 +8,28 @@
         <span class="text-gray-900 dark:text-white font-medium">Edit Soal</span>
     </nav>
 
-    <a href="{{ route('industry.tpa.questions') }}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">&laquo; Kembali ke Bank Soal</a>
-    <h1 class="text-2xl font-bold mb-6">Edit Soal TPA</h1>
+    <a href="{{ route('industry.tpa.questions') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm mb-4 inline-block">&laquo; Kembali ke Bank Soal</a>
+    <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Edit Soal TPA</h1>
 
-    <form action="{{ route('industry.tpa.questions.update', $question) }}" method="POST" class="bg-white rounded-xl shadow-sm p-6">
+    <form action="{{ route('industry.tpa.questions.update', $question) }}" method="POST" class="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-slate-700">
         @csrf @method('PUT')
 
         <div class="grid grid-cols-3 gap-4 mb-4">
             <div>
-                <label class="block text-sm font-medium mb-1">Kategori</label>
-                <select name="category" class="w-full border rounded-lg px-3 py-2" required>
+                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Kategori</label>
+                <select name="category" class="w-full border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2" required>
                     @foreach(['verbal','numerik','logika','spasial'] as $cat)
                     <option value="{{ $cat }}" {{ $question->category === $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
-                <label class="block text-sm font-medium mb-1">Sub-kategori</label>
-                <input type="text" name="subcategory" value="{{ $question->subcategory }}" class="w-full border rounded-lg px-3 py-2">
+                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Sub-kategori</label>
+                <input type="text" name="subcategory" value="{{ $question->subcategory }}" class="w-full border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2">
             </div>
             <div>
-                <label class="block text-sm font-medium mb-1">Level</label>
-                <select name="difficulty" class="w-full border rounded-lg px-3 py-2" required>
+                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Level</label>
+                <select name="difficulty" class="w-full border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2" required>
                     @foreach(['easy','medium','hard'] as $d)
                     <option value="{{ $d }}" {{ $question->difficulty === $d ? 'selected' : '' }}>{{ ucfirst($d) }}</option>
                     @endforeach
@@ -38,39 +38,39 @@
         </div>
 
         <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Teks Soal</label>
-            <textarea name="question_text" class="w-full border rounded-lg px-3 py-2" rows="4" required>{{ $question->question_text }}</textarea>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Teks Soal</label>
+            <textarea name="question_text" class="w-full border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2" rows="4" required>{{ $question->question_text }}</textarea>
         </div>
 
         <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Gambar Soal (opsional)</label>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Gambar Soal (opsional)</label>
             @if($question->question_image)
             <div class="mb-2"><img src="{{ asset('storage/' . $question->question_image) }}" class="h-20" loading="lazy"></div>
             @endif
-            <input type="file" name="question_image" accept="image/*" class="w-full border rounded-lg px-3 py-2">
+            <input type="file" name="question_image" accept="image/*" class="w-full border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2">
         </div>
 
-        <h3 class="font-bold mb-3">Pilihan Jawaban</h3>
+        <h3 class="font-bold mb-3 text-gray-900 dark:text-white">Pilihan Jawaban</h3>
         <div class="space-y-2 mb-4">
             @foreach($question->options as $i => $opt)
             <div class="flex items-center gap-2">
                 <input type="radio" name="correct_answer" value="{{ $opt['key'] }}" {{ $question->correct_answer === $opt['key'] ? 'checked' : '' }} required>
                 <input type="hidden" name="options[{{ $i }}][key]" value="{{ $opt['key'] }}">
-                <span class="font-bold w-8">{{ $opt['key'] }}.</span>
-                <input type="text" name="options[{{ $i }}][text]" value="{{ $opt['text'] }}" class="flex-1 border rounded-lg px-3 py-2" required>
+                <span class="font-bold w-8 text-gray-700 dark:text-gray-200">{{ $opt['key'] }}.</span>
+                <input type="text" name="options[{{ $i }}][text]" value="{{ $opt['text'] }}" class="flex-1 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2" required>
             </div>
             @endforeach
         </div>
 
         <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Penjelasan</label>
-            <textarea name="explanation" class="w-full border rounded-lg px-3 py-2" rows="2">{{ $question->explanation }}</textarea>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Penjelasan</label>
+            <textarea name="explanation" class="w-full border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg px-3 py-2" rows="2">{{ $question->explanation }}</textarea>
         </div>
 
         <div class="mb-6">
             <label class="flex items-center gap-2">
-                <input type="checkbox" name="is_active" value="1" {{ $question->is_active ? 'checked' : '' }} class="rounded">
-                <span class="text-sm">Aktif</span>
+                <input type="checkbox" name="is_active" value="1" {{ $question->is_active ? 'checked' : '' }} class="rounded dark:bg-slate-700 dark:border-slate-600">
+                <span class="text-sm text-gray-700 dark:text-gray-200">Aktif</span>
             </label>
         </div>
 

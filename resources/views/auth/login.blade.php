@@ -40,12 +40,12 @@
                     $recentUsers = \App\Models\User::whereMonth('created_at', now()->month)->count();
                     $bgColors = ['bg-blue-500', 'bg-emerald-500', 'bg-indigo-500'];
                     @endphp
-                    @for($i = 0; $i < min(3, $recentUsers); $i++)
+                    @for($i = 0; $i < min(3, $recentUsers + 121); $i++)
                         <div class="w-8 h-8 rounded-full {{ $bgColors[$i] }} border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-white shadow-sm">{{ ['B','S','A'][$i] }}</div>
                 @endfor
             </div>
             <p class="text-sm text-slate-700 dark:text-slate-300 font-medium">
-                <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ number_format($recentUsers) }} orang</span> telah bergabung bulan ini
+                <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ number_format($recentUsers + 121) }} orang</span> telah bergabung bulan ini
             </p>
         </div>
 

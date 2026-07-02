@@ -1028,15 +1028,7 @@
             <!-- Scrollable Navigation Wrapper -->
             <div id="sidebar-scroll" class="flex-1 pb-3 sm:pb-4 flex flex-col" :class="sidebarOpen ? 'overflow-y-auto overflow-x-hidden' : 'overflow-visible'">
                 <!-- Navigation Menu -->
-                <nav @click="
-                    const link = $event.target.closest('a');
-                    if (link && window.innerWidth < 1024) {
-                        setTimeout(() => {
-                            sidebarOpen = false;
-                            localStorage.setItem('sidebarOpen', 'false');
-                        }, 150);
-                    }
-                " class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav">
+                <nav id="sidebar-nav" class="px-2 sm:px-3 space-y-0.5 sm:space-y-1 sidebar-nav">
 
                     @if (Auth::user()->role === 'job_seeker')
                     <!-- Menu Job Seeker -->
@@ -1404,6 +1396,15 @@
                     </a>
 
                     <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-opacity duration-300">Manajemen Utama</div>
+
+                    <a href="{{ route('admin.companies.verifications.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('admin.companies.verifications*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.companies.verifications*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="sidebar-text transition-opacity duration-300">Verifikasi Industri</span>
+                        <div class="menu-tooltip">Verifikasi Industri</div>
+                    </a>
 
                     <a href="{{ route('admin.users') }}"
                         class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('admin.users*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
@@ -1886,6 +1887,24 @@
             </main>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sidebarNav = document.getElementById('sidebar-nav');
+            if (sidebarNav) {
+                sidebarNav.addEventListener('click', function(e) {
+                    var link = e.target.closest('a');
+                    if (link && link.href) {
+                        e.preventDefault();
+                        if (window.innerWidth < 1024) {
+                            localStorage.setItem('sidebarOpen', 'false');
+                        }
+                        window.location.href = link.href;
+                    }
+                }, true);
+            }
+        });
+    </script>
 
     {{-- ============================================ --}}
     {{-- BOTTOM NAV BAR (Mobile Layout: bottombar)    --}}

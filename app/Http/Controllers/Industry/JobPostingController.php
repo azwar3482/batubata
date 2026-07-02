@@ -19,8 +19,9 @@ class JobPostingController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $user = Auth::user();
 
-        $jobs = JobListing::where('user_id', Auth::id())
+        $jobs = JobListing::where('user_id', $user->id)
             ->with('position')
             ->withCount('applications')
             ->when($search, function ($query, $search) {
@@ -30,8 +31,12 @@ class JobPostingController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
+        $company = $user->company;
+        $isVerified = $company ? $company->isVerified() : false;
+        $hasDocuments = $company && ($company->nib_document || $company->siup_document || $company->npwp_document || $company->ktp_director_document);
             
-        return view('industry.jobs.index', compact('jobs', 'search'));
+        return view('industry.jobs.index', compact('jobs', 'search', 'company', 'isVerified', 'hasDocuments'));
     }
 
     public function create()

@@ -81,6 +81,7 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
     Route::post('/profile/cv-upload', [ProfileController::class, 'uploadCv'])->middleware('throttle:10,1')->name('profile.cv.upload');
     Route::post('/profile/photo-upload', [ProfileController::class, 'uploadPhoto'])->middleware('throttle:10,1')->name('profile.photo.upload');
     Route::post('/profile/documents-upload', [ProfileController::class, 'uploadDocuments'])->middleware('throttle:10,1')->name('profile.documents.upload');
+    Route::post('/profile/company-verify', [ProfileController::class, 'uploadVerificationDocuments'])->middleware('throttle:5,1')->name('profile.company.verify');
     Route::delete('/profile/documents/{id}', [ProfileController::class, 'deleteDocument'])->name('profile.documents.destroy');
     Route::post('/profile/update-location', [ProfileController::class, 'updateLocation'])->middleware('throttle:30,1')->name('profile.location.update');
     Route::patch('/profile/mobile-layout', [ProfileController::class, 'updateMobileLayout'])->name('profile.mobile-layout.update');
@@ -196,8 +197,8 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
         Route::get('/dashboard', [IndustryDashboardController::class, 'index'])->name('dashboard');
         Route::get('/dashboard/report', [IndustryDashboardController::class, 'downloadReport'])->name('dashboard.report');
         Route::get('/jobs', [JobPostingController::class, 'index'])->name('jobs.index');
-        Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create');
-        Route::post('/jobs/store', [JobPostingController::class, 'store'])->name('jobs.store');
+        Route::get('/jobs/create', [JobPostingController::class, 'create'])->name('jobs.create')->middleware('company.verified');
+        Route::post('/jobs/store', [JobPostingController::class, 'store'])->name('jobs.store')->middleware('company.verified');
         Route::get('/jobs/{id}', [JobPostingController::class, 'show'])->name('jobs.show');
         Route::get('/jobs/{id}/edit', [JobPostingController::class, 'edit'])->name('jobs.edit');
         Route::put('/jobs/{id}', [JobPostingController::class, 'update'])->name('jobs.update');
@@ -216,7 +217,7 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
 
         // Team Management
         Route::get('/team', [App\Http\Controllers\Industry\TeamController::class, 'index'])->name('team');
-        Route::post('/team/invite', [App\Http\Controllers\Industry\TeamController::class, 'invite'])->name('team.invite');
+        Route::post('/team/invite', [App\Http\Controllers\Industry\TeamController::class, 'invite'])->name('team.invite')->middleware('company.verified');
         Route::put('/team/{id}/role', [App\Http\Controllers\Industry\TeamController::class, 'updateRole'])->name('team.updateRole');
         Route::delete('/team/{id}', [App\Http\Controllers\Industry\TeamController::class, 'remove'])->name('team.remove');
 
@@ -397,6 +398,14 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
 
         // Positions
         Route::resource('positions', \App\Http\Controllers\Admin\PositionController::class);
+
+        // Company Verifications
+        Route::get('/companies/verifications', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'index'])->name('companies.verifications.index');
+        Route::get('/companies/verifications/{id}', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'show'])->name('companies.verifications.show');
+        Route::post('/companies/verifications/{id}/approve', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'approve'])->name('companies.verifications.approve');
+        Route::post('/companies/verifications/{id}/reject', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'reject'])->name('companies.verifications.reject');
+        Route::post('/companies/verifications/{id}/document/{documentType}', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'verifyDocument'])->name('companies.verifications.verify-document');
+        Route::post('/companies/verifications/{id}/re-review', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'reReview'])->name('companies.verifications.re-review');
 
         // Security Monitoring
         Route::get('/security', [\App\Http\Controllers\Admin\SecurityController::class, 'index'])->name('security.index');

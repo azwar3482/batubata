@@ -23,7 +23,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Total Users -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-indigo-500/5 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -48,7 +48,7 @@
 
                 <!-- Total Assessments -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-blue-500/5 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -72,7 +72,7 @@
 
                 <!-- Active Jobs -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-emerald-500/5 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -98,7 +98,7 @@
 
                 <!-- Average Gap -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -123,7 +123,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- User Table Section -->
                 <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-lg shadow-gray-500/5 border border-gray-100 dark:border-slate-700 overflow-hidden">
                         <div class="p-8 border-b border-gray-50 dark:border-slate-700 flex items-center justify-between">
                             <div>
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">Pengguna Terdaftar Terbaru</h3>
@@ -142,7 +142,7 @@
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead>
-                                    <tr class="bg-gray-50 dark:bg-slate-800/50/50 dark:bg-slate-900">
+                                    <tr class="bg-gray-50 dark:bg-slate-900">
                                         <th
                                             class="px-8 py-4 text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider tabular-nums">
                                             Pengguna</th>
@@ -159,7 +159,7 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-50 dark:divide-slate-700">
                                     @foreach ($stats['latest_users']->take(7) as $latest_user)
-                                    <tr class="hover:bg-gray-50 dark:bg-slate-800/50/80 transition-colors">
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
                                         <td class="px-8 py-5">
                                             <div class="flex items-center space-x-4">
                                                 <div class="relative">
@@ -211,7 +211,7 @@
                 <!-- Right Sidebar: Quick Actions & Alerts -->
                 <div class="space-y-8">
                     <!-- Quick Actions -->
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 p-8">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-lg shadow-gray-500/5 border border-gray-100 dark:border-slate-700 p-8">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                             <svg class="w-5 h-5 mr-3 text-indigo-600" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -222,36 +222,36 @@
                         </h3>
                         <div class="grid grid-cols-1 gap-4">
                             <a href="{{ route('admin.settings') }}"
-                                class="flex items-center p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all duration-300 group">
+                                class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-800 transition-all duration-300 group">
                                 <div
-                                    class="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                                    class="p-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
                                         </path>
                                     </svg>
                                 </div>
-                                <span class="ml-4 text-sm font-bold text-gray-700">Kelola Kompetensi</span>
+                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">Kelola Kompetensi</span>
                                 {{-- <h4 class="font-bold text-gray-800">Kelola Kompetensi & Pengaturan</h4>
                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Database skill, posisi karir, dan konfigurasi
                                     sistem.</p> --}}
                             </a>
                             <a href="{{ route('admin.reports') }}"
-                                class="flex items-center p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all duration-300 group">
+                                class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-800 transition-all duration-300 group">
                                 <div
-                                    class="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                                    class="p-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                         </path>
                                     </svg>
                                 </div>
-                                <span class="ml-4 text-sm font-bold text-gray-700">Laporan Sistem</span>
+                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">Laporan Sistem</span>
                             </a>
                             <a href="{{ route('admin.settings') }}"
-                                class="flex items-center p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-all duration-300 group">
+                                class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-800 transition-all duration-300 group">
                                 <div
-                                    class="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                                    class="p-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z">
@@ -260,7 +260,7 @@
                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
                                 </div>
-                                <span class="ml-4 text-sm font-bold text-gray-700">Pengaturan</span>
+                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">Pengaturan</span>
                             </a>
                         </div>
                     </div>

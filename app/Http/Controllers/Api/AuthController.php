@@ -17,7 +17,18 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => [
+                'required', 'email', 'unique:users',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->role === 'industry') {
+                        $freeDomains = ['gmail.com', 'yahoo.com', 'yahoo.co.id', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'mail.com'];
+                        $domain = strtolower(substr(strrchr($value, "@"), 1));
+                        if (in_array($domain, $freeDomains)) {
+                            $fail('Perusahaan (Industry) wajib menggunakan email dengan domain perusahaan/kantor (bukan email gratis).');
+                        }
+                    }
+                },
+            ],
             'password' => 'required|min:8',
             'role' => 'nullable|string|in:job_seeker,industry,education',
             'phone' => 'nullable|string|max:20',
