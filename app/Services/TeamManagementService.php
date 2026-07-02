@@ -113,15 +113,18 @@ class TeamManagementService
             throw new \Exception('User does not have an associated company.');
         }
 
-        // Create the user record in database
+        $company = \App\Models\Company::find($companyId);
+
         $member = \App\Models\User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'role' => $validatedData['role'],
             'company_id' => $companyId,
             'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(16)),
-            'email_verified_at' => now(), // Auto-verify for simplicity
+            'email_verified_at' => now(),
         ]);
+
+        $member->notify(new \App\Notifications\TeamInvitationNotification($member, $company->name ?? 'Perusahaan'));
 
         return $member;
     }

@@ -20,10 +20,27 @@ class CollaborationService
             $attachmentPath = $attachment->store('collaboration-proposals', 'public');
         }
 
-        // Simulasi simpan ke database (sesuai instruksi USER untuk menunda pembuatan Model)
-        // CollaborationRequest::create(array_merge($validatedData, ['attachment' => $attachmentPath]));
+        $partnerName = '';
+        if (!empty($validatedData['partner_id'])) {
+            $partner = \App\Models\Company::find($validatedData['partner_id']);
+            $partnerName = $partner->name ?? '';
+        }
 
-        // Dispatch job untuk simulasi pengiriman notifikasi email agar tidak blocking
+        $proposal = new \App\Models\CollaborationProposal();
+        $proposal->user_id = \Illuminate\Support\Facades\Auth::id();
+        $proposal->partner_name = $partnerName;
+        $proposal->title = is_array($validatedData['collaboration_type'] ?? null)
+            ? implode(', ', $validatedData['collaboration_type'])
+            : ($validatedData['collaboration_type'] ?? '');
+        $proposal->description = $validatedData['description'] ?? '';
+        $proposal->status = 'pending';
+        $proposal->save();
+
+        $proposal->load('user');
+        if ($proposal->user) {
+            $proposal->user->notify(new \App\Notifications\CollaborationProposalNotification($proposal));
+        }
+
         SendCollaborationProposalJob::dispatch($validatedData, $attachmentPath);
     }
 }

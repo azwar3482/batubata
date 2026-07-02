@@ -2,10 +2,18 @@
     <div class="py-12 bg-gray-50 dark:bg-slate-900 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Verifikasi Pengguna</h2>
-                    <p class="mt-2 text-gray-500 dark:text-slate-400">Kelola dan tinjau pendaftaran institusi pendidikan dan industri untuk memastikan validitas.</p>
+            <!-- Info Card -->
+            <div class="mb-6 p-5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-100 dark:border-amber-800/50 rounded-xl">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/50 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-amber-900 dark:text-amber-200 mb-1">Tentang Verifikasi Pengguna</h4>
+                        <p class="text-sm text-amber-700 dark:text-amber-300 leading-relaxed">Halaman ini digunakan untuk <strong>meninjau dan memvalidasi pendaftaran</strong> industri serta institusi pendidikan. Tinjau dokumen legalitas (NIB, SIUP, NPWP, NPSN, dll.), <strong>setujui</strong> atau <strong>tolak</strong> pendaftaran, dan kelola status verifikasi untuk memastikan hanya entitas terverifikasi yang dapat mengakses fitur platform.</p>
+                    </div>
                 </div>
             </div>
 

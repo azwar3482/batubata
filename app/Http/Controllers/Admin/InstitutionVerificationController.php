@@ -67,6 +67,10 @@ class InstitutionVerificationController extends Controller
         $institution->rejection_reason = null;
         $institution->save();
 
+        if ($institution->user) {
+            $institution->user->notify(new \App\Notifications\InstitutionVerificationApproved($institution));
+        }
+
         return redirect()->route('admin.verifications.index')
             ->with('success', 'Institusi berhasil diverifikasi.');
     }
@@ -80,6 +84,10 @@ class InstitutionVerificationController extends Controller
         $institution->verification_status = 'rejected';
         $institution->rejection_reason = $request->reason;
         $institution->save();
+
+        if ($institution->user) {
+            $institution->user->notify(new \App\Notifications\InstitutionVerificationRejected($institution));
+        }
 
         return redirect()->route('admin.verifications.index')
             ->with('success', 'Pengajuan verifikasi institusi ditolak.');

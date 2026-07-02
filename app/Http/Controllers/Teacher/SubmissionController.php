@@ -62,6 +62,11 @@ class SubmissionController extends Controller
 
         $submission->update($validated);
 
+        $submission->load('enrollment.user', 'material.module.course');
+        if ($submission->enrollment->user) {
+            $submission->enrollment->user->notify(new \App\Notifications\SubmissionGradedNotification($submission));
+        }
+
         return back()->with('success', 'Tugas berhasil dinilai.');
     }
 }

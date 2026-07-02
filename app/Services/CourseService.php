@@ -116,6 +116,11 @@ class CourseService
             'completed_at' => now(),
         ]);
 
+        $progress->load('course', 'user');
+        if ($progress->user) {
+            $progress->user->notify(new \App\Notifications\CourseCompletedNotification($progress));
+        }
+
         return $progress;
     }
 

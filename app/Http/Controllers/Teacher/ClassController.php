@@ -160,6 +160,13 @@ class ClassController extends Controller
             return back()->with('error', 'Siswa sudah terdaftar di kelas ini.');
         }
 
+        $enrollment->load('classRoom.course', 'classRoom.teacher', 'user');
+        $user->notify(new \App\Notifications\ClassEnrollmentNotification($enrollment));
+
+        if ($class->teacher) {
+            $class->teacher->notify(new \App\Notifications\NewStudentEnrolledNotification($enrollment));
+        }
+
         return back()->with('success', "Siswa {$user->name} berhasil didaftarkan.");
     }
 

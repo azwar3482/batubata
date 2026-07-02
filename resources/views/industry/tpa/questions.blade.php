@@ -15,6 +15,21 @@
             </div>
         </div>
 
+        <!-- Info Card -->
+        <div class="mb-6 p-4 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 border border-cyan-100 dark:border-cyan-800/50 rounded-xl">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-cyan-100 dark:bg-cyan-900/50 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-cyan-900 dark:text-cyan-200 mb-1">Tentang Bank Soal TPA</h4>
+                    <p class="text-sm text-cyan-700 dark:text-cyan-300 leading-relaxed">Kelola soal <strong>Test Potensi Akademik</strong> untuk menilai kemampuan kognitif kandidat. Buat soal baru, import dari Excel, atau gunakan soal global dari admin. Soal terbagi dalam 4 kategori: <strong>Verbal, Numerik, Logika, dan Spasial</strong> dengan 3 level kesulitan.</p>
+                </div>
+            </div>
+        </div>
+
         @if(session('success'))
         <div class="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 px-4 py-3 rounded mb-4">{{ session('success') }}</div>
         @endif

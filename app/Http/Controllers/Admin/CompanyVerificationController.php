@@ -32,6 +32,10 @@ class CompanyVerificationController extends Controller
         $company->rejection_reason = null;
         $company->save();
 
+        if ($company->user) {
+            $company->user->notify(new \App\Notifications\CompanyVerificationApproved($company));
+        }
+
         return redirect()->route('admin.verifications.index')
                          ->with('success', 'Perusahaan berhasil diverifikasi.');
     }
@@ -66,6 +70,10 @@ class CompanyVerificationController extends Controller
         $company->verification_status = 'rejected';
         $company->rejection_reason = $request->rejection_reason;
         $company->save();
+
+        if ($company->user) {
+            $company->user->notify(new \App\Notifications\CompanyVerificationRejected($company));
+        }
 
         return redirect()->route('admin.verifications.index')
                          ->with('success', 'Verifikasi perusahaan ditolak.');
