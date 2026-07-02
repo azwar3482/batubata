@@ -596,69 +596,85 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const driver = driver;
-        const tourConfig = {
-            showProgress: true,
-            nextBtnText: 'Lanjut ➔',
-            prevBtnText: '⬅ Kembali',
-            doneBtnText: 'Selesai',
-            popoverClass: 'driverjs-theme',
-            steps: [{
-                    popover: {
-                        title: '👋 Selamat Datang di Panel Edukasi',
-                        description: 'Mari kita kenali berbagai fitur di dashboard ini yang membantu Anda memantau kompetensi lulusan dan menganalisis skill gap.',
-                        align: 'center'
-                    }
-                },
-                {
-                    element: 'header',
-                    popover: {
-                        title: '🌐 Top Navbar',
-                        description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
-                        side: "bottom",
-                        align: 'center'
-                    }
-                },
-                {
-                    element: 'a[href*="education/dashboard"]',
-                    popover: {
-                        title: '📊 Dashboard',
-                        description: 'Menu ini menampilkan ringkasan performa lulusan, analisis skill gap rata-rata per jurusan, dan peluang kolaborasi dengan industri.',
-                        side: "right",
-                        align: 'start'
-                    }
-                },
-                {
-                    element: 'a[href*="education/analytics"]',
-                    popover: {
-                        title: '📈 Analitik Lulusan',
-                        description: 'Lihat laporan analitik mendalam terkait kompetensi apa yang paling kurang dari lulusan agar dapat menyesuaikan kurikulum.',
-                        side: "right",
-                        align: 'start'
-                    }
-                },
-                {
-                    element: 'a[href*="education/students"]',
-                    popover: {
-                        title: '👩‍🎓 Data Siswa / Lulusan',
-                        description: 'Kelola data siswa atau alumni Anda. Lihat progress belajar dan skor asesmen masing-masing individu secara detail.',
-                        side: "right",
-                        align: 'start'
-                    }
+        const tourSteps = [
+            {
+                popover: {
+                    title: 'Selamat Datang di Panel Edukasi',
+                    description: 'Mari kita kenali berbagai fitur di dashboard ini yang membantu Anda memantau kompetensi lulusan dan menganalisis skill gap.',
+                    align: 'center'
                 }
-            ]
-        };
+            },
+            {
+                element: 'header',
+                popover: {
+                    title: 'Top Navbar',
+                    description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
+                    side: "bottom",
+                    align: 'center'
+                }
+            },
+            {
+                element: 'a[href*="education/dashboard"]',
+                popover: {
+                    title: 'Dashboard',
+                    description: 'Menu ini menampilkan ringkasan performa lulusan, analisis skill gap rata-rata per jurusan, dan peluang kolaborasi dengan industri.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="education/analytics"]',
+                popover: {
+                    title: 'Analitik Pendidikan',
+                    description: 'Lihat laporan analitik mendalam terkait kompetensi apa yang paling kurang dari lulusan agar dapat menyesuaikan kurikulum.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="education/students"]',
+                popover: {
+                    title: 'Data Siswa / Lulusan',
+                    description: 'Kelola data siswa atau alumni Anda. Lihat progress belajar dan skor asesmen masing-masing individu secara detail.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="education/courses"]',
+                popover: {
+                    title: 'Kelola Kursus',
+                    description: 'Buat dan kelola kursus pembelajaran untuk siswa/lulusan guna meningkatkan kompetensi mereka.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="education/programs"]',
+                popover: {
+                    title: 'Program Studi',
+                    description: 'Kelola data program studi atau jurusan yang tersedia di institusi pendidikan Anda.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="education/partners"]',
+                popover: {
+                    title: 'Mitra Industri',
+                    description: 'Lihat dan kelola mitra industri yang telah menjalin kerjasama dengan institusi Anda untuk penempatan kerja lulusan.',
+                    side: "right",
+                    align: 'start'
+                }
+            }
+        ];
+
+        const driverObj = window.createTour(tourSteps);
 
         const startTourBtn = document.getElementById('start-tour-btn');
         if (startTourBtn) {
-            startTourBtn.addEventListener('click', () => {
-                driver(tourConfig).drive();
-            });
+            startTourBtn.addEventListener('click', () => driverObj.drive());
         }
-
-        // Auto play saat halaman terbuka
-        const autoDriver = driver(tourConfig);
-        // autoDriver.drive();
     });
 </script>
 <style>

@@ -583,67 +583,82 @@
     @vite(['resources/js/driver.js'])
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const driver = driver;
-            const driverObj = driver({
-                showProgress: true,
-                nextBtnText: 'Lanjut ➔',
-                prevBtnText: '⬅ Kembali',
-                doneBtnText: 'Selesai',
-                popoverClass: 'driverjs-theme',
-                allowClose: true,
-                overlayClickNext: false,
-                steps: [
-                    {
-                        popover: {
-                            title: '👋 Selamat Datang Job Seeker!',
-                            description: 'Mari kita kenali berbagai fitur di dashboard ini untuk membantu Anda mencapai karir impian.',
-                            align: 'center'
-                        }
-                    },
-                    {
-                        element: 'a[href*="dashboard"]',
-                        popover: {
-                            title: '📊 Dashboard Utama',
-                            description: 'Ringkasan statistik: total asesmen, gap skill, dan lowongan yang cocok.',
-                            side: "right", align: 'start'
-                        }
-                    },
-                    {
-                        element: 'a[href*="seeker/assessment"]',
-                        popover: {
-                            title: '📝 Asesmen Kompetensi',
-                            description: 'AI mengukur level skill Anda secara akurat berdasarkan jawaban tes.',
-                            side: "right", align: 'start'
-                        }
-                    },
-                    {
-                        element: 'a[href*="seeker/roadmap"]',
-                        popover: {
-                            title: '🗺️ Roadmap Karir',
-                            description: 'Peta jalan karir berisi panduan skill yang harus dipelajari.',
-                            side: "right", align: 'start'
-                        }
-                    },
-                    {
-                        element: 'a[href*="seeker/jobs"]',
-                        popover: {
-                            title: '💼 Lowongan Pekerjaan',
-                            description: 'Temukan lowongan dan lihat skor kecocokan (Fit Score) profil Anda.',
-                            side: "right", align: 'start'
-                        }
-                    },
-                    {
-                        element: 'a[href*="seeker/courses"]',
-                        popover: {
-                            title: '📚 Kursus & Pembelajaran',
-                            description: 'AI merekomendasikan kursus khusus untuk menutupi gap skill Anda.',
-                            side: "right", align: 'start'
-                        }
+            const tourSteps = [
+                {
+                    popover: {
+                        title: 'Selamat Datang Job Seeker!',
+                        description: 'Mari kita kenali berbagai fitur di dashboard ini untuk membantu Anda mencapai karir impian.',
+                        align: 'center'
                     }
-                ]
-            });
+                },
+                {
+                    element: 'a[href*="dashboard"]',
+                    popover: {
+                        title: 'Dashboard Utama',
+                        description: 'Ringkasan statistik: total asesmen, gap skill, dan lowongan yang cocok.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/assessment"]',
+                    popover: {
+                        title: 'Asesmen Kompetensi',
+                        description: 'AI mengukur level skill Anda secara akurat berdasarkan jawaban tes.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/roadmap"]',
+                    popover: {
+                        title: 'Roadmap Karir',
+                        description: 'Peta jalan karir berisi panduan skill yang harus dipelajari.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/jobs"]',
+                    popover: {
+                        title: 'Lowongan Pekerjaan',
+                        description: 'Temukan lowongan dan lihat skor kecocokan (Fit Score) profil Anda.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/courses"]',
+                    popover: {
+                        title: 'Kursus & Pembelajaran',
+                        description: 'AI merekomendasikan kursus khusus untuk menutupi gap skill Anda.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/tpa"]',
+                    popover: {
+                        title: 'Tes TPA',
+                        description: 'Ikuti tes potensi akademik untuk mengukur kemampuan dasar Anda.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/career-fields"]',
+                    popover: {
+                        title: 'Bidang Karir',
+                        description: 'Jelajahi berbagai bidang karir dan temukan yang paling sesuai dengan minat Anda.',
+                        side: "right", align: 'start'
+                    }
+                },
+                {
+                    element: 'a[href*="seeker/chats"]',
+                    popover: {
+                        title: 'Direct Chats',
+                        description: 'Berkomunikasi langsung dengan perusahaan atau institusi pendidikan.',
+                        side: "right", align: 'start'
+                    }
+                }
+            ];
 
-            // TIDAK auto-start, hanya via tombol
+            const driverObj = window.createTour(tourSteps);
+
             const startTourBtn = document.getElementById('start-tour-btn');
             if (startTourBtn) {
                 startTourBtn.addEventListener('click', () => driverObj.drive());

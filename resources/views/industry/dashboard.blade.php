@@ -642,79 +642,103 @@ return $parsed[$component] ?? $url;
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const driver = driver;
-        const tourConfig = {
-            showProgress: true,
-            nextBtnText: 'Lanjut ➔',
-            prevBtnText: '⬅ Kembali',
-            doneBtnText: 'Selesai',
-            popoverClass: 'driverjs-theme',
-            steps: [
-                {
-                    popover: {
-                        title: '👋 Selamat Datang di Panel Industri',
-                        description: 'Mari kita kenali berbagai fitur di dashboard ini yang akan membantu Anda menemukan talenta terbaik.',
-                        align: 'center'
-                    }
-                },
-                {
-                    element: 'header',
-                    popover: {
-                        title: '🌐 Top Navbar',
-                        description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
-                        side: "bottom",
-                        align: 'center'
-                    }
-                },
-                {
-                    element: 'a[href*="industry/dashboard"]',
-                    popover: {
-                        title: '📊 Dashboard',
-                        description: 'Menu ini membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik rekrutmen perusahaan Anda.',
-                        side: "right",
-                        align: 'start'
-                    }
-                },
-                {
-                    element: 'a[href*="industry/jobs"]',
-                    popover: {
-                        title: '📢 Pasang Lowongan',
-                        description: 'Gunakan menu ini untuk mempublikasikan lowongan kerja baru, mengatur detail pekerjaan, dan melihat lowongan yang sedang aktif.',
-                        side: "right",
-                        align: 'start'
-                    }
-                },
-                {
-                    element: 'a[href*="industry/candidates"]',
-                    popover: {
-                        title: '🔍 Cari Kandidat',
-                        description: 'Ingin mencari talent secara proaktif? Menu ini memungkinkan Anda mencari dan memfilter kandidat berdasarkan skill dan fit score.',
-                        side: "right",
-                        align: 'start'
-                    }
-                },
-                {
-                    element: 'a[href*="industry/team"]',
-                    popover: {
-                        title: '👥 Kelola Tim',
-                        description: 'Tambahkan atau atur hak akses staf HRD lainnya dalam mengelola lowongan dan rekrutmen perusahaan Anda di sini.',
-                        side: "right",
-                        align: 'start'
-                    }
+        const tourSteps = [
+            {
+                popover: {
+                    title: 'Selamat Datang di Panel Industri',
+                    description: 'Mari kita kenali berbagai fitur di dashboard ini yang akan membantu Anda menemukan talenta terbaik.',
+                    align: 'center'
                 }
-            ]
-        };
+            },
+            {
+                element: 'header',
+                popover: {
+                    title: 'Top Navbar',
+                    description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
+                    side: "bottom",
+                    align: 'center'
+                }
+            },
+            {
+                element: 'a[href*="industry/dashboard"]',
+                popover: {
+                    title: 'Dashboard',
+                    description: 'Menu ini membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik rekrutmen perusahaan Anda.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/jobs"]',
+                popover: {
+                    title: 'Lowongan Kerja',
+                    description: 'Gunakan menu ini untuk mempublikasikan lowongan kerja baru, mengatur detail pekerjaan, dan melihat lowongan yang sedang aktif.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/candidates"]',
+                popover: {
+                    title: 'Cari Kandidat',
+                    description: 'Ingin mencari talent secara proaktif? Menu ini memungkinkan Anda mencari dan memfilter kandidat berdasarkan skill dan fit score.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/tpa"]',
+                popover: {
+                    title: 'Kelola Tes TPA',
+                    description: 'Buat dan kelola sesi tes potensi akademik untuk kandidat yang melamar di perusahaan Anda.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/tpa/questions"]',
+                popover: {
+                    title: 'Bank Soal TPA',
+                    description: 'Kelola database soal-soal tes potensi akademik yang digunakan dalam sesi tes.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/competencies"]',
+                popover: {
+                    title: 'Kelola Kompetensi',
+                    description: 'Tentukan kompetensi atau skill spesifik yang dibutuhkan untuk setiap posisi di perusahaan Anda.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/team"]',
+                popover: {
+                    title: 'Kelola Tim',
+                    description: 'Tambahkan atau atur hak akses staf HRD lainnya dalam mengelola lowongan dan rekrutmen perusahaan Anda di sini.',
+                    side: "right",
+                    align: 'start'
+                }
+            },
+            {
+                element: 'a[href*="industry/chats"]',
+                popover: {
+                    title: 'Direct Chats',
+                    description: 'Berkomunikasi langsung dengan kandidat potensial melalui fitur chat internal platform.',
+                    side: "right",
+                    align: 'start'
+                }
+            }
+        ];
+
+        const driverObj = window.createTour(tourSteps);
 
         const startTourBtn = document.getElementById('start-tour-btn');
         if (startTourBtn) {
-            startTourBtn.addEventListener('click', () => {
-                driver(tourConfig).drive();
-            });
+            startTourBtn.addEventListener('click', () => driverObj.drive());
         }
-
-        // Auto play saat halaman terbuka
-        const autoDriver = driver(tourConfig);
-        // autoDriver.drive();
     });
 </script>
 <style>

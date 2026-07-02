@@ -26,7 +26,20 @@
                         <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">KOMPASKARIR</span>
                     </a>
                 </div>
-                <div class="flex items-center">
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button type="button" id="theme-toggle"
+                        class="p-2 rounded-full bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        aria-label="Toggle dark mode">
+                        <!-- Sun icon -->
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 text-amber-500 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <!-- Moon icon -->
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
                     <a href="/" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium text-sm transition">Kembali ke Beranda</a>
                 </div>
             </div>
@@ -274,5 +287,28 @@
         </svg>
     </button>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+
+            if (themeToggleBtn) {
+                function updateIcons() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    lightIcon.classList.toggle('hidden', !isDark);
+                    darkIcon.classList.toggle('hidden', isDark);
+                }
+
+                updateIcons();
+
+                themeToggleBtn.addEventListener('click', () => {
+                    const isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+                    updateIcons();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
