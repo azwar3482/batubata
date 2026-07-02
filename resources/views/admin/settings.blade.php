@@ -4,9 +4,8 @@
 
             <!-- Header -->
             <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Kelola Kompetensi & Pengaturan</h2>
-                <p class="mt-2 text-gray-600 dark:text-slate-400">Kelola database kompetensi, standar industri, dan konfigurasi sistem
-                    platform.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.manage_competencies_and_settings') }}</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.settings_page_description') }}</p>
             </div>
 
             <!-- Info Card -->
@@ -18,37 +17,37 @@
                         </svg>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-indigo-900 dark:text-indigo-200 mb-2">Tentang Halaman Ini</h3>
+                        <h3 class="text-lg font-bold text-indigo-900 dark:text-indigo-200 mb-2">{{ __('messages.about_this_page') }}</h3>
                         <p class="text-sm text-indigo-700 dark:text-indigo-300/80 leading-relaxed mb-4">
-                            Halaman <strong>Kelola Kompetensi & Pengaturan</strong> adalah pusat kendali untuk mengelola database kompetensi, posisi karir, dan konfigurasi sistem platform KOMPASKARIR.
+                            {!! __('messages.about_settings_description') !!}
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                             <div class="flex items-start gap-2 p-3 bg-white/60 dark:bg-slate-800/50 rounded-lg">
                                 <span class="text-lg">📚</span>
                                 <div>
-                                    <p class="text-xs font-semibold text-indigo-800 dark:text-indigo-300">Database Kompetensi</p>
-                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">Kelola skill & kompetensi (technical/soft skill) untuk setiap posisi karir</p>
+                                    <p class="text-xs font-semibold text-indigo-800 dark:text-indigo-300">{{ __('messages.competency_database') }}</p>
+                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">{{ __('messages.competency_database_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-2 p-3 bg-white/60 dark:bg-slate-800/50 rounded-lg">
                                 <span class="text-lg">🎯</span>
                                 <div>
                                     <p class="text-xs font-semibold text-indigo-800 dark:text-indigo-300">Posisi Karir</p>
-                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">Daftar posisi yang tersedia beserta kompetensi terkait</p>
+                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">{{ __('messages.career_positions_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-2 p-3 bg-white/60 dark:bg-slate-800/50 rounded-lg">
                                 <span class="text-lg">⚙️</span>
                                 <div>
                                     <p class="text-xs font-semibold text-indigo-800 dark:text-indigo-300">Pengaturan Sistem</p>
-                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">Konfigurasi AI, threshold matching, notifikasi & maintenance</p>
+                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">{{ __('messages.system_settings_desc') }}</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-2 p-3 bg-white/60 dark:bg-slate-800/50 rounded-lg">
                                 <span class="text-lg">📋</span>
                                 <div>
                                     <p class="text-xs font-semibold text-indigo-800 dark:text-indigo-300">Activity Logs</p>
-                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">Riwayat perubahan terbaru pada data kompetensi</p>
+                                    <p class="text-xs text-indigo-600 dark:text-indigo-400/80">{{ __('messages.activity_logs_desc') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -59,24 +58,23 @@
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-blue-500">
-                    <p class="text-sm text-gray-500 dark:text-slate-400">Total Kompetensi</p>
+                    <p class="text-sm text-gray-500 dark:text-slate-400">{{ __('messages.total_competencies') }}</p>
                     <p class="text-2xl font-bold dark:text-white">{{ $stats['total_competencies'] }}</p>
-                    <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">+12 bulan ini</p>
+                    <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">{{ __('messages.plus_12_this_month') }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-purple-500">
                     <p class="text-sm text-gray-500 dark:text-slate-400">Posisi Karir</p>
                     <p class="text-2xl font-bold dark:text-white">{{ $stats['total_positions'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-yellow-500">
-                    <p class="text-sm text-gray-500 dark:text-slate-400">Update Pending</p>
+                    <p class="text-sm text-gray-500 dark:text-slate-400">{{ __('messages.pending_updates') }}</p>
                     <p class="text-2xl font-bold dark:text-white">{{ $stats['pending_updates'] }}</p>
-                    <a href="#" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">Review →</a>
+                    <a href="#" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">{{ __('messages.review') }} →</a>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-emerald-500">
                     <p class="text-sm text-gray-500 dark:text-slate-400">Last Sync</p>
                     <p class="text-2xl font-bold dark:text-white">{{ $stats['last_sync']->diffForHumans() }}</p>
-                    <button onclick="syncCompetencies()" class="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1">Sync
-                        Sekarang</button>
+                    <button onclick="syncCompetencies()" class="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1">{{ __('messages.sync_now') }}</button>
                 </div>
             </div>
 
@@ -88,22 +86,22 @@
                         <button @click="activeTab = 'competencies'"
                             :class="{ 'border-indigo-500 text-indigo-600 dark:text-indigo-400': activeTab === 'competencies', 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 hover:border-gray-300 dark:hover:border-slate-600': activeTab !== 'competencies' }"
                             class="py-4 px-4 border-b-2 font-medium text-sm whitespace-nowrap transition">
-                            📚 Database Kompetensi
+                            📚 {{ __('messages.tab_competency_database') }}
                         </button>
                         <button @click="activeTab = 'positions'"
                             :class="{ 'border-indigo-500 text-indigo-600 dark:text-indigo-400': activeTab === 'positions', 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 hover:border-gray-300 dark:hover:border-slate-600': activeTab !== 'positions' }"
                             class="py-4 px-4 border-b-2 font-medium text-sm whitespace-nowrap transition">
-                            🎯 Posisi Karir
+                            🎯 {{ __('messages.tab_career_positions') }}
                         </button>
                         <button @click="activeTab = 'system'"
                             :class="{ 'border-indigo-500 text-indigo-600 dark:text-indigo-400': activeTab === 'system', 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 hover:border-gray-300 dark:hover:border-slate-600': activeTab !== 'system' }"
                             class="py-4 px-4 border-b-2 font-medium text-sm whitespace-nowrap transition">
-                            ⚙️ Pengaturan Sistem
+                            ⚙️ {{ __('messages.tab_system_settings') }}
                         </button>
                         <button @click="activeTab = 'logs'"
                             :class="{ 'border-indigo-500 text-indigo-600 dark:text-indigo-400': activeTab === 'logs', 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 hover:border-gray-300 dark:hover:border-slate-600': activeTab !== 'logs' }"
                             class="py-4 px-4 border-b-2 font-medium text-sm whitespace-nowrap transition">
-                            📋 Activity Logs
+                            📋 {{ __('messages.tab_activity_logs') }}
                         </button>
                     </nav>
                 </div>
@@ -114,15 +112,15 @@
                     <!-- Competencies Tab -->
                     <div x-show="activeTab === 'competencies'">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Daftar Kompetensi (5 Terbaru)</h3>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.latest_competencies_list') }}</h3>
                             <div class="flex gap-2">
                                 <a href="{{ route('admin.competencies') }}"
                                     class="px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-slate-600 transition">
-                                    Kelola Semua →
+                                    {{ __('messages.manage_all') }} →
                                 </a>
                                 <a href="{{ route('admin.competencies.create') }}"
                                     class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
-                                    + Tambah
++ {{ __('messages.add') }}
                                 </a>
                             </div>
                         </div>
@@ -165,7 +163,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-slate-400">Belum ada data kompetensi.</td>
+                                        <td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-slate-400">{{ __('messages.no_competency_data') }}</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -173,7 +171,7 @@
                         </div>
                         @if($latestCompetencies->count() > 5)
                         <div class="mt-4 text-center">
-                            <a href="{{ route('admin.competencies') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">Lihat semua {{ $latestCompetencies->count() }} kompetensi →</a>
+                            <a href="{{ route('admin.competencies') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">{{ __('messages.view_all_competencies', ['count' => $latestCompetencies->count()]) }} →</a>
                         </div>
                         @endif
                     </div>
@@ -181,16 +179,16 @@
                     <!-- Positions Tab -->
                     <div x-show="activeTab === 'positions'">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Daftar Posisi Karir</h3>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.career_positions_list') }}</h3>
                             <a href="{{ route('admin.positions.create') }}"
                                 class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
-                                + Tambah Posisi
+                                + {{ __('messages.add_position') }}
                             </a>
                         </div>
 
                         <!-- Search -->
                         <div class="mb-4">
-                            <input type="text" x-model="positionSearch" placeholder="Cari posisi..."
+                            <input type="text" x-model="positionSearch" placeholder="{{ __('messages.search_position_placeholder') }}"
                                 class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500">
                         </div>
 
@@ -229,7 +227,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-slate-400">Belum ada data posisi karir.</td>
+                                        <td colspan="5" class="px-4 py-8 text-center text-gray-500 dark:text-slate-400">{{ __('messages.no_position_data') }}</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -242,11 +240,11 @@
                         <div class="flex items-center justify-between mb-6">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">Pengaturan Sistem</h3>
-                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Konfigurasi platform KOMPASKARIR</p>
+                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.kompaskarir_platform_config') }}</p>
                             </div>
                             <span class="px-3 py-1 text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full font-medium">
                                 <span class="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-1 animate-pulse"></span>
-                                System Online
+                                {{ __('messages.system_online') }}
                             </span>
                         </div>
 
@@ -262,19 +260,19 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">Aplikasi</h4>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Pengaturan umum platform</p>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.application') }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.general_platform_settings') }}</p>
                                     </div>
                                 </div>
                                 <div class="p-6 space-y-5">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Nama Aplikasi</label>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.app_name') }}</label>
                                             <input type="text" name="app_name" value="{{ $systemSettings['app_name'] }}"
                                                 class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Bahasa Default</label>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.default_language') }}</label>
                                             <select name="app_locale" class="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                                                 <option value="id" {{ $systemSettings['app_locale'] == 'id' ? 'selected' : '' }}>Indonesia</option>
                                                 <option value="en" {{ $systemSettings['app_locale'] == 'en' ? 'selected' : '' }}>English</option>
@@ -289,8 +287,8 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h5 class="font-medium text-red-800 dark:text-red-300">Maintenance Mode</h5>
-                                                <p class="text-xs text-red-600 dark:text-red-400">Semua user akan di-logout saat diaktifkan</p>
+                                                <h5 class="font-medium text-red-800 dark:text-red-300">{{ __('messages.maintenance_mode') }}</h5>
+                                                <p class="text-xs text-red-600 dark:text-red-400">{{ __('messages.maintenance_mode_desc') }}</p>
                                             </div>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer">
@@ -310,15 +308,15 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">AI & Analisis</h4>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Konfigurasi mesin analisis AI</p>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.ai_and_analysis') }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.ai_analysis_engine_config') }}</p>
                                     </div>
                                 </div>
                                 <div class="p-6 space-y-5">
                                     <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
                                         <div>
                                             <h5 class="font-medium text-gray-900 dark:text-white">AI Analysis Engine</h5>
-                                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Aktifkan analisis skill gap berbasis AI (Python Flask + Gemini)</p>
+                                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.ai_analysis_toggle_desc') }}</p>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" name="ai_analysis_enabled" {{ $systemSettings['ai_analysis_enabled'] ? 'checked' : '' }} class="sr-only peer">
@@ -345,12 +343,12 @@
                                                     oninput="this.nextElementSibling.textContent = this.value + '%'">
                                                 <span class="text-sm font-medium text-gray-700 dark:text-slate-300 w-12 text-right">{{ $systemSettings['auto_match_threshold'] }}%</span>
                                             </div>
-                                            <p class="text-xs text-gray-400 mt-1">Min. match untuk notifikasi otomatis</p>
+                                            <p class="text-xs text-gray-400 mt-1">{{ __('messages.auto_match_threshold_desc') }}</p>
                                         </div>
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                                                 Skill Gap Maksimal
-                                                <span class="text-xs text-gray-400 ml-1">(untuk melamar)</span>
+                                                <span class="text-xs text-gray-400 ml-1">({{ __('messages.for_applying') }})</span>
                                             </label>
                                             <div class="flex items-center gap-2">
                                                 <input type="range" name="skill_gap_max" min="0" max="100" value="{{ $systemSettings['skill_gap_max'] }}"
@@ -358,7 +356,7 @@
                                                     oninput="this.nextElementSibling.textContent = this.value + '%'">
                                                 <span class="text-sm font-medium text-gray-700 dark:text-slate-300 w-12 text-right">{{ $systemSettings['skill_gap_max'] }}%</span>
                                             </div>
-                                            <p class="text-xs text-gray-400 mt-1">Job seeker bisa melamar jika gap ≤ {{ $systemSettings['skill_gap_max'] }}%</p>
+                                            <p class="text-xs text-gray-400 mt-1">{{ __('messages.skill_gap_max_desc') }} ≤ {{ $systemSettings['skill_gap_max'] }}%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -373,16 +371,16 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">Aturan Lamaran Kerja</h4>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Syarat yang harus dipenuhi job seeker</p>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.job_application_rules') }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.job_application_rules_desc') }}</p>
                                     </div>
                                 </div>
                                 <div class="p-6">
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
                                             <div>
-                                                <h5 class="text-sm font-medium text-gray-900 dark:text-white">Profil Lengkap</h5>
-                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Wajib 100% sebelum melamar</p>
+                                                <h5 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.complete_profile') }}</h5>
+                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.complete_profile_desc') }}</p>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" name="require_profile_complete" {{ $systemSettings['require_profile_complete'] ? 'checked' : '' }} class="sr-only peer">
@@ -391,8 +389,8 @@
                                         </div>
                                         <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
                                             <div>
-                                                <h5 class="text-sm font-medium text-gray-900 dark:text-white">Wajib Asesmen</h5>
-                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Harus punya asesmen aktif</p>
+                                                <h5 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.require_assessment') }}</h5>
+                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.require_assessment_desc') }}</p>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" name="require_assessment" {{ $systemSettings['require_assessment'] ? 'checked' : '' }} class="sr-only peer">
@@ -401,8 +399,8 @@
                                         </div>
                                         <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
                                             <div>
-                                                <h5 class="text-sm font-medium text-gray-900 dark:text-white">Izinkan Withdraw</h5>
-                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Job seeker bisa tarik lamaran</p>
+                                                <h5 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.allow_withdraw') }}</h5>
+                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.allow_withdraw_desc') }}</p>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" name="allow_withdraw" {{ $systemSettings['allow_withdraw'] ? 'checked' : '' }} class="sr-only peer">
@@ -423,7 +421,7 @@
                                     </div>
                                     <div>
                                         <h4 class="font-semibold text-gray-900 dark:text-white">Notifikasi</h4>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Pengaturan email & notifikasi sistem</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.notification_settings_desc') }}</p>
                                     </div>
                                 </div>
                                 <div class="p-6">
@@ -435,7 +433,7 @@
                                                 </svg>
                                                 <div>
                                                     <h5 class="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</h5>
-                                                    <p class="text-xs text-gray-500 dark:text-slate-400">Kirim notifikasi via email</p>
+                                                    <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.email_notifications_desc') }}</p>
                                                 </div>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
@@ -449,8 +447,8 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                                 </svg>
                                                 <div>
-                                                    <h5 class="text-sm font-medium text-gray-900 dark:text-white">Lamaran Baru</h5>
-                                                    <p class="text-xs text-gray-500 dark:text-slate-400">Notifikasi saat ada pelamar</p>
+                                                    <h5 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.new_application') }}</h5>
+                                                    <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.new_application_desc') }}</p>
                                                 </div>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
@@ -464,8 +462,8 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                                 </svg>
                                                 <div>
-                                                    <h5 class="text-sm font-medium text-gray-900 dark:text-white">Perubahan Status</h5>
-                                                    <p class="text-xs text-gray-500 dark:text-slate-400">Notifikasi update status lamaran</p>
+                                                    <h5 class="text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.status_change') }}</h5>
+                                                    <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.status_change_desc') }}</p>
                                                 </div>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
@@ -480,7 +478,7 @@
                                                 </svg>
                                                 <div>
                                                     <h5 class="text-sm font-medium text-gray-900 dark:text-white">Job Match</h5>
-                                                    <p class="text-xs text-gray-500 dark:text-slate-400">Notifikasi lowongan cocok</p>
+                                                    <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.job_match_desc') }}</p>
                                                 </div>
                                             </div>
                                             <label class="relative inline-flex items-center cursor-pointer">
@@ -501,8 +499,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">Bobot Dokumen</h4>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Konfigurasi scoring dokumen (total harus 100%)</p>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.document_weights') }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.document_weights_desc') }}</p>
                                     </div>
                                     <span id="weight-total" class="ml-auto px-3 py-1 text-xs bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-full font-medium">
                                         Total: {{ $systemSettings['cv_weight'] + $systemSettings['ijazah_weight'] + $systemSettings['transkrip_weight'] + $systemSettings['sertifikat_weight'] + $systemSettings['portofolio_weight'] }}%
@@ -531,7 +529,7 @@
                                         @endforeach
                                     </div>
                                     <p class="text-xs text-gray-500 dark:text-slate-400 mt-3 text-center">
-                                        Total bobot dokumen harus = 100%. Bobot digunakan untuk menghitung matching score kandidat.
+                                        {{ __('messages.document_weights_info') }}
                                     </p>
                                 </div>
                             </div>
@@ -545,8 +543,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">Informasi Sistem</h4>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Status dan versi komponen sistem</p>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.system_information') }}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.system_information_desc') }}</p>
                                     </div>
                                 </div>
                                 <div class="p-6">
@@ -576,11 +574,11 @@
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white capitalize">{{ $systemInfo['session_driver'] }}</p>
                                         </div>
                                         <div class="p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                            <p class="text-xs text-gray-500 dark:text-slate-400">Total Users</p>
+                                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.total_users') }}</p>
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($systemInfo['total_users']) }}</p>
                                         </div>
                                         <div class="p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                            <p class="text-xs text-gray-500 dark:text-slate-400">Lowongan Aktif</p>
+                                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.active_jobs') }}</p>
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($systemInfo['active_jobs']) }}</p>
                                         </div>
                                     </div>
@@ -593,14 +591,14 @@
                                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    Perubahan akan disimpan dan langsung diterapkan
+                                    {{ __('messages.changes_will_be_saved') }}
                                 </p>
                                 <button type="submit"
                                     class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    Simpan Pengaturan
+                                    {{ __('messages.save_settings') }}
                                 </button>
                             </div>
                         </form>
@@ -608,7 +606,7 @@
 
                     <!-- Activity Logs Tab -->
                     <div x-show="activeTab === 'logs'">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Recent Changes</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('messages.recent_changes') }}</h3>
                         <div class="space-y-4">
                             @foreach ($recentChanges as $change)
                                 <div class="flex items-start gap-4 p-4 bg-gray-50 dark:bg-slate-800/50 rounded-lg">
@@ -622,7 +620,7 @@
                                                 class="font-semibold">{{ $change['item'] }}</span>
                                         </p>
                                         <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
-                                            Oleh {{ $change['by'] }} • {{ $change['time']->diffForHumans() }}
+                                            {{ __('messages.by') }} {{ $change['by'] }} • {{ $change['time']->diffForHumans() }}
                                         </p>
                                     </div>
                                     <button class="text-gray-400 hover:text-gray-600 dark:hover:text-slate-300 transition">
@@ -646,10 +644,10 @@
     <!-- Sync Function -->
     <script>
         function syncCompetencies() {
-            if (confirm('Mulai sinkronisasi database kompetensi dengan sumber eksternal? Proses ini mungkin memakan waktu beberapa menit.')) {
-                alert('Sinkronisasi dimulai... Silakan tunggu.');
+            if (confirm('{{ __('messages.sync_confirm') }}')) {
+                alert('{{ __('messages.sync_started') }}');
                 setTimeout(() => {
-                    alert('Sinkronisasi berhasil! 24 kompetensi diperbarui.');
+                    alert('{{ __('messages.sync_success') }}');
                     location.reload();
                 }, 3000);
             }

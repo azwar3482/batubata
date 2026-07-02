@@ -8,14 +8,14 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center">
                             <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
-                                Dashboard
+                                {{ __('messages.dashboard') }}
                             </a>
                         </li>
                         <li>
                             <div class="flex items-center">
                                 <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
                                 <a href="{{ route('education.partners') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 ml-1 md:ml-2 text-sm">
-                                    Mitra
+                                    {{ __('messages.mitra') }}
                                 </a>
                             </div>
                         </li>
@@ -52,7 +52,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M5 13l4 4L19 7"></path>
                                         </svg>
-                                        Mitra Terverifikasi
+                                        {{ __('messages.mitra_terverifikasi') }}
                                     </span>
                                 </div>
                             @endif
@@ -60,8 +60,7 @@
 
                         <div class="space-y-4 border-t border-gray-100 pt-6">
                             <div>
-                                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Ukuran
-                                    Perusahaan</h4>
+                                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ __('messages.ukuran_perusahaan') }}</h4>
                                 <div class="flex items-center text-sm text-gray-700">
                                     <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -73,8 +72,7 @@
                                 </div>
                             </div>
                             <div>
-                                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Lokasi
-                                    Pusat</h4>
+                                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ __('messages.lokasi_pusat') }}</h4>
                                 <div class="flex items-center text-sm text-gray-700">
                                     <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -86,8 +84,7 @@
                                 </div>
                             </div>
                             <div>
-                                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Website
-                                </h4>
+                                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{{ __('messages.website') }}</h4>
                                 <div class="flex items-center text-sm">
                                     <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -106,7 +103,7 @@
                         <div class="mt-8">
                             <a href="{{ route('education.collaboration.create', ['partner' => $partner['id']]) }}"
                                 class="w-full flex justify-center items-center px-4 py-3 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
-                                Ajukan Kolaborasi
+                                {{ __('messages.ajukan_kolaborasi') }}
                             </a>
                             <a href="mailto:{{ $partner['contact_email'] }}"
                                 class="w-full mt-3 flex justify-center items-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
@@ -115,7 +112,7 @@
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                                Hubungi via Email
+                                {{ __('messages.hubungi_via_email') }}
                             </a>
                         </div>
                     </div>
@@ -125,7 +122,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <!-- About -->
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">Tentang Perusahaan</h3>
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">{{ __('messages.tentang_perusahaan') }}</h3>
                         <p class="text-gray-600 leading-relaxed">
                             {{ $partner['description'] }}
                         </p>
@@ -140,7 +137,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                 </svg>
-                                Peluang Kolaborasi ({{ $partner['active_opportunities'] }})
+                                {{ __('messages.peluang_kolaborasi') }} ({{ $partner['active_opportunities'] }})
                             </h3>
                         </div>
                         <div class="p-6">
@@ -162,7 +159,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
-                                            Manfaat Institusi
+                                            {{ __('messages.manfaat_institusi') }}
                                         </h4>
                                         <ul class="space-y-3">
                                             @foreach ($partner['benefits'] as $benefit)
@@ -188,7 +185,7 @@
                                                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                                                     </path>
                                                 </svg>
-                                                Persyaratan
+                                                {{ __('messages.persyaratan') }}
                                             </h4>
                                             <ul class="space-y-3">
                                                 @foreach ($partner['requirements'] as $req)

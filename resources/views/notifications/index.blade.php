@@ -5,8 +5,8 @@
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
                 <div>
-                    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Notifikasi</h1>
-                    <p class="text-slate-550 dark:text-slate-400 mt-1">Kelola semua pemberitahuan dan informasi penting Anda.</p>
+                    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">{{ __('messages.notifications') }}</h1>
+                    <p class="text-slate-550 dark:text-slate-400 mt-1">{{ __('messages.manage_all_notifications') }}</p>
                 </div>
                 
                 @if($notifications->count() > 0)
@@ -17,7 +17,7 @@
                         <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        Tandai Semua Dibaca
+                        {{ __('messages.mark_all_as_read') }}
                     </button>
                 </form>
                 @endif
@@ -32,9 +32,9 @@
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">Pusat Notifikasi & Pemberitahuan</h4>
+                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">{{ __('messages.notification_center') }}</h4>
                         <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Halaman ini merangkum semua pemberitahuan penting untuk Anda. Anda akan menerima pemberitahuan ketika ada <strong>lowongan baru yang cocok</strong>, <strong>perubahan status lamaran kerja</strong>, atau <strong>pengumuman penting</strong> terkait program pembelajaran Anda. Klik tombol "Lihat Detail" untuk langsung mengakses halaman terkait, atau hapus notifikasi yang sudah tidak diperlukan.
+                            {!! __('messages.notification_center_description') !!}
                         </p>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                                                 <div class="mt-3.5 flex items-center gap-3">
                                                     @if(!empty($notification['data']['url']))
                                                         <a href="{{ $notification['data']['url'] }}" class="inline-flex items-center text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
-                                                            Lihat Detail
+                                                            {{ __('messages.view_detail') }}
                                                             <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                                         </a>
                                                     @endif
@@ -119,7 +119,7 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <button type="submit" class="text-sm font-semibold text-slate-550 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
-                                                                Tandai Dibaca
+                                                                {{ __('messages.mark_as_read') }}
                                                             </button>
                                                         </form>
                                                     @endif
@@ -127,7 +127,7 @@
                                                     <form action="{{ route('notifications.destroy', $notification['id']) }}" method="POST" class="inline ml-auto">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Hapus Notifikasi">
+                                                        <button type="submit" class="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50"                                                          title="{{ __('messages.delete_notification') }}">
                                                             <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                         </button>
                                                     </form>
@@ -158,10 +158,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Kotak Masuk Kosong</h3>
-                                <p class="mt-2 text-slate-500 dark:text-slate-400 max-w-sm mx-auto text-sm">Saat ini Anda tidak memiliki pemberitahuan baru. Kami akan memberi tahu Anda jika ada aktivitas terbaru!</p>
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ __('messages.empty_inbox') }}</h3>
+                                <p class="mt-2 text-slate-500 dark:text-slate-400 max-w-sm mx-auto text-sm">{{ __('messages.no_new_notifications') }}</p>
                                 <a href="{{ route('dashboard') }}" class="mt-6 inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                                    Kembali ke Dashboard
+                                    {{ __('messages.back_to_dashboard') }}
                                 </a>
                             </div>
                         @endif
@@ -177,30 +177,30 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <h4 class="text-base font-bold text-slate-900 dark:text-white">Tentang Notifikasi</h4>
+                            <h4 class="text-base font-bold text-slate-900 dark:text-white">{{ __('messages.about_notifications') }}</h4>
                         </div>
                         
                         <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Semua pemberitahuan penting ada di sini. Anda akan menerima notifikasi saat:
+                            {{ __('messages.all_important_notifications_here') }}
                         </p>
                         
                         <ul class="space-y-3.5 text-sm text-slate-600 dark:text-slate-400">
                             <li class="flex items-start gap-2.5">
                                 <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
-                                <span><strong>Lowongan baru cocok</strong> dengan profil Anda.</span>
+                                <span><strong>{{ __('messages.new_matching_job') }}</strong> {{ __('messages.with_your_profile') }}</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
-                                <span><strong>Status lamaran berubah</strong> dari tim rekrutmen.</span>
+                                <span><strong>{{ __('messages.application_status_changed') }}</strong> {{ __('messages.from_recruitment_team') }}</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
-                                <span><strong>Informasi penting</strong> terkait TPA atau kursus.</span>
+                                <span><strong>{{ __('messages.important_information') }}</strong> {{ __('messages.related_to_tpa_or_courses') }}</span>
                             </li>
                         </ul>
                         
                         <p class="text-xs text-slate-400 dark:text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-700">
-                            Silakan klik tombol <strong>"Lihat Detail"</strong> untuk langsung mengarah ke halaman terkait.
+                            {{ __('messages.click_view_detail_to_navigate') }}
                         </p>
                     </div>
                 </div>

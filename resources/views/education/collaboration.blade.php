@@ -26,21 +26,21 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center">
                             <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
-                                Dashboard
+                                {{ __('messages.dashboard') }}
                             </a>
                         </li>
                         <li>
                             <div class="flex items-center">
                                 <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
                                 <a href="{{ route('education.partners') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 ml-1 md:ml-2 text-sm">
-                                    Mitra
+                                    {{ __('messages.mitra') }}
                                 </a>
                             </div>
                         </li>
                         <li aria-current="page">
                             <div class="flex items-center">
                                 <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-                                <span class="text-gray-900 dark:text-white ml-1 md:ml-2 text-sm font-medium">Ajukan Kolaborasi</span>
+                                <span class="text-gray-900 dark:text-white ml-1 md:ml-2 text-sm font-medium">{{ __('messages.ajukan_kolaborasi') }}</span>
                             </div>
                         </li>
                     </ol>
@@ -49,8 +49,8 @@
 
             <!-- Header -->
             <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Ajukan Kolaborasi</h2>
-                <p class="mt-2 text-gray-600 dark:text-slate-400">Isi formulir berikut untuk mengajukan proposal kolaborasi dengan mitra industri pilihan Anda.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.ajukan_kolaborasi') }}</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.isi_formulir_pengajuan_kolaborasi') }}</p>
             </div>
 
             <form action="{{ route('education.collaboration.store') }}" method="POST" enctype="multipart/form-data"
@@ -65,8 +65,8 @@
                                 class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
                                 1</div>
                             <div class="ml-3">
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white">Pilih Mitra</p>
-                                <p class="text-xs text-gray-500 dark:text-slate-400">Tentukan partner kolaborasi</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('messages.pilih_mitra') }}</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.tentukan_partner_kolaborasi') }}</p>
                             </div>
                         </div>
                         <div class="flex-1 h-1 bg-gray-200 dark:bg-slate-700 mx-4"></div>
@@ -75,8 +75,8 @@
                                 class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm">
                                 2</div>
                             <div class="ml-3">
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white">Detail Proposal</p>
-                                <p class="text-xs text-gray-500 dark:text-slate-400">Jelaskan rencana kolaborasi</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('messages.detail_proposal') }}</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.jelaskan_rencana_kolaborasi') }}</p>
                             </div>
                         </div>
                         <div class="flex-1 h-1 bg-gray-200 dark:bg-slate-700 mx-4"></div>
@@ -85,8 +85,8 @@
                                 class="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-800 text-gray-400 dark:text-slate-500 flex items-center justify-center font-bold text-sm">
                                 3</div>
                             <div class="ml-3">
-                                <p class="text-sm font-semibold text-gray-400 dark:text-slate-500">Konfirmasi</p>
-                                <p class="text-xs text-gray-400 dark:text-slate-500">Review & kirim</p>
+                                <p class="text-sm font-semibold text-gray-400 dark:text-slate-500">{{ __('messages.konfirmasi') }}</p>
+                                <p class="text-xs text-gray-400 dark:text-slate-500">{{ __('messages.review_dan_kirim') }}</p>
                             </div>
                         </div>
                     </div>
@@ -94,19 +94,19 @@
 
                 <!-- Section 1: Partner Selection -->
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🏢 Pilih Mitra Industri</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🏢 {{ __('messages.pilih_mitra_industri') }}</h3>
 
                     <div class="space-y-4">
                         <div>
                             <label for="partner_id" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Nama Perusahaan <span class="text-red-500">*</span>
+                                {{ __('messages.nama_perusahaan') }} <span class="text-red-500">*</span>
                             </label>
 
                             <div x-data="{
                                 open: false,
                                 search: '',
                                 selected: '{{ old('partner_id', request('partner')) }}',
-                                selectedLabel: '-- Pilih Perusahaan --',
+                                selectedLabel: '{{ __('messages.pilih_perusahaan') }}',
                                 options: [
                                     @foreach ($partners as $partner)
                                         { id: '{{ $partner['id'] }}', name: '{{ addslashes($partner['name']) }}', industry: '{{ addslashes($partner['industry']) }}' },
@@ -130,7 +130,6 @@
                                         const match = this.options.find(o => o.id == this.selected);
                                         if (match) {
                                             this.selectedLabel = match.name + ' - ' + match.industry;
-                                            // Delay to ensure global function is declared
                                             setTimeout(() => {
                                                 if (typeof updatePartnerInfo === 'function') {
                                                     updatePartnerInfo(this.selected);
@@ -146,7 +145,7 @@
                                 <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())"
                                     class="flex items-center justify-between w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 cursor-pointer transition"
                                     :class="{'ring-2 ring-indigo-500 border-indigo-500': open}">
-                                    <span x-text="selected ? selectedLabel : '-- Pilih Perusahaan --'" :class="{'text-gray-400 dark:text-gray-500': !selected}"></span>
+                                    <span x-text="selected ? selectedLabel : '{{ __('messages.pilih_perusahaan') }}'" :class="{'text-gray-400 dark:text-gray-500': !selected}"></span>
                                     <svg class="w-4 h-4 text-gray-400 transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
@@ -162,7 +161,7 @@
                                     class="absolute z-50 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg">
 
                                     <div class="p-2 border-b border-gray-100 dark:border-slate-700">
-                                        <input type="text" x-model="search" placeholder="Cari perusahaan atau industri..."
+                                        <input type="text" x-model="search" placeholder="{{ __('messages.cari_perusahaan_atau_industri') }}"
                                             class="w-full text-sm rounded-lg border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                             @keydown.escape="open = false"
                                             @keydown.enter.prevent="if(filteredOptions.length > 0) { selectOption(filteredOptions[0]) }"
@@ -178,7 +177,7 @@
                                             </li>
                                         </template>
                                         <li x-show="filteredOptions.length === 0" class="px-3 py-2 text-sm text-gray-500 dark:text-slate-400 text-center">
-                                            Perusahaan tidak ditemukan
+                                            {{ __('messages.perusahaan_tidak_ditemukan') }}
                                         </li>
                                     </ul>
                                 </div>
@@ -208,13 +207,13 @@
 
                 <!-- Section 2: Collaboration Details -->
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📋 Detail Proposal Kolaborasi</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📋 {{ __('messages.detail_proposal_kolaborasi') }}</h3>
 
                     <div class="space-y-6">
                         <!-- Collaboration Types -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Jenis Kolaborasi <span class="text-red-500">*</span>
+                                {{ __('messages.jenis_kolaborasi') }} <span class="text-red-500">*</span>
                             </label>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 @foreach ($collaborationTypes as $key => $label)
@@ -235,10 +234,10 @@
                         <!-- Title -->
                         <div>
                             <label for="title" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Judul Proposal <span class="text-red-500">*</span>
+                                {{ __('messages.judul_proposal') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="title" id="title" value="{{ old('title') }}" required
-                                placeholder="Contoh: Program Magang Digital Marketing 2024"
+                                placeholder="{{ __('messages.contoh_program_magang_digital_marketing') }}"
                                 class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                             @error('title')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -248,7 +247,7 @@
                         <!-- Description -->
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Deskripsi Proposal <span class="text-red-500">*</span>
+                                {{ __('messages.deskripsi_proposal') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="hidden" name="description" id="description" value="{{ old('description') }}" required>
                             <div id="quill-description"></div>
@@ -260,7 +259,7 @@
                         <!-- Expected Outcome -->
                         <div>
                             <label for="expected_outcome" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Hasil yang Diharapkan <span class="text-red-500">*</span>
+                                {{ __('messages.hasil_yang_diharapkan') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="hidden" name="expected_outcome" id="expected_outcome" value="{{ old('expected_outcome') }}" required>
                             <div id="quill-expected_outcome"></div>
@@ -272,11 +271,11 @@
                         <!-- Timeline -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Timeline Pelaksanaan <span class="text-red-500">*</span>
+                                {{ __('messages.timeline_pelaksanaan') }} <span class="text-red-500">*</span>
                             </label>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label for="timeline_start" class="block text-xs text-gray-500 dark:text-slate-400 mb-1">Tanggal Mulai</label>
+                                    <label for="timeline_start" class="block text-xs text-gray-500 dark:text-slate-400 mb-1">{{ __('messages.tanggal_mulai') }}</label>
                                     <input type="date" name="timeline_start" id="timeline_start" value="{{ old('timeline_start') }}"
                                         required
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
@@ -285,7 +284,7 @@
                                     @enderror
                                 </div>
                                 <div>
-                                    <label for="timeline_end" class="block text-xs text-gray-500 dark:text-slate-400 mb-1">Tanggal Selesai</label>
+                                    <label for="timeline_end" class="block text-xs text-gray-500 dark:text-slate-400 mb-1">{{ __('messages.tanggal_selesai') }}</label>
                                     <input type="date" name="timeline_end" id="timeline_end" value="{{ old('timeline_end') }}"
                                         required
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
@@ -300,12 +299,12 @@
 
                 <!-- Section 3: Contact Information -->
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">👤 Informasi Kontak</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">👤 {{ __('messages.informasi_kontak') }}</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="contact_person" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Nama Kontak Person <span class="text-red-500">*</span>
+                                {{ __('messages.nama_kontak_person') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="contact_person" id="contact_person"
                                 value="{{ old('contact_person', $institution->user->name ?? '') }}" required
@@ -316,7 +315,7 @@
                         </div>
                         <div>
                             <label for="contact_email" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Email Kontak <span class="text-red-500">*</span>
+                                {{ __('messages.email_kontak') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="email" name="contact_email" id="contact_email"
                                 value="{{ old('contact_email', $institution->user->email ?? '') }}" required
@@ -327,7 +326,7 @@
                         </div>
                         <div>
                             <label for="contact_phone" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Nomor Telepon / WhatsApp
+                                {{ __('messages.nomor_telepon_whatsapp') }}
                             </label>
                             <input type="tel" name="contact_phone" id="contact_phone"
                                 value="{{ old('contact_phone') }}" placeholder="0812-3456-7890"
@@ -341,18 +340,17 @@
 
                 <!-- Section 4: Attachment -->
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📎 Lampiran (Opsional)</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📎 {{ __('messages.lampiran_opsional') }}</h3>
 
                     <div class="space-y-4">
                         <div>
                             <label for="attachment" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                                Dokumen Pendukung
+                                {{ __('messages.dokumen_pendukung') }}
                             </label>
                             <input type="file" name="attachment" id="attachment" accept=".pdf,.doc,.docx"
                                 class="w-full text-sm text-gray-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-900/50 file:text-indigo-700 dark:file:text-indigo-400 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-900">
-                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Format: PDF, DOC, DOCX • Maksimal 5MB</p>
-                            <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">Contoh: Proposal lengkap, company profile, atau
-                                dokumen pendukung lainnya</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.format_pdf_doc_docx') }} • {{ __('messages.maksimal_5mb') }}</p>
+                            <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">{{ __('messages.contoh_proposal_lengkap_dokumen_pendukung') }}</p>
                         </div>
                     </div>
                 </div>
@@ -363,11 +361,10 @@
                         <input type="checkbox" name="terms" id="terms" required
                             class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-800 text-indigo-600 focus:ring-indigo-500 mt-1">
                         <label for="terms" class="ml-3 text-sm text-gray-600 dark:text-slate-300">
-                            Saya menyatakan bahwa informasi yang diisi adalah benar dan saya setuju dengan
+                            {{ __('messages.saya_menyatakan_informasi_benar') }}
                             <a href="#"
-                                class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium underline">Syarat &
-                                Ketentuan</a>
-                            pengajuan kolaborasi KOMPASKARIR.
+                                class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium underline">{{ __('messages.syarat_ketentuan') }}</a>
+                            {{ __('messages.pengajuan_kolaborasi_kompaskarir') }}
                         </label>
                     </div>
                     @error('terms')
@@ -377,11 +374,11 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-end">
                         <a href="{{ route('education.dashboard') }}"
                             class="px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition font-medium text-center">
-                            Batal
+                            {{ __('messages.batal') }}
                         </a>
                         <button type="submit"
                             class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-800 transition shadow-lg transform hover:-translate-y-0.5">
-                            Kirim Proposal Kolaborasi
+                            {{ __('messages.kirim_proposal_kolaborasi') }}
                             <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -411,7 +408,6 @@
                 document.getElementById('previewIndustry').textContent = partner.industry;
                 document.getElementById('previewContact').textContent = partner.contact_email;
 
-                // Update logo initials
                 const logoDiv = preview.querySelector('.w-10.h-10');
                 logoDiv.textContent = partner.logo;
 
@@ -419,7 +415,6 @@
             }
         }
 
-        // Auto-trigger if partner is pre-selected from URL
         document.addEventListener('DOMContentLoaded', function() {
             const partnerSelect = document.getElementById('partner_id');
             if (partnerSelect.value) {
@@ -433,7 +428,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var quillDescription = new Quill('#quill-description', {
             theme: 'snow',
-            placeholder: 'Jelaskan secara detail rencana kolaborasi yang Anda ajukan...',
+            placeholder: '{{ __("messages.jelaskan_detail_rencana_kolaborasi") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
@@ -448,7 +443,7 @@
 
         var quillOutcome = new Quill('#quill-expected_outcome', {
             theme: 'snow',
-            placeholder: 'Apa manfaat yang diharapkan dari kolaborasi ini untuk kedua belah pihak?',
+            placeholder: '{{ __("messages.manfaat_kolaborasi_kedua_pihak") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],

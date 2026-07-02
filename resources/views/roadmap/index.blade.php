@@ -4,13 +4,13 @@
 
             {{-- Header --}}
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Roadmap Karir Anda</h2>
-                <p class="mt-2 text-gray-600 dark:text-gray-300">Rencana aksi menuju posisi:
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.your_career_roadmap') }}</h2>
+                <p class="mt-2 text-gray-600 dark:text-gray-300">{{ __('messages.action_plan_target_position') }}:
                     <span class="font-bold text-blue-600 dark:text-blue-400">{{ $latestAssessment->target_name }}</span>
                 </p>
                 @if($latestAssessment->total_gap_percentage > 0)
                 <div class="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-full">
-                    <span class="text-sm font-medium text-amber-700 dark:text-amber-300">Skill Gap Saat Ini:</span>
+                    <span class="text-sm font-medium text-amber-700 dark:text-amber-300">{{ __('messages.current_skill_gap') }}:</span>
                     <span class="text-sm font-bold text-amber-900 dark:text-amber-200">{{ number_format($latestAssessment->total_gap_percentage, 1) }}%</span>
                 </div>
                 @endif
@@ -33,7 +33,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
-                        Lihat Hasil Asesmen
+                        {{ __('messages.view_assessment_result') }}
                     </a>
                 </div>
             </div>
@@ -43,12 +43,12 @@
                 <button id="tab-timeline" onclick="switchTab('timeline')"
                     title="apa yang harus saya kerjakan bulan ini?"
                     class="tab-btn px-5 py-3 text-sm font-semibold border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400 transition-all duration-200 rounded-t-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20">
-                    📅 Timeline Belajar
+                    📅 {{ __('messages.learning_timeline') }}
                 </button>
                 <button id="tab-skilltree" onclick="switchTab('skilltree')"
                     title="tempat pengguna merefleksikan diri, melihat gap mereka secara keseluruhan, dan merencanakan strategi belajar jangka panjang"
                     class="tab-btn px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 dark:text-gray-400 transition-all duration-200 rounded-t-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20">
-                    🌳 Pohon Kompetensi
+                    🌳 {{ __('messages.competency_tree') }}
                 </button>
             </div>
 
@@ -67,10 +67,10 @@
                             </svg>
                         </div>
                         <div>
-                            <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">Skill Gap Rendah - Anda Siap!</h4>
-                            <p class="text-sm text-green-700 dark:text-green-300 leading-relaxed">Selamat! Skill gap Anda hanya <strong>{{ number_format($latestAssessment->total_gap_percentage, 1) }}%</strong> yang berarti Anda sudah memenuhi kualifikasi untuk posisi ini. Anda bisa langsung melamar pekerjaan atau menggunakan roadmap ini untuk meningkatkan skill lebih lanjut.</p>
+                            <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">{{ __('messages.low_skill_gap_ready') }}</h4>
+                            <p class="text-sm text-green-700 dark:text-green-300 leading-relaxed">{{ __('messages.low_skill_gap_desc', ['gap' => number_format($latestAssessment->total_gap_percentage, 1)]) }}</p>
                             <a href="{{ route('seeker.jobs.all') }}" class="mt-3 inline-flex items-center text-sm font-bold text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100 transition">
-                                🔍 Cari Lowongan Sekarang
+                                🔍 {{ __('messages.search_jobs_now') }}
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
@@ -87,8 +87,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h4 class="text-sm font-bold text-purple-900 dark:text-purple-200 mb-1">Tentang Roadmap Karir</h4>
-                            <p class="text-sm text-purple-700 dark:text-purple-300 leading-relaxed">Roadmap karir adalah rencana aksi personal selama <strong>6 bulan</strong> menuju posisi target Anda. Setiap tahap berisi <strong>langkah konkret</strong> berdasarkan kompetensi yang perlu ditingkatkan. Klik pada kompetensi untuk melihat kursus yang tersedia.</p>
+                            <h4 class="text-sm font-bold text-purple-900 dark:text-purple-200 mb-1">{{ __('messages.about_career_roadmap') }}</h4>
+                            <p class="text-sm text-purple-700 dark:text-purple-300 leading-relaxed">{!! __('messages.roadmap_description') !!}</p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                                                     <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                     </svg>
-                                                    Selesai
+                                                    {{ __('messages.completed') }}
                                                 </span>
                                             @elseif($item->gap_percentage)
                                                 <span class="text-xs font-bold {{ $item->gap_percentage > 50 ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400' }}">
@@ -172,7 +172,7 @@
 
                                         @if(!empty($skillLines))
                                         <div class="mb-4">
-                                            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Kompetensi yang harus dipelajari:</p>
+                                            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">{{ __('messages.competencies_to_learn') }}:</p>
                                             <div class="space-y-1.5">
                                                 @foreach($skillLines as $skillLine)
                                                 @php
@@ -210,7 +210,7 @@
 
                                         @if(!empty($courseLines))
                                         <div class="mb-4">
-                                            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Rekomendasi Kursus:</p>
+                                            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">{{ __('messages.course_recommendations') }}:</p>
                                             <div class="space-y-1.5">
                                                 @foreach($courseLines as $courseLine)
                                                 @php
@@ -251,7 +251,7 @@
 
                                         @if(!empty($courses) && empty($courseLines))
                                         <div class="mb-4">
-                                            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">Rekomendasi Kursus:</p>
+                                            <p class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('messages.course_recommendations') }}:</p>
                                             <div class="space-y-1.5">
                                                 @foreach($courses as $course)
                                                 <a href="{{ isset($course['id']) ? route('seeker.courses.show', $course['id']) : route('seeker.courses.index') }}"
@@ -276,7 +276,7 @@
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                     </svg>
-                                                    Tandai Selesai
+                                                    {{ __('messages.mark_as_completed') }}
                                                 </button>
                                             </form>
                                         @else
@@ -284,7 +284,7 @@
                                                 <svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                                 </svg>
-                                                Diselesaikan pada {{ $item->completed_at->format('d M Y') }}
+                                                {{ __('messages.completed_on') }} {{ $item->completed_at->format('d M Y') }}
                                             </div>
                                         @endif
                                     </div>
@@ -298,8 +298,8 @@
                     @if ($latestAssessment->total_gap_percentage <= 30)
                     <div class="p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200 dark:border-green-800 max-w-md mx-auto">
                         <div class="text-4xl mb-3">🎯</div>
-                        <h3 class="text-lg font-bold text-green-800 dark:text-green-200 mb-2">Skill Gap Anda Rendah!</h3>
-                        <p class="text-sm text-green-600 dark:text-green-400 mb-4">Anda sudah siap untuk melamar pekerjaan. Jelajahi lowongan yang tersedia sekarang!</p>
+                        <h3 class="text-lg font-bold text-green-800 dark:text-green-200 mb-2">{{ __('messages.your_skill_gap_is_low') }}</h3>
+                        <p class="text-sm text-green-600 dark:text-green-400 mb-4">{{ __('messages.ready_explore_jobs') }}</p>
                         <a href="{{ route('seeker.jobs.all') }}"
                             class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition shadow-lg shadow-green-500/25">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -315,7 +315,7 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Kembali ke Dashboard
+                        {{ __('messages.back_to_dashboard') }}
                     </a>
                 </div>
             </div>{{-- /content-timeline --}}
@@ -405,7 +405,7 @@
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center text-xl">🌳</div>
                         <div>
-                            <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">Pohon Kompetensi - Skill Gap Rendah!</h4>
+                            <h4 class="text-sm font-bold text-green-900 dark:text-green-200 mb-1">{{ __('messages.competency_tree_low_gap') }}</h4>
                             <p class="text-sm text-green-700 dark:text-green-300 leading-relaxed">
                                 Visualisasi menunjukkan Anda sudah menguasai sebagian besar kompetensi.
                                 <span class="font-semibold text-emerald-600 dark:text-emerald-400">Hijau</span> = dikuasai ·
@@ -420,7 +420,7 @@
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center text-xl">🌳</div>
                         <div>
-                            <h4 class="text-sm font-bold text-indigo-900 dark:text-indigo-200 mb-1">Pohon Kompetensi</h4>
+                            <h4 class="text-sm font-bold text-indigo-900 dark:text-indigo-200 mb-1">{{ __('messages.competency_tree') }}</h4>
                             <p class="text-sm text-indigo-700 dark:text-indigo-300 leading-relaxed">
                                 Visualisasi seluruh kompetensi diurutkan per bulan &amp; prioritas.
                                 <span class="font-semibold text-emerald-600 dark:text-emerald-400">Hijau</span> = dikuasai ·
@@ -489,11 +489,11 @@
                 {{-- Empty state --}}
                 <div class="text-center py-16 bg-gray-50 dark:bg-slate-900/50 rounded-2xl border border-dashed border-gray-300 dark:border-slate-700">
                     <div class="text-6xl mb-4">🌱</div>
-                    <h3 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Pohon Kompetensi Belum Tersedia</h3>
-                    <p class="text-gray-500 dark:text-gray-400 mb-6">Generate roadmap terlebih dahulu dari halaman hasil asesmen.</p>
+                    <h3 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">{{ __('messages.competency_tree_not_available') }}</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mb-6">{{ __('messages.generate_roadmap_first') }}</p>
                     <a href="{{ route('seeker.assessment.history') }}"
                        class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition">
-                        Lihat Riwayat Asesmen →
+                        {{ __('messages.view_assessment_history') }} →
                     </a>
                 </div>
                 @endif
@@ -525,7 +525,7 @@
                         </p>
                     </div>
                     <button onclick="closeNodeModal()"
-                            class="flex-shrink-0 p-1.5 hover:bg-white/20 rounded-xl transition" aria-label="Tutup">
+                            class="flex-shrink-0 p-1.5 hover:bg-white/20 rounded-xl transition" aria-label="{{ __('messages.close') }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
@@ -534,7 +534,7 @@
                 {{-- Progress bar --}}
                 <div class="mt-4">
                     <div class="flex justify-between text-xs text-white/80 mb-1">
-                        <span>Kemajuan Penguasaan</span>
+                        <span>{{ __('messages.mastery_progress') }}</span>
                         <span id="modal-progress-pct" class="font-bold text-white"></span>
                     </div>
                     <div class="w-full bg-white/20 rounded-full h-2">
@@ -550,24 +550,24 @@
                 <div class="flex items-center gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-700">
                     <span class="text-3xl">⚡</span>
                     <div>
-                        <p class="text-sm font-bold text-amber-800 dark:text-amber-200">Skill Gap yang Perlu Ditutup</p>
+                        <p class="text-sm font-bold text-amber-800 dark:text-amber-200">{{ __('messages.skill_gap_to_close') }}</p>
                         <p class="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
-                            <span id="modal-gap-pct" class="font-extrabold text-xl text-amber-700 dark:text-amber-300"></span>% perlu ditingkatkan
+                            <span id="modal-gap-pct" class="font-extrabold text-xl text-amber-700 dark:text-amber-300"></span>% {{ __('messages.needs_improvement') }}
                         </p>
                     </div>
                 </div>
 
                 {{-- Kursus + Upload Sertifikat --}}
                 <div>
-                    <p class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">🚀 Pilihan Peningkatan Skill:</p>
+                    <p class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">🚀 {{ __('messages.skill_improvement_options') }}:</p>
                     <div id="modal-courses" class="space-y-2 mb-3"></div>
                     <a href="{{ route('profile.edit') }}"
                        class="flex items-center gap-3 p-3.5 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-700
                               hover:bg-purple-100 dark:hover:bg-purple-900/40 transition group">
                         <span class="text-2xl">📤</span>
                         <div class="flex-1">
-                            <p class="text-sm font-bold text-purple-800 dark:text-purple-200">Upload Sertifikat Kompetensi</p>
-                            <p class="text-xs text-purple-600 dark:text-purple-400 mt-0.5">Buktikan kemampuan → UNLOCK Instan!</p>
+                            <p class="text-sm font-bold text-purple-800 dark:text-purple-200">{{ __('messages.upload_competency_certificate') }}</p>
+                            <p class="text-xs text-purple-600 dark:text-purple-400 mt-0.5">{{ __('messages.prove_ability_unlock_instant') }}</p>
                         </div>
                         <svg class="w-4 h-4 text-purple-400 group-hover:text-purple-600 transition flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

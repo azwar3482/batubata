@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <!-- Quill Editor -->
     @include('partials.quill-styles')
     <style>
@@ -23,21 +23,21 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <!-- Breadcrumbs -->
         <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
-            <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+            <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.dashboard') }}</a>
             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a href="{{ route('industry.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">TPA</a>
+            <a href="{{ route('industry.tpa.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.tpa') }}</a>
             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-gray-900 dark:text-white font-medium">Edit Tes</span>
+            <span class="text-gray-900 dark:text-white font-medium">{{ __('messages.edit_test') }}</span>
         </nav>
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Tes TPA</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.edit_tpa_test') }}</h2>
             <div class="flex items-center gap-3">
                 @if($test->is_active)
-                <span class="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold border border-green-200">Aktif</span>
+                <span class="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold border border-green-200">{{ __('messages.active') }}</span>
                 @else
-                <span class="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 rounded-full text-xs font-semibold border border-gray-200 dark:border-slate-700">Nonaktif</span>
+                <span class="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 rounded-full text-xs font-semibold border border-gray-200 dark:border-slate-700">{{ __('messages.inactive') }}</span>
                 @endif
                 <a href="{{ route('industry.tpa.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
                     &laquo; Kembali
@@ -52,21 +52,21 @@
                 {{-- LEFT: Form Fields --}}
                 <div class="lg:col-span-2 space-y-6 relative z-30">
 
-                    {{-- Section 1: Informasi Dasar --}}
+                    {{-- Section 1: {{ __('messages.basic_information') }} --}}
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 relative z-20">
                         <div class="px-6 py-4 rounded-t-2xl border-b border-gray-50 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30">
                             <div class="flex items-center gap-3">
                                 <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
                                 <div>
-                                    <h2 class="font-semibold text-gray-800 dark:text-gray-200">Informasi Dasar</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Nama dan tujuan tes</p>
+                                    <h2 class="font-semibold text-gray-800 dark:text-gray-200">{{ __('messages.basic_information') }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ __('messages.test_name_and_purpose') }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="p-6 space-y-5">
                             <div>
                                 <label class="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                                    Judul Tes <span class="text-red-500">*</span>
+                                    {{ __('messages.test_title') }} <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="title" value="{{ old('title', $test->title) }}"
                                     class="w-full border-gray-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -75,7 +75,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Deskripsi <span class="text-gray-400 dark:text-gray-500 font-normal">(Opsional)</span></label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.description') }} <span class="text-gray-400 dark:text-gray-500 font-normal">{{ __('messages.optional') }}</span></label>
                                 <input id="description" type="hidden" name="description" value="{{ old('description', $test->description) }}">
                                 <div id="quill-description"></div>
                             </div>
@@ -83,7 +83,7 @@
                             {{-- Searchable Dropdown untuk Lowongan --}}
                             <div x-data="jobSearch()" x-init="init()">
                                 <label class="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                                    2Lowongan Terkait
+                                    {{ __('messages.related_vacancy') }}
                                     <span class="relative group">
                                         <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -164,7 +164,7 @@
                                                 <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                                 </svg>
-                                                Lowongan tidak ditemukan
+                                                {{ __('messages.vacancy_not_found') }}
                                             </div>
                                         </div>
                                     </div>
@@ -173,37 +173,37 @@
                         </div>
                     </div>
 
-                    {{-- Section 2: Parameter Ujian --}}
+                    {{-- Section 2: {{ __('messages.exam_parameters') }} --}}
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
                         <div class="px-6 py-4 rounded-t-2xl border-b border-gray-50 bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/30 dark:to-violet-900/30">
                             <div class="flex items-center gap-3">
                                 <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
                                 <div>
-                                    <h2 class="font-semibold text-gray-800 dark:text-gray-200">Parameter Ujian</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Durasi dan standar kelulusan</p>
+                                    <h2 class="font-semibold text-gray-800 dark:text-gray-200">{{ __('messages.exam_parameters') }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ __('messages.duration_and_passing_standard') }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="p-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Durasi Waktu <span class="text-red-500">*</span></label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.time_duration') }} <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <input type="number" name="time_limit_minutes" x-model.number="timeLimit"
                                             value="{{ old('time_limit_minutes', $test->time_limit_minutes) }}"
                                             class="w-full border-gray-300 dark:border-slate-600 rounded-xl shadow-sm pr-16 focus:ring-purple-500 focus:border-purple-500"
                                             min="10" max="180" required>
                                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                            <span class="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm font-medium">Menit</span>
+                                            <span class="text-gray-500 dark:text-gray-400 dark:text-gray-500 text-sm font-medium">{{ __('messages.minutes') }}</span>
                                         </div>
                                     </div>
                                     <p class="text-xs text-gray-400 dark:text-gray-500 mt-1.5">
-                                        <span x-text="timeLimit"></span> menit untuk <span x-text="totalQuestions"></span> soal
-                                        = <span x-text="totalQuestions > 0 ? Math.round(timeLimit / totalQuestions) : 0" class="font-medium text-gray-600 dark:text-gray-400 dark:text-gray-500"></span> menit/soal
+                                        <span x-text="timeLimit"></span> {{ __('messages.minutes_for') }} <span x-text="totalQuestions"></span> {{ __('messages.questions') }}
+                                        = <span x-text="totalQuestions > 0 ? Math.round(timeLimit / totalQuestions) : 0" class="font-medium text-gray-600 dark:text-gray-400 dark:text-gray-500"></span> menit/{{ __('messages.questions') }}
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Passing Score <span class="text-red-500">*</span></label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.passing_score') }} <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <input type="number" name="passing_score" x-model.number="passingScore"
                                             value="{{ old('passing_score', $test->passing_score) }}"
@@ -228,15 +228,15 @@
                         </div>
                     </div>
 
-                    {{-- Section 3: Komposisi Soal --}}
+                    {{-- Section 3: {{ __('messages.question_composition') }} --}}
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
                         <div class="px-6 py-4 rounded-t-2xl border-b border-gray-50 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
                                     <div>
-                                        <h2 class="font-semibold text-gray-800 dark:text-gray-200">Komposisi Soal</h2>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Jumlah soal per kategori</p>
+                                        <h2 class="font-semibold text-gray-800 dark:text-gray-200">{{ __('messages.question_composition') }}</h2>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Jumlah {{ __('messages.questions') }} per kategori</p>
                                     </div>
                                 </div>
                                 <span class="text-xs bg-green-100 border border-green-200 text-green-700 px-3 py-1.5 rounded-full font-bold" x-text="`Total: ${totalQuestions} Soal`"></span>
@@ -269,7 +269,7 @@
 
                             {{-- Visual Distribution --}}
                             <div x-show="totalQuestions > 0" class="mt-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
-                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-2">Distribusi Soal:</p>
+                                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-2">{{ __('messages.question_distribution') }}</p>
                                 <div class="flex rounded-full overflow-hidden h-4">
                                     <div class="bg-blue-500 transition-all" :style="`width: ${(counts.verbal/totalQuestions)*100}%`" x-show="counts.verbal > 0"></div>
                                     <div class="bg-green-500 transition-all" :style="`width: ${(counts.numerik/totalQuestions)*100}%`" x-show="counts.numerik > 0"></div>
@@ -286,15 +286,15 @@
                         </div>
                     </div>
 
-                    {{-- Section 4: Bobot Penilaian --}}
+                    {{-- Section 4: {{ __('messages.assessment_weight') }} --}}
                     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
                         <div class="px-6 py-4 rounded-t-2xl border-b border-gray-50 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <span class="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
                                     <div>
-                                        <h2 class="font-semibold text-gray-800 dark:text-gray-200">Bobot Penilaian</h2>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Kontribusi per kategori terhadap nilai akhir</p>
+                                        <h2 class="font-semibold text-gray-800 dark:text-gray-200">{{ __('messages.assessment_weight') }}</h2>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ __('messages.category_contribution_to_final_score') }}</p>
                                     </div>
                                 </div>
                                 <span class="text-xs px-3 py-1.5 rounded-full font-bold transition-colors border"
@@ -324,7 +324,7 @@
                                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                 </svg>
-                                Total bobot harus tepat 100%. Saat ini: <span x-text="totalWeight" class="font-bold"></span>%
+                                {{ __('messages.total_weight_must_be_100_currently') }} <span x-text="totalWeight" class="font-bold"></span>%
                             </div>
                         </div>
                     </div>
@@ -335,8 +335,8 @@
                             <div class="flex items-center gap-3">
                                 <span class="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
                                 <div>
-                                    <h2 class="font-semibold text-gray-800 dark:text-gray-200">Pengaturan Tambahan</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">Konfigurasi opsional</p>
+                                    <h2 class="font-semibold text-gray-800 dark:text-gray-200">{{ __('messages.additional_settings') }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{{ __('messages.optional_configuration') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -345,29 +345,29 @@
                                 <label class="flex items-start gap-3 p-3 rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:bg-slate-800/50 cursor-pointer transition-colors">
                                     <input type="checkbox" name="randomize_questions" value="1" {{ old('randomize_questions', $test->randomize_questions) ? 'checked' : '' }} class="mt-0.5 rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
                                     <div>
-                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">Acak Urutan Soal</span>
-                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">Soal tampil dengan urutan acak</span>
+                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.randomize_question_order') }}</span>
+                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">{{ __('messages.questions_shown_randomly') }}</span>
                                     </div>
                                 </label>
                                 <label class="flex items-start gap-3 p-3 rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:bg-slate-800/50 cursor-pointer transition-colors">
                                     <input type="checkbox" name="randomize_options" value="1" {{ old('randomize_options', $test->randomize_options) ? 'checked' : '' }} class="mt-0.5 rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
                                     <div>
-                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">Acak Pilihan Jawaban</span>
-                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">Posisi A, B, C, D diacak</span>
+                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.randomize_answer_options') }}</span>
+                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">{{ __('messages.options_shuffled') }}</span>
                                     </div>
                                 </label>
                                 <label class="flex items-start gap-3 p-3 rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:bg-slate-800/50 cursor-pointer transition-colors">
                                     <input type="checkbox" name="show_result_after" value="1" {{ old('show_result_after', $test->show_result_after) ? 'checked' : '' }} class="mt-0.5 rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
                                     <div>
-                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">Tampilkan Hasil Langsung</span>
-                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">Kandidat langsung lihat skor</span>
+                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.show_results_immediately') }}</span>
+                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">{{ __('messages.candidate_sees_score_immediately') }}</span>
                                     </div>
                                 </label>
                                 <label class="flex items-start gap-3 p-3 rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:bg-slate-800/50 cursor-pointer transition-colors">
                                     <input type="checkbox" name="is_active" value="1" {{ old('is_active', $test->is_active) ? 'checked' : '' }} class="mt-0.5 rounded border-gray-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500">
                                     <div>
-                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">Status Aktif</span>
-                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">Tes dapat digunakan</span>
+                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.active_status') }}</span>
+                                        <span class="block text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-0.5">{{ __('messages.test_can_be_used') }}</span>
                                     </div>
                                 </label>
                             </div>
@@ -381,12 +381,12 @@
                         {{-- Preview Card --}}
                         <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
                             <div class="px-5 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-                                <h3 class="font-bold text-sm">Preview Konfigurasi</h3>
+                                <h3 class="font-bold text-sm">{{ __('messages.configuration_preview') }}</h3>
                             </div>
                             <div class="p-5 space-y-4">
                                 <div>
-                                    <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">Judul Tes</p>
-                                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-200" x-text="formTitle || 'Belum diisi'"></p>
+                                    <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">{{ __('messages.test_title') }}</p>
+                                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-200" x-text="formTitle || '{{ __('messages.not_filled_yet') }}'"></p>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div class="bg-blue-50 rounded-lg p-2.5 text-center">
@@ -400,10 +400,10 @@
                                 </div>
                                 <div class="bg-purple-50 rounded-lg p-2.5 text-center">
                                     <p class="text-lg font-bold text-purple-600" x-text="passingScore + '%'"></p>
-                                    <p class="text-[10px] text-purple-500">Passing Score</p>
+                                    <p class="text-[10px] text-purple-500">{{ __('messages.passing_score') }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Bobot</p>
+                                    <p class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{{ __('messages.weight') }}</p>
                                     <div class="space-y-1.5">
                                         @foreach(['verbal', 'numerik', 'logika', 'spasial'] as $key)
                                         <div class="flex items-center gap-2">
@@ -421,17 +421,17 @@
 
                         {{-- Validation Status --}}
                         <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-5">
-                            <h3 class="font-bold text-sm text-gray-700 dark:text-gray-300 mb-3">Status Validasi</h3>
+                            <h3 class="font-bold text-sm text-gray-700 dark:text-gray-300 mb-3">{{ __('messages.validation_status') }}</h3>
                             <div class="space-y-2">
                                 <div class="flex items-center gap-2 text-xs">
                                     <span x-show="totalQuestions > 0" class="text-green-500">✓</span>
                                     <span x-show="totalQuestions === 0" class="text-red-500">✗</span>
-                                    <span :class="totalQuestions > 0 ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'">Jumlah soal > 0</span>
+                                    <span :class="totalQuestions > 0 ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'">Jumlah {{ __('messages.questions') }} > 0</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-xs">
                                     <span x-show="totalWeight === 100" class="text-green-500">✓</span>
                                     <span x-show="totalWeight !== 100" class="text-red-500">✗</span>
-                                    <span :class="totalWeight === 100 ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'">Bobot total = 100%</span>
+                                    <span :class="totalWeight === 100 ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'">{{ __('messages.total_weight_eq_100') }}</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-xs">
                                     <span x-show="timeLimit >= 10" class="text-green-500">✓</span>
@@ -450,7 +450,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
-                                Simpan Perubahan
+                                {{ __('messages.save_changes') }}
                             </button>
                             <a href="{{ route('industry.tpa.index') }}" class="block w-full text-center px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:bg-slate-800/50 transition-colors">
                                 Batal

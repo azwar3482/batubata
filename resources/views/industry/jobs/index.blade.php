@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <div class="py-12" x-data="{ showVerifyModal: false }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-6 flex justify-between items-center">
@@ -7,12 +7,12 @@
                 </h2>
                 @if($isVerified)
                 <a href="{{ route('industry.jobs.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                    + Tambah Lowongan Kerja
+                    + {{ __('messages.add_job_vacancy') }}
                 </a>
                 @else
                 <button @click="showVerifyModal = true" class="bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
-                    + Tambah Lowongan Kerja
+                    + {{ __('messages.add_job_vacancy') }}
                 </button>
                 @endif
             </div>
@@ -29,12 +29,12 @@
                             <div class="flex items-center justify-center w-16 h-16 mx-auto bg-amber-100 rounded-full mb-4">
                                 <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-900 text-center mb-2">Lengkapi Profil Perusahaan</h3>
-                            <p class="text-sm text-gray-500 text-center mb-4">Untuk dapat membuat lowongan kerja, perusahaan Anda harus terverifikasi oleh admin.</p>
+                            <h3 class="text-xl font-bold text-gray-900 text-center mb-2">{{ __('messages.complete_company_profile') }}</h3>
+                            <p class="text-sm text-gray-500 text-center mb-4">{{ __('messages.company_must_be_verified') }}</p>
                             
                             @if($company)
                             <div class="bg-gray-50 rounded-xl p-4 mb-4">
-                                <h4 class="text-sm font-semibold text-gray-700 mb-3">Status Dokumen:</h4>
+                                <h4 class="text-sm font-semibold text-gray-700 mb-3">{{ __('messages.document_status') }}</h4>
                                 <div class="space-y-2">
                                     @php
                                         $docs = [
@@ -50,14 +50,14 @@
                                         @if($doc['path'])
                                             @php $status = $company->getDocumentStatus($doc['key']); @endphp
                                             @if($status === 'approved')
-                                                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Disetujui</span>
+                                                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full">{{ __('messages.approved') }}</span>
                                             @elseif($status === 'rejected')
-                                                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">Ditolak</span>
+                                                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">{{ __('messages.rejected') }}</span>
                                             @else
-                                                <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">Menunggu</span>
+                                                <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">{{ __('messages.pending') }}</span>
                                             @endif
                                         @else
-                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full">Belum Upload</span>
+                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full">{{ __('messages.not_uploaded') }}</span>
                                         @endif
                                     </div>
                                     @endforeach
@@ -70,8 +70,8 @@
                                         <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-amber-800">Profil perusahaan belum dibuat.</p>
-                                        <p class="text-sm text-amber-700 mt-1">Silakan buat profil perusahaan terlebih dahulu sebelum membuat lowongan kerja.</p>
+                                        <p class="text-sm font-medium text-amber-800">{{ __('messages.company_profile_not_created') }}</p>
+                                        <p class="text-sm text-amber-700 mt-1">{{ __('messages.create_company_profile_first') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -84,11 +84,11 @@
                                         <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-blue-800">Langkah selanjutnya:</p>
+                                        <p class="text-sm font-medium text-blue-800">{{ __('messages.next_steps') }}</p>
                                         <ol class="text-sm text-blue-700 mt-1 list-decimal list-inside space-y-1">
-                                            <li>Unggah dokumen legalitas perusahaan (NIB, SIUP, NPWP, KTP Direktur)</li>
-                                            <li>Tunggu verifikasi dari admin</li>
-                                            <li>Setelah disetujui, Anda dapat membuat lowongan kerja</li>
+                                            <li>{{ __('messages.upload_legal_documents') }}</li>
+                                            <li>{{ __('messages.wait_for_admin_verification') }}</li>
+                                            <li>{{ __('messages.after_approved_can_create') }}</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -98,10 +98,10 @@
                         <div class="bg-gray-50 px-6 py-4 flex flex-col sm:flex-row-reverse gap-3">
                             <a href="{{ route('profile.edit') }}" class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                Lengkapi Profil
+                                {{ __('messages.complete_profile') }}
                             </a>
                             <button @click="showVerifyModal = false" type="button" class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors">
-                                Tutup
+                                {{ __('messages.close') }}
                             </button>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">Tentang Daftar Lowongan</h4>
+                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">{{ __('messages.about_job_listings') }}</h4>
                         <p class="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">Kelola semua lowongan kerja yang diposting perusahaan Anda. Setiap lowongan akan <strong>otomatis dicocokkan</strong> dengan kandidat berdasarkan <strong>skor kecocokan AI</strong>. Anda dapat melihat <strong>jumlah pelamar</strong>, <strong>filter berdasarkan status</strong>, dan <strong>mengunduh laporan</strong> performa lowongan.</p>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                     <div class="mb-6 flex justify-between items-center">
                         <form action="{{ route('industry.jobs.index') }}" method="GET" class="flex w-full md:w-1/3">
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari posisi, perusahaan, atau lokasi..." class="w-full rounded-l-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-r-md transition border border-transparent">Cari</button>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-r-md transition border border-transparent">{{ __('messages.search') }}</button>
                         </form>
                     </div>
 
@@ -148,11 +148,11 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lowongan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.vacancy') }}</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi & Pengalaman</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipe & Gaji</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.status') }}</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -186,9 +186,9 @@
                                         $isExpired = $expires->isPast() || !$job->is_active;
                                         @endphp
                                         @if ($isExpired)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Berakhir</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ __('messages.expired') }}</span>
                                         @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Aktif</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ __('messages.active') }}</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right text-sm font-medium">
@@ -226,7 +226,7 @@
                                 @empty
                                 <tr>
                                     <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                                        Belum ada lowongan yang diposting.
+                                        {{ __('messages.no_vacancies_posted') }}
                                     </td>
                                 </tr>
                                 @endforelse

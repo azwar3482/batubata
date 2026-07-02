@@ -2,8 +2,8 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Dashboard Pengajar</h2>
-                <p class="mt-2 text-gray-600 dark:text-slate-400">Selamat datang, {{ Auth::user()->name }}. Kelola kursus dan kelas Anda.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.teacher_dashboard') }}</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.welcome_teacher') }}, {{ Auth::user()->name }}. {{ __('messages.manage_courses_classes') }}</p>
             </div>
 
             <!-- Stats Cards -->
@@ -16,9 +16,9 @@
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">Total Kursus</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">{{ __('messages.courses') }}</p>
                             <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalCourses }}</p>
-                            <p class="text-xs text-green-600 dark:text-green-400">{{ $publishedCourses }} dipublikasikan</p>
+                            <p class="text-xs text-green-600 dark:text-green-400">{{ $publishedCourses }} {{ __('messages.published') }}</p>
                         </div>
                     </div>
                 </div>
@@ -31,9 +31,9 @@
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">Kelas Aktif</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">{{ __('messages.total_classes') }}</p>
                             <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $activeClasses }}</p>
-                            <p class="text-xs text-gray-400 dark:text-slate-500">dari {{ $totalClasses }} total kelas</p>
+                            <p class="text-xs text-gray-400 dark:text-slate-500">{{ __('messages.from_total_classes') }} {{ $totalClasses }} {{ __('messages.total_classes') }}</p>
                         </div>
                     </div>
                 </div>
@@ -46,9 +46,9 @@
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">Total Siswa</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">{{ __('messages.total_students') }}</p>
                             <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalStudents }}</p>
-                            <p class="text-xs text-gray-400 dark:text-slate-500">siswa aktif</p>
+                            <p class="text-xs text-gray-400 dark:text-slate-500">{{ __('messages.active_students') }}</p>
                         </div>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">Tugas Pending</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400">{{ __('messages.pending_tasks') }}</p>
                             <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $pendingSubmissions }}</p>
-                            <p class="text-xs text-amber-600 dark:text-amber-400">perlu dinilai</p>
+                            <p class="text-xs text-amber-600 dark:text-amber-400">{{ __('messages.needs_grading') }}</p>
                         </div>
                     </div>
                 </div>
@@ -73,8 +73,8 @@
                 <!-- Recent Courses -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-100 dark:border-slate-700">
                     <div class="p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Kursus Terbaru</h3>
-                        <a href="{{ route('teacher.courses.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">Lihat Semua</a>
+                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.latest_courses') }}</h3>
+                         <a href="{{ route('teacher.courses.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">{{ __('messages.view_all') }}</a>
                     </div>
                     <div class="p-6">
                         @forelse($recentCourses as $course)
@@ -88,7 +88,7 @@
                             </span>
                         </div>
                         @empty
-                        <p class="text-sm text-gray-500 dark:text-slate-400 text-center py-4">Belum ada kursus.</p>
+                         <p class="text-sm text-gray-500 dark:text-slate-400 text-center py-4">{{ __('messages.no_courses_yet') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -96,22 +96,22 @@
                 <!-- Recent Classes -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-100 dark:border-slate-700">
                     <div class="p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Kelas Terbaru</h3>
-                        <a href="{{ route('teacher.classes.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">Lihat Semua</a>
+                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.latest_classes') }}</h3>
+                         <a href="{{ route('teacher.classes.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">{{ __('messages.view_all') }}</a>
                     </div>
                     <div class="p-6">
                         @forelse($recentClasses as $class)
                         <div class="flex items-center justify-between py-3 {{ !$loop->last ? 'border-b border-gray-100 dark:border-slate-700' : '' }}">
                             <div>
                                 <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $class->name }}</p>
-                                <p class="text-xs text-gray-500 dark:text-slate-400">{{ $class->course->title }} &middot; {{ $class->enrollments_count }} siswa</p>
+                                 <p class="text-xs text-gray-500 dark:text-slate-400">{{ $class->course->title }} &middot; {{ $class->enrollments_count }} {{ __('messages.students') }}</p>
                             </div>
                             <span class="px-2 py-1 text-xs rounded-full {{ $class->status === 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-300' }}">
                                 {{ ucfirst($class->status) }}
                             </span>
                         </div>
                         @empty
-                        <p class="text-sm text-gray-500 dark:text-slate-400 text-center py-4">Belum ada kelas.</p>
+                         <p class="text-sm text-gray-500 dark:text-slate-400 text-center py-4">{{ __('messages.no_classes_yet') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -121,18 +121,18 @@
             @if($recentSubmissions->count() > 0)
             <div class="mt-8 bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-100 dark:border-slate-700">
                 <div class="p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tugas Menunggu Penilaian</h3>
-                    <a href="{{ route('teacher.submissions.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">Lihat Semua</a>
+                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.tasks_awaiting_grading') }}</h3>
+                     <a href="{{ route('teacher.submissions.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">{{ __('messages.view_all') }}</a>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
                         <thead class="bg-gray-50 dark:bg-slate-900/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Siswa</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Materi</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Kelas</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Tanggal</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Aksi</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.student') }}</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.material') }}</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.class') }}</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.date') }}</th>
+                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.action') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
@@ -143,7 +143,7 @@
                                 <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-400">{{ $submission->enrollment->classRoom->name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">{{ $submission->submitted_at->diffForHumans() }}</td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('teacher.submissions.show', $submission) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 text-sm font-medium">Nilai</a>
+                                     <a href="{{ route('teacher.submissions.show', $submission) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 text-sm font-medium">{{ __('messages.grade') }}</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -159,24 +159,24 @@
                     <svg class="w-8 h-8 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    <h4 class="text-lg font-bold">Buat Kursus Baru</h4>
-                    <p class="text-sm text-blue-100 mt-1">Tambahkan kursus dengan modul dan materi pembelajaran.</p>
+                     <h4 class="text-lg font-bold">{{ __('messages.create_new_course') }}</h4>
+                     <p class="text-sm text-blue-100 mt-1">{{ __('messages.create_course_desc') }}</p>
                 </a>
 
                 <a href="{{ route('teacher.classes.create') }}" class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 text-white hover:from-emerald-700 hover:to-teal-700 transition">
                     <svg class="w-8 h-8 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    <h4 class="text-lg font-bold">Buka Kelas Baru</h4>
-                    <p class="text-sm text-emerald-100 mt-1">Buat kelas dari kursus yang sudah dipublikasikan.</p>
+                     <h4 class="text-lg font-bold">{{ __('messages.open_new_class') }}</h4>
+                     <p class="text-sm text-emerald-100 mt-1">{{ __('messages.open_class_desc') }}</p>
                 </a>
 
                 <a href="{{ route('teacher.submissions.index') }}" class="bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 text-white hover:from-amber-700 hover:to-orange-700 transition">
                     <svg class="w-8 h-8 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                     </svg>
-                    <h4 class="text-lg font-bold">Nilai Tugas</h4>
-                    <p class="text-sm text-amber-100 mt-1">{{ $pendingSubmissions }} tugas menunggu penilaian Anda.</p>
+                     <h4 class="text-lg font-bold">{{ __('messages.grade_tasks') }}</h4>
+                     <p class="text-sm text-amber-100 mt-1">{{ $pendingSubmissions }} {{ __('messages.tasks_awaiting') }}</p>
                 </a>
             </div>
         </div>

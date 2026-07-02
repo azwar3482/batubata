@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
@@ -6,7 +6,7 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 <a href="{{ route('industry.jobs.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Lowongan</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-gray-900 dark:text-white font-medium">Detail</span>
+                <span class="text-gray-900 dark:text-white font-medium">{{ __('messages.detail') }}</span>
             </nav>
 
             <div class="mb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -19,7 +19,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        Temukan Talenta
+                        {{ __('messages.find_talent') }}
                     </a>
                     @endif
                     <a href="{{ route('industry.jobs.report', $job->id) }}" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded transition flex items-center gap-2">
@@ -68,16 +68,16 @@
                                 $isExpired = $expires->isPast() || !$job->is_active;
                                 @endphp
                                 @if ($isExpired)
-                                <span class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-full text-sm font-medium">Berakhir</span>
+                                <span class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-full text-sm font-medium">{{ __('messages.expired') }}</span>
                                 @else
-                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full text-sm font-medium">Aktif</span>
+                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full text-sm font-medium">{{ __('messages.active') }}</span>
                                 @endif
                             </div>
 
-                            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Deskripsi Pekerjaan</h4>
+                            <h4 class="font-bold text-gray-900 dark:text-white mb-2">{{ __('messages.job_description') }}</h4>
                             <div class="text-gray-700 dark:text-slate-300 prose prose-sm max-w-none mb-6 whitespace-pre-line">{{ $job->description }}</div>
 
-                            <h4 class="font-bold text-gray-900 dark:text-white mb-2">Keahlian (Skills) yang Dibutuhkan</h4>
+                            <h4 class="font-bold text-gray-900 dark:text-white mb-2">{{ __('messages.required_skills') }}</h4>
                             <div class="flex flex-wrap gap-2">
                                 @foreach($job->required_skills as $skill)
                                 <span class="px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-md text-sm">{{ $skill }}</span>
@@ -86,19 +86,19 @@
                         </div>
 
                         <div class="bg-gray-50 dark:bg-slate-900 p-6 rounded-lg border border-gray-200 dark:border-slate-700">
-                            <h4 class="font-bold text-gray-900 dark:text-white mb-4">Pengaturan Penilaian AI</h4>
+                            <h4 class="font-bold text-gray-900 dark:text-white mb-4">{{ __('messages.ai_assessment_settings') }}</h4>
                             @if($job->use_custom_weight)
                             <ul class="space-y-3 text-sm text-gray-700 dark:text-slate-300">
-                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>CV / Resume:</span> <span class="font-medium">{{ $job->cv_weight }}%</span></li>
-                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>Ijazah:</span> <span class="font-medium">{{ $job->ijazah_weight }}%</span></li>
-                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>Transkrip Nilai:</span> <span class="font-medium">{{ $job->transkrip_weight }}%</span></li>
-                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>Sertifikat:</span> <span class="font-medium">{{ $job->sertifikat_weight }}%</span></li>
-                                <li class="flex justify-between"><span>Portofolio:</span> <span class="font-medium">{{ $job->portofolio_weight }}%</span></li>
+                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>{{ __('messages.cv_resume') }}</span> <span class="font-medium">{{ $job->cv_weight }}%</span></li>
+                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>{{ __('messages.diploma') }}</span> <span class="font-medium">{{ $job->ijazah_weight }}%</span></li>
+                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>{{ __('messages.transcript') }}</span> <span class="font-medium">{{ $job->transkrip_weight }}%</span></li>
+                                <li class="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2"><span>{{ __('messages.certificate') }}</span> <span class="font-medium">{{ $job->sertifikat_weight }}%</span></li>
+                                <li class="flex justify-between"><span>{{ __('messages.portfolio') }}</span> <span class="font-medium">{{ $job->portofolio_weight }}%</span></li>
                             </ul>
                             @else
                             <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 p-4 rounded-md">
-                                <p class="font-medium">Menggunakan Bobot Standar Perusahaan</p>
-                                <p class="text-sm mt-1">Bobot ini mengikuti pengaturan default yang telah Anda buat di profil perusahaan.</p>
+                                <p class="font-medium">{{ __('messages.using_standard_weights') }}</p>
+                                <p class="text-sm mt-1">{{ __('messages.weights_follow_default') }}</p>
                             </div>
                             @endif
                         </div>
@@ -110,7 +110,7 @@
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-xl border border-gray-100 dark:border-slate-700">
                 <div class="p-6">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Daftar Pelamar</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('messages.applicant_list') }}</h3>
                         
                         <!-- Search Form -->
                         <form action="{{ route('industry.jobs.show', $job->id) }}" method="GET" class="flex gap-2">
@@ -174,10 +174,10 @@
                             <thead class="bg-gray-50 dark:bg-slate-900">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Nama Pelamar</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kecocokan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.applicant_name') }}</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.match') }}</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Tanggal Melamar</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.application_date') }}</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
@@ -226,7 +226,7 @@
                                         {{ $app->applied_at ? \Carbon\Carbon::parse($app->applied_at)->format('d M Y') : '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('industry.candidates.show', ['id' => $app->user_id, 'job_id' => $job->id]) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">Detail</a>
+                                        <a href="{{ route('industry.candidates.show', ['id' => $app->user_id, 'job_id' => $job->id]) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">{{ __('messages.detail') }}</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -247,13 +247,13 @@
                             <svg class="mx-auto h-12 w-12 text-gray-300 dark:text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
-                            <p class="font-medium">Tidak ada pelamar yang sesuai dengan pencarian</p>
+                            <p class="font-medium">{{ __('messages.no_matching_applicants') }}</p>
                             <p class="text-sm mt-1">Coba gunakan kata kunci yang berbeda atau <a href="{{ route('industry.jobs.show', ['id' => $job->id, 'status' => $status]) }}" class="text-blue-600 hover:underline">reset pencarian</a></p>
                         @else
                             <svg class="mx-auto h-12 w-12 text-gray-300 dark:text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
-                            <p>Tidak ada pelamar dalam kategori status ini.</p>
+                            <p>{{ __('messages.no_applicants_in_status') }}</p>
                         @endif
                     </div>
                     @endif

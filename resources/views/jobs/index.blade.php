@@ -15,19 +15,19 @@
                         </div>
                     </div>
                     <div class="flex-1 text-white">
-                        <h3 class="text-xl md:text-2xl font-bold mb-2">Strategi Melamar Cerdas</h3>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">{{ __('messages.strategic_smart_application') }}</h3>
                         <p class="text-blue-100 text-sm md:text-base leading-relaxed mb-3">
-                            Gunakan tab <strong class="text-white bg-white/20 px-1.5 py-0.5 rounded">Sesuai Kriteria</strong> untuk memprioritaskan lowongan yang paling relevan dengan profil dan keahlian Anda. Sistem AI kami telah menganalisis dan memberikan skor kecocokan khusus untuk Anda.
+                            {{ __('messages.use_matching_tab_description', ['tab' => '<strong class="text-white bg-white/20 px-1.5 py-0.5 rounded">' . __('messages.matching_criteria') . '</strong>']) }}
                         </p>
                         @if(isset($avgGap) && $avgGap > 30)
                         <div class="inline-flex items-start md:items-center gap-2 bg-indigo-800/40 border border-indigo-500/30 px-3 py-2 rounded-lg text-xs md:text-sm">
                             <svg class="w-5 h-5 text-yellow-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span><strong class="text-white">Penting:</strong> Pastikan <strong>Rata-rata Skill Gap maksimal 30%</strong> (berdasarkan Asesmen Anda) agar Anda diizinkan untuk melamar sebuah lowongan.</span>
+                            <span><strong class="text-white">{{ __('messages.important') }}</strong> {{ __('messages.avg_skill_gap_max_30_warning') }}</span>
                         </div>
                         @else
                         <div class="inline-flex items-start md:items-center gap-2 bg-green-800/40 border border-green-500/30 px-3 py-2 rounded-lg text-xs md:text-sm">
                             <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span><strong class="text-white">Hebat!</strong> Skill Gap Anda saat ini sudah memenuhi syarat untuk melamar pekerjaan.</span>
+                            <span><strong class="text-white">{{ __('messages.great') }}</strong> {{ __('messages.skill_gap_qualified') }}</span>
                         </div>
                         @endif
                     </div>
@@ -39,7 +39,7 @@
                 <nav class="-mb-px flex space-x-4 md:space-x-8 overflow-x-auto whitespace-nowrap" aria-label="Tabs">
                     <a href="{{ request()->fullUrlWithQuery(['tab' => 'all', 'sort' => request('sort', 'terbaru')]) }}" 
                        class="{{ request('tab', 'all') == 'all' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
-                        Semua Lowongan
+                        {{ __('messages.all_jobs') }}
                     </a>
 
                     <div class="relative inline-block" x-data="{ showTip: false, tipX: 0, tipY: 0 }" 
@@ -52,8 +52,8 @@
                          @mouseleave="showTip = false">
                         <a x-ref="trigger" href="{{ request()->fullUrlWithQuery(['tab' => 'matched', 'sort' => 'kecocokan']) }}" 
                            class="{{ request('tab') == 'matched' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center gap-2">
-                            Sesuai Kriteria
-                            <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Rekomendasi AI</span>
+                            {{ __('messages.matching_criteria') }}
+                            <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-[10px] font-bold">{{ __('messages.ai_recommendation') }}</span>
                             @if(count($profileWarnings) > 0)
                             <span class="w-4 h-4 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-[10px] font-bold animate-pulse">!</span>
                             @endif
@@ -66,7 +66,7 @@
                             <div class="bg-slate-800 text-white text-xs rounded-lg px-3 py-2 shadow-lg w-64">
                                 <div class="font-bold text-amber-300 mb-1.5 flex items-center gap-1.5">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                    Profil belum lengkap
+                                    {{ __('messages.profile_incomplete') }}
                                 </div>
                                 <ul class="space-y-0.5 mb-1.5">
                                     @foreach($profileWarnings as $warning)
@@ -78,7 +78,7 @@
                                 </ul>
                                 <div class="border-t border-slate-600 pt-1.5 mt-1.5">
                                     <a href="{{ route('profile.edit') }}" class="text-blue-300 hover:text-blue-200 font-semibold inline-block w-full">
-                                        Lengkapi Profil &rarr;
+                                        {{ __('messages.complete_profile') }} &rarr;
                                     </a>
                                 </div>
                             </div>
@@ -89,11 +89,11 @@
 
                     <a href="{{ request()->fullUrlWithQuery(['tab' => 'applying', 'sort' => request('sort', 'terbaru')]) }}" 
                        class="{{ request('tab') == 'applying' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
-                        Sedang Dilamar
+                        {{ __('messages.applying') }}
                     </a>
                     <a href="{{ request()->fullUrlWithQuery(['tab' => 'applied', 'sort' => request('sort', 'terbaru')]) }}" 
                        class="{{ request('tab') == 'applied' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
-                        Sudah Dilamar
+                        {{ __('messages.applied') }}
                     </a>
                 </nav>
             </div>
@@ -101,35 +101,35 @@
             <!-- Header & Filter -->
             <div class="mb-8">
                 <div class="mb-4">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Lowongan Kerja</h2>
-                    <p class="mt-1 text-gray-600">Ditemukan {{ $jobs->total() ?? count($jobs) }} lowongan yang tersedia.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900">{{ __('messages.job_listings') }}</h2>
+                    <p class="mt-1 text-gray-600">{{ __('messages.found_jobs_count', ['count' => $jobs->total() ?? count($jobs)]) }}</p>
                 </div>
 
                 <form method="GET" action="{{ route('seeker.jobs.index') }}" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 items-end">
                     <input type="hidden" name="tab" value="{{ request('tab', 'all') }}">
                     <div class="flex-1 w-full">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Cari Lowongan</label>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Posisi, Perusahaan, atau Lokasi" class="w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.search_jobs') }}</label>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('messages.position_company_or_location') }}" class="w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="w-full md:w-48">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.sort_by') }}</label>
                         <select name="sort" class="w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" onchange="this.form.submit()">
-                            <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
-                            <option value="kecocokan" {{ request('sort', 'kecocokan') == 'kecocokan' ? 'selected' : '' }}>Kecocokan Tertinggi</option>
-                            <option value="gaji" {{ request('sort') == 'gaji' ? 'selected' : '' }}>Gaji Tertinggi</option>
+                            <option value="terbaru" {{ request('sort') == 'terbaru' ? 'selected' : '' }}>{{ __('messages.newest') }}</option>
+                            <option value="kecocokan" {{ request('sort', 'kecocokan') == 'kecocokan' ? 'selected' : '' }}>{{ __('messages.highest_match') }}</option>
+                            <option value="gaji" {{ request('sort') == 'gaji' ? 'selected' : '' }}>{{ __('messages.highest_salary') }}</option>
                         </select>
                     </div>
                     <div class="w-full md:w-32">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tampilkan</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.show') }}</label>
                         <select name="per_page" class="w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" onchange="this.form.submit()">
-                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10 baris</option>
-                            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25 baris</option>
-                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 baris</option>
-                            <option value="1000" {{ request('per_page') == 1000 ? 'selected' : '' }}>Semua Data</option>
+                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10 {{ __('messages.rows') }}</option>
+                            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25 {{ __('messages.rows') }}</option>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 {{ __('messages.rows') }}</option>
+                            <option value="1000" {{ request('per_page') == 1000 ? 'selected' : '' }}>{{ __('messages.all_data') }}</option>
                         </select>
                     </div>
                     <button type="submit" class="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium text-sm transition">
-                        Terapkan
+                        {{ __('messages.apply') }}
                     </button>
                 </form>
             </div>
@@ -140,14 +140,14 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lowongan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gaji</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kecocokan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.no') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.vacancy') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.salary') }}</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.match') }}</th>
                                 @if(request('tab', 'all') === 'all')
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kekurangan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.shortcomings') }}</th>
                                 @endif
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.action') }}</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -195,22 +195,22 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900 font-medium">
-                                        {{ $job->salary_min ? 'Rp ' . number_format($job->salary_min, 0, ',', '.') : 'Rahasia' }}
+                                        {{ $job->salary_min ? 'Rp ' . number_format($job->salary_min, 0, ',', '.') : __('messages.confidential') }}
                                     </div>
                                     @if($job->salary_max)
                                     <div class="text-xs text-gray-500 mt-1">
-                                        Hingga Rp {{ number_format($job->salary_max, 0, ',', '.') }}
+                                        {{ __('messages.up_to_rp') }} {{ number_format($job->salary_max, 0, ',', '.') }}
                                     </div>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <div class="text-xl font-extrabold text-blue-600">{{ $job->matching_percentage }}%</div>
                                     @if ($job->matching_percentage >= 80)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-800">Sangat Cocok</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-800">{{ __('messages.very_match') }}</span>
                                     @elseif($job->matching_percentage >= 50)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-800">Cukup Cocok</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-800">{{ __('messages.quite_match') }}</span>
                                     @else
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-800">Perlu Upskill</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-800">{{ __('messages.needs_upskill') }}</span>
                                     @endif
                                 </td>
                                 @if(request('tab', 'all') === 'all')
@@ -225,7 +225,7 @@
                                         </div>
                                     @else
                                         <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-50 text-green-700 border border-green-100">
-                                            Memenuhi Syarat
+                                            {{ __('messages.meets_requirements') }}
                                         </span>
                                     @endif
                                 </td>
@@ -233,31 +233,31 @@
                                 <td class="px-6 py-4 text-right whitespace-nowrap">
                                     <div class="flex flex-col items-end gap-2 w-full max-w-[140px] ml-auto">
                                         <a href="{{ route('seeker.jobs.detail', $job->id) }}" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/40 text-xs font-medium rounded-md transition">
-                                            Detail
+                                            {{ __('messages.detail') }}
                                         </a>
                                         @if(!$job->user_status || $job->user_status === 'saved')
                                         <form action="{{ route('seeker.jobs.save', $job->id) }}" method="POST" class="w-full">
                                             @csrf
                                             @if($job->user_status === 'saved')
-                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100 text-xs font-semibold rounded-md transition shadow-xs" title="Batal Simpan">
+                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100 text-xs font-semibold rounded-md transition shadow-xs" title="{{ __('messages.cancel_save') }}">
                                                 <svg class="w-3.5 h-3.5 mr-1 text-yellow-600 fill-current" viewBox="0 0 20 20" fill="currentColor">
                                                     <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                                                 </svg>
-                                                Tersimpan
+                                                {{ __('messages.saved') }}
                                             </button>
                                             @else
-                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-medium rounded-md transition shadow-xs" title="Simpan Lowongan">
+                                            <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 border border-gray-300 text-gray-700 hover:bg-gray-50 text-xs font-medium rounded-md transition shadow-xs" title="{{ __('messages.save_job') }}">
                                                 <svg class="w-3.5 h-3.5 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                 </svg>
-                                                Simpan
+                                                {{ __('messages.save') }}
                                             </button>
                                             @endif
                                         </form>
                                         <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="w-full" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < -5) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
                                             @csrf
                                             <button type="submit" class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold rounded-md shadow-sm transition">
-                                                Lamar Sekarang
+                                                {{ __('messages.apply_now') }}
                                             </button>
                                         </form>
                                         @else
@@ -266,15 +266,15 @@
                                             <svg class="w-3.5 h-3.5 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            Sudah Melamar
+                                            {{ __('messages.already_applied') }}
                                         </button>
                                         @elseif($job->user_status === 'offered')
                                         <button disabled class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold rounded-md cursor-not-allowed animate-pulse">
-                                            Diterima 🎉
+                                            {{ __('messages.accepted') }} 🎉
                                         </button>
                                         @elseif($job->user_status === 'rejected')
                                         <button disabled class="inline-flex items-center justify-center w-full px-3 py-1.5 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-md cursor-not-allowed">
-                                            Ditolak
+                                            {{ __('messages.rejected') }}
                                         </button>
                                         @endif
                                         @endif
@@ -287,11 +287,11 @@
                                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
-                                    <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada lowongan</h3>
-                                    <p class="mt-1 text-sm text-gray-500">Belum ada lowongan yang sesuai kriteria pencarian Anda.</p>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('messages.no_jobs_found') }}</h3>
+                                    <p class="mt-1 text-sm text-gray-500">{{ __('messages.no_matching_jobs') }}</p>
                                     <div class="mt-6">
                                         <a href="{{ route('seeker.assessment.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                                            Lakukan Asesmen Baru
+                                            {{ __('messages.take_new_assessment') }}
                                         </a>
                                     </div>
                                 </td>
@@ -348,21 +348,21 @@
                     </div>
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Kecocokan Belum Memenuhi Syarat
+                            {{ __('messages.match_not_qualified') }}
                         </h3>
                         <div class="mt-2">
                             <p class="text-sm text-gray-500">
-                                Silahkan lakukan asesmen kompetensi untuk meningkatkan peluang Anda. Minimal kecocokan yang disarankan adalah 75%.
+                                {{ __('messages.please_take_assessment') }}
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <a href="{{ url('/seeker/assessment') }}" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Asesmen
+                        {{ __('messages.assessment') }}
                     </a>
                     <button type="button" @click="open = false" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Batal Melamar
+                        {{ __('messages.cancel_application') }}
                     </button>
                 </div>
             </div>

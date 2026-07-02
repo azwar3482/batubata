@@ -10,15 +10,15 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Dashboard Job Seeker') }}
+                {{ __('messages.dashboard_job_seeker') }}
             </h2>
             <button type="button" id="start-tour-btn"
                 class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-all duration-200 border border-blue-200 dark:border-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                aria-label="Mulai tur panduan dashboard">
+                aria-label="{{ __('messages.start_tour') }}">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Mulai Tour
+                {{ __('messages.start_tour') }}
             </button>
         </div>
     </x-slot>
@@ -57,8 +57,8 @@
                                 {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
                             </div>
                             <div>
-                                <h3 class="text-lg sm:text-2xl font-bold text-gray-800 dark:text-white">Halo, {{ $user->name }}! 👋</h3>
-                                <p class="text-sm sm:text-base text-gray-600 dark:text-slate-400 mt-0.5 sm:mt-1">Siap untuk menutup kesenjangan skill kamu hari ini?</p>
+                                <h3 class="text-lg sm:text-2xl font-bold text-gray-800 dark:text-white">{{ __('messages.halo') }}, {{ $user->name }}! 👋</h3>
+                                <p class="text-sm sm:text-base text-gray-600 dark:text-slate-400 mt-0.5 sm:mt-1">{{ __('messages.close_skill_gap_today') }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 sm:gap-3">
@@ -73,7 +73,7 @@
                                 </svg>
                                 <div>
                                     <span class="text-base sm:text-lg font-black text-amber-600 dark:text-amber-400">{{ $streak }}</span>
-                                    <span class="text-[10px] sm:text-xs text-amber-600 dark:text-amber-400 font-medium">hari</span>
+                                    <span class="text-[10px] sm:text-xs text-amber-600 dark:text-amber-400 font-medium">{{ __('messages.days') }}</span>
                                 </div>
                             </div>
                             {{-- Achievement Badge --}}
@@ -82,7 +82,7 @@
                                     <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                     </svg>
-                                    <span class="text-xs font-bold text-green-600 dark:text-green-400">Profil Sempurna</span>
+                                    <span class="text-xs font-bold text-green-600 dark:text-green-400">{{ __('messages.perfect_profile') }}</span>
                                 </div>
                             @endif
 
@@ -91,7 +91,7 @@
                                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400">Skill OK</span>
+                                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400">{{ __('messages.skill_ok') }}</span>
                                 </div>
                             @endif
                         </div>
@@ -101,7 +101,7 @@
                     <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                         <div class="flex-1">
                             <div class="flex items-center justify-between mb-1 sm:mb-1.5">
-                                <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-slate-400">Kekuatan Profil</span>
+                                <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-slate-400">{{ __('messages.profile_strength') }}</span>
                                 <span class="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400">{{ $user->profile_completion_percentage }}%</span>
                             </div>
                             <div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-2.5 sm:h-3 overflow-hidden">
@@ -111,7 +111,7 @@
                                      aria-valuenow="{{ $user->profile_completion_percentage }}" 
                                      aria-valuemin="0" 
                                      aria-valuemax="100"
-                                     aria-label="Profil {{ $user->profile_completion_percentage }}% lengkap">
+                                      aria-label="{{ __('messages.profile_strength') }} {{ $user->profile_completion_percentage }}%">
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                             <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            Langkah Melengkapi Profil
+                            {{ __('messages.profile_completion_steps') }}
                         </h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                             {{-- Step 1: Data Diri --}}
@@ -138,16 +138,16 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">1. Data Diri Lengkap</h5>
-                                        <p class="text-[10px] text-gray-500">✓ Selesai</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.step_personal_data') }}</h5>
+                                        <p class="text-[10px] text-gray-500">✓ {{ __('messages.status_completed') }}</p>
                                     </div>
                                 </div>
                             @else
                                 <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer bg-white dark:bg-slate-800 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors">1</div>
                                     <div class="flex-1 min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Isi Data Diri</h5>
-                                        <p class="text-[10px] text-gray-500 truncate">Nama, Foto, Telepon, Alamat</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.fill_personal_data') }}</h5>
+                                        <p class="text-[10px] text-gray-500 truncate">{{ __('messages.personal_data_desc') }}</p>
                                     </div>
                                     <svg class="w-4 h-4 text-blue-400 shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
@@ -163,16 +163,16 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">2. Pendidikan</h5>
-                                        <p class="text-[10px] text-gray-500">✓ Selesai</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.step_education') }}</h5>
+                                        <p class="text-[10px] text-gray-500">✓ {{ __('messages.status_completed') }}</p>
                                     </div>
                                 </div>
                             @else
                                 <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer bg-white dark:bg-slate-800 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors">2</div>
                                     <div class="flex-1 min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Riwayat Pendidikan</h5>
-                                        <p class="text-[10px] text-gray-500 truncate">Tingkat & Jurusan</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.education_history') }}</h5>
+                                        <p class="text-[10px] text-gray-500 truncate">{{ __('messages.education_level_major') }}</p>
                                     </div>
                                     <svg class="w-4 h-4 text-blue-400 shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
@@ -188,16 +188,16 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">3. Unggah CV</h5>
-                                        <p class="text-[10px] text-gray-500">✓ Selesai</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.step_upload_cv') }}</h5>
+                                        <p class="text-[10px] text-gray-500">✓ {{ __('messages.status_completed') }}</p>
                                     </div>
                                 </div>
                             @else
                                 <a href="{{ route('profile.edit') }}" class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-200 cursor-pointer bg-white dark:bg-slate-800 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-blue-500 text-blue-500 rounded-full font-bold text-xs shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-colors">3</div>
                                     <div class="flex-1 min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Unggah CV</h5>
-                                        <p class="text-[10px] text-gray-500 truncate">Format PDF</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.step_upload_cv') }}</h5>
+                                        <p class="text-[10px] text-gray-500 truncate">{{ __('messages.pdf_format') }}</p>
                                     </div>
                                     <svg class="w-4 h-4 text-blue-400 shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
@@ -213,16 +213,16 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <div class="min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">4. Profil 100%</h5>
-                                        <p class="text-[10px] text-gray-500">✓ Semua kolom terisi</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.step_profile_100') }}</h5>
+                                        <p class="text-[10px] text-gray-500">✓ {{ __('messages.status_completed') }}</p>
                                     </div>
                                 </div>
                             @else
                                 <div class="p-3 rounded-xl border border-gray-200 dark:border-slate-700 flex items-center gap-3 bg-white dark:bg-slate-800 opacity-60">
                                     <div class="w-6 h-6 flex items-center justify-center border-2 border-gray-400 text-gray-400 rounded-full font-bold text-xs shrink-0">4</div>
                                     <div class="flex-1 min-w-0">
-                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">Profil 100%</h5>
-                                        <p class="text-[10px] text-gray-500 truncate">Isi semua kolom wajib (*)</p>
+                                        <h5 class="font-semibold text-xs text-gray-900 dark:text-white">{{ __('messages.step_profile_100') }}</h5>
+                                        <p class="text-[10px] text-gray-500 truncate">{{ __('messages.fill_all_required') }}</p>
                                     </div>
                                 </div>
                             @endif
@@ -235,23 +235,23 @@
                                 <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span class="text-sm font-bold text-green-600 dark:text-green-400">Profil Anda Sudah Sempurna!</span>
+                                <span class="text-sm font-bold text-green-600 dark:text-green-400">{{ __('messages.profile_perfect') }}</span>
                             </div>
-                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Fitur pencarian kerja dan rekomendasi telah optimal.</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">{{ __('messages.features_optimal') }}</p>
                             @if($totalAssessments == 0)
                                 <a href="{{ url('/seeker/assessment') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-lg shadow-blue-500/20 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                                    Ukur Skill Sekarang
+                                    {{ __('messages.measure_skill_now') }}
                                 </a>
                             @elseif($avgGap < 30)
                                 <a href="{{ url('/seeker/jobs') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-lg shadow-emerald-500/20 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                    Cari Pekerjaan
+                                    {{ __('messages.find_jobs') }}
                                 </a>
                             @else
                                 <a href="{{ url('/seeker/roadmap') }}" class="inline-flex items-center mt-4 px-5 py-2.5 border border-transparent shadow-lg shadow-amber-500/20 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-                                    Lihat Roadmap
+                                    {{ __('messages.view_roadmap') }}
                                 </a>
                             @endif
                         </div>
@@ -267,9 +267,9 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 border-blue-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/assessment') }}'">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Asesmen</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.total_assessments') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ $totalAssessments }}</p>
-                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">tes telah dikerjakan</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">{{ __('messages.tests_completed') }}</p>
                         </div>
                         <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,17 +283,17 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 {{ $avgGap > 30 ? 'border-red-500' : 'border-green-500' }} hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Skill Gap</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.skill_gap') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ number_format($avgGap, 1) }}%</p>
                             @if($avgGap > 30)
                                 <p class="text-xs text-red-500 mt-1 flex items-center">
                                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                                    Gap tinggi, upskill!
+                                    {{ __('messages.high_gap_upskill') }}
                                 </p>
                             @else
                                 <p class="text-xs text-green-600 dark:text-green-400 mt-1 flex items-center">
                                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                    Gap aman
+                                    {{ __('messages.gap_safe') }}
                                 </p>
                             @endif
                         </div>
@@ -311,9 +311,9 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 border-emerald-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/courses') }}'">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Kursus</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.courses') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ $coursesInProgress }}</p>
-                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">sedang berjalan</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">{{ __('messages.in_progress') }}</p>
                         </div>
                         <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -327,9 +327,9 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 border-amber-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/jobs') }}'">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Lowongan Cocok</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.matched_jobs') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{{ count($recommendedJobs) }}</p>
-                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">rekomendasi untuk Anda</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">{{ __('messages.recommendations_for_you') }}</p>
                         </div>
                         <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center text-amber-600 dark:text-amber-400">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -350,17 +350,17 @@
                 <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 lg:col-span-2 border border-gray-100 dark:border-slate-700">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
                         <div>
-                            <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200">Analisis Kompetensi</h4>
-                            <p class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Perbandingan skill Anda dengan target industri</p>
+                            <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200">{{ __('messages.competency_analysis') }}</h4>
+                            <p class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">{{ __('messages.industry_comparison') }}</p>
                         </div>
                         <div class="hidden sm:flex items-center gap-4 text-xs">
                             <span class="flex items-center gap-1.5">
                                 <span class="w-3 h-3 rounded-full bg-blue-500"></span>
-                                <span class="text-gray-500 dark:text-slate-400">Skill Saat Ini</span>
+                                <span class="text-gray-500 dark:text-slate-400">{{ __('messages.current_skill') }}</span>
                             </span>
                             <span class="flex items-center gap-1.5">
                                 <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                                <span class="text-gray-500 dark:text-slate-400">Target Industri</span>
+                                <span class="text-gray-500 dark:text-slate-400">{{ __('messages.industry_target') }}</span>
                             </span>
                         </div>
                     </div>
@@ -375,7 +375,7 @@
 
                 {{-- Lowongan Cocok --}}
                 <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-100 dark:border-slate-700">
-                    <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200 mb-3 sm:mb-4">Lowongan Cocok</h4>
+                    <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200 mb-3 sm:mb-4">{{ __('messages.matched_jobs') }}</h4>
                     <div class="space-y-2 sm:space-y-3">
                         @forelse($recommendedJobs as $job)
                             <div class="border-b dark:border-slate-700 pb-2 sm:pb-3 last:border-0 flex items-start gap-2 sm:gap-3 group hover:bg-gray-50 dark:hover:bg-slate-800/50 -mx-1 sm:-mx-2 px-1 sm:px-2 py-1.5 sm:py-2 rounded-lg transition-colors">
@@ -402,10 +402,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <p class="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-medium">Belum ada rekomendasi</p>
-                                <p class="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500 mt-1">Lengkapi profil Anda untuk mendapatkan rekomendasi lowongan</p>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.no_recommendations_yet') }}</p>
+                                <p class="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500 mt-1">{{ __('messages.complete_profile_for_recommendations') }}</p>
                                 <a href="{{ route('profile.edit') }}" class="inline-flex items-center mt-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white text-[11px] sm:text-xs font-medium rounded-lg hover:bg-blue-700 shadow-sm hover:shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                                    Lengkapi Profil →
+                                    {{ __('messages.complete_profile') }} →
                                 </a>
                             </div>
                         @endforelse
@@ -413,7 +413,7 @@
                     @if(count($recommendedJobs) > 0)
                         <a href="{{ route('seeker.jobs.all') }}"
                             class="block mt-3 sm:mt-4 w-full text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-2 sm:py-2.5 rounded-lg sm:rounded-xl hover:from-blue-700 hover:to-indigo-800 shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 text-xs sm:text-sm font-medium transition-all duration-300 transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                            Lihat Semua Lowongan →
+                            {{ __('messages.view_all_jobs') }} →
                         </a>
                     @endif
                 </div>
@@ -545,7 +545,7 @@
                     data: {
                         labels: data.map(d => d.label),
                         datasets: [{
-                            label: 'Skill Saat Ini',
+                            label: '{{ __("messages.current_skill") }}',
                             data: data.map(d => d.current),
                             fill: true,
                             backgroundColor: 'rgba(59, 130, 246, 0.2)',
@@ -555,7 +555,7 @@
                             pointHoverBackgroundColor: '#fff',
                             pointHoverBorderColor: 'rgb(59, 130, 246)'
                         }, {
-                            label: 'Target Industri',
+                            label: '{{ __("messages.industry_target") }}',
                             data: data.map(d => d.target),
                             fill: true,
                             backgroundColor: 'rgba(239, 68, 68, 0.2)',
@@ -586,72 +586,72 @@
             const tourSteps = [
                 {
                     popover: {
-                        title: 'Selamat Datang Job Seeker!',
-                        description: 'Mari kita kenali berbagai fitur di dashboard ini untuk membantu Anda mencapai karir impian.',
+                        title: '{{ __("messages.welcome") }} {{ __("messages.dashboard_job_seeker") }}!',
+                        description: '{{ __("messages.tour_app") }}',
                         align: 'center'
                     }
                 },
                 {
                     element: 'a[href*="dashboard"]',
                     popover: {
-                        title: 'Dashboard Utama',
-                        description: 'Ringkasan statistik: total asesmen, gap skill, dan lowongan yang cocok.',
+                        title: '{{ __("messages.dashboard") }}',
+                        description: '{{ __("messages.total_assessments") }}: {{ __("messages.skill_gap") }}, {{ __("messages.matched_jobs") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/assessment"]',
                     popover: {
-                        title: 'Asesmen Kompetensi',
-                        description: 'AI mengukur level skill Anda secara akurat berdasarkan jawaban tes.',
+                        title: '{{ __("messages.competency_assessment") }}',
+                        description: '{{ __("messages.start_assessment") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/roadmap"]',
                     popover: {
-                        title: 'Roadmap Karir',
-                        description: 'Peta jalan karir berisi panduan skill yang harus dipelajari.',
+                        title: '{{ __("messages.career_roadmap") }}',
+                        description: '{{ __("messages.action_plan_to") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/jobs"]',
                     popover: {
-                        title: 'Lowongan Pekerjaan',
-                        description: 'Temukan lowongan dan lihat skor kecocokan (Fit Score) profil Anda.',
+                        title: '{{ __("messages.job_vacancies") }}',
+                        description: '{{ __("messages.match_criteria_desc") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/courses"]',
                     popover: {
-                        title: 'Kursus & Pembelajaran',
-                        description: 'AI merekomendasikan kursus khusus untuk menutupi gap skill Anda.',
+                        title: '{{ __("messages.courses_learning") }}',
+                        description: '{{ __("messages.recommendation_based_desc") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/tpa"]',
                     popover: {
-                        title: 'Tes TPA',
-                        description: 'Ikuti tes potensi akademik untuk mengukur kemampuan dasar Anda.',
+                        title: '{{ __("messages.tpa_test") }}',
+                        description: '{{ __("messages.assessment_desc") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/career-fields"]',
                     popover: {
-                        title: 'Bidang Karir',
-                        description: 'Jelajahi berbagai bidang karir dan temukan yang paling sesuai dengan minat Anda.',
+                        title: '{{ __("messages.career_fields") }}',
+                        description: '{{ __("messages.job_vacancies") }}',
                         side: "right", align: 'start'
                     }
                 },
                 {
                     element: 'a[href*="seeker/chats"]',
                     popover: {
-                        title: 'Direct Chats',
-                        description: 'Berkomunikasi langsung dengan perusahaan atau institusi pendidikan.',
+                        title: '{{ __("messages.direct_chats") }}',
+                        description: '{{ __("messages.contact_candidates_directly") }}',
                         side: "right", align: 'start'
                     }
                 }

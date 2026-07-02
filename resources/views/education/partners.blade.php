@@ -6,8 +6,8 @@
             <div class="mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Mitra Industri</h2>
-                        <p class="mt-2 text-gray-600 dark:text-slate-400">Jelajahi perusahaan mitra yang terbuka untuk kolaborasi dengan institusi pendidikan.</p>
+                        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.mitra_industri') }}</h2>
+                        <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.jelajahi_perusahaan_mitra') }}</p>
                     </div>
                     <a href="{{ route('education.collaboration.create') }}"
                         class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-700 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-purple-800 transition shadow">
@@ -15,7 +15,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
                             </path>
                         </svg>
-                        Ajukan Kolaborasi
+                        {{ __('messages.ajukan_kolaborasi') }}
                     </a>
                 </div>
             </div>
@@ -23,19 +23,19 @@
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-xl p-4 shadow border-l-4 border-blue-500">
-                    <p class="text-sm text-gray-500">Total Mitra</p>
+                    <p class="text-sm text-gray-500">{{ __('messages.total_mitra') }}</p>
                     <p class="text-2xl font-bold">{{ count($partners) }}</p>
                 </div>
                 <div class="bg-white rounded-xl p-4 shadow border-l-4 border-green-500">
-                    <p class="text-sm text-gray-500">Terverifikasi</p>
+                    <p class="text-sm text-gray-500">{{ __('messages.verifikasi') }}</p>
                     <p class="text-2xl font-bold">{{ collect($partners)->where('verified', true)->count() }}</p>
                 </div>
                 <div class="bg-white rounded-xl p-4 shadow border-l-4 border-purple-500">
-                    <p class="text-sm text-gray-500">Peluang Aktif</p>
+                    <p class="text-sm text-gray-500">{{ __('messages.peluang_aktif') }}</p>
                     <p class="text-2xl font-bold">{{ collect($partners)->sum('active_opportunities') }}</p>
                 </div>
                 <div class="bg-white rounded-xl p-4 shadow border-l-4 border-orange-500">
-                    <p class="text-sm text-gray-500">Jenis Kolaborasi</p>
+                    <p class="text-sm text-gray-500">{{ __('messages.jenis_kolaborasi') }}</p>
                     <p class="text-2xl font-bold">10+</p>
                 </div>
             </div>
@@ -44,16 +44,16 @@
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Cari Mitra</label>
-                        <input type="text" name="search" placeholder="Nama perusahaan..."
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.cari_mitra') }}</label>
+                        <input type="text" name="search" placeholder="{{ __('messages.nama_perusahaan') }}"
                             value="{{ request('search') }}"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Industri</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.industri') }}</label>
                         <select name="industry"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="">Semua Industri</option>
+                            <option value="">{{ __('messages.semua_industri') }}</option>
                             @foreach ($industries as $industry)
                                 <option value="{{ $industry }}"
                                     {{ request('industry') == $industry ? 'selected' : '' }}>{{ $industry }}
@@ -62,10 +62,10 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('messages.lokasi') }}</label>
                         <select name="location"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="">Semua Lokasi</option>
+                            <option value="">{{ __('messages.semua_lokasi') }}</option>
                             @foreach ($locations as $location)
                                 <option value="{{ $location }}"
                                     {{ request('location') == $location ? 'selected' : '' }}>{{ $location }}
@@ -76,7 +76,7 @@
                     <div class="flex items-end">
                         <button type="submit"
                             class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium">
-                            Filter
+                            {{ __('messages.filter') }}
                         </button>
                     </div>
                 </form>
@@ -84,7 +84,7 @@
 
             <!-- Section Title & View Switcher -->
             <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Daftar Mitra</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('messages.daftar_mitra') }}</h3>
                 <div class="flex items-center bg-gray-150 dark:bg-slate-800 p-1 rounded-lg border border-gray-200 dark:border-slate-700 w-fit self-end sm:self-auto shadow-sm">
                     <button @click="viewMode = 'grid'" 
                         :class="viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow text-indigo-700 dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'"
@@ -93,7 +93,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
-                        Card Grid
+                        {{ __('messages.card_grid') }}
                     </button>
                     <button @click="viewMode = 'table'" 
                         :class="viewMode === 'table' ? 'bg-white dark:bg-slate-700 shadow text-indigo-700 dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'"
@@ -102,7 +102,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                        Tabel List
+                        {{ __('messages.tabel_list') }}
                     </button>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M5 13l4 4L19 7"></path>
                                         </svg>
-                                        Verified
+                                        {{ __('messages.verifikasi') }}
                                     </span>
                                 @endif
                             </div>
@@ -177,16 +177,16 @@
                                 <div class="text-center">
                                     <p class="text-lg font-bold text-indigo-600 dark:text-indigo-400">{{ $partner['active_opportunities'] }}
                                     </p>
-                                    <p class="text-xs text-gray-500 dark:text-slate-450">Peluang Aktif</p>
+                                    <p class="text-xs text-gray-500 dark:text-slate-450">{{ __('messages.peluang_aktif') }}</p>
                                 </div>
                                 <div class="flex gap-2">
                                     <a href="{{ route('education.partners.show', $partner['id']) }}"
                                         class="px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 border border-indigo-600 dark:border-indigo-500 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition">
-                                        Detail
+                                        {{ __('messages.detail') }}
                                     </a>
                                     <a href="{{ route('education.collaboration.create', ['partner' => $partner['id']]) }}"
                                         class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 dark:bg-indigo-500 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition">
-                                        Kolaborasi
+                                        {{ __('messages.kolaborasi') }}
                                     </a>
                                 </div>
                             </div>
@@ -200,8 +200,8 @@
                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
                             </path>
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Tidak ada mitra ditemukan</h3>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">Coba ubah filter pencarian atau hubungi admin untuk menambahkan mitra baru.</p>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.tidak_ada_mitra_ditemukan') }}</h3>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">{{ __('messages.coba_ubah_filter_pencarian') }}</p>
                     </div>
                 @endforelse
             </div>
@@ -212,13 +212,13 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
                         <thead class="bg-gray-50 dark:bg-slate-800">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider w-16">No</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Perusahaan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Lokasi</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ukuran</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jenis Kolaborasi</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Peluang Aktif</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider w-16">{{ __('messages.no') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.perusahaan') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.lokasi') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.ukuran') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.jenis_kolaborasi') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.peluang_aktif') }}</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.aksi') }}</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-slate-800">
@@ -237,7 +237,7 @@
                                                     <span class="font-bold text-gray-900 dark:text-white text-sm">{{ $partner['name'] }}</span>
                                                     @if ($partner['verified'])
                                                         <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200">
-                                                            Verified
+                                                            {{ __('messages.verifikasi') }}
                                                         </span>
                                                     @endif
                                                 </div>
@@ -270,11 +270,11 @@
                                         <div class="flex justify-end gap-2">
                                             <a href="{{ route('education.partners.show', $partner['id']) }}"
                                                 class="px-3 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-600 dark:border-indigo-500 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition">
-                                                Detail
+                                                {{ __('messages.detail') }}
                                             </a>
                                             <a href="{{ route('education.collaboration.create', ['partner' => $partner['id']]) }}"
                                                 class="px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 dark:bg-indigo-500 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition">
-                                                Kolaborasi
+                                                {{ __('messages.kolaborasi') }}
                                             </a>
                                         </div>
                                     </td>
@@ -285,8 +285,8 @@
                                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>
-                                        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Tidak ada mitra ditemukan</h3>
-                                        <p class="mt-1 text-xs text-gray-500 dark:text-slate-400">Coba ubah filter pencarian atau hubungi admin untuk menambahkan mitra baru.</p>
+                                        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.tidak_ada_mitra_ditemukan') }}</h3>
+                                        <p class="mt-1 text-xs text-gray-500 dark:text-slate-400">{{ __('messages.coba_ubah_filter_pencarian') }}</p>
                                     </td>
                                 </tr>
                             @endforelse
@@ -297,17 +297,15 @@
 
             <!-- Pagination -->
             <div class="mt-8">
-                <!-- Pagination for array is not natively supported like Eloquent -->
             </div>
 
             <!-- CTA Section -->
             <div class="mt-12 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-2xl p-8 text-white text-center">
-                <h3 class="text-2xl font-bold mb-3">Tidak menemukan mitra yang sesuai?</h3>
-                <p class="text-indigo-100 mb-6 max-w-2xl mx-auto">Ajukan kolaborasi dengan perusahaan pilihan Anda. Tim
-                    kami akan membantu menghubungkan institusi Anda dengan mitra industri yang relevan.</p>
+                <h3 class="text-2xl font-bold mb-3">{{ __('messages.tidak_menemukan_mitra_sesuai') }}</h3>
+                <p class="text-indigo-100 mb-6 max-w-2xl mx-auto">{{ __('messages.ajukan_kolaborasi_perusahaan_pilihan') }}</p>
                 <a href="{{ route('education.collaboration.create') }}"
                     class="inline-flex items-center px-6 py-3 bg-white text-indigo-700 font-semibold rounded-lg hover:bg-indigo-50 transition">
-                    Ajukan Kolaborasi Baru
+                    {{ __('messages.ajukan_kolaborasi_baru') }}
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 7l5 5m0 0l-5 5m5-5H6"></path>

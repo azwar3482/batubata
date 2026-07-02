@@ -28,8 +28,8 @@
         <div class="w-full sm:max-w-lg mt-6 px-6 py-8 bg-white dark:bg-slate-800 shadow-2xl overflow-hidden sm:rounded-2xl border dark:border-slate-700">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Buat Akun Baru</h2>
-                <p class="text-gray-600 dark:text-gray-300 mt-2">Bergabung dengan platform Skill Gap Advisor #1 di Indonesia</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.create_new_account') }}</h2>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">{{ __('messages.join_platform') }}</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}">
@@ -39,7 +39,7 @@
                     <!-- Name -->
                     <div class="md:col-span-2">
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                            Nama Lengkap
+                            {{ __('messages.full_name') }}
                         </label>
                         <input id="name" type="text" name="name" value="{{ old('name') }}" required
                             autofocus autocomplete="name"
@@ -80,23 +80,23 @@
                     <div class="md:col-span-2">
                         <div class="flex items-center justify-between mb-2">
                             <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                                Daftar Sebagai
+                                {{ __('messages.register_as') }}
                             </label>
                             <button type="button" id="start-role-tour"
                                 class="animate-pulse flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-colors border border-blue-200 dark:border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                Penjelasan Peran
+                                {{ __('messages.role_explanation') }}
                             </button>
                         </div>
                         <select id="role" name="role" required
                             class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition @error('role') border-red-500 @enderror">
-                            <option value="">-- Pilih Peran Anda --</option>
-                            <option value="job_seeker" {{ old('role') === 'job_seeker' ? 'selected' : '' }}>👤 Pencari Kerja (Job Seeker)</option>
-                            <option value="industry" {{ old('role') === 'industry' ? 'selected' : '' }}>🏢 Perusahaan (Industry)</option>
-                            <option value="education" {{ old('role') === 'education' ? 'selected' : '' }}>🎓 Institusi Pendidikan (Education)</option>
-                            <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>⚙️ Administrator</option>
+                            <option value="">-- {{ __('messages.choose_your_role') }} --</option>
+                            <option value="job_seeker" {{ old('role') === 'job_seeker' ? 'selected' : '' }}>👤 {{ __('messages.job_seeker_role') }}</option>
+                            <option value="industry" {{ old('role') === 'industry' ? 'selected' : '' }}>🏢 {{ __('messages.industry_role') }}</option>
+                            <option value="education" {{ old('role') === 'education' ? 'selected' : '' }}>🎓 {{ __('messages.education_role') }}</option>
+                            <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>⚙️ {{ __('messages.admin_role') }}</option>
                         </select>
                         @error('role')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -142,7 +142,7 @@
                     <!-- Confirm Password -->
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                            Konfirmasi Password
+                            {{ __('messages.confirm_password') }}
                         </label>
                         <div class="relative">
                             <input id="password_confirmation" type="password" name="password_confirmation" required
@@ -162,13 +162,13 @@
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Password tidak cocok
+                            {{ __('messages.password_mismatch') }}
                         </p>
                         <p id="password-match-success" class="mt-2 text-sm text-green-600 hidden items-center">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Password cocok
+                            {{ __('messages.password_match') }}
                         </p>
                     </div>
                 </div>
@@ -179,10 +179,10 @@
                         <input id="terms" type="checkbox" name="terms" required
                             class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-blue-600 shadow-sm focus:ring-blue-500 mt-1 transition-colors">
                         <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">
-                            Saya setuju dengan
-                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Syarat & Ketentuan</a>,
-                            <a href="{{ route('legal.privacy') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">Kebijakan Privasi</a>,
-                            serta pemrosesan data untuk keperluan profil dan industri.
+                            {{ __('messages.i_agree_terms') }}
+                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">{{ __('messages.terms_conditions') }}</a>,
+                            <a href="{{ route('legal.privacy') }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">{{ __('messages.privacy_policy') }}</a>,
+                            {{ __('messages.data_processing_consent') }}
                         </span>
                     </label>
                     @error('terms')
@@ -200,7 +200,7 @@
                 <div class="mt-8">
                     <button type="submit"
                         class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition transform hover:-translate-y-0.5">
-                        Buat Akun Gratis
+                        {{ __('messages.create_free_account') }}
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -216,7 +216,7 @@
                             <div class="w-full border-t border-gray-300 dark:border-slate-600"></div>
                         </div>
                         <div class="relative flex justify-center text-sm">
-                            <span class="px-4 bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400">Atau daftar dengan</span>
+                            <span class="px-4 bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400">{{ __('messages.or_register_with') }}</span>
                         </div>
                     </div>
 
@@ -236,17 +236,17 @@
                                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z"
                                 fill="#EA4335" />
                         </svg>
-                        Daftar dengan Google
+                        {{ __('messages.register_with_google') }}
                     </button>
                 </div>
 
             <!-- Login Link -->
             <div class="mt-8 text-center">
                 <p class="text-sm text-gray-600 dark:text-gray-300">
-                    Sudah punya akun?
+                    {{ __('messages.already_have_account') }}
                     <a href="{{ route('login') }}"
                         class="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition">
-                        Login disini
+                        {{ __('messages.login_here') }}
                     </a>
                 </p>
             </div>
@@ -254,7 +254,7 @@
 
         <!-- Footer Links -->
         <div class="mt-8 text-center">
-            <a href="/" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">← Kembali ke Beranda</a>
+            <a href="/" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">← {{ __('messages.back_to_home') }}</a>
         </div>
     </div>
 
@@ -354,13 +354,13 @@
         function registerWithGoogle() {
             const role = document.getElementById('role');
             if (!role || !role.value) {
-                alert('Silahkan pilih role Anda terlebih dahulu');
+                alert('{{ __("messages.select_role_first") }}');
                 return;
             }
 
             const terms = document.getElementById('terms');
             if (terms && !terms.checked) {
-                alert('Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi sebelum mendaftar.');
+                alert('{{ __("messages.agree_terms_first") }}');
                 terms.focus();
                 terms.classList.add('ring-2', 'ring-red-500', 'border-red-500');
                 setTimeout(() => terms.classList.remove('ring-2', 'ring-red-500', 'border-red-500'), 2000);
@@ -387,7 +387,7 @@
                         {
                             element: '#role',
                             popover: {
-                                title: 'Memilih Peran yang Tepat',
+                                title: '{{ __("messages.role_explanation") }}',
                                 description: 'Platform ini melayani berbagai jenis pengguna. Mari kita pelajari perbedaan masing-masing peran agar Anda tidak salah pilih!',
                                 side: "top",
                                 align: 'start'
@@ -396,7 +396,7 @@
                         {
                             element: '#role',
                             popover: {
-                                title: 'Pencari Kerja (Job Seeker)',
+                                title: '{{ __("messages.job_seeker_role") }}',
                                 description: '<b>Untuk Individu:</b> Pilih ini jika Anda ingin mencari lowongan kerja, mengikuti tes asesmen keahlian, dan melamar pekerjaan ke berbagai perusahaan impian Anda.',
                                 side: "top",
                                 align: 'start'
@@ -405,7 +405,7 @@
                         {
                             element: '#role',
                             popover: {
-                                title: 'Perusahaan (Industry)',
+                                title: '{{ __("messages.industry_role") }}',
                                 description: '<b>Untuk Rekruter/HRD:</b> Pilih ini jika Anda mewakili perusahaan yang ingin memasang iklan lowongan, menyeleksi kandidat, dan melihat skor analisis keahlian pelamar.',
                                 side: "top",
                                 align: 'start'
@@ -414,7 +414,7 @@
                         {
                             element: '#role',
                             popover: {
-                                title: 'Institusi Pendidikan',
+                                title: '{{ __("messages.education_role") }}',
                                 description: '<b>Untuk Universitas/Sekolah:</b> Pilih ini jika Anda dari pihak akademis yang ingin memantau keterserapan kerja alumni dan melihat tren keahlian yang sedang dicari industri.',
                                 side: "top",
                                 align: 'start'
@@ -423,7 +423,7 @@
                         {
                             element: '#role',
                             popover: {
-                                title: 'Administrator',
+                                title: '{{ __("messages.admin_role") }}',
                                 description: '<b>Untuk Pengelola Sistem:</b> Ini adalah akun khusus untuk mengatur master data sistem, melihat laporan keseluruhan, dan mengawasi jalannya platform.',
                                 side: "top",
                                 align: 'start'

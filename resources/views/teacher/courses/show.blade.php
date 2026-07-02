@@ -2,7 +2,7 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-6">
-                <a href="{{ route('teacher.courses.index') }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 text-sm font-medium">&larr; Kembali ke Kursus</a>
+                <a href="{{ route('teacher.courses.index') }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 text-sm font-medium">&larr; {{ __('messages.back_to_courses') }}</a>
             </div>
 
             @if(session('success'))
@@ -18,9 +18,9 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
                                 @if($course->status === 'published')
-                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Published</span>
+                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">{{ __('messages.published') }}</span>
                                 @else
-                                    <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-300">Draft</span>
+                                    <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-300">{{ __('messages.draft') }}</span>
                                 @endif
                                 <span class="px-2 py-1 text-xs rounded-full {{ $course->level === 'beginner' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : ($course->level === 'intermediate' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400') }}">{{ ucfirst($course->level) }}</span>
                             </div>
@@ -29,24 +29,24 @@
                             <div class="mt-4 flex items-center gap-6 text-sm text-gray-500 dark:text-slate-400">
                                 <span class="flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                    {{ $course->duration_hours }} jam
+                                    {{ $course->duration_hours }} {{ __('messages.hours') }}
                                 </span>
                                 <span class="flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                                    {{ $course->modules->count() }} modul
+                                    {{ $course->modules->count() }} {{ __('messages.modules') }}
                                 </span>
                                 <span class="flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                                    {{ $course->classes->count() }} kelas
+                                    {{ $course->classes->count() }} {{ __('messages.classes') }}
                                 </span>
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <a href="{{ route('teacher.courses.edit', $course) }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm">Edit</a>
+                            <a href="{{ route('teacher.courses.edit', $course) }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm">{{ __('messages.edit') }}</a>
                             @if($course->status === 'draft')
                             <form action="{{ route('teacher.courses.publish', $course) }}" method="POST">
                                 @csrf
-                                <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm">Publikasikan</button>
+                                <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm">{{ __('messages.publish') }}</button>
                             </form>
                             @endif
                         </div>
@@ -59,7 +59,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-100 dark:border-slate-700">
                         <div class="p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Modul & Materi</h3>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.modules_and_materials') }}</h3>
                         </div>
                         <div class="p-6">
                             @forelse($course->modules as $module)
@@ -69,13 +69,13 @@
                                         <span class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center text-sm font-bold">{{ $module->order_number }}</span>
                                         <div>
                                             <h4 class="font-semibold text-gray-900 dark:text-white">{{ $module->title }}</h4>
-                                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ $module->materials->count() }} materi &middot; {{ $module->duration_minutes }} menit</p>
+                                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ $module->materials->count() }} {{ __('messages.materials') }} &middot; {{ $module->duration_minutes }} {{ __('messages.minutes') }}</p>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <form action="{{ route('teacher.courses.destroy-module', $module) }}" method="POST" onsubmit="return confirm('Hapus modul ini?')">
+                                        <form action="{{ route('teacher.courses.destroy-module', $module) }}" method="POST" onsubmit="return confirm('{{ __('messages.confirm_delete_module') }}')">
                                             @csrf @method('DELETE')
-                                            <button class="p-1 text-red-500 hover:text-red-700 dark:text-red-400" title="Hapus Modul">
+                                            <button class="p-1 text-red-500 hover:text-red-700 dark:text-red-400" title="{{ __('messages.delete_module') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                             </button>
                                         </form>
@@ -94,13 +94,13 @@
                                         </div>
                                         <div class="flex items-center gap-1">
                                             @if($material->file_path)
-                                            <a href="{{ route('teacher.courses.download-material', $material) }}" class="p-1 text-blue-500 hover:text-blue-700" title="Download">
+                                            <a href="{{ route('teacher.courses.download-material', $material) }}" class="p-1 text-blue-500 hover:text-blue-700" title="{{ __('messages.download') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                             </a>
                                             @endif
-                                            <form action="{{ route('teacher.courses.destroy-material', $material) }}" method="POST" onsubmit="return confirm('Hapus materi ini?')">
+                                            <form action="{{ route('teacher.courses.destroy-material', $material) }}" method="POST" onsubmit="return confirm('{{ __('messages.confirm_delete_material') }}')">
                                                 @csrf @method('DELETE')
-                                                <button class="p-1 text-red-500 hover:text-red-700" title="Hapus">
+                                                <button class="p-1 text-red-500 hover:text-red-700" title="{{ __('messages.delete') }}">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                                                 </button>
                                             </form>
@@ -110,45 +110,45 @@
 
                                     <!-- Add Material Form -->
                                     <div x-data="{ showForm: false }" class="mt-2">
-                                        <button @click="showForm = !showForm" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium">+ Tambah Materi</button>
+                                        <button @click="showForm = !showForm" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium">+ {{ __('messages.add_material') }}</button>
                                         <form x-show="showForm" x-transition action="{{ route('teacher.courses.store-material', $module) }}" method="POST" enctype="multipart/form-data" class="mt-3 p-4 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg space-y-3">
                                             @csrf
-                                            <input type="text" name="title" placeholder="Judul Materi" required class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
+                                            <input type="text" name="title" placeholder="{{ __('messages.material_title_placeholder') }}" required class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
                                             <div class="grid grid-cols-2 gap-3">
                                                 <select name="type" class="text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
-                                                    <option value="document">Dokumen</option>
-                                                    <option value="video">Video</option>
-                                                    <option value="link">Link</option>
-                                                    <option value="assignment">Tugas</option>
-                                                    <option value="quiz">Kuis</option>
+                                                    <option value="document">{{ __('messages.document') }}</option>
+                                                    <option value="video">{{ __('messages.video') }}</option>
+                                                    <option value="link">{{ __('messages.link') }}</option>
+                                                    <option value="assignment">{{ __('messages.assignment') }}</option>
+                                                    <option value="quiz">{{ __('messages.quiz') }}</option>
                                                 </select>
                                                 <input type="file" name="file" class="text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
                                             </div>
-                                            <input type="url" name="external_url" placeholder="URL eksternal (opsional)" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
-                                            <textarea name="content" rows="2" placeholder="Konten/deskripsi (opsional)" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md"></textarea>
+                                            <input type="url" name="external_url" placeholder="{{ __('messages.external_url_optional') }}" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
+                                            <textarea name="content" rows="2" placeholder="{{ __('messages.content_description_optional') }}" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md"></textarea>
                                             <div class="flex justify-end">
-                                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Simpan</button>
+                                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">{{ __('messages.save') }}</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                             @empty
-                            <p class="text-sm text-gray-500 dark:text-slate-400 text-center py-4">Belum ada modul. Tambahkan modul pertama di bawah.</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 text-center py-4">{{ __('messages.no_modules_yet') }}</p>
                             @endforelse
 
                             <!-- Add Module Form -->
                             <div x-data="{ showForm: false }" class="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
                                 <button @click="showForm = !showForm" class="inline-flex items-center px-4 py-2 border border-dashed border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-400 rounded-lg hover:border-blue-500 hover:text-blue-600 transition">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-                                    Tambah Modul
+                                    {{ __('messages.add_module') }}
                                 </button>
                                 <form x-show="showForm" x-transition action="{{ route('teacher.courses.store-module', $course) }}" method="POST" class="mt-4 p-4 bg-gray-50 dark:bg-slate-900 rounded-lg space-y-3">
                                     @csrf
-                                    <input type="text" name="title" placeholder="Judul Modul" required class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
-                                    <textarea name="description" rows="2" placeholder="Deskripsi modul (opsional)" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md"></textarea>
+                                    <input type="text" name="title" placeholder="{{ __('messages.module_title_placeholder') }}" required class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
+                                    <textarea name="description" rows="2" placeholder="{{ __('messages.module_description_optional') }}" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md"></textarea>
                                     <div class="flex justify-end">
-                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Simpan Modul</button>
+                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">{{ __('messages.save_module') }}</button>
                                     </div>
                                 </form>
                             </div>
@@ -160,25 +160,25 @@
                 <div class="space-y-6">
                     <!-- Course Info -->
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-100 dark:border-slate-700 p-6">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Info Kursus</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('messages.course_info') }}</h3>
                         <div class="space-y-3 text-sm">
                             <div class="flex justify-between">
-                                <span class="text-gray-500 dark:text-slate-400">Kategori</span>
-                                <span class="font-medium text-gray-900 dark:text-white">{{ $course->category === 'technical' ? 'Teknis' : 'Soft Skill' }}</span>
+                                <span class="text-gray-500 dark:text-slate-400">{{ __('messages.category') }}</span>
+                                <span class="font-medium text-gray-900 dark:text-white">{{ $course->category === 'technical' ? __('messages.technical') : __('messages.soft_skill') }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-500 dark:text-slate-400">Harga</span>
-                                <span class="font-medium {{ $course->is_free ? 'text-green-600' : 'text-gray-900 dark:text-white' }}">{{ $course->is_free ? 'Gratis' : 'Rp ' . number_format($course->price) }}</span>
+                                <span class="text-gray-500 dark:text-slate-400">{{ __('messages.price') }}</span>
+                                <span class="font-medium {{ $course->is_free ? 'text-green-600' : 'text-gray-900 dark:text-white' }}">{{ $course->is_free ? __('messages.free') : 'Rp ' . number_format($course->price) }}</span>
                             </div>
                             @if($course->competency)
                             <div class="flex justify-between">
-                                <span class="text-gray-500 dark:text-slate-400">Kompetensi</span>
+                                <span class="text-gray-500 dark:text-slate-400">{{ __('messages.competency') }}</span>
                                 <span class="font-medium text-gray-900 dark:text-white">{{ $course->competency->name }}</span>
                             </div>
                             @endif
                             @if($course->tags)
                             <div class="pt-2">
-                                <span class="text-gray-500 dark:text-slate-400 text-xs">Tags:</span>
+                                <span class="text-gray-500 dark:text-slate-400 text-xs">{{ __('messages.tags') }}:</span>
                                 <div class="flex flex-wrap gap-1 mt-1">
                                     @foreach($course->tags as $tag)
                                     <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 rounded text-xs">{{ $tag }}</span>
@@ -191,17 +191,17 @@
 
                     <!-- Classes -->
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-100 dark:border-slate-700 p-6">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Kelas</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('messages.class') }}</h3>
                         @forelse($course->classes as $class)
                         <div class="py-2 {{ !$loop->last ? 'border-b border-gray-100 dark:border-slate-700' : '' }}">
                             <a href="{{ route('teacher.classes.show', $class) }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400">{{ $class->name }}</a>
-                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ $class->enrollments->where('status', 'active')->count() }}/{{ $class->max_students }} siswa</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-400">{{ $class->enrollments->where('status', 'active')->count() }}/{{ $class->max_students }} {{ __('messages.students') }}</p>
                         </div>
                         @empty
-                        <p class="text-sm text-gray-500 dark:text-slate-400">Belum ada kelas.</p>
+                        <p class="text-sm text-gray-500 dark:text-slate-400">{{ __('messages.no_classes_yet') }}</p>
                         @endforelse
                         @if($course->status === 'published')
-                        <a href="{{ route('teacher.classes.create') }}?course_id={{ $course->id }}" class="mt-3 inline-block text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium">+ Buka Kelas Baru</a>
+                        <a href="{{ route('teacher.classes.create') }}?course_id={{ $course->id }}" class="mt-3 inline-block text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium">+ {{ __('messages.open_new_class') }}</a>
                         @endif
                     </div>
                 </div>

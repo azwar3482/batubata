@@ -1,41 +1,41 @@
-<x-app-layout>
+﻿<x-app-layout>
     <div class="max-w-6xl mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-6">Hasil Tes TPA 66</h1>
+        <h1 class="text-2xl font-bold mb-6">{{ __('messages.tpa_test_results') }}</h1>
 
         <form method="GET" class="bg-white rounded-xl shadow-sm p-4 mb-6 flex gap-3">
             <select name="test_id" class="border rounded-lg px-3 py-2">
-                <option value="">Semua Tes</option>
+                <option value="">{{ __('messages.all_tests') }}</option>
                 @foreach($tests as $test)
                 <option value="{{ $test->id }}" {{ request('test_id') == $test->id ? 'selected' : '' }}>{{ $test->title }}</option>
                 @endforeach
             </select>
             <select name="passed" class="border rounded-lg px-3 py-2">
-                <option value="">Semua Status</option>
-                <option value="1" {{ request('passed') === '1' ? 'selected' : '' }}>Lulus</option>
-                <option value="0" {{ request('passed') === '0' ? 'selected' : '' }}>Tidak Lulus</option>
+                <option value="">{{ __('messages.all_statuses') }}</option>
+                <option value="1" {{ request('passed') === '1' ? 'selected' : '' }}>{{ __('messages.passed') }}</option>
+                <option value="0" {{ request('passed') === '0' ? 'selected' : '' }}>{{ __('messages.not_passed') }}</option>
             </select>
-            <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg">Filter</button>
+            <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg">{{ __('messages.filter') }}</button>
         </form>
 
         @if($results->isEmpty())
         <div class="bg-white rounded-xl shadow-sm p-8 text-center">
-            <p class="text-gray-500">Belum ada hasil tes TPA.</p>
+            <p class="text-gray-500">{{ __('messages.no_tpa_test_results_yet') }}</p>
         </div>
         @else
         <div class="bg-white rounded-xl shadow-sm overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Kandidat</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">Tes</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Verbal</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Numerik</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Logika</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Spasial</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Total</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Bappenas</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Status</th>
-                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">Aksi</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">{{ __('messages.candidate') }}</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">{{ __('messages.test') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.verbal') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.numerical') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.logical') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.spatial') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.total') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.bappenas') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.status') }}</th>
+                        <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">{{ __('messages.action') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y">
@@ -51,14 +51,14 @@
                         <td class="px-4 py-3 text-center">{{ $result->bappenas_score }}</td>
                         <td class="px-4 py-3 text-center">
                             @if($result->is_passed)
-                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Lulus</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">{{ __('messages.passed') }}</span>
                             @else
-                            <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">Tidak Lulus</span>
+                            <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">{{ __('messages.not_passed') }}</span>
                             @endif
                         </td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('industry.tpa.results.show', $result) }}" class="text-blue-600 hover:underline text-sm">Detail</a>
+                                <a href="{{ route('industry.tpa.results.show', $result) }}" class="text-blue-600 hover:underline text-sm">{{ __('messages.detail') }}</a>
                                 <a href="{{ route('industry.tpa.results.pdf', $result) }}" class="text-red-600 hover:underline text-sm">PDF</a>
                             </div>
                         </td>

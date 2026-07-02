@@ -23,21 +23,21 @@
 
             <!-- Breadcrumbs -->
             <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
-                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.dashboard') }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <a href="{{ route('education.courses.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Kelola Kursus</a>
+                <a href="{{ route('education.courses.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.kelola_kursus') }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-gray-900 dark:text-white font-medium">Buat Baru</span>
+                <span class="text-gray-900 dark:text-white font-medium">{{ __('messages.buat_baru') }}</span>
             </nav>
 
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Buat Kursus Baru</h2>
-                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Buat materi pembelajaran untuk siswa/mahasiswa institusi Anda.</p>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.buat_kursus_baru') }}</h2>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.buat_materi_pembelajaran_untuk_siswa') }}</p>
                 </div>
                 <a href="{{ route('education.courses.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
-                    &laquo; Kembali
+                    &laquo; {{ __('messages.kembali') }}
                 </a>
             </div>
 
@@ -48,7 +48,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
-                    <h4 class="text-sm font-bold text-red-800 dark:text-red-300 mb-1">Terjadi kesalahan input:</h4>
+                    <h4 class="text-sm font-bold text-red-800 dark:text-red-300 mb-1">{{ __('messages.terjadi_kesalahan_input') }}</h4>
                     <ul class="text-xs text-red-700 dark:text-red-400 list-disc list-inside space-y-0.5">
                         @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -82,19 +82,19 @@
 
                     <!-- Basic Information Card -->
                     <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Informasi Dasar</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">{{ __('messages.informasi_dasar') }}</h3>
                         <div class="space-y-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Judul Kursus *</label>
-                                <input type="text" name="title" value="{{ old('title') }}" required class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Contoh: Fullstack Web Development Bootcamp">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.judul_kursus') }} *</label>
+                                <input type="text" name="title" value="{{ old('title') }}" required class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="{{ __('messages.contoh_fullstack_web_dev') }}">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Deskripsi *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.deskripsi') }} *</label>
                                 <input type="hidden" name="description" id="description" value="{{ old('description') }}">
                                 <div id="quill-description"></div>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Tujuan Pembelajaran</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.tujuan_pembelajaran') }}</label>
                                 <input type="hidden" name="objectives" id="objectives" value="{{ old('objectives') }}">
                                 <div id="quill-objectives"></div>
                             </div>
@@ -103,7 +103,7 @@
 
                     <!-- Detail & Parameter Card -->
                     <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Detail & Parameter</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">{{ __('messages.detail_dan_parameter') }}</h3>
                         <div class="space-y-6">
 
                             <!-- Searchable Dropdown for Competency (Alpine.js Select2 Style) -->
@@ -111,7 +111,7 @@
                                 open: false, 
                                 search: '', 
                                 selectedId: '{{ old('competency_id', '') }}',
-                                selectedName: '{{ old('competency_id') ? $competencies->firstWhere('id', old('competency_id'))->name : 'Pilih Kompetensi' }}',
+                                selectedName: '{{ old('competency_id') ? $competencies->firstWhere('id', old('competency_id'))->name : __('messages.pilih_kompetensi') }}',
                                 items: [
                                     @foreach($competencies as $comp)
                                         { id: '{{ $comp->id }}', name: '{{ addslashes($comp->name) }}' },
@@ -129,14 +129,14 @@
                                 }
                             }" 
                             class="relative">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Kompetensi Terkait</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.kompetensi_terkait') }}</label>
                                 
                                 <!-- Trigger Button -->
                                 <button type="button" 
                                     @click="open = !open" 
                                     @click.away="open = false"
                                     class="relative w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg shadow-sm pl-3 pr-10 py-2.5 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                                    <span class="block truncate" x-text="selectedName || 'Pilih Kompetensi'"></span>
+                                    <span class="block truncate" x-text="selectedName || '{{ __('messages.pilih_kompetensi') }}'"></span>
                                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -160,13 +160,13 @@
                                             x-model="search"
                                             @click.stop
                                             class="w-full border border-gray-300 dark:border-slate-750 dark:bg-slate-900 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs py-1.5 px-3" 
-                                            placeholder="Cari kompetensi...">
+                                            placeholder="{{ __('messages.cari_kompetensi') }}">
                                     </div>
 
                                     <ul class="py-1">
-                                        <li @click="select('', 'Pilih Kompetensi')" 
+                                        <li @click="select('', '{{ __('messages.pilih_kompetensi') }}')" 
                                             class="text-gray-900 dark:text-gray-300 cursor-default select-none relative py-2.5 pl-3 pr-9 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 transition">
-                                            <span class="block truncate">Pilih Kompetensi</span>
+                                            <span class="block truncate">{{ __('messages.pilih_kompetensi') }}</span>
                                         </li>
                                         <template x-for="item in filteredItems" :key="item.id">
                                             <li @click="select(item.id, item.name)" 
@@ -176,7 +176,7 @@
                                         </template>
                                         <template x-if="filteredItems.length === 0">
                                             <li class="text-gray-500 dark:text-slate-400 cursor-default select-none relative py-2.5 pl-3 pr-9">
-                                                Tidak ditemukan kompetensi
+                                                {{ __('messages.tidak_ditemukan_kompetensi') }}
                                             </li>
                                         </template>
                                     </ul>
@@ -188,7 +188,7 @@
 
                                 <!-- Custom Radio for Category -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Kategori *</label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.kategori') }} *</label>
                                     <div class="grid grid-cols-2 gap-3">
                                         <button type="button" 
                                             @click="category = 'technical'"
@@ -197,7 +197,7 @@
                                             <svg class="w-6 h-6 mb-1.5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                             </svg>
-                                            <span class="text-xs">Teknis</span>
+                                            <span class="text-xs">{{ __('messages.teknis') }}</span>
                                         </button>
                                         <button type="button" 
                                             @click="category = 'soft_skill'"
@@ -214,7 +214,7 @@
 
                                 <!-- Custom Radio for Level -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Level *</label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.level') }} *</label>
                                     <div class="grid grid-cols-3 gap-2">
                                         <button type="button" 
                                             @click="level = 'beginner'"
@@ -249,12 +249,12 @@
 
                     <!-- Price & Media Card -->
                     <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Harga & Media</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">{{ __('messages.harga_dan_media') }}</h3>
                         <div class="space-y-6">
                             
                             <!-- Custom Radio Price Type -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Tipe Harga *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.tipe_harga') }} *</label>
                                 <div class="grid grid-cols-2 gap-3">
                                     <button type="button" 
                                         @click="isFree = true"
@@ -263,7 +263,7 @@
                                         <svg class="w-6 h-6 mb-1 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <span class="text-xs">Gratis</span>
+                                        <span class="text-xs">{{ __('messages.gratis') }}</span>
                                     </button>
                                     <button type="button" 
                                         @click="isFree = false"
@@ -272,7 +272,7 @@
                                         <svg class="w-6 h-6 mb-1 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <span class="text-xs">Berbayar</span>
+                                        <span class="text-xs">{{ __('messages.berbayar') }}</span>
                                     </button>
                                 </div>
                                 <input type="checkbox" name="is_free" value="1" x-model="isFree" class="hidden">
@@ -280,7 +280,7 @@
 
                             <!-- Currency Input with Auto-formatting -->
                             <div x-show="!isFree" x-transition class="mt-4">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Harga Kursus (Rp) *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.harga_kursus_rp') }} *</label>
                                 <div class="relative rounded-lg shadow-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-400 dark:text-slate-500 text-sm">Rp</span>
@@ -289,47 +289,47 @@
                                         x-model="formattedPrice"
                                         @input="formattedPrice = $event.target.value"
                                         class="w-full pl-10 border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5" 
-                                        placeholder="Contoh: 150.000">
+                                        placeholder="{{ __('messages.contoh_150000') }}">
                                     <input type="hidden" name="price" :value="rawPrice">
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Thumbnail</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.thumbnail') }}</label>
                                 <input type="file" name="thumbnail" accept="image/*" class="w-full border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 text-slate-500 dark:text-slate-400 bg-gray-50 dark:bg-slate-800 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-900/40 dark:file:text-blue-200 hover:file:bg-blue-100">
-                                <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-1.5">Format: JPG, PNG, WEBP (Maks. 2MB)</p>
+                                <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-1.5">{{ __('messages.format_jpg_png_webp') }} ({{ __('messages.maks_2mb') }})</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Class Parameters Card -->
                     <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Parameter Kelas</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">{{ __('messages.parameter_kelas') }}</h3>
                         <div class="space-y-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Durasi Belajar (Jam) *</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.durasi_belajar_jam') }} *</label>
                                 <div class="relative rounded-lg shadow-sm">
                                     <input type="number" name="duration_hours" value="{{ old('duration_hours', 1) }}" min="1" required class="w-full pr-12 border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5">
                                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-400 dark:text-slate-550 text-xs">Jam</span>
+                                        <span class="text-gray-400 dark:text-slate-550 text-xs">{{ __('messages.jam') }}</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Maks. Siswa per Kelas</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.maks_siswa_per_kelas') }}</label>
                                 <div class="relative rounded-lg shadow-sm">
-                                    <input type="number" name="max_students" value="{{ old('max_students', 30) }}" min="0" class="w-full pr-16 border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5" placeholder="0 = Unlimited">
+                                    <input type="number" name="max_students" value="{{ old('max_students', 30) }}" min="0" class="w-full pr-16 border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5" placeholder="{{ __('messages.0_unlimited') }}">
                                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-400 dark:text-slate-550 text-xs">Siswa</span>
+                                        <span class="text-gray-400 dark:text-slate-550 text-xs">{{ __('messages.siswa') }}</span>
                                     </div>
                                 </div>
-                                <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-1.5">Masukkan angka 0 untuk kuota siswa tidak terbatas.</p>
+                                <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-1.5">{{ __('messages.masukkan_0_kuota_tidak_terbatas') }}</p>
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Tags</label>
-                                <input type="text" name="tags" value="{{ old('tags') }}" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5" placeholder="Pisahkan dengan koma (misal: php, sql)">
+                                <input type="text" name="tags" value="{{ old('tags') }}" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5" placeholder="{{ __('messages.pisahkan_dengan_koma_contoh') }}">
                             </div>
                         </div>
                     </div>
@@ -337,10 +337,10 @@
                     <!-- Action Save Card (Sticky) -->
                     <div class="sticky top-6 bg-white dark:bg-slate-900 shadow-md rounded-2xl p-6 border border-gray-100 dark:border-slate-800 space-y-3">
                         <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-all duration-300 hover:-translate-y-0.5">
-                            Simpan sebagai Draft
+                            {{ __('messages.simpan_sebagai_draft') }}
                         </button>
                         <a href="{{ route('education.courses.index') }}" class="block w-full text-center py-2.5 border border-gray-250 dark:border-slate-700 text-gray-700 dark:text-slate-300 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 transition text-sm font-semibold">
-                            Batal
+                            {{ __('messages.batal') }}
                         </a>
                     </div>
 
@@ -355,7 +355,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var quillDesc = new Quill('#quill-description', {
             theme: 'snow',
-            placeholder: 'Jelaskan secara rinci mengenai kursus ini...',
+            placeholder: '{{ __("messages.jelaskan_rinci_kursus_ini") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
@@ -370,7 +370,7 @@
 
         var quillObj = new Quill('#quill-objectives', {
             theme: 'snow',
-            placeholder: 'Apa saja kompetensi/materi utama yang akan dicapai oleh siswa?',
+            placeholder: '{{ __("messages.kompetensi_materi_utama_dicapai_siswa") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],

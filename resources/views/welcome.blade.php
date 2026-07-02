@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="KOMPASKARIR - Skill Gap Advisor untuk menjembatani kesenjangan kompetensi antara lulusan dan industri">
-    <title>KOMPASKARIR INDONESIA - Skill Gap Advisor Platform</title>
+        content="{{ __('messages.meta_description') }}">
+    <title>{{ __('messages.page_title') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" href="{{ asset('logo.jpg') }}" type="image/jpeg" class="h-8 w-auto mr-2 rounded-lg">
     <script>
@@ -36,10 +36,10 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#fitur" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">Fitur</a>
-                    <a href="#manfaat" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">Manfaat</a>
-                    <a href="#testimoni" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">Testimoni</a>
-                    <a href="#faq" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">FAQ</a>
+                    <a href="#fitur" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">{{ __('messages.nav_features') }}</a>
+                    <a href="#manfaat" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">{{ __('messages.nav_benefits') }}</a>
+                    <a href="#testimoni" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">{{ __('messages.nav_testimonials') }}</a>
+                    <a href="#faq" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">{{ __('messages.nav_faq') }}</a>
                 </div>
 
                 <!-- Auth Buttons -->
@@ -50,11 +50,11 @@
                         <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
                     <a href="{{ route('login') }}" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium transition">
-                        Login
+                        {{ __('messages.login') }}
                     </a>
                     <a href="{{ route('register') }}"
                         class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-800 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                        Daftar Gratis
+                        {{ __('messages.register_free') }}
                     </a>
                 </div>
 
@@ -80,13 +80,12 @@
         <!-- Mobile Menu -->
         <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" class="md:hidden bg-white dark:bg-slate-800 border-t dark:border-slate-700">
             <div class="px-4 py-4 space-y-3">
-                <a href="#fitur" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">Fitur</a>
-                <a href="#manfaat" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">Manfaat</a>
-                <a href="#testimoni" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">Testimoni</a>
-                <a href="{{ route('login') }}" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">Login</a>
+                <a href="#fitur" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">{{ __('messages.nav_features') }}</a>
+                <a href="#manfaat" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">{{ __('messages.nav_benefits') }}</a>
+                <a href="#testimoni" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">{{ __('messages.nav_testimonials') }}</a>
+                <a href="{{ route('login') }}" class="block text-gray-600 dark:text-gray-300 hover:text-blue-600 font-medium">{{ __('messages.login') }}</a>
                 <a href="{{ route('register') }}"
-                    class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-medium rounded-lg">Daftar
-                    Gratis</a>
+                    class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-medium rounded-lg">{{ __('messages.register_free') }}</a>
             </div>
         </div>
     </nav>
@@ -100,24 +99,18 @@
                     <div
                         class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
                         <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
-                        Platform Skill Gap Advisor #1 di Indonesia
+                        {{ __('messages.hero_badge') }}
                     </div>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight mb-6">
-                        Temukan <span
-                            class="bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">Kesenjangan
-                            Skill</span> & Raih Karir Impian
+                        {!! __('messages.hero_title') !!}
                     </h1>
-                    <!-- <p class="text-xl md:text-2xl font-medium italic text-indigo-600 dark:text-indigo-400 mb-4">
-                        "Menuju tak terbatas dan melampauinya"
-                    </p> -->
                     <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
-                        KOMPASKARIR membantu Anda menganalisis kompetensi, mendapatkan rekomendasi pembelajaran
-                        personal, dan menemukan lowongan kerja yang sesuai dengan skill Anda.
+                        {{ __('messages.hero_description') }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <a href="{{ route('register') }}"
                             class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-800 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            Mulai Asesmen Gratis
+                            {{ __('messages.hero_cta_assessment') }}
                             <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -132,7 +125,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Lihat Demo
+                            {{ __('messages.hero_cta_demo') }}
                         </a>
                     </div>
 
@@ -147,15 +140,15 @@
                     <div class="mt-12 grid grid-cols-3 gap-6">
                         <div class="text-center lg:text-left">
                             <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($totalUsers * 100) }}+</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Pengguna Aktif</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.stat_active_users') }}</p>
                         </div>
                         <div class="text-center lg:text-left">
                             <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($totalCompanies * 50) }}+</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Perusahaan Mitra</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.stat_partner_companies') }}</p>
                         </div>
                         <div class="text-center lg:text-left">
                             <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $placementPercent + 50 }}%</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Rate Penempatan</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.stat_placement_rate') }}</p>
                         </div>
                     </div>
                 </div>
@@ -201,11 +194,11 @@
                         <!-- Floating Elements -->
                         <div
                             class="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-semibold animate-bounce">
-                            ✓ Skill Gap Teridentifikasi
+                            {{ __('messages.floating_skill_gap') }}
                         </div>
                         <div
                             class="absolute -bottom-4 -left-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-semibold">
-                            🎯 Rekomendasi Personal
+                            {{ __('messages.floating_recommendation') }}
                         </div>
                     </div>
                 </div>
@@ -249,9 +242,8 @@
     <section id="fitur" class="py-20 bg-white dark:bg-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Fitur Unggulan</h2>
-                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Platform lengkap untuk analisis kompetensi dan
-                    pengembangan karir Anda</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">{{ __('messages.features_title') }}</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{{ __('messages.features_subtitle') }}</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -264,9 +256,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Asesmen Kompetensi</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Analisis mendalam terhadap skill teknis dan soft skill Anda dengan standar
-                        industri.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.feature_competency_assessment_title') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('messages.feature_competency_assessment_desc') }}</p>
                 </div>
 
                 <!-- Feature 2 -->
@@ -278,9 +269,8 @@
                                 d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Analisis Skill Gap</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Identifikasi kesenjangan antara kemampuan Anda dengan requirement
-                        industri.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.feature_skill_gap_title') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('messages.feature_skill_gap_desc') }}</p>
                 </div>
 
                 <!-- Feature 3 -->
@@ -293,9 +283,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Rekomendasi Kursus</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Dapatkan rekomendasi pembelajaran personal untuk menutup skill gap Anda.
-                    </p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.feature_course_recommendation_title') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('messages.feature_course_recommendation_desc') }}</p>
                 </div>
 
                 <!-- Feature 4 -->
@@ -308,8 +297,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Roadmap Karir</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Rencana pengembangan karir 6 bulan yang terstruktur dan terukur.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.feature_career_roadmap_title') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('messages.feature_career_roadmap_desc') }}</p>
                 </div>
 
                 <!-- Feature 5 -->
@@ -322,8 +311,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Job Matching</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Temukan lowongan kerja yang sesuai dengan kompetensi dan minat Anda.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.feature_job_matching_title') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('messages.feature_job_matching_desc') }}</p>
                 </div>
 
                 <!-- Feature 6 -->
@@ -336,9 +325,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Laporan PDF</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Download laporan kompetensi profesional untuk portofolio dan lamaran
-                        kerja.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.feature_pdf_report_title') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300">{{ __('messages.feature_pdf_report_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -348,9 +336,8 @@
     <section id="manfaat" class="py-20 bg-gray-50 dark:bg-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Siapa yang Bisa Menggunakan?</h2>
-                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Platform ini dirancang untuk berbagai kebutuhan
-                    pengembangan karir</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">{{ __('messages.target_users_title') }}</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{{ __('messages.target_users_subtitle') }}</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -364,9 +351,8 @@
                         </svg>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Pencari Kerja</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Analisis skill gap, dapatkan rekomendasi kursus, dan temukan
-                            lowongan yang sesuai dengan kompetensi Anda.</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.target_job_seeker_title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">{{ __('messages.target_job_seeker_desc') }}</p>
                         <ul class="space-y-2 mb-6">
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -374,7 +360,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Asesmen kompetensi gratis
+                                {{ __('messages.job_seeker_benefit_1') }}
                             </li>
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -382,7 +368,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Rekomendasi personal
+                                {{ __('messages.job_seeker_benefit_2') }}
                             </li>
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -390,12 +376,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Job matching otomatis
+                                {{ __('messages.job_seeker_benefit_3') }}
                             </li>
                         </ul>
                         <a href="{{ route('register') }}"
-                            class="block w-full text-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">Daftar
-                            Sekarang</a>
+                            class="block w-full text-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">{{ __('messages.register_now') }}</a>
                     </div>
                 </div>
 
@@ -410,9 +395,8 @@
                         </svg>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Perusahaan / HRD</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Posting lowongan, temukan kandidat berkualitas dengan skill yang
-                            sudah terverifikasi.</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.target_industry_title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">{{ __('messages.target_industry_desc') }}</p>
                         <ul class="space-y-2 mb-6">
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -420,7 +404,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Akses database talenta
+                                {{ __('messages.industry_benefit_1') }}
                             </li>
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -428,7 +412,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Skill verification
+                                {{ __('messages.industry_benefit_2') }}
                             </li>
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -436,12 +420,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Matching score otomatis
+                                {{ __('messages.industry_benefit_3') }}
                             </li>
                         </ul>
                         <a href="{{ route('register') }}"
-                            class="block w-full text-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition">Daftar
-                            Perusahaan</a>
+                            class="block w-full text-center px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition">{{ __('messages.register_company') }}</a>
                     </div>
                 </div>
 
@@ -456,9 +439,8 @@
                         </svg>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Institusi Pendidikan</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Pantau kompetensi lulusan, analisis skill gap, dan sesuaikan
-                            kurikulum dengan industri.</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('messages.target_education_title') }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">{{ __('messages.target_education_desc') }}</p>
                         <ul class="space-y-2 mb-6">
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -466,7 +448,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Analytics lulusan
+                                {{ __('messages.education_benefit_1') }}
                             </li>
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -474,7 +456,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Kurriculum recommendation
+                                {{ __('messages.education_benefit_2') }}
                             </li>
                             <li class="flex items-center text-gray-700 dark:text-gray-200">
                                 <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
@@ -482,12 +464,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Industry collaboration
+                                {{ __('messages.education_benefit_3') }}
                             </li>
                         </ul>
                         <a href="{{ route('register') }}"
-                            class="block w-full text-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">Daftar
-                            Institusi</a>
+                            class="block w-full text-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">{{ __('messages.register_institution') }}</a>
                     </div>
                 </div>
             </div>
@@ -497,13 +478,12 @@
     <!-- CTA Section -->
     <section class="py-20 bg-gradient-to-r from-blue-600 to-indigo-700">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">Siap untuk Meningkatkan Karir Anda?</h2>
-            <p class="text-xl text-blue-100 mb-8">Bergabunglah dengan ribuan profesional yang telah menemukan jalur
-                karir terbaik mereka melalui KOMPASKARIR.</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">{{ __('messages.cta_title') }}</h2>
+            <p class="text-xl text-blue-100 mb-8">{{ __('messages.cta_description') }}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('register') }}"
                     class="inline-flex items-center justify-center px-8 py-4 bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 font-semibold rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition shadow-lg transform hover:-translate-y-1">
-                    Daftar Gratis Sekarang
+                    {{ __('messages.cta_register_now') }}
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -511,7 +491,7 @@
                 </a>
                 <a href="{{ route('login') }}"
                     class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white/10 transition">
-                    Sudah Punya Akun? Login
+                    {{ __('messages.cta_login') }}
                 </a>
             </div>
         </div>
@@ -526,8 +506,7 @@
                         <img src="{{ asset('logo.JPG') }}" alt="Logo" class="h-8 w-auto mr-2 rounded-lg dark:bg-white dark:p-1">
                         <span class="text-xl font-bold">KOMPASKARIR</span>
                     </div>
-                    <p class="text-gray-400 mb-4 max-w-md">Platform Skill Gap Advisor untuk menjembatani kesenjangan
-                        kompetensi antara lulusan pendidikan dan kebutuhan industri digital.</p>
+                    <p class="text-gray-400 mb-4 max-w-md">{{ __('messages.footer_description') }}</p>
                     <div class="flex space-x-4">
                         <a href="https://instagram.com/_azwar" target="_blank" class="text-gray-400 hover:text-white transition">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -548,42 +527,42 @@
                     </div>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <h4 class="font-semibold mb-4">{{ __('messages.footer_product') }}</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#fitur" class="hover:text-white transition">Fitur</a></li>
-                        <li><a href="#" class="hover:text-white transition">Harga</a></li>
+                        <li><a href="#fitur" class="hover:text-white transition">{{ __('messages.nav_features') }}</a></li>
+                        <li><a href="#" class="hover:text-white transition">{{ __('messages.footer_pricing') }}</a></li>
                         <li><a href="#" class="hover:text-white transition">API</a></li>
-                        <li><a href="#" class="hover:text-white transition">Integrasi</a></li>
+                        <li><a href="#" class="hover:text-white transition">{{ __('messages.footer_integration') }}</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Perusahaan</h4>
+                    <h4 class="font-semibold mb-4">{{ __('messages.footer_company') }}</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">Tentang Kami</a></li>
-                        <li><a href="#" class="hover:text-white transition">Karir</a></li>
-                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
-                        <li><a href="#" class="hover:text-white transition">Kontak</a></li>
+                        <li><a href="#" class="hover:text-white transition">{{ __('messages.footer_about') }}</a></li>
+                        <li><a href="#" class="hover:text-white transition">{{ __('messages.footer_careers') }}</a></li>
+                        <li><a href="#" class="hover:text-white transition">{{ __('messages.footer_blog') }}</a></li>
+                        <li><a href="#" class="hover:text-white transition">{{ __('messages.footer_contact') }}</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <h4 class="font-semibold mb-4">{{ __('messages.footer_legal') }}</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a></li>
-                        <li><a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                        <li><a href="{{ route('legal.privacy') }}" class="hover:text-white transition">{{ __('messages.footer_privacy_policy') }}</a></li>
+                        <li><a href="{{ route('legal.terms') }}" class="hover:text-white transition">{{ __('messages.footer_terms') }}</a></li>
                         <li><a href="{{ route('legal.tia') }}" class="hover:text-white transition">Transfer Impact Assessment</a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA. Hak Cipta Dilindungi.</p>
+                <p>&copy; {{ date('Y') }} KOMPASKARIR INDONESIA. {{ __('messages.footer_copyright') }}</p>
                 <div class="mt-2 flex justify-center space-x-4 text-sm">
-                    <a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a>
+                    <a href="{{ route('legal.privacy') }}" class="hover:text-white transition">{{ __('messages.footer_privacy_policy') }}</a>
                     <span>&middot;</span>
-                    <a href="{{ route('legal.terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a>
+                    <a href="{{ route('legal.terms') }}" class="hover:text-white transition">{{ __('messages.footer_terms') }}</a>
                     <span>&middot;</span>
                     <a href="{{ route('legal.tia') }}" class="hover:text-white transition">TIA</a>
                 </div>
-                <p class="mt-2 text-sm">Dikembangkan oleh: Noor Syam AR & Anggitya Ayu Pertiwi</p>
+                <p class="mt-2 text-sm">{{ __('messages.footer_developed_by') }}</p>
             </div>
         </div>
     </footer>

@@ -4,15 +4,15 @@
 
             <div class="flex justify-between items-center mb-8">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900">Kelola Kompetensi</h2>
-                    <p class="mt-2 text-gray-600">Database standar kompetensi industri untuk asesmen.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900">{{ __('messages.manage_competencies') }}</h2>
+                    <p class="mt-2 text-gray-600">{{ __('messages.competencies_database_description') }}</p>
                 </div>
                 <a href="{{ route('admin.competencies.create') }}"
                     class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Tambah Kompetensi
+                    {{ __('messages.add_competency') }}
                 </a>
             </div>
 
@@ -23,8 +23,8 @@
                         <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200 mb-1">Tentang Kelola Kompetensi</h4>
-                        <p class="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">Kompetensi adalah standar keahlian yang diukur dalam asesmen. Setiap kompetensi terkait dengan <strong>posisi kerja</strong> (opsional) dan memiliki <strong>level minimum</strong> yang dibutuhkan (1-10). Data ini digunakan untuk menghitung <strong>skill gap</strong> dan merekomendasikan kursus yang sesuai.</p>
+                        <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200 mb-1">{{ __('messages.about_manage_competencies') }}</h4>
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">{!! __('messages.competencies_info_text') !!}</p>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <form action="{{ route('admin.competencies') }}" method="GET" class="flex gap-4">
                     <div class="relative flex-1">
                         <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari nama kompetensi atau kode..."
+                            placeholder="{{ __('messages.search_competency_placeholder') }}"
                             class="w-full pl-10 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@
                     </div>
                     <select name="category" onchange="this.form.submit()"
                         class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Semua Kategori</option>
+                        <option value="">{{ __('messages.all_categories') }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
                                 {{ $category }}
@@ -54,10 +54,10 @@
                     </select>
 
                     <button type="submit"
-                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Cari</button>
+                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">{{ __('messages.search') }}</button>
                     @if (request()->has('search') || request()->has('category'))
                         <a href="{{ route('admin.competencies') }}"
-                            class="px-6 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">Reset</a>
+                            class="px-6 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">{{ __('messages.reset') }}</a>
                     @endif
                 </form>
             </div>
@@ -68,14 +68,14 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-10">No</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Kompetensi
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-10">{{ __('messages.no') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.code') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.competency_name') }}
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Posisi</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Min Level</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.category') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.position') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('messages.min_level') }}</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{{ __('messages.action') }}</th>
                         </tr>
 
                     </thead>
@@ -90,7 +90,7 @@
                             <td class="px-6 py-4">
                                 <span
                                     class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    {{ $competency->category ?? 'General' }}
+                                    {{ $competency->category ?? __('messages.general') }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">{{ $competency->position->name ?? 'N/A' }}
@@ -99,7 +99,7 @@
                             <td class="px-6 py-4 text-right flex justify-end items-center gap-2">
                                 <a href="{{ route('admin.competencies.edit', $competency) }}"
                                     class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                    title="Edit Kompetensi">
+                                    title="{{ __('messages.edit_competency') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -107,11 +107,11 @@
                                     </svg>
                                 </a>
                                 <form action="{{ route('admin.competencies.destroy', $competency) }}" method="POST"
-                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus kompetensi ini?');">
+                                    onsubmit="return confirm('{{ __('messages.confirm_delete_competency') }}');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                        title="Hapus Kompetensi">
+                                        title="{{ __('messages.delete_competency') }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
@@ -124,7 +124,7 @@
 
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">Belum ada kompetensi.
+                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">{{ __('messages.no_competencies_yet') }}
                                 </td>
                             </tr>
                         @endforelse

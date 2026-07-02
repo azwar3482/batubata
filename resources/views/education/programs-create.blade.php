@@ -6,21 +6,21 @@
 
             <!-- Breadcrumbs -->
             <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
-                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.dashboard') }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <a href="{{ route('education.programs') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Program</a>
+                <a href="{{ route('education.programs') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.program') }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-gray-900 dark:text-white font-medium">Tambah</span>
+                <span class="text-gray-900 dark:text-white font-medium">{{ __('messages.tambah') }}</span>
             </nav>
 
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Program Baru</h2>
-                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Buat program kolaborasi dengan industri untuk meningkatkan kompetensi lulusan Anda.</p>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.tambah_program_baru') }}</h2>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.buat_program_kolaborasi_industri') }}</p>
                 </div>
                 <a href="{{ route('education.programs') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
-                    &laquo; Kembali
+                    &laquo; {{ __('messages.kembali') }}
                 </a>
             </div>
 
@@ -32,8 +32,8 @@
                             class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-sm">
                             ✓</div>
                         <div class="ml-3">
-                            <p class="text-sm font-semibold text-gray-900">Informasi Dasar</p>
-                            <p class="text-xs text-gray-500">Nama, tipe, durasi</p>
+                            <p class="text-sm font-semibold text-gray-900">{{ __('messages.informasi_dasar') }}</p>
+                            <p class="text-xs text-gray-500">{{ __('messages.nama_tipe_durasi') }}</p>
                         </div>
                     </div>
                     <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
@@ -42,8 +42,8 @@
                             class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
                             2</div>
                         <div class="ml-3">
-                            <p class="text-sm font-semibold text-gray-900">Kurikulum</p>
-                            <p class="text-xs text-gray-500">Materi & learning objectives</p>
+                            <p class="text-sm font-semibold text-gray-900">{{ __('messages.kurikulum') }}</p>
+                            <p class="text-xs text-gray-500">{{ __('messages.materi_learning_objectives') }}</p>
                         </div>
                     </div>
                     <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
@@ -52,8 +52,8 @@
                             class="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-400 flex items-center justify-center font-bold text-sm">
                             3</div>
                         <div class="ml-3">
-                            <p class="text-sm font-semibold text-gray-400 dark:text-slate-400">Konfirmasi</p>
-                            <p class="text-xs text-gray-400 dark:text-slate-500">Review & publikasi</p>
+                            <p class="text-sm font-semibold text-gray-400 dark:text-slate-400">{{ __('messages.konfirmasi') }}</p>
+                            <p class="text-xs text-gray-400 dark:text-slate-500">{{ __('messages.review_publikasi') }}</p>
                         </div>
                     </div>
                 </div>
@@ -65,16 +65,16 @@
 
                 <!-- Section 1: Basic Information -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">📋 Informasi Program</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">📋 {{ __('messages.informasi_program') }}</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Program Name -->
                         <div class="md:col-span-2">
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Program <span class="text-red-500">*</span>
+                                {{ __('messages.nama_program') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                                placeholder="Contoh: Digital Marketing Bootcamp 2024"
+                                placeholder="{{ __('messages.contoh_digital_marketing_bootcamp') }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-lg"
                                 oninput="updatePreview()">
                             @error('name')
@@ -91,12 +91,12 @@
                         <!-- Program Type -->
                         <div>
                             <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
-                                Jenis Program <span class="text-red-500">*</span>
+                                {{ __('messages.jenis_program') }} <span class="text-red-500">*</span>
                             </label>
                             <select name="type" id="type" required
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
                                 onchange="updatePreview()">
-                                <option value="">-- Pilih Jenis --</option>
+                                <option value="">{{ __('messages.pilih_jenis') }}</option>
                                 @foreach ($programTypes as $type)
                                     <option value="{{ $type }}" {{ old('type') == $type ? 'selected' : '' }}>
                                         {{ $type }}</option>
@@ -110,11 +110,11 @@
                         <!-- Duration -->
                         <div>
                             <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">
-                                Durasi <span class="text-red-500">*</span>
+                                {{ __('messages.durasi') }} <span class="text-red-500">*</span>
                             </label>
                             <select name="duration" id="duration" required
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
-                                <option value="">-- Pilih Durasi --</option>
+                                <option value="">{{ __('messages.pilih_durasi') }}</option>
                                 @foreach ($durations as $dur)
                                     <option value="{{ $dur }}" {{ old('duration') == $dur ? 'selected' : '' }}>
                                         {{ $dur }}</option>
@@ -128,11 +128,11 @@
                         <!-- Target Students -->
                         <div>
                             <label for="target_students" class="block text-sm font-medium text-gray-700 mb-2">
-                                Kuota Peserta <span class="text-red-500">*</span>
+                                {{ __('messages.kuota_peserta') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="number" name="target_students" id="target_students"
                                 value="{{ old('target_students') }}" required min="1" max="500"
-                                placeholder="Jumlah maksimal peserta"
+                                placeholder="{{ __('messages.jumlah_maksimal_peserta') }}"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
                             @error('target_students')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -142,7 +142,7 @@
                         <!-- Start Date -->
                         <div>
                             <label for="start_date" class="block text-sm font-medium text-gray-700 mb-2">
-                                Tanggal Mulai <span class="text-red-500">*</span>
+                                {{ __('messages.tanggal_mulai') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="date" name="start_date" id="start_date" value="{{ old('start_date') }}"
                                 required min="{{ date('Y-m-d', strtotime('+1 day')) }}"
@@ -156,18 +156,17 @@
 
                 <!-- Section 2: Description & Objectives -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">🎯 Deskripsi & Tujuan</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">🎯 {{ __('messages.deskripsi_tujuan') }}</h3>
 
                     <div class="space-y-6">
                         <!-- Description -->
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                                Deskripsi Program <span class="text-red-500">*</span>
+                                {{ __('messages.deskripsi_program') }} <span class="text-red-500">*</span>
                             </label>
                             <input id="description" type="hidden" name="description" value="{{ old('description') }}">
                             <div id="quill-description"></div>
-                            <p class="text-xs text-gray-500 mt-1">Maksimal 2000 karakter. Gunakan bahasa yang jelas dan
-                                menarik.</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ __('messages.maksimal_2000_karakter') }}</p>
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -176,10 +175,9 @@
                         <!-- Learning Objectives (Dynamic) -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Tujuan Pembelajaran <span class="text-red-500">*</span>
+                                {{ __('messages.tujuan_pembelajaran') }} <span class="text-red-500">*</span>
                             </label>
-                            <p class="text-xs text-gray-500 mb-3">Sebutkan 3-5 kompetensi yang akan dicapai peserta
-                                setelah menyelesaikan program.</p>
+                            <p class="text-xs text-gray-500 mb-3">{{ __('messages.sebutkan_3_5_kompetensi') }}</p>
 
                             <div id="objectives-container" class="space-y-3">
                                 @foreach (old('learning_objectives', ['']) as $index => $objective)
@@ -212,7 +210,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4"></path>
                                 </svg>
-                                Tambah Tujuan
+                                {{ __('messages.tambah_tujuan') }}
                             </button>
                             @error('learning_objectives')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -223,11 +221,10 @@
 
                 <!-- Section 3: Industry Partners -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">🤝 Mitra Industri</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">🤝 {{ __('messages.mitra_industri') }}</h3>
 
                     <div class="space-y-4">
-                        <p class="text-sm text-gray-600">Pilih perusahaan mitra yang akan terlibat dalam program ini.
-                            Mitra dapat menyediakan mentor, studi kasus, atau kesempatan rekrutmen.</p>
+                        <p class="text-sm text-gray-600">{{ __('messages.pilih_perusahaan_mitra') }}</p>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             @foreach ($industries as $industry)
@@ -248,7 +245,7 @@
 
                 <!-- Section 4: Curriculum Upload -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">📚 Dokumen Kurikulum</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 border-b dark:border-slate-700 pb-4">📚 {{ __('messages.dokumen_kurikulum') }}</h3>
 
                     <div class="space-y-4">
                         <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-400 transition cursor-pointer"
@@ -259,8 +256,8 @@
                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
                                 </path>
                             </svg>
-                            <p class="mt-2 text-sm font-medium text-gray-900">Upload Silabus/Kurikulum</p>
-                            <p class="text-xs text-gray-500">PDF, DOC, DOCX • Maksimal 10MB</p>
+                            <p class="mt-2 text-sm font-medium text-gray-900">{{ __('messages.upload_silabus_kurikulum') }}</p>
+                            <p class="text-xs text-gray-500">PDF, DOC, DOCX • {{ __('messages.maksimal_10mb') }}</p>
                             <input type="file" name="curriculum_file" id="curriculum_file"
                                 accept=".pdf,.doc,.docx" class="hidden" onchange="previewFile(this)">
                         </div>
@@ -276,7 +273,7 @@
                                         <p id="file-preview-size" class="text-xs text-gray-500"></p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="removeFile()" class="text-red-600 hover:text-red-800 p-1 rounded-lg hover:bg-red-50 transition" title="Hapus file">
+                                <button type="button" onclick="removeFile()" class="text-red-600 hover:text-red-800 p-1 rounded-lg hover:bg-red-50 transition" title="{{ __('messages.hapus_file') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
@@ -304,7 +301,7 @@
                                     </div>
                                 </div>
                                 <button type="button"
-                                    class="text-red-600 hover:text-red-800 text-sm font-medium">Ganti</button>
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium">{{ __('messages.ganti') }}</button>
                             </div>
                         @endif
                         @error('curriculum_file')
@@ -316,22 +313,22 @@
                 <!-- Preview Card (Sticky on Desktop) -->
                 <div
                     class="bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/30 rounded-xl p-6 border border-green-200 dark:border-green-800">
-                    <h4 class="font-bold text-gray-900 dark:text-gray-100 mb-4">👁️ Preview Program</h4>
+                    <h4 class="font-bold text-gray-900 dark:text-gray-100 mb-4">👁️ {{ __('messages.preview_program') }}</h4>
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-500 dark:text-gray-400">Nama:</span>
+                            <span class="text-gray-500 dark:text-gray-400">{{ __('messages.nama') }}:</span>
                             <span class="font-medium text-gray-900 dark:text-gray-200" id="preview-name">-</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500 dark:text-gray-400">Jenis:</span>
+                            <span class="text-gray-500 dark:text-gray-400">{{ __('messages.jenis') }}:</span>
                             <span class="font-medium text-gray-900 dark:text-gray-200" id="preview-type">-</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500 dark:text-gray-400">Durasi:</span>
+                            <span class="text-gray-500 dark:text-gray-400">{{ __('messages.durasi') }}:</span>
                             <span class="font-medium text-gray-900 dark:text-gray-200" id="preview-duration">-</span>
                         </div>
                         <div class="pt-3 border-t dark:border-slate-700">
-                            <p class="text-gray-500 dark:text-gray-400 mb-2">Deskripsi Singkat:</p>
+                            <p class="text-gray-500 dark:text-gray-400 mb-2">{{ __('messages.deskripsi_singkat') }}:</p>
                             <div class="text-gray-700 dark:text-gray-300 line-clamp-3" id="preview-description">-</div>
                         </div>
                     </div>
@@ -343,8 +340,7 @@
                         <input type="checkbox" name="terms" id="terms" required
                             class="rounded border-gray-300 text-green-600 focus:ring-green-500 mt-1">
                         <label for="terms" class="ml-3 text-sm text-gray-600">
-                            Saya menyatakan bahwa informasi program ini akurat dan saya memiliki wewenang untuk membuat
-                            program atas nama institusi.
+                            {{ __('messages.saya_menyatakan_informasi_program_akurat') }}
                         </label>
                     </div>
                     @error('terms')
@@ -354,11 +350,11 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-end">
                         <a href="{{ route('education.programs') }}"
                             class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-center">
-                            Batal
+                            {{ __('messages.batal') }}
                         </a>
                         <button type="submit"
                             class="px-8 py-3 bg-gradient-to-r from-green-600 to-teal-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-teal-800 transition shadow-lg transform hover:-translate-y-0.5">
-                            Publikasikan Program
+                            {{ __('messages.publikasikan_program') }}
                             <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -373,7 +369,6 @@
 
     <!-- JavaScript for Dynamic Features -->
     <script>
-        // Add Learning Objective Field
         function addObjective() {
             const container = document.getElementById('objectives-container');
             const index = container.children.length + 1;
@@ -394,7 +389,7 @@
             container.appendChild(div);
             var newQuill = new Quill('#' + quillId, {
                 theme: 'snow',
-                placeholder: 'Contoh: Mampu membuat kampanye digital marketing...',
+                placeholder: '{{ __("messages.contoh_mampu_membuat_kampanye") }}',
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline'],
@@ -407,18 +402,15 @@
             window.quillEditors[id] = newQuill;
         }
 
-        // Remove Learning Objective Field
         function removeObjective(btn) {
             if (document.getElementById('objectives-container').children.length > 1) {
                 btn.closest('.flex').remove();
-                // Re-number the list
                 document.querySelectorAll('#objectives-container .flex').forEach((el, idx) => {
                     el.querySelector('span').textContent = (idx + 1) + '.';
                 });
             }
         }
 
-        // Live Preview Update
         function updatePreview() {
             const name = document.getElementById('name').value || '-';
             const type = document.getElementById('type').options[document.getElementById('type').selectedIndex].text || '-';
@@ -430,14 +422,12 @@
             document.getElementById('preview-type').textContent = type;
             document.getElementById('preview-duration').textContent = duration;
             
-            // Strip HTML tags and truncate safely
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = description;
             const plainText = tempDiv.textContent || tempDiv.innerText || '';
             document.getElementById('preview-description').textContent = plainText.length > 150 ? plainText.substring(0, 150) + '...' : (plainText || '-');
         }
 
-        // File Preview
         function previewFile(input) {
             const preview = document.getElementById('file-preview');
             if (input.files && input.files[0]) {
@@ -446,7 +436,7 @@
                 const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
                 const sizeText = file.size > 1024 * 1024 ? sizeMB + ' MB' : sizeKB + ' KB';
                 document.getElementById('file-preview-name').textContent = file.name;
-                document.getElementById('file-preview-size').textContent = sizeText + ' • Siap diupload';
+                document.getElementById('file-preview-size').textContent = sizeText + ' • ' + '{{ __("messages.siap_diupload") }}';
                 preview.classList.remove('hidden');
             } else {
                 preview.classList.add('hidden');
@@ -459,7 +449,6 @@
             document.getElementById('file-preview').classList.add('hidden');
         }
 
-        // Initialize preview on load
         document.addEventListener('DOMContentLoaded', updatePreview);
     </script>
 
@@ -469,7 +458,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var quillDesc = new Quill('#quill-description', {
             theme: 'snow',
-            placeholder: 'Jelaskan secara detail tentang program ini, manfaat bagi peserta, dan outline kegiatan...',
+            placeholder: '{{ __("messages.jelaskan_secara_detail_program_ini_manfaat") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
@@ -491,7 +480,7 @@
             if (quillContainer) {
                 var q = new Quill('#' + quillId, {
                     theme: 'snow',
-                    placeholder: 'Contoh: Mampu membuat kampanye digital marketing...',
+                    placeholder: '{{ __("messages.contoh_mampu_membuat_kampanye") }}',
                     modules: {
                         toolbar: [
                             ['bold', 'italic', 'underline'],

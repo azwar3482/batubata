@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <!-- Quill Editor -->
     @include('partials.quill-styles')
     <style>
@@ -22,15 +22,15 @@
     <div class="max-w-7xl mx-auto px-4 py-8" x-data="{ activeTab: 'tes' }" x-cloak>
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
             <div>
-                <h1 class="text-2xl font-bold">Manajemen Tes TPA</h1>
-                <p class="text-sm text-gray-500 mt-1">Kelola tes TPA dan kirim undangan ke kandidat</p>
+                <h1 class="text-2xl font-bold">{{ __('messages.tpa_test_management') }}</h1>
+                <p class="text-sm text-gray-500 mt-1">{{ __('messages.manage_tpa_send_invitations') }}</p>
             </div>
             <div class="mt-4 md:mt-0">
                 <a href="{{ route('industry.tpa.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg inline-flex items-center gap-2 shadow-sm transition-colors duration-200">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Buat Tes Baru
+                    {{ __('messages.create_new_test') }}
                 </a>
             </div>
         </div>
@@ -49,28 +49,28 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold mb-2 tracking-tight text-white">Sistem Evaluasi Kandidat Terpusat</h2>
+                    <h2 class="text-xl font-bold mb-2 tracking-tight text-white">{{ __('messages.centralized_candidate_evaluation') }}</h2>
                     <p class="text-purple-100 mb-5 text-sm leading-relaxed max-w-3xl">
-                        Saring kandidat terbaik menggunakan Tes Potensi Akademik (TPA). Buat kustomisasi bobot soal, durasi, serta skor kelulusan yang spesifik untuk setiap lowongan Anda. Sistem akan otomatis memproses dan memberikan rekomendasi kelulusan.
+                        Saring {{ __('messages.candidates') }} terbaik menggunakan Tes Potensi Akademik (TPA). Buat kustomisasi bobot soal, durasi, serta skor kelulusan yang spesifik untuk setiap lowongan Anda. Sistem akan otomatis memproses dan memberikan rekomendasi kelulusan.
                     </p>
                     <div class="flex flex-wrap gap-3">
                         <div class="flex items-center gap-2 text-xs font-medium bg-black/20 backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/10 shadow-sm transition-transform hover:-translate-y-0.5">
                             <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Penilaian Otomatis (Auto-grading)
+                            {{ __('messages.auto_grading') }}
                         </div>
                         <div class="flex items-center gap-2 text-xs font-medium bg-black/20 backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/10 shadow-sm transition-transform hover:-translate-y-0.5">
                             <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
-                            Kirim Undangan Massal
+                            {{ __('messages.send_mass_invitations') }}
                         </div>
                         <div class="flex items-center gap-2 text-xs font-medium bg-black/20 backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/10 shadow-sm transition-transform hover:-translate-y-0.5">
                             <svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
-                            Kustomisasi Komposisi Soal
+                            {{ __('messages.customize_question_composition') }}
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
-                    Tes TPA Saya
+                    {{ __('messages.my_tpa_tests') }}
                 </button>
                 <button @click="activeTab = 'kirim'"
                     :class="{ 'border-purple-500 text-purple-600': activeTab === 'kirim', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'kirim' }"
@@ -110,7 +110,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                     </svg>
-                    Kirim Undangan
+                    {{ __('messages.send_invitation') }}
                 </button>
                 <button @click="activeTab = 'riwayat'"
                     :class="{ 'border-green-500 text-green-600': activeTab === 'riwayat', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'riwayat' }"
@@ -118,7 +118,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Riwayat Undangan
+                    {{ __('messages.invitation_history') }}
                 </button>
             </nav>
         </div>
@@ -132,27 +132,27 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-1">Belum Ada Tes TPA</h3>
+                <h3 class="text-lg font-medium text-gray-900 mb-1">{{ __('messages.no_tpa_tests_yet') }}</h3>
                 <p class="text-gray-500 mb-4">Buat tes baru untuk mulai menggunakan fitur TPA pada proses seleksi Anda.</p>
                 <a href="{{ route('industry.tpa.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg font-medium transition-colors">
-                    Buat Tes Sekarang
+                    {{ __('messages.create_test_now') }}
                 </a>
             </div>
             @else
             <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
                 <div class="px-6 py-5 bg-gray-50 border-b flex items-center justify-between">
-                    <h2 class="font-bold text-lg text-gray-800">Daftar Tes TPA</h2>
+                    <h2 class="font-bold text-lg text-gray-800">{{ __('messages.tpa_test_list') }}</h2>
                     <span class="bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-xs font-semibold">{{ $tests->count() }} Tes</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Judul</th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Lowongan</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Detail Soal</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.title') }}</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.vacancy') }}</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.question_detail') }}</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.status') }}</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.action') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
@@ -160,7 +160,7 @@
                             <tr class="hover:bg-blue-50/50 transition-colors">
                                 <td class="px-6 py-4">
                                     <div class="font-medium text-gray-900">{{ $test->title }}</div>
-                                    <div class="text-xs text-gray-500 mt-1">Passing Grade: {{ $test->passing_score }}%</div>
+                                    <div class="text-xs text-gray-500 mt-1">{{ __('messages.passing_grade') }} {{ $test->passing_score }}%</div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">
                                     @if($test->jobListing)
@@ -172,21 +172,21 @@
                                     </div>
                                     @else
                                     <span class="inline-flex items-center gap-1 text-purple-600 bg-purple-50 px-2 py-1 rounded-md text-xs font-medium">
-                                        Template Global
+                                        {{ __('messages.global_template') }}
                                     </span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-col items-center justify-center text-sm">
                                         <span class="font-medium text-gray-700">{{ $test->total_questions }} Soal</span>
-                                        <span class="text-xs text-gray-500 mt-0.5"><i class="far fa-clock mr-1"></i>{{ $test->time_limit_minutes }} menit</span>
+                                        <span class="text-xs text-gray-500 mt-0.5"><i class="far fa-clock mr-1"></i>{{ $test->time_limit_minutes }} {{ __('messages.minutes') }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     @if($test->is_active)
-                                    <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200">Aktif</span>
+                                    <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200">{{ __('messages.active') }}</span>
                                     @else
-                                    <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full text-xs font-medium border border-gray-200">Nonaktif</span>
+                                    <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full text-xs font-medium border border-gray-200">{{ __('messages.inactive') }}</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -224,16 +224,16 @@
                             <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
-                            Pilih Kandidat & Kirim Undangan
+                            Pilih Kandidat & {{ __('messages.send_invitation') }}
                         </h2>
-                        <p class="text-sm opacity-90 mt-1">Undang kandidat yang telah lolos seleksi dokumen untuk mengikuti tes TPA</p>
+                        <p class="text-sm opacity-90 mt-1">{{ __('messages.invite_candidates_passed_doc_selection') }}</p>
                     </div>
                 </div>
 
                 <div class="p-6">
                     {{-- TIPE TPA --}}
                     <div class="mb-6 bg-gray-50 dark:bg-slate-800/50 p-5 rounded-xl border border-gray-200 dark:border-slate-700">
-                        <label class="block text-sm font-semibold text-gray-800 dark:text-slate-200 mb-3">1. Pilih Tipe Tes TPA</label>
+                        <label class="block text-sm font-semibold text-gray-800 dark:text-slate-200 mb-3">1. {{ __('messages.select_tpa_test_type') }}</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <label class="relative cursor-pointer" @click="tpaType = 'online'">
                                 <input type="radio" name="tpa_type" value="online" x-model="tpaType" class="sr-only">
@@ -246,8 +246,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="font-semibold text-gray-800 dark:text-slate-200">Tes Online</div>
-                                            <div class="text-xs text-gray-500 dark:text-slate-400">Kandidat mengerjakan tes di browser</div>
+                                            <div class="font-semibold text-gray-800 dark:text-slate-200">{{ __('messages.online_test') }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.candidate_works_in_browser') }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -263,8 +263,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="font-semibold text-gray-800 dark:text-slate-200">Tes Offline</div>
-                                            <div class="text-xs text-gray-500 dark:text-slate-400">Kandidat datang ke lokasi tes</div>
+                                            <div class="font-semibold text-gray-800 dark:text-slate-200">{{ __('messages.offline_test') }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.candidate_comes_to_location') }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -274,11 +274,11 @@
 
                     {{-- PILIH TES (hanya untuk online) --}}
                     <div x-show="tpaType === 'online'" x-transition class="mb-6 bg-purple-50 dark:bg-purple-900/10 p-5 rounded-xl border border-purple-100 dark:border-purple-900/30">
-                        <label class="block text-sm font-semibold text-purple-900 dark:text-purple-300 mb-2">2. Pilih Tes TPA yang Akan Digunakan</label>
+                        <label class="block text-sm font-semibold text-purple-900 dark:text-purple-300 mb-2">2. {{ __('messages.select_tpa_test_to_use') }}</label>
                         <select x-model="selectedTest" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm">
                             <option value="">-- Silakan Pilih Tes TPA --</option>
                             @foreach($tests as $test)
-                            <option value="{{ $test->id }}">{{ $test->title }} &mdash; {{ $test->total_questions }} soal ({{ $test->time_limit_minutes }} menit) | Passing: {{ $test->passing_score }}%</option>
+                            <option value="{{ $test->id }}">{{ $test->title }} &mdash; {{ $test->total_questions }} soal ({{ $test->time_limit_minutes }} {{ __('messages.minutes') }}) | Passing: {{ $test->passing_score }}%</option>
                             @endforeach
                         </select>
                     </div>
@@ -297,16 +297,16 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                     </svg>
-                                    Detail Tes Offline
+                                    Detail {{ __('messages.offline_test') }}
                                 </h3>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Judul Tes <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.test_title') }} <span class="text-red-500">*</span></label>
                                         <input type="text" name="offline_title" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                             placeholder="Contoh: Tes TPA Offline - Web Developer" value="Tes TPA Offline">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Instruksi Tes <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.test_instructions') }} <span class="text-red-500">*</span></label>
                                         <input id="offline_instructions" type="hidden" name="offline_instructions">
                                         <div id="quill-offline_instructions"></div>
                                     </div>
@@ -316,19 +316,19 @@
                                             <input type="datetime-local" name="offline_scheduled_at" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500">
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Lokasi Tes <span class="text-red-500">*</span></label>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.test_location') }} <span class="text-red-500">*</span></label>
                                             <input type="text" name="offline_location" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                                 placeholder="Contoh: Kantor Pusat, Lt. 3, Ruang HRD">
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">PIC (Penanggung Jawab)</label>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.pic_responsible_person') }}</label>
                                             <input type="text" name="offline_contact_person" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                                 placeholder="Nama PIC">
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">No. Telepon PIC</label>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.pic_phone_number') }}</label>
                                             <input type="text" name="offline_contact_phone" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500"
                                                 placeholder="08xxxxxxxxxx">
                                         </div>
@@ -339,7 +339,7 @@
                                             class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-amber-500 focus:border-amber-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Catatan Tambahan</label>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.additional_notes') }}</label>
                                         <input id="offline_notes" type="hidden" name="offline_notes">
                                         <div id="quill-offline_notes"></div>
                                     </div>
@@ -354,7 +354,7 @@
                     $jobs = \App\Models\JobListing::whereIn('id', $jobIds)->where('is_active', true)->get();
                     $hasCandidates = false;
 
-                    // Filter jobs that actually have candidates
+                    // {{ __('messages.filter') }} jobs that actually have candidates
                     $jobsWithCandidates = [];
                     foreach($jobs as $job) {
                     $count = \App\Models\UserJobApplication::where('job_listing_id', $job->id)
@@ -372,7 +372,7 @@
                         <label class="block text-sm font-semibold text-gray-800 dark:text-slate-200">
                             <span x-show="tpaType === 'online'">3.</span>
                             <span x-show="tpaType === 'offline'">2.</span>
-                            Pilih Kandidat per Lowongan
+                            {{ __('messages.select_candidates_per_vacancy') }}
                         </label>
                         <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                             <div class="relative w-full sm:w-64">
@@ -385,7 +385,7 @@
                             </div>
                             <div class="w-full sm:w-64">
                                 <select x-model="selectedJob" class="w-full border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-purple-500 focus:ring-purple-500 rounded-lg shadow-sm text-sm">
-                                    <option value="all">Semua Lowongan</option>
+                                    <option value="all">{{ __('messages.all_vacancies') }}</option>
                                     @foreach($jobsWithCandidates as $job)
                                     <option value="{{ $job->id }}">{{ $job->title }}</option>
                                     @endforeach
@@ -415,11 +415,11 @@
                                         </svg>
                                         {{ $job->title }}
                                     </h3>
-                                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ $applications->count() }} kandidat belum menerima undangan TPA</p>
+                                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ $applications->count() }} {{ __('messages.candidates') }} belum menerima undangan TPA</p>
                                 </div>
                                 <button type="button" @click="toggleAll({{ $job->id }})"
                                     class="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 font-medium px-3 py-1.5 rounded-lg transition-colors border border-transparent hover:border-purple-200 dark:hover:border-purple-800">
-                                    Pilih Semua
+                                    {{ __('messages.select_all') }}
                                 </button>
                             </div>
                             <div class="divide-y divide-gray-100 dark:divide-slate-700 max-h-80 overflow-y-auto">
@@ -457,7 +457,7 @@
                                             </span>
                                             @endif
                                             <div class="text-xs text-gray-400 dark:text-slate-500 mt-2">
-                                                Melamar: {{ $app->created_at->format('d M Y') }}
+                                                {{ __('messages.applied') }} {{ $app->created_at->format('d M Y') }}
                                             </div>
                                         </div>
                                     </div>
@@ -473,8 +473,8 @@
                             <svg class="w-12 h-12 text-gray-300 dark:text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
-                            <p class="text-gray-500 dark:text-slate-400 font-medium">Belum ada kandidat yang tersedia untuk diundang.</p>
-                            <p class="text-sm text-gray-400 dark:text-slate-500 mt-1">Kandidat akan muncul setelah mereka melamar pada lowongan aktif Anda.</p>
+                            <p class="text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.no_candidates_available_to_invite') }}</p>
+                            <p class="text-sm text-gray-400 dark:text-slate-500 mt-1">{{ __('messages.candidates_will_appear_after_applying') }}</p>
                         </div>
                         @endif
                     </div>
@@ -486,7 +486,7 @@
 
                         <div class="flex flex-col md:flex-row md:items-center justify-between">
                             <div class="text-sm text-gray-600 dark:text-slate-400 bg-gray-50 dark:bg-slate-800 px-4 py-2 rounded-lg inline-block mb-4 md:mb-0 border border-gray-200 dark:border-slate-700">
-                                Total dipilih: <span x-text="selectedApplications.length" class="font-bold text-purple-700 dark:text-purple-400 text-base">0</span> kandidat
+                                {{ __('messages.total_selected') }} <span x-text="selectedApplications.length" class="font-bold text-purple-700 dark:text-purple-400 text-base">0</span> {{ __('messages.candidates') }}
                             </div>
                             <div class="flex gap-3">
                                 {{-- Tombol Online --}}
@@ -496,7 +496,7 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                     </svg>
-                                    Kirim Undangan Online
+                                    {{ __('messages.send_invitation') }} Online
                                 </button>
                                 {{-- Tombol Offline --}}
                                 <button type="button" x-show="tpaType === 'offline'" @click="sendBulkInviteOffline()"
@@ -505,7 +505,7 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                     </svg>
-                                    Kirim Undangan Offline
+                                    {{ __('messages.send_invitation') }} Offline
                                 </button>
                             </div>
                         </div>
@@ -531,7 +531,7 @@
             $q->where('created_by', $user->id);
             })->with(['user', 'tpaTest', 'jobApplication.jobListing', 'result']);
 
-            // Filter: Kandidat (nama/email)
+            // {{ __('messages.filter') }}: Kandidat (nama/email)
             if (request('search')) {
             $query->whereHas('user', function($q) {
             $q->where('name', 'like', '%' . request('search') . '%')
@@ -539,24 +539,24 @@
             });
             }
 
-            // Filter: Tes TPA
+            // {{ __('messages.filter') }}: Tes TPA
             if (request('test_id')) {
             $query->where('tpa_test_id', request('test_id'));
             }
 
-            // Filter: Status
+            // {{ __('messages.filter') }}: Status
             if (request('status')) {
             $query->where('status', request('status'));
             }
 
-            // Filter: Lowongan
+            // {{ __('messages.filter') }}: Lowongan
             if (request('job_id')) {
             $query->whereHas('jobApplication', function($q) {
             $q->where('job_listing_id', request('job_id'));
             });
             }
 
-            // Filter: Hasil (lulus/tidak)
+            // {{ __('messages.filter') }}: Hasil (lulus/tidak)
             if (request('passed') === '1') {
             $query->whereHas('result', function($q) {
             $q->where('is_passed', true);
@@ -588,11 +588,11 @@
                                 class="w-full border-gray-300 rounded-lg text-sm focus:ring-purple-500 focus:border-purple-500">
                         </div>
 
-                        {{-- Filter Tes --}}
+                        {{-- {{ __('messages.filter') }} Tes --}}
                         <div>
                             <label class="block text-xs font-medium text-gray-500 mb-1">Tes TPA</label>
                             <select name="test_id" class="w-full border-gray-300 rounded-lg text-sm focus:ring-purple-500 focus:border-purple-500">
-                                <option value="">Semua Tes</option>
+                                <option value="">{{ __('messages.all_tests') }}</option>
                                 @foreach($tpaTests as $test)
                                 <option value="{{ $test->id }}" {{ request('test_id') == $test->id ? 'selected' : '' }}>
                                     {{ $test->title }}
@@ -601,23 +601,23 @@
                             </select>
                         </div>
 
-                        {{-- Filter Status --}}
+                        {{-- {{ __('messages.filter') }} Status --}}
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Status</label>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">{{ __('messages.status') }}</label>
                             <select name="status" class="w-full border-gray-300 rounded-lg text-sm focus:ring-purple-500 focus:border-purple-500">
-                                <option value="">Semua Status</option>
-                                <option value="invited" {{ request('status') === 'invited' ? 'selected' : '' }}>Diundang</option>
-                                <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>Mengerjakan</option>
-                                <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Selesai</option>
+                                <option value="">{{ __('messages.all_statuses') }}</option>
+                                <option value="invited" {{ request('status') === 'invited' ? 'selected' : '' }}>{{ __('messages.invited') }}</option>
+                                <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>{{ __('messages.in_progress') }}</option>
+                                <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>{{ __('messages.completed') }}</option>
                                 <option value="expired" {{ request('status') === 'expired' ? 'selected' : '' }}>Expired</option>
                             </select>
                         </div>
 
-                        {{-- Filter Lowongan --}}
+                        {{-- {{ __('messages.filter') }} Lowongan --}}
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Lowongan</label>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">{{ __('messages.vacancy') }}</label>
                             <select name="job_id" class="w-full border-gray-300 rounded-lg text-sm focus:ring-purple-500 focus:border-purple-500">
-                                <option value="">Semua Lowongan</option>
+                                <option value="">{{ __('messages.all_vacancies') }}</option>
                                 @foreach($jobs as $job)
                                 <option value="{{ $job->id }}" {{ request('job_id') == $job->id ? 'selected' : '' }}>
                                     {{ $job->title }}
@@ -626,12 +626,12 @@
                             </select>
                         </div>
 
-                        {{-- Filter Hasil --}}
+                        {{-- {{ __('messages.filter') }} Hasil --}}
                         <div>
                             <label class="block text-xs font-medium text-gray-500 mb-1">Hasil Tes</label>
                             <select name="passed" class="w-full border-gray-300 rounded-lg text-sm focus:ring-purple-500 focus:border-purple-500">
                                 <option value="">Semua</option>
-                                <option value="1" {{ request('passed') === '1' ? 'selected' : '' }}>Lulus</option>
+                                <option value="1" {{ request('passed') === '1' ? 'selected' : '' }}>{{ __('messages.passed') }}</option>
                                 <option value="0" {{ request('passed') === '0' ? 'selected' : '' }}>Tidak Lulus</option>
                             </select>
                         </div>
@@ -642,7 +642,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
-                            Filter
+                            {{ __('messages.filter') }}
                         </button>
                         <a href="{{ route('industry.tpa.index') }}?tab=riwayat" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">
                             Reset
@@ -658,19 +658,19 @@
             @if($sentSessions->count() > 0)
             <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
                 <div class="px-6 py-5 bg-gray-50 border-b flex justify-between items-center">
-                    <h2 class="font-bold text-lg text-gray-800">Riwayat Undangan TPA</h2>
-                    <div class="text-sm text-gray-500">Menampilkan hasil tes dan status terbaru</div>
+                    <h2 class="font-bold text-lg text-gray-800">{{ __('messages.invitation_history') }} TPA</h2>
+                    <div class="text-sm text-gray-500">{{ __('messages.showing_test_results_and_latest_status') }}</div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Info Kandidat</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.candidate_info') }}</th>
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tes & Lowongan</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Hasil Skor</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Batas Waktu</th>
-                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.status') }}</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.score_result') }}</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.deadline') }}</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.action') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
@@ -692,11 +692,11 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     @if($session->status === 'invited')
-                                    <span class="px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-200">Diundang</span>
+                                    <span class="px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-200">{{ __('messages.invited') }}</span>
                                     @elseif($session->status === 'in_progress')
-                                    <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-200">Mengerjakan</span>
+                                    <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-200">{{ __('messages.in_progress') }}</span>
                                     @elseif($session->status === 'completed')
-                                    <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200">Selesai</span>
+                                    <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200">{{ __('messages.completed') }}</span>
                                     @elseif($session->status === 'expired')
                                     <span class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-xs font-medium border border-red-200">Expired</span>
                                     @else
@@ -743,7 +743,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                             </svg>
-                                            Detail Hasil
+                                            {{ __('messages.result_detail') }}
                                         </a>
                                         @endif
 
@@ -755,14 +755,14 @@
                                         ->exists() : false;
                                         @endphp
                                         @if($application && !$hasActiveSession)
-                                        <form action="{{ route('industry.tpa.invite', $session->tpaTest) }}" method="POST" onsubmit="return confirm('Kirim ulang undangan TPA ke {{ $session->user->name ?? 'kandidat' }}?')">
+                                        <form action="{{ route('industry.tpa.invite', $session->tpaTest) }}" method="POST" onsubmit="return confirm('Kirim ulang undangan TPA ke {{ $session->user->name ?? '{{ __('messages.candidates') }}' }}?')">
                                             @csrf
                                             <input type="hidden" name="application_id" value="{{ $application->id }}">
                                             <button type="submit" class="text-purple-600 hover:text-purple-800 hover:bg-purple-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-purple-200 hover:border-purple-300 inline-flex items-center">
                                                 <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                                                 </svg>
-                                                Undang Ulang
+                                                {{ __('messages.re_invite') }}
                                             </button>
                                         </form>
                                         @endif
@@ -791,10 +791,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                     </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-1">Belum Ada Undangan Terkirim</h3>
-                <p class="text-gray-500">Anda belum mengirimkan undangan tes TPA ke kandidat mana pun.</p>
+                <h3 class="text-lg font-medium text-gray-900 mb-1">{{ __('messages.no_invitations_sent_yet') }}</h3>
+                <p class="text-gray-500">Anda belum mengirimkan undangan tes TPA ke {{ __('messages.candidates') }} mana pun.</p>
                 <button @click="activeTab = 'kirim'" class="mt-4 inline-flex items-center px-4 py-2 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-lg font-medium transition-colors">
-                    Kirim Undangan Sekarang
+                    {{ __('messages.send_invitation') }} Sekarang
                 </button>
             </div>
             @endif
@@ -831,20 +831,20 @@
                 },
                 sendBulkInvite() {
                     if (this.selectedApplications.length === 0) {
-                        alert('Pilih minimal 1 kandidat!');
+                        alert('Pilih minimal 1 {{ __('messages.candidates') }}!');
                         return;
                     }
                     if (!this.selectedTest) {
                         alert('Pilih tes TPA terlebih dahulu!');
                         return;
                     }
-                    if (confirm(`Kirim undangan TPA online ke ${this.selectedApplications.length} kandidat?`)) {
+                    if (confirm(`Kirim undangan TPA online ke ${this.selectedApplications.length} {{ __('messages.candidates') }}?`)) {
                         this.$refs.bulkForm.submit();
                     }
                 },
                 sendBulkInviteOffline() {
                     if (this.selectedApplications.length === 0) {
-                        alert('Pilih minimal 1 kandidat!');
+                        alert('Pilih minimal 1 {{ __('messages.candidates') }}!');
                         return;
                     }
 
@@ -875,7 +875,7 @@
                         return;
                     }
 
-                    if (confirm(`Kirim undangan TPA offline ke ${this.selectedApplications.length} kandidat?`)) {
+                    if (confirm(`Kirim undangan TPA offline ke ${this.selectedApplications.length} {{ __('messages.candidates') }}?`)) {
                         form.submit();
                     }
                 }

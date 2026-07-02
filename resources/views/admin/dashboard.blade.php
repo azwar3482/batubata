@@ -7,10 +7,8 @@
                 class="relative overflow-hidden bg-gradient-to-r from-indigo-700 to-purple-800 rounded-3xl shadow-2xl p-8 text-white">
                 <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl font-extrabold tracking-tight">Selamat Datang, Administrator</h2>
-                        <p class="mt-2 text-indigo-100 text-lg max-w-2xl">Kendalikan ekosistem KompasKarir. Pantau
-                            pertumbuhan pengguna, kualitas kompetensi, dan efisiensi sistem dalam satu panel kendali
-                            terpadu.</p>
+                        <h2 class="text-3xl font-extrabold tracking-tight">{{ __('messages.admin_welcome') }}</h2>
+                        <p class="mt-2 text-indigo-100 text-lg max-w-2xl">{{ __('messages.admin_description') }}</p>
                     </div>
                 </div>
                 <!-- Abstract Background Shapes -->
@@ -38,11 +36,11 @@
                             <span
                                 class="flex items-center text-xs font-bold {{ ($stats['user_growth'] ?? 0) >= 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50' }} px-2.5 py-1 rounded-full">{{ ($stats['user_growth'] ?? 0) >= 0 ? '+' : '' }}{{ $stats['user_growth'] ?? 0 }}%</span>
                         </div>
-                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Total Pengguna</h3>
+                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">{{ __('messages.total_users') }}</h3>
                         <div class="flex items-baseline space-x-2 mt-1">
                             <span
                                 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ number_format($stats['total_users'] ?? 0) }}</span>
-                            <span class="text-gray-400 dark:text-slate-500 text-xs font-normal">jiwa</span>
+                            <span class="text-gray-400 dark:text-slate-500 text-xs font-normal">{{ __('messages.souls') }}</span>
                         </div>
                     </div>
                 </div>
@@ -61,13 +59,13 @@
                                 </svg>
                             </div>
                             <span
-                                class="flex items-center text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Aktif</span>
+                                class="flex items-center text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">{{ __('messages.active') }}</span>
                         </div>
-                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Total Asesmen</h3>
+                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">{{ __('messages.total_assessments') }}</h3>
                         <div class="flex items-baseline space-x-2 mt-1">
                             <span
                                 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ number_format($stats['total_assessments'] ?? 0) }}</span>
-                            <span class="text-gray-400 dark:text-slate-500 text-xs font-normal">kali</span>
+                            <span class="text-gray-400 dark:text-slate-500 text-xs font-normal">{{ __('messages.times') }}</span>
                         </div>
                     </div>
                 </div>
@@ -88,13 +86,13 @@
                             </div>
                             <span
                                 class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">+{{ $stats['new_jobs_week'] ?? 0 }}
-                                Baru</span>
+                                {{ __('messages.new') }}</span>
                         </div>
-                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Lowongan Aktif</h3>
+                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">{{ __('messages.active_jobs') }}</h3>
                         <div class="flex items-baseline space-x-2 mt-1">
                             <span
                                 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ number_format($stats['active_jobs'] ?? 0) }}</span>
-                            <span class="text-gray-400 dark:text-slate-500 text-xs font-normal">posisi</span>
+                            <span class="text-gray-400 dark:text-slate-500 text-xs font-normal">{{ __('messages.positions') }}</span>
                         </div>
                     </div>
                 </div>
@@ -113,9 +111,9 @@
                                 </svg>
                             </div>
                             <span
-                                class="flex items-center text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Kritis</span>
+                                class="flex items-center text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">{{ __('messages.critical') }}</span>
                         </div>
-                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">Skill Gap Rata-rata</h3>
+                        <h3 class="text-gray-500 dark:text-slate-400 text-sm font-medium">{{ __('messages.average_skill_gap') }}</h3>
                         <div class="flex items-baseline space-x-2 mt-1">
                             <span class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ $stats['avg_skill_gap'] ?? 0 }}</span>
                             <span class="text-gray-400 dark:text-slate-500 text-sm font-bold">%</span>
@@ -130,12 +128,12 @@
                     <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-lg shadow-gray-500/5 border border-gray-100 dark:border-slate-700 overflow-hidden">
                         <div class="p-8 border-b border-gray-50 dark:border-slate-700 flex items-center justify-between">
                             <div>
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Pengguna Terdaftar Terbaru</h3>
-                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Pantau aktivitas pendaftaran real-time.</p>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('messages.latest_registered_users') }}</h3>
+                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.monitor_realtime') }}</p>
                             </div>
                             <a href="{{ route('admin.users') }}"
                                 class="inline-flex items-center px-4 py-2 bg-indigo-50 text-indigo-700 text-sm font-bold rounded-xl hover:bg-indigo-100 transition">
-                                Lihat Semua
+                                {{ __('messages.view_all') }}
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5l7 7-7 7"></path>
@@ -149,13 +147,13 @@
                                     <tr class="bg-gray-50 dark:bg-slate-900">
                                         <th
                                             class="px-8 py-4 text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider tabular-nums">
-                                            Pengguna</th>
+                                             {{ __('messages.users') }}</th>
                                         <th
                                             class="px-8 py-4 text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider tabular-nums">
-                                            Role</th>
+                                             {{ __('messages.role') }}</th>
                                         <th
                                             class="px-8 py-4 text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider tabular-nums">
-                                            Status</th>
+                                            {{ __('messages.status') }}</th>
                                         {{-- <th
                                             class="px-8 py-4 text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider tabular-nums text-right">
                                             Aksi</th> --}}
@@ -222,7 +220,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
-                            Aksi Cepat
+                            {{ __('messages.quick_actions') }}
                         </h3>
                         <div class="grid grid-cols-1 gap-4">
                             <a href="{{ route('admin.settings') }}"
@@ -235,7 +233,7 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">Kelola Kompetensi</span>
+                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">{{ __('messages.manage_competencies') }}</span>
                                 {{-- <h4 class="font-bold text-gray-800">Kelola Kompetensi & Pengaturan</h4>
                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Database skill, posisi karir, dan konfigurasi
                                     sistem.</p> --}}
@@ -250,7 +248,7 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">Laporan Sistem</span>
+                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">{{ __('messages.system_reports') }}</span>
                             </a>
                             <a href="{{ route('admin.settings') }}"
                                 class="flex items-center p-4 bg-gray-50 dark:bg-slate-700/50 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-800 transition-all duration-300 group">
@@ -264,7 +262,7 @@
                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
                                 </div>
-                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">Pengaturan</span>
+                                <span class="ml-4 text-sm font-bold text-gray-700 dark:text-gray-200">{{ __('messages.settings') }}</span>
                             </a>
                         </div>
                     </div>
@@ -279,7 +277,7 @@
                                         class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                 </span>
-                                System Health
+                                {{ __('messages.system_health') }}
                             </h3>
                             @php
                                 $memoryUsage = round(memory_get_usage(true) / 1024 / 1024);
@@ -292,15 +290,15 @@
                             @endphp
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-400 dark:text-slate-500 font-medium">PHP Version</span>
+                                    <span class="text-gray-400 dark:text-slate-500 font-medium">{{ __('messages.php_version') }}</span>
                                     <span class="font-bold text-green-400">{{ phpversion() }}</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-400 dark:text-slate-500 font-medium">Memory Usage</span>
+                                    <span class="text-gray-400 dark:text-slate-500 font-medium">{{ __('messages.memory_usage') }}</span>
                                     <span class="font-bold">{{ $memoryUsage }}MB / {{ $memoryLimit }}MB</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-400 dark:text-slate-500 font-medium">Laravel Version</span>
+                                    <span class="text-gray-400 dark:text-slate-500 font-medium">{{ __('messages.laravel_version') }}</span>
                                     <span class="font-bold">{{ app()->version() }}</span>
                                 </div>
                                 <div class="mt-6">
@@ -308,7 +306,7 @@
                                         <div class="bg-indigo-500 h-1.5 rounded-full" style="width: {{ $diskPercent }}%"></div>
                                     </div>
                                     <p class="text-[10px] text-gray-400 dark:text-slate-500 mt-2 uppercase tracking-widest font-bold">
-                                        Storage {{ $diskUsed }}GB / {{ $diskTotal }}GB</p>
+                                        {{ __('messages.storage') }} {{ $diskUsed }}GB / {{ $diskTotal }}GB</p>
                                 </div>
                             </div>
                         </div>
@@ -329,16 +327,16 @@
             const adminTourSteps = [
                 {
                     popover: {
-                        title: 'Selamat Datang di Panel Admin',
-                        description: 'Mari kita kenali berbagai fitur dan kontrol utama yang ada di dashboard Administrator ini.',
+                        title: '{{ __("messages.welcome") }} {{ __("messages.admin_role") }}',
+                        description: '{{ __("messages.tour_app") }}',
                         align: 'center'
                     }
                 },
                 {
                     element: 'header',
                     popover: {
-                        title: 'Top Navbar',
-                        description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengedit profil, dan Log Out.',
+                        title: '{{ __("messages.notifications") }}',
+                        description: '{{ __("messages.general_settings") }}',
                         side: "bottom",
                         align: 'center'
                     }
@@ -346,8 +344,8 @@
                 {
                     element: 'a[href*="admin/dashboard"]',
                     popover: {
-                        title: 'Dashboard Utama',
-                        description: 'Menu ini membawa Anda kembali ke halaman ini untuk melihat ringkasan statistik (total pengguna, asesmen, lowongan, dan gap skill).',
+                        title: '{{ __("messages.dashboard") }}',
+                        description: '{{ __("messages.admin_description") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -355,8 +353,8 @@
                 {
                     element: 'a[href*="admin/reports"]',
                     popover: {
-                        title: 'Laporan',
-                        description: 'Halaman ini menyediakan laporan analitik komprehensif terkait aktivitas platform, gap skill rata-rata, dan tren rekrutmen.',
+                        title: '{{ __("messages.system_reports") }}',
+                        description: '{{ __("messages.monitor_realtime") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -364,8 +362,8 @@
                 {
                     element: 'a[href*="admin/verifications"]',
                     popover: {
-                        title: 'Verifikasi Pengguna',
-                        description: 'Tinjau dan verifikasi dokumen legalitas dari perusahaan dan institusi pendidikan yang mendaftar di platform.',
+                        title: '{{ __("messages.users") }}',
+                        description: '{{ __("messages.monitor_realtime") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -373,8 +371,8 @@
                 {
                     element: 'a[href*="admin/users"]',
                     popover: {
-                        title: 'Kelola Pengguna',
-                        description: 'Pusat kendali akun pengguna. Di sini Anda dapat melihat, memfilter, dan mengatur akun semua Job Seeker, Perusahaan, dan Institusi Pendidikan.',
+                        title: '{{ __("messages.users") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -382,8 +380,8 @@
                 {
                     element: 'a[href*="admin/competencies"]',
                     popover: {
-                        title: 'Kompetensi',
-                        description: 'Master data kompetensi platform. Anda bisa menambah, mengedit, atau menghapus daftar skill/kompetensi yang berlaku di sistem.',
+                        title: '{{ __("messages.competency_categories") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -391,8 +389,8 @@
                 {
                     element: 'a[href*="admin/settings"]',
                     popover: {
-                        title: 'Pengaturan',
-                        description: 'Konfigurasi umum sistem platform, termasuk pengaturan email, notifikasi, dan parameter aplikasi lainnya.',
+                        title: '{{ __("messages.settings") }}',
+                        description: '{{ __("messages.general_settings") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -400,8 +398,8 @@
                 {
                     element: 'a[href*="admin/tpa"]',
                     popover: {
-                        title: 'Tes TPA',
-                        description: 'Kelola tes potensi akademik yang digunakan untuk mengukur kemampuan dasar kandidat.',
+                        title: '{{ __("messages.tpa_test") }}',
+                        description: '{{ __("messages.assessment_desc") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -409,8 +407,8 @@
                 {
                     element: 'a[href*="admin/courses"]',
                     popover: {
-                        title: 'Manajemen Kursus',
-                        description: 'Pusat pengelolaan materi belajar atau kursus yang nantinya direkomendasikan AI kepada kandidat untuk menutupi kelemahan skill mereka.',
+                        title: '{{ __("messages.course_management") }}',
+                        description: '{{ __("messages.recommendation_based_desc") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -418,8 +416,8 @@
                 {
                     element: 'a[href*="admin/categories"]',
                     popover: {
-                        title: 'Kategori',
-                        description: 'Menu ini untuk mengatur master kategori yang digunakan perusahaan untuk mengelompokkan lowongan (misal: IT, Finance, dll).',
+                        title: '{{ __("messages.competency_categories") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -427,8 +425,8 @@
                 {
                     element: 'a[href*="admin/positions"]',
                     popover: {
-                        title: 'Posisi Karir',
-                        description: 'Database posisi jabatan/pekerjaan. Digunakan untuk roadmap karir pengguna dan standar profil jabatan di perusahaan.',
+                        title: '{{ __("messages.positions") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -436,8 +434,8 @@
                 {
                     element: 'a[href*="admin/ai-workflow"]',
                     popover: {
-                        title: 'Alur Kerja AI',
-                        description: 'Halaman pemantauan sistem kecerdasan buatan backend. Anda dapat mengecek status microservice AI (Python) dan proses background jobs di sini.',
+                        title: '{{ __("messages.ai_workflow") }}',
+                        description: '{{ __("messages.monitor_realtime") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -445,8 +443,8 @@
                 {
                     element: 'a[href*="admin/document-weights"]',
                     popover: {
-                        title: 'Bobot Dokumen AI',
-                        description: 'Pengaturan sangat krusial! Atur persentase pengaruh CV, Portofolio, dan Tes Assessment terhadap skor kecocokan total (Fit Score).',
+                        title: '{{ __("messages.ai_document_weights") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -454,8 +452,8 @@
                 {
                     element: 'a[href*="admin/skill-keywords"]',
                     popover: {
-                        title: 'Kamus AI',
-                        description: 'Kamus pintar untuk AI. Jika AI gagal mengenali singkatan skill di CV kandidat (misal: "JS" = "JavaScript"), Anda bisa menambahkannya di sini.',
+                        title: '{{ __("messages.ai_dictionary") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -463,8 +461,8 @@
                 {
                     element: 'a[href*="admin/chat-faqs"]',
                     popover: {
-                        title: 'Chat FAQ',
-                        description: 'Kelola jawaban FAQ untuk chatbot AI yang membantu pengguna menjawab pertanyaan umum tentang platform.',
+                        title: '{{ __("messages.chat_faq") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }
@@ -472,8 +470,8 @@
                 {
                     element: 'a[href*="admin/career-fields"]',
                     popover: {
-                        title: 'Bidang Karir',
-                        description: 'Kelola data bidang karir yang digunakan untuk klasifikasi pekerjaan dan rekomendasi karir kepada pengguna.',
+                        title: '{{ __("messages.career_fields") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                         side: "right",
                         align: 'start'
                     }

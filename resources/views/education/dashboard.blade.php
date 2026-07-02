@@ -8,9 +8,9 @@
             <!-- Header Section -->
             <div class="mb-8 flex items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Dashboard Institusi Pendidikan</h2>
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.education_dashboard') }}</h2>
                     <p class="mt-2 text-gray-600 dark:text-slate-400">
-                        Pantau kompetensi lulusan, analisis skill gap, dan tingkatkan kolaborasi dengan industri.
+                        {{ __('messages.education_desc') }}
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
@@ -20,7 +20,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
-                        Export Data
+                        {{ __('messages.export_data') }}
                     </button>
                     <!-- Tombol Tambah Program -->
                     <a href="{{ route('education.programs.create') }}"
@@ -29,7 +29,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
-                        Tambah Program
+                        {{ __('messages.add_program') }}
                     </a>
                 </div>
             </div>
@@ -45,20 +45,20 @@
                         </div>
                         <div class="flex-grow">
                             @if(Auth::user()->institution->isRejected())
-                                <h3 class="text-lg font-bold text-red-800">Verifikasi Institusi Ditolak</h3>
-                                <p class="text-sm text-red-700 mt-1 mb-2">Pengajuan verifikasi dokumen Anda ditolak. Alasan penolakan: <strong>{{ Auth::user()->institution->rejection_reason }}</strong></p>
-                                <p class="text-sm text-red-600">Silakan periksa kembali dokumen yang diunggah dan lengkapi sesuai persyaratan.</p>
-                            @elseif(Auth::user()->institution->isPending())
-                                <h3 class="text-lg font-bold text-amber-800">Menunggu Verifikasi Admin</h3>
-                                <p class="text-sm text-amber-700 mt-1">Dokumen Anda sedang ditinjau oleh tim kami. Anda akan mendapatkan akses ke semua fitur institusi setelah diverifikasi.</p>
-                            @else
-                                <h3 class="text-lg font-bold text-amber-800">Profil Institusi Belum Lengkap</h3>
-                                <p class="text-sm text-amber-700 mt-1">Anda harus mengunggah dokumen legalitas (NPSN, SK Pendirian, KTP Kepala Sekolah) agar dapat menggunakan fitur edukasi secara penuh.</p>
+                                 <h3 class="text-lg font-bold text-red-800">{{ __('messages.verification_rejected') }}</h3>
+                                 <p class="text-sm text-red-700 mt-1 mb-2">{{ __('messages.verification_rejected_desc') }} <strong>{{ Auth::user()->institution->rejection_reason }}</strong></p>
+                                 <p class="text-sm text-red-600">{{ __('messages.check_documents') }}</p>
+                             @elseif(Auth::user()->institution->isPending())
+                                 <h3 class="text-lg font-bold text-amber-800">{{ __('messages.waiting_verification') }}</h3>
+                                 <p class="text-sm text-amber-700 mt-1">{{ __('messages.waiting_verification_desc') }}</p>
+                             @else
+                                 <h3 class="text-lg font-bold text-amber-800">{{ __('messages.profile_incomplete') }}</h3>
+                                 <p class="text-sm text-amber-700 mt-1">{{ __('messages.profile_incomplete_desc') }}</p>
                             @endif
                         </div>
                         <div class="flex-shrink-0 mt-4 sm:mt-0">
                             <a href="{{ route('profile.edit') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
-                                Lengkapi Dokumen
+                                 {{ __('messages.complete_documents') }}
                             </a>
                         </div>
                     </div>
@@ -72,8 +72,8 @@
                         <svg class="w-5 h-5 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-teal-900 dark:text-teal-200 mb-1">Tentang Dashboard Institusi</h4>
-                        <p class="text-sm text-teal-700 dark:text-teal-300 leading-relaxed">Pantau kinerja institusi pendidikan Anda secara menyeluruh. Lihat <strong>total siswa/lulusan</strong>, <strong>rata-rata skill gap</strong>, <strong>tingkat penempatan kerja</strong>, dan <strong>rekomendasi penyesuaian kurikulum</strong> berdasarkan kebutuhan industri. Dashboard ini membantu Anda mengambil keputusan strategis untuk peningkatan kualitas lulusan.</p>
+                         <h4 class="text-sm font-bold text-teal-900 dark:text-teal-200 mb-1">{{ __('messages.about_education_dashboard') }}</h4>
+                         <p class="text-sm text-teal-700 dark:text-teal-300 leading-relaxed">{{ __('messages.about_education_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -84,9 +84,9 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-xl hover:shadow-blue-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Lulusan</p>
-                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_students']) }}</p>
-                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Terdaftar di sistem</p>
+                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.total_graduates') }}</p>
+                             <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_students']) }}</p>
+                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.registered_in_system') }}</p>
                         </div>
                         <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,10 +100,10 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-orange-500/20 dark:shadow-orange-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-orange-500 hover:shadow-xl hover:shadow-orange-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Rata-rata Skill Gap</p>
-                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['avg_skill_gap'] }}%</p>
-                            <p class="text-sm {{ $stats['avg_skill_gap'] > 30 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }} mt-1">
-                                {{ $stats['avg_skill_gap'] > 30 ? 'Perlu perhatian' : 'Dalam batas aman' }}
+                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.average_skill_gap') }}</p>
+                             <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['avg_skill_gap'] }}%</p>
+                             <p class="text-sm {{ $stats['avg_skill_gap'] > 30 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }} mt-1">
+                                 {{ $stats['avg_skill_gap'] > 30 ? __('messages.needs_attention') : __('messages.within_safe_limit') }}
                             </p>
                         </div>
                         <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center text-orange-600 dark:text-orange-400">
@@ -118,9 +118,9 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-xl hover:shadow-green-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Rate Penempatan Kerja</p>
-                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['placement_rate'] }}%</p>
-                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">dari total lamaran</p>
+                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.placement_rate') }}</p>
+                             <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['placement_rate'] }}%</p>
+                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.from_total_applications') }}</p>
                         </div>
                         <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,9 +134,9 @@
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-purple-500/20 dark:shadow-purple-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-purple-500 hover:shadow-xl hover:shadow-purple-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Asesmen Selesai</p>
-                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_assessments']) }}</p>
-                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Total asesmen lulusan</p>
+                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.completed_assessments') }}</p>
+                             <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_assessments']) }}</p>
+                             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.total_graduate_assessments') }}</p>
                         </div>
                         <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,15 +149,15 @@
 
             <!-- Status Lamaran Kerja Siswa -->
             <div class="mb-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-slate-600 pb-2">Status Lamaran Kerja Lulusan</h3>
+                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-slate-600 pb-2">{{ __('messages.graduate_job_application_status') }}</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Total Lamaran -->
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-xl hover:shadow-blue-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Aplikasi</p>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['total_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Lamaran terkirim</p>
+                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.total_applications') }}</p>
+                                 <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['total_applications'] ?? 0 }}</p>
+                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.submitted_applications') }}</p>
                             </div>
                             <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,9 +171,9 @@
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-yellow-500/20 dark:shadow-yellow-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-yellow-500 hover:shadow-xl hover:shadow-yellow-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Sedang Diproses</p>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['processing_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Dalam tahap seleksi</p>
+                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.being_processed') }}</p>
+                                 <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['processing_applications'] ?? 0 }}</p>
+                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.in_selection_stage') }}</p>
                             </div>
                             <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center text-yellow-600 dark:text-yellow-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -187,9 +187,9 @@
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-xl hover:shadow-green-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Diterima Kerja</p>
-                                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{ $stats['accepted_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Berhasil mendapat penawaran</p>
+                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.hired') }}</p>
+                                 <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{ $stats['accepted_applications'] ?? 0 }}</p>
+                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.offer_received') }}</p>
                             </div>
                             <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,9 +203,9 @@
                     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-red-500/20 dark:shadow-red-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-red-500 hover:shadow-xl hover:shadow-red-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Belum Berhasil</p>
-                                <p class="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{{ $stats['rejected_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Ditolak oleh industri</p>
+                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.not_successful') }}</p>
+                                 <p class="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{{ $stats['rejected_applications'] ?? 0 }}</p>
+                                 <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.rejected_by_industry') }}</p>
                             </div>
                             <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center text-red-600 dark:text-red-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,32 +223,32 @@
                 <!-- Chart 1: Skill Gap per Jurusan -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border border-gray-200 dark:border-slate-600">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Skill Gap Rata-rata per Jurusan</h3>
+                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.average_skill_gap_per_major') }}</h3>
                         <select
                             class="text-sm border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option>Tahun 2024</option>
-                            <option>Tahun 2023</option>
+                             <option>{{ __('messages.year_2024') }}</option>
+                             <option>{{ __('messages.year_2023') }}</option>
                         </select>
                     </div>
                     <div class="h-64">
                         <canvas id="jurusanChart"></canvas>
                     </div>
                     <p class="text-xs text-gray-500 dark:text-slate-400 mt-4 text-center">
-                        *Data berdasarkan hasil asesmen kompetensi lulusan
+                         *{{ __('messages.assessment_based_data') }}
                     </p>
                 </div>
 
                 <!-- Chart 2: Top Kompetensi Bermasalah -->
                 <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border border-gray-200 dark:border-slate-600">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Top 5 Kompetensi dengan Gap Tertinggi</h3>
-                        <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">Lihat Semua</button>
+                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.top_5_highest_gap') }}</h3>
+                         <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">{{ __('messages.view_all') }}</button>
                     </div>
                     <div class="h-64">
                         <canvas id="competencyChart"></canvas>
                     </div>
                     <p class="text-xs text-gray-500 dark:text-slate-400 mt-4 text-center">
-                        *Kompetensi yang perlu menjadi fokus perbaikan kurikulum
+                         *{{ __('messages.curriculum_focus') }}
                     </p>
                 </div>
             </div>
@@ -257,34 +257,33 @@
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-200 dark:border-slate-600 overflow-hidden mb-8">
                 <div
                     class="p-6 border-b border-gray-200 dark:border-slate-600 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Rekomendasi Penyesuaian Kurikulum</h3>
+                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.curriculum_adjustment_recommendations') }}</h3>
                     <div class="flex gap-2">
                         <button
-                            class="px-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-gray-700 dark:text-slate-300">Filter</button>
-                        <button
-                            class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Export
-                            CSV</button>
+                                     class="px-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-gray-700 dark:text-slate-300">{{ __('messages.filter') }}</button>
+                         <button
+                             class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">{{ __('messages.export_csv') }}
                     </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50 dark:bg-slate-800">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
-                                    Kompetensi</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
-                                    Jurusan</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
-                                    Gap Rata-rata</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
-                                    Rekomendasi</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
-                                    Prioritas</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                                     {{ __('messages.competency') }}</th>
+                                 <th
+                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                                     {{ __('messages.major') }}</th>
+                                 <th
+                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                                     {{ __('messages.average_gap') }}</th>
+                                 <th
+                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                                     {{ __('messages.recommendation') }}</th>
+                                 <th
+                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                                     {{ __('messages.priority') }}</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-600">
@@ -316,7 +315,7 @@
                             @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400 text-sm">
-                                    Belum ada data rekomendasi kurikulum. Data akan muncul setelah lulusan melakukan asesmen kompetensi.
+                                     {{ __('messages.no_recommendation_data') }}
                                 </td>
                             </tr>
                             @endforelse
@@ -325,7 +324,7 @@
                 </div>
                 <div class="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 flex items-center justify-between">
                     <div class="text-sm text-gray-500 dark:text-slate-400">
-                        Menampilkan <span class="font-medium text-gray-900 dark:text-white">{{ count($curriculumRecommendations) }}</span> rekomendasi berdasarkan data asesmen riil
+                         {{ __('messages.based_on_real_assessment') }}
                     </div>
                 </div>
             </div>
@@ -334,10 +333,9 @@
             <div class="bg-gradient-to-r from-indigo-600 to-purple-700 rounded-2xl shadow-lg p-8 text-white mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div>
-                        <h3 class="text-2xl font-bold mb-2">🤝 Kolaborasi dengan Industri</h3>
-                        <p class="text-indigo-100 max-w-2xl">
-                            Tingkatkan relevansi kurikulum dan kesempatan kerja lulusan Anda melalui kemitraan strategis
-                            dengan perusahaan mitra KOMPASKARIR.
+                         <h3 class="text-2xl font-bold mb-2">🤝 {{ __('messages.industry_collaboration') }}</h3>
+                         <p class="text-indigo-100 max-w-2xl">
+                             {{ __('messages.collaboration_desc') }}
                         </p>
                     </div>
                     {{-- <div class="flex flex-col sm:flex-row gap-3">
@@ -354,11 +352,11 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <a href="{{ route('education.partners') }}"
                             class="px-6 py-3 bg-white text-indigo-700 rounded-lg font-medium hover:bg-indigo-50 transition shadow text-center">
-                            Lihat Mitra Industri
-                        </a>
-                        <a href="{{ route('education.collaboration.create') }}"
-                            class="px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition text-center">
-                            Ajukan Kolaborasi
+                             {{ __('messages.view_industry_partners') }}
+                         </a>
+                         <a href="{{ route('education.collaboration.create') }}"
+                             class="px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition text-center">
+                             {{ __('messages.propose_collaboration') }}
                         </a>
                     </div>
                 </div>
@@ -367,7 +365,7 @@
             <!-- Recent Activities -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-200 dark:border-slate-600 overflow-hidden">
                 <div class="p-6 border-b border-gray-200 dark:border-slate-600">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Aktivitas Terbaru</h3>
+                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('messages.latest_activities') }}</h3>
                 </div>
                 <div class="divide-y divide-gray-200 dark:divide-slate-600">
                     @forelse($recentActivities as $activity)
@@ -403,8 +401,8 @@
                         <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">Belum ada aktivitas terbaru</p>
-                        <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">Aktivitas akan muncul setelah lulusan mulai menggunakan platform</p>
+                         <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">{{ __('messages.no_recent_activities') }}</p>
+                         <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">{{ __('messages.activities_appear_after') }}</p>
                     </div>
                     @endforelse
                 </div>
@@ -439,7 +437,7 @@
         const jurusanChart = new Chart(jurusanCtx, {
             type: 'bar',
             data: {
-                labels: jurusanData.length > 0 ? jurusanData.map(d => d.major) : ['Belum ada data'],
+                    labels: jurusanData.length > 0 ? jurusanData.map(d => d.major) : ['{{ __("messages.no_data") }}'],
                 datasets: [{
                     label: 'Skill Gap (%)',
                     data: jurusanData.length > 0 ? jurusanData.map(d => d.avg_gap) : [0],
@@ -492,7 +490,7 @@
         const competencyChart = new Chart(competencyCtx, {
             type: 'bar',
             data: {
-                labels: competencyData.length > 0 ? competencyData.map(d => d.name) : ['Belum ada data'],
+                    labels: competencyData.length > 0 ? competencyData.map(d => d.name) : ['{{ __("messages.no_data") }}'],
                 datasets: [{
                     label: 'Gap (%)',
                     data: competencyData.length > 0 ? competencyData.map(d => d.avg_gap) : [0],
@@ -599,70 +597,70 @@
         const tourSteps = [
             {
                 popover: {
-                    title: 'Selamat Datang di Panel Edukasi',
-                    description: 'Mari kita kenali berbagai fitur di dashboard ini yang membantu Anda memantau kompetensi lulusan dan menganalisis skill gap.',
+                        title: '{{ __("messages.welcome") }} {{ __("messages.education_role") }}',
+                        description: '{{ __("messages.tour_app") }}',
                     align: 'center'
                 }
             },
             {
                 element: 'header',
-                popover: {
-                    title: 'Top Navbar',
-                    description: 'Di menu atas ini Anda bisa mengubah bahasa (ID/EN), mengaktifkan Dark Mode, melihat notifikasi, mengakses profil, dan Log Out.',
+                    popover: {
+                        title: '{{ __("messages.notifications") }}',
+                        description: '{{ __("messages.general_settings") }}',
                     side: "bottom",
                     align: 'center'
                 }
             },
             {
                 element: 'a[href*="education/dashboard"]',
-                popover: {
-                    title: 'Dashboard',
-                    description: 'Menu ini menampilkan ringkasan performa lulusan, analisis skill gap rata-rata per jurusan, dan peluang kolaborasi dengan industri.',
+                    popover: {
+                        title: '{{ __("messages.education_dashboard") }}',
+                        description: '{{ __("messages.education_desc") }}',
                     side: "right",
                     align: 'start'
                 }
             },
             {
                 element: 'a[href*="education/analytics"]',
-                popover: {
-                    title: 'Analitik Pendidikan',
-                    description: 'Lihat laporan analitik mendalam terkait kompetensi apa yang paling kurang dari lulusan agar dapat menyesuaikan kurikulum.',
+                    popover: {
+                        title: '{{ __("messages.graduate_analytics") }}',
+                        description: '{{ __("messages.monitor_realtime") }}',
                     side: "right",
                     align: 'start'
                 }
             },
             {
                 element: 'a[href*="education/students"]',
-                popover: {
-                    title: 'Data Siswa / Lulusan',
-                    description: 'Kelola data siswa atau alumni Anda. Lihat progress belajar dan skor asesmen masing-masing individu secara detail.',
+                    popover: {
+                        title: '{{ __("messages.users") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                     side: "right",
                     align: 'start'
                 }
             },
             {
                 element: 'a[href*="education/courses"]',
-                popover: {
-                    title: 'Kelola Kursus',
-                    description: 'Buat dan kelola kursus pembelajaran untuk siswa/lulusan guna meningkatkan kompetensi mereka.',
+                    popover: {
+                        title: '{{ __("messages.course_management") }}',
+                        description: '{{ __("messages.recommendation_based_desc") }}',
                     side: "right",
                     align: 'start'
                 }
             },
             {
                 element: 'a[href*="education/programs"]',
-                popover: {
-                    title: 'Program Studi',
-                    description: 'Kelola data program studi atau jurusan yang tersedia di institusi pendidikan Anda.',
+                    popover: {
+                        title: '{{ __("messages.add_program") }}',
+                        description: '{{ __("messages.manage_competencies") }}',
                     side: "right",
                     align: 'start'
                 }
             },
             {
                 element: 'a[href*="education/partners"]',
-                popover: {
-                    title: 'Mitra Industri',
-                    description: 'Lihat dan kelola mitra industri yang telah menjalin kerjasama dengan institusi Anda untuk penempatan kerja lulusan.',
+                    popover: {
+                        title: '{{ __("messages.view_industry_partners") }}',
+                        description: '{{ __("messages.collaboration_desc") }}',
                     side: "right",
                     align: 'start'
                 }

@@ -10,25 +10,20 @@
                             </path>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold">Proposal Berhasil Dikirim!</h2>
-                    <p class="mt-2 text-green-100">Tim kami akan meninjau proposal Anda</p>
+                    <h2 class="text-2xl font-bold">{{ __('messages.proposal_berhasil_dikirim') }}</h2>
+                    <p class="mt-2 text-green-100">{{ __('messages.tim_kami_meninjau_proposal') }}</p>
                 </div>
 
                 <!-- Content -->
                 <div class="p-8">
                     <div class="text-center mb-8">
                         <p class="text-gray-600">
-                            Terima kasih telah mengajukan proposal kolaborasi. Tim KOMPASKARIR akan:<br>
-                            <span class="font-semibold text-gray-900">1.</span> Meneruskan proposal ke mitra
-                            industri<br>
-                            <span class="font-semibold text-gray-900">2.</span> Mengkoordinasikan komunikasi awal<br>
-                            <span class="font-semibold text-gray-900">3.</span> Memberikan update status dalam
-                            <strong>3-5 hari kerja</strong>
+                            {!! __('messages.terima_kasih_mengajukan_proposal') !!}
                         </p>
                     </div>
 
                     <div class="bg-gray-50 rounded-xl p-6 mb-8">
-                        <h4 class="font-semibold text-gray-900 mb-3">📧 Apa Selanjutnya?</h4>
+                        <h4 class="font-semibold text-gray-900 mb-3">📧 {{ __('messages.apa_selanjutnya') }}</h4>
                         <ul class="space-y-2 text-sm text-gray-600">
                             <li class="flex items-start">
                                 <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor"
@@ -36,7 +31,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Anda akan menerima email konfirmasi segera
+                                {{ __('messages.anda_menerima_email_konfirmasi') }}
                             </li>
                             <li class="flex items-start">
                                 <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor"
@@ -44,7 +39,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Cek dashboard untuk update status proposal
+                                {{ __('messages.cek_dashboard_update_status') }}
                             </li>
                             <li class="flex items-start">
                                 <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor"
@@ -52,9 +47,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Hubungi <a href="mailto:support@kompskarir.id"
-                                    class="text-indigo-600 hover:underline">support@kompskarir.id</a> jika ada
-                                pertanyaan
+                                {{ __('messages.hubungi_email_pertanyaan') }}
                             </li>
                         </ul>
                     </div>
@@ -62,11 +55,11 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="{{ route('education.dashboard') }}"
                             class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium text-center">
-                            Kembali ke Dashboard
+                            {{ __('messages.kembali_ke_dashboard') }}
                         </a>
                         <a href="{{ route('education.partners') }}"
                             class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-center">
-                            Jelajahi Mitra Lainnya
+                            {{ __('messages.jelajahi_mitra_lainnya') }}
                         </a>
                     </div>
                 </div>

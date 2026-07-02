@@ -8,14 +8,14 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center">
                             <a href="{{ route('education.dashboard') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 text-sm">
-                                Dashboard
+                                {{ __('messages.dashboard') }}
                             </a>
                         </li>
                         <li>
                             <div class="flex items-center">
                                 <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
                                 <a href="{{ route('education.students') }}" class="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-300 ml-1 md:ml-2 text-sm">
-                                    Data Siswa
+                                    {{ __('messages.data_siswa') }}
                                 </a>
                             </div>
                         </li>
@@ -32,42 +32,42 @@
             <!-- Header -->
             <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Detail Siswa (Job Seeker)</h2>
-                    <p class="mt-2 text-gray-600 dark:text-slate-400">Informasi lengkap profil, kursus, dan perkembangan karir siswa.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.detail_siswa_job_seeker') }}</h2>
+                    <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.informasi_lengkap_profil_kursus') }}</p>
                 </div>
                 <a href="{{ route('education.students') }}"
                    class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Kembali ke Daftar Siswa
+                    {{ __('messages.kembali_ke_daftar_siswa') }}
                 </a>
             </div>
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-4 border-l-4 border-blue-500">
-                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">Profil Lengkap</p>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.profil_lengkap') }}</p>
                     <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">{{ $stats['profile_completion'] }}%</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-4 border-l-4 border-purple-500">
-                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">Asesmen</p>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.asesmen') }}</p>
                     <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">{{ $stats['total_assessments'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-4 border-l-4 border-orange-500">
-                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">Rata-rata Gap</p>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.rata_rata_gap') }}</p>
                     <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">{{ number_format($stats['avg_gap'], 1) }}%</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-4 border-l-4 border-green-500">
-                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">Kelas Aktif</p>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.kelas_aktif') }}</p>
                     <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">{{ $stats['active_enrollments'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-4 border-l-4 border-teal-500">
-                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">Kursus Selesai</p>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.kursus_selesai') }}</p>
                     <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">{{ $stats['completed_courses'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-4 border-l-4 border-pink-500">
-                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">Lamaran Kerja</p>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.lamaran_kerja') }}</p>
                     <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">{{ $stats['total_applications'] }}</p>
                 </div>
             </div>
@@ -100,15 +100,15 @@
                             <div class="flex justify-center mt-3">
                                 @if($student->status === 'active')
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Aktif Mencari Kerja
+                                        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>{{ __('messages.aktif_mencari_kerja') }}
                                     </span>
                                 @elseif($student->status === 'inactive')
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-slate-700 dark:text-slate-300">
-                                        <span class="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>Tidak Aktif
+                                        <span class="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>{{ __('messages.tidak_aktif') }}
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ ucfirst($student->status ?? 'Bekerja') }}
+                                        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ ucfirst($student->status ?? __('messages.bekerja')) }}
                                     </span>
                                 @endif
                             </div>
@@ -139,7 +139,7 @@
                                     <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                     </svg>
-                                    {{ $student->gender === 'male' ? 'Laki-laki' : 'Perempuan' }}
+                                    {{ $student->gender === 'male' ? __('messages.laki_laki') : __('messages.perempuan') }}
                                 </div>
                                 @endif
 
@@ -156,7 +156,7 @@
                                     <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                    Bergabung: {{ $student->created_at->format('d M Y') }}
+                                    {{ __('messages.bergabung') }}: {{ $student->created_at->format('d M Y') }}
                                 </div>
                             </div>
 
@@ -190,7 +190,7 @@
                             <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                             </svg>
-                            Keahlian / Skills
+                            {{ __('messages.keahlian_skills') }}
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             @foreach($student->skills as $skill)
@@ -209,7 +209,7 @@
                             <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
                             </svg>
-                            Bahasa
+                            {{ __('messages.bahasa') }}
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             @foreach($student->languages as $lang)
@@ -228,7 +228,7 @@
                             <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                             </svg>
-                            Dokumen
+                            {{ __('messages.dokumen') }}
                         </h4>
                         <div class="space-y-2">
                             @foreach($student->documents->where('document_type', '!=', 'photo') as $doc)
@@ -245,7 +245,7 @@
                                     </div>
                                 </div>
                                 <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
-                                    Lihat
+                                    {{ __('messages.lihat') }}
                                 </a>
                             </div>
                             @endforeach
@@ -264,7 +264,7 @@
                             <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
-                            Tentang Saya
+                            {{ __('messages.tentang_saya') }}
                         </h4>
                         <p class="text-gray-600 dark:text-slate-400 leading-relaxed">{{ $student->bio }}</p>
                     </div>
@@ -277,35 +277,35 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
                             </svg>
-                            Informasi Pendidikan & Karir
+                            {{ __('messages.informasi_pendidikan_karir') }}
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Pendidikan</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.pendidikan') }}</p>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $student->education_level ?? '-' }}</p>
                             </div>
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Jurusan</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.jurusan') }}</p>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $student->major ?? '-' }}</p>
                             </div>
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Tahun Lulus</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.tahun_lulus') }}</p>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $student->graduation_year ?? '-' }}</p>
                             </div>
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Pengalaman Kerja</p>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $student->experience_years ? $student->experience_years . ' tahun' : 'Fresh Graduate' }}</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.pengalaman_kerja') }}</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $student->experience_years ? $student->experience_years . ' ' . __('messages.tahun') : __('messages.fresh_graduate') }}</p>
                             </div>
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Posisi Target</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.posisi_target') }}</p>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $student->target_position ?? '-' }}</p>
                             </div>
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Status</p>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.status') }}</p>
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">
-                                    @if($student->status === 'active') Aktif Mencari Kerja
-                                    @elseif($student->status === 'inactive') Tidak Aktif
-                                    @else {{ ucfirst($student->status ?? 'Bekerja') }}
+                                    @if($student->status === 'active') {{ __('messages.aktif_mencari_kerja') }}
+                                    @elseif($student->status === 'inactive') {{ __('messages.tidak_aktif') }}
+                                    @else {{ ucfirst($student->status ?? __('messages.bekerja')) }}
                                     @endif
                                 </p>
                             </div>
@@ -319,25 +319,25 @@
                             <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                             </svg>
-                            Kelas / Kursus yang Diikuti
+                            {{ __('messages.kelas_kursus_diikuti') }}
                         </h4>
                         <div class="space-y-3">
                             @foreach($student->classEnrollments as $enrollment)
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg border-l-4 {{ $enrollment->status === 'completed' ? 'border-green-500' : ($enrollment->status === 'active' ? 'border-blue-500' : 'border-gray-400') }}">
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $enrollment->classRoom->course->title ?? 'Kursus' }}</p>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Kelas: {{ $enrollment->classRoom->name ?? '-' }} ({{ $enrollment->classRoom->code ?? '-' }})</p>
-                                        <p class="text-xs text-gray-500 dark:text-slate-400">Terdaftar: {{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('d M Y') : '-' }}</p>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $enrollment->classRoom->course->title ?? __('messages.kursus') }}</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.kelas') }}: {{ $enrollment->classRoom->name ?? '-' }} ({{ $enrollment->classRoom->code ?? '-' }})</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ __('messages.terdaftar') }}: {{ $enrollment->enrolled_at ? $enrollment->enrolled_at->format('d M Y') : '-' }}</p>
                                     </div>
                                     <div class="text-right ml-4">
                                         @if($enrollment->status === 'completed')
-                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">Selesai</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">{{ __('messages.selesai') }}</span>
                                             @if($enrollment->final_score)
-                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Nilai: {{ $enrollment->final_score }}</p>
+                                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.nilai') }}: {{ $enrollment->final_score }}</p>
                                             @endif
                                         @elseif($enrollment->status === 'active')
-                                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium">Aktif</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium">{{ __('messages.aktif') }}</span>
                                         @else
                                             <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-300 font-medium">{{ ucfirst($enrollment->status) }}</span>
                                         @endif
@@ -346,7 +346,7 @@
                                 @if($enrollment->progress_percentage !== null)
                                 <div class="mt-3">
                                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 mb-1">
-                                        <span>Progress</span>
+                                        <span>{{ __('messages.progress') }}</span>
                                         <span>{{ $enrollment->progress_percentage }}%</span>
                                     </div>
                                     <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
@@ -367,7 +367,7 @@
                             <svg class="w-5 h-5 mr-2 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
                             </svg>
-                            Hasil Asesmen Kompetensi
+                            {{ __('messages.hasil_asesmen_kompetensi') }}
                         </h4>
                         <div class="space-y-4">
                             @foreach($student->assessments as $assessment)
@@ -380,11 +380,11 @@
                                     <div class="text-right">
                                         @php $gap = $assessment->total_gap_percentage ?? 0; @endphp
                                         @if($gap <= 20)
-                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">Gap: {{ number_format($gap, 1) }}%</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">{{ __('messages.gap') }}: {{ number_format($gap, 1) }}%</span>
                                         @elseif($gap <= 50)
-                                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 font-medium">Gap: {{ number_format($gap, 1) }}%</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 font-medium">{{ __('messages.gap') }}: {{ number_format($gap, 1) }}%</span>
                                         @else
-                                            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 font-medium">Gap: {{ number_format($gap, 1) }}%</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 font-medium">{{ __('messages.gap') }}: {{ number_format($gap, 1) }}%</span>
                                         @endif
                                     </div>
                                 </div>
@@ -404,7 +404,7 @@
                                     </div>
                                     @endforeach
                                     @if($assessment->scores->count() > 5)
-                                    <p class="text-xs text-gray-400 dark:text-slate-500">+{{ $assessment->scores->count() - 5 }} kompetensi lainnya</p>
+                                    <p class="text-xs text-gray-400 dark:text-slate-500">+{{ $assessment->scores->count() - 5 }} {{ __('messages.kompetensi_lainnya') }}</p>
                                     @endif
                                 </div>
                                 @endif
@@ -421,16 +421,16 @@
                             <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
                             </svg>
-                            Roadmap Karir
+                            {{ __('messages.roadmap_karir') }}
                         </h4>
                         <div class="space-y-3">
                             @foreach($student->roadmaps->groupBy('position_id') as $positionId => $milestones)
                             @php $firstMilestone = $milestones->first(); @endphp
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg border-l-4 border-orange-500">
                                 <div class="flex items-center justify-between mb-2">
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $firstMilestone->position->name ?? 'Roadmap' }}</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $firstMilestone->position->name ?? __('messages.roadmap') }}</p>
                                     @php $completed = $milestones->where('is_completed', true)->count(); @endphp
-                                    <span class="text-xs text-gray-500 dark:text-slate-400">{{ $completed }}/{{ $milestones->count() }} selesai</span>
+                                    <span class="text-xs text-gray-500 dark:text-slate-400">{{ $completed }}/{{ $milestones->count() }} {{ __('messages.selesai') }}</span>
                                 </div>
                                 <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                     <div class="h-2 rounded-full bg-orange-500" style="width: {{ $milestones->count() > 0 ? round(($completed / $milestones->count()) * 100) : 0 }}%"></div>
@@ -448,23 +448,23 @@
                             <svg class="w-5 h-5 mr-2 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
-                            Lamaran Kerja
+                            {{ __('messages.lamaran_kerja') }}
                         </h4>
                         <div class="space-y-3">
                             @foreach($student->jobApplications->take(5) as $application)
                             <div class="p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $application->jobListing->title ?? 'Posisi' }}</p>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $application->jobListing->title ?? __('messages.posisi') }}</p>
                                         <p class="text-xs text-gray-500 dark:text-slate-400">{{ $application->jobListing->company->name ?? '-' }}</p>
                                     </div>
                                     <div class="text-right">
                                         @if($application->status === 'pending')
-                                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 font-medium">Menunggu</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 font-medium">{{ __('messages.menunggu') }}</span>
                                         @elseif($application->status === 'accepted')
-                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">Diterima</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 font-medium">{{ __('messages.diterima') }}</span>
                                         @elseif($application->status === 'rejected')
-                                            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 font-medium">Ditolak</span>
+                                            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 font-medium">{{ __('messages.ditolak') }}</span>
                                         @else
                                             <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-slate-300 font-medium">{{ ucfirst($application->status) }}</span>
                                         @endif

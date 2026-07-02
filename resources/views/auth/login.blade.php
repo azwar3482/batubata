@@ -29,8 +29,8 @@
         <div class="w-full sm:max-w-md mt-6 px-4 py-6 sm:px-6 sm:py-8 bg-white dark:bg-slate-800 shadow-2xl overflow-hidden sm:rounded-2xl border dark:border-slate-700">
             <!-- Header -->
             <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Selamat Datang Kembali</h2>
-                <p class="text-gray-600 dark:text-gray-300 mt-2">Login untuk melanjutkan perjalanan karir Anda</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.welcome_back') }}</h2>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">{{ __('messages.login_subtitle') }}</p>
             </div>
 
             <!-- Social Proof -->
@@ -45,7 +45,7 @@
                 @endfor
             </div>
             <p class="text-sm text-slate-700 dark:text-slate-300 font-medium">
-                <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ number_format($recentUsers + 121) }} orang</span> telah bergabung bulan ini
+                <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ number_format($recentUsers + 121) }} {{ __('messages.people_joined_month') }}</span>
             </p>
         </div>
 
@@ -129,7 +129,7 @@
                     <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
-                    <span>Caps Lock aktif</span>
+                    <span>{{ __('messages.caps_lock_active') }}</span>
                 </div>
                 @error('password')
                 <p id="password-error" class="mt-2 text-sm text-red-600 flex items-center" role="alert">
@@ -147,12 +147,12 @@
                 <label class="flex items-center">
                     <input type="checkbox" name="remember"
                         class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 text-blue-600 shadow-sm focus:ring-blue-500">
-                    <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Ingat saya</span>
+                    <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{{ __('messages.remember_me') }}</span>
                 </label>
                 @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}"
                     class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-                    Lupa password?
+                    {{ __('messages.forgot_password') }}
                 </a>
                 @endif
             </div>
@@ -161,7 +161,7 @@
             <button type="submit" id="submit-btn"
                 class="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition transform hover:-translate-y-0.5 disabled:opacity-75 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                 <span id="btn-text" class="flex items-center">
-                    Login
+                    {{ __('messages.dashboard') }}
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
@@ -173,7 +173,7 @@
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Memproses...
+                    {{ __('messages.processing') }}
                 </span>
             </button>
         </form>
@@ -184,7 +184,7 @@
                 <div class="w-full border-t border-gray-300 dark:border-slate-600"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-                <span class="px-4 bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400">Atau</span>
+                <span class="px-4 bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400">{{ __('messages.or') }}</span>
             </div>
         </div>
 
@@ -206,7 +206,7 @@
                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z"
                         fill="#EA4335" />
                 </svg>
-                Lanjutkan dengan Google
+                {{ __('messages.continue_with_google') }}
             </a>
         </div>
 
@@ -215,14 +215,14 @@
         <div class="mt-8 border-t border-gray-100 dark:border-slate-700 pt-6">
             <div class="flex items-center justify-between mb-4">
                 <p class="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                    Akses Cepat (Demo)
+                    {{ __('messages.quick_access_demo') }}
                 </p>
                 <button type="button" id="start-tour-btn"
                     class="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 rounded-full transition-all duration-200 border border-blue-200 dark:border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:scale-105">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Mulai Tour
+                    {{ __('messages.start_tour') }}
                 </button>
             </div>
             <div class="grid grid-cols-2 gap-3">
@@ -236,7 +236,7 @@
                     </div>
                     <div class="ml-3 overflow-hidden">
                         <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Admin</p>
-                        <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">Portal Admin</p>
+                        <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">{{ __('messages.demo_admin_portal') }}</p>
                     </div>
                 </button>
 
@@ -249,7 +249,7 @@
                         </svg>
                     </div>
                     <div class="ml-3 overflow-hidden">
-                        <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Pencari Kerja</p>
+                        <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">{{ __('messages.demo_job_seeker') }}</p>
                         <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">Budi Seeker</p>
                     </div>
                 </button>
@@ -263,7 +263,7 @@
                         </svg>
                     </div>
                     <div class="ml-3 overflow-hidden">
-                        <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Industri</p>
+                        <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">{{ __('messages.demo_industri') }}</p>
                         <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">HRD Tech Corp</p>
                     </div>
                 </button>
@@ -278,7 +278,7 @@
                         </svg>
                     </div>
                     <div class="ml-3 overflow-hidden">
-                        <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">Pendidikan</p>
+                        <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">{{ __('messages.demo_pendidikan') }}</p>
                         <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">Univ Digital</p>
                     </div>
                 </button>
@@ -289,10 +289,10 @@
         <!-- Register Link -->
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600 dark:text-gray-300">
-                Belum punya akun?
+                {{ __('messages.no_account_yet') }}
                 <a href="{{ route('register') }}"
                     class="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition">
-                    Daftar Gratis
+                    {{ __('messages.register_free') }}
                 </a>
             </p>
         </div>
@@ -304,19 +304,19 @@
                     <svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    SSL Encrypted
+                    {{ __('messages.ssl_encrypted') }}
                 </span>
                 <span class="flex items-center gap-1">
                     <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
-                    Data Aman
+                    {{ __('messages.data_secure') }}
                 </span>
                 <span class="flex items-center gap-1">
                     <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
-                    Kemnaker RI
+                    {{ __('messages.kemnaker_ri') }}
                 </span>
             </div>
         </div>
@@ -324,7 +324,7 @@
 
     <!-- Footer Links -->
     <div class="mt-8 text-center">
-        <a href="/" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">← Kembali ke Beranda</a>
+        <a href="/" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">← {{ __('messages.back_to_home') }}</a>
     </div>
     </div>
 
@@ -474,7 +474,7 @@
                         {
                             element: '#demo-admin',
                             popover: {
-                                title: 'Portal Admin',
+                                title: '{{ __("messages.demo_admin_portal") }}',
                                 description: 'Akses khusus untuk administrator mengelola seluruh sistem, melihat statistik platform, dan mengatur pengguna.',
                                 side: "bottom",
                                 align: 'start'
@@ -483,7 +483,7 @@
                         {
                             element: '#demo-seeker',
                             popover: {
-                                title: 'Pencari Kerja',
+                                title: '{{ __("messages.demo_job_seeker") }}',
                                 description: 'Gunakan peran ini jika Anda adalah kandidat yang ingin mencari lowongan, mengirim lamaran, dan membuat profil karir.',
                                 side: "bottom",
                                 align: 'start'

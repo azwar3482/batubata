@@ -1,21 +1,21 @@
-<x-app-layout>
+﻿<x-app-layout>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6 anim-1">
-                <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+                <a href="{{ route('industry.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.dashboard') }}</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <a href="{{ route('industry.jobs.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Lowongan</a>
+                <a href="{{ route('industry.jobs.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.vacancy') }}</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-gray-900 dark:text-white font-medium">Tambah</span>
+                <span class="text-gray-900 dark:text-white font-medium">{{ __('messages.add') }}</span>
             </nav>
 
             <!-- Header -->
             <div class="mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Posting Lowongan Kerja</h2>
-                        <p class="mt-2 text-gray-600 dark:text-slate-400">Buat lowongan baru dan temukan talenta terbaik untuk perusahaan Anda.</p>
+                        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.post_job_vacancy') }}</h2>
+                        <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.create_new_vacancy_description') }}</p>
                     </div>
                 </div>
             </div>
@@ -46,9 +46,9 @@
 
                     <!-- Left Column (Main Details) -->
                     <div class="lg:col-span-2 space-y-6">
-                        <!-- Card: Informasi Dasar -->
+                        <!-- Card: {{ __('messages.basic_information') }} -->
                         <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Informasi Dasar</h3>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">{{ __('messages.basic_information') }}</h3>
                             <div class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <!-- Searchable Dropdown for Position Category -->
@@ -56,7 +56,7 @@
                                         open: false,
                                         search: '',
                                         selected: '{{ old('position_id') }}',
-                                        selectedName: 'Pilih Kategori Posisi...',
+                                        selectedName: 'Pilih {{ __('messages.position_category') }}...',
                                         options: [
                                             @foreach($positions as $position)
                                                 { id: '{{ $position->id }}', name: '{{ addslashes($position->name) }}' },
@@ -81,7 +81,7 @@
                                     }" class="relative w-full" @click.away="open = false" x-init="init()">
 
                                         <input type="hidden" name="position_id" :value="selected">
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Kategori Posisi <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.position_category') }} <span class="text-red-500">*</span></label>
 
                                         <div @click="open = !open; if(open) $nextTick(() => $refs.searchInput.focus())"
                                             class="flex items-center justify-between w-full rounded-xl border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm sm:text-sm p-3 transition-colors cursor-pointer focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
@@ -120,7 +120,7 @@
                                                 <li x-show="filteredOptions.length === 0 && search.trim() !== ''" class="px-3 py-2 text-sm text-center">
                                                     <div class="mb-2 text-gray-500 dark:text-slate-400">Kategori "<span x-text="search" class="font-semibold text-gray-700 dark:text-white"></span>" tidak ditemukan.</div>
                                                     <button type="button" @click="selectOption({id: search, name: search})" class="w-full px-3 py-2 bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 rounded-lg text-sm font-semibold hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors">
-                                                        + Tambah "<span x-text="search"></span>"
+                                                        + {{ __('messages.add') }} "<span x-text="search"></span>"
                                                     </button>
                                                 </li>
                                                 <li x-show="filteredOptions.length === 0 && search.trim() === ''" class="px-3 py-2 text-sm text-gray-500 dark:text-slate-400 text-center">
@@ -131,20 +131,20 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Judul Spesifik Lowongan <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.specific_vacancy_title') }} <span class="text-red-500">*</span></label>
                                         <input type="text" name="title" required value="{{ old('title') }}" placeholder="Contoh: Senior UI/UX Designer"
                                             class="block w-full rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 transition-colors">
                                     </div>
                                 </div>
                                 <div class="w-full">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Nama Perusahaan <span class="text-red-500">*</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.company_name') }} <span class="text-red-500">*</span></label>
                                     <input type="text" name="company_name" required value="{{ old('company_name', Auth::user()->company->name ?? '') }}"
                                         class="block w-full rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 transition-colors">
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Lokasi Penempatan<span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.deployment_location') }}<span class="text-red-500">*</span></label>
                                         <div x-data="{
                                             open: false,
                                             search: '',
@@ -208,7 +208,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Tipe Kerja <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.work_type') }} <span class="text-red-500">*</span></label>
                                         <div class="grid grid-cols-3 gap-3">
                                             <label class="cursor-pointer relative">
                                                 <input type="radio" name="work_type" value="remote" required class="peer sr-only" {{ old('work_type') == 'remote' ? 'checked' : '' }}>
@@ -255,7 +255,7 @@
 
                                         <input type="hidden" name="experience_level" :value="selected">
 
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Pengalaman Kerja <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.work_experience') }} <span class="text-red-500">*</span></label>
 
                                         <div @click="open = !open"
                                             class="flex items-center justify-between w-full rounded-xl border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm sm:text-sm p-3 transition-colors cursor-pointer focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
@@ -292,7 +292,7 @@
                                                     </li>
                                                 </template>
                                                 <li x-show="filteredOptions.length === 0" class="px-3 py-2 text-sm text-gray-500 dark:text-slate-400 text-center">
-                                                    Tidak ditemukan
+                                                    {{ __('messages.not_found') }}
                                                 </li>
                                             </ul>
                                         </div>
@@ -300,13 +300,13 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Batas Waktu Lamaran (Berakhir Pada) <span class="text-red-500">*</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.application_deadline') }} <span class="text-red-500">*</span></label>
                                     <input type="date" name="expires_date" required min="{{ \Carbon\Carbon::tomorrow()->format('Y-m-d') }}" value="{{ old('expires_date', \Carbon\Carbon::now()->addDays(30)->format('Y-m-d')) }}"
                                         class="block w-full rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 transition-colors">
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Banner Lowongan (Opsional)</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.vacancy_banner_optional') }}</label>
                                     <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-xl transition-colors hover:border-blue-400 bg-gray-50 dark:bg-slate-800/50">
                                         <div class="space-y-1 text-center">
                                             <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-slate-500" stroke="currentColor" fill="none" viewBox="0 0 48 48">
@@ -314,10 +314,10 @@
                                             </svg>
                                             <div class="flex text-sm text-gray-600 dark:text-slate-400 justify-center">
                                                 <label for="banner_image" class="relative cursor-pointer bg-white dark:bg-slate-800 rounded-md font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500 px-1">
-                                                    <span>Upload file</span>
+                                                    <span>{{ __('messages.upload_file') }}</span>
                                                     <input id="banner_image" name="banner_image" type="file" accept=".png, .jpg, .jpeg" class="sr-only">
                                                 </label>
-                                                <p class="pl-1">atau drag and drop</p>
+                                                <p class="pl-1">{{ __('messages.or_drag_drop') }}</p>
                                             </div>
                                             <p class="text-xs text-gray-500 dark:text-slate-500">PNG, JPG, JPEG up to 2MB</p>
                                         </div>
@@ -335,12 +335,12 @@
                             </div>
                         </div>
 
-                        <!-- Card: Detail Pekerjaan -->
+                        <!-- Card: {{ __('messages.job_details') }} -->
                         <div class="bg-white dark:bg-slate-900 shadow-sm rounded-2xl p-6 border border-gray-100 dark:border-slate-800">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">Detail Pekerjaan</h3>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-100 dark:border-slate-800">{{ __('messages.job_details') }}</h3>
                             <div class="space-y-6">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Deskripsi Pekerjaan <span class="text-red-500">*</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.job_description') }} <span class="text-red-500">*</span></label>
                                     <input id="description" type="hidden" name="description" value="{{ old('description') }}">
                                     <div id="quill-description"></div>
                                 </div>
@@ -356,12 +356,12 @@
                                             this.skills.splice(index, 1); 
                                         } 
                                     }">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Keahlian Wajib <span class="text-red-500">*</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.required_skills') }} <span class="text-red-500">*</span></label>
                                     
                                     <div class="flex items-center mb-3 relative">
                                         <input type="text" x-model="new_skill" @keydown.enter.prevent="addSkill" placeholder="Ketik skill (cth: PHP) lalu Enter"
                                             class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm rounded-l-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 block p-3 transition-all duration-200">
-                                        <button type="button" @click="addSkill" class="px-4 py-3 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-r-xl text-sm font-semibold transition-colors">Tambah</button>
+                                        <button type="button" @click="addSkill" class="px-4 py-3 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-r-xl text-sm font-semibold transition-colors">{{ __('messages.add') }}</button>
                                     </div>
 
                                     <!-- Tags Display -->
@@ -383,7 +383,7 @@
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
-                                        Sistem AI akan mencocokkan ini dengan profil dan asesmen kandidat secara otomatis.
+                                        {{ __('messages.ai_match_description') }}
                                     </p>
                                 </div>
                             </div>
@@ -395,10 +395,10 @@
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Jenis Kelamin <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.gender') }} <span class="text-gray-400 font-normal">{{ __('messages.optional') }}</span></label>
                                     <div class="grid grid-cols-3 gap-3">
                                         <label class="cursor-pointer relative">
-                                            <input type="radio" name="gender" value="Semua Jenis Kelamin" class="peer sr-only" {{ old('gender', $job->gender ?? 'Semua Jenis Kelamin') == 'Semua Jenis Kelamin' ? 'checked' : '' }}>
+                                            <input type="radio" name="gender" value="Semua {{ __('messages.gender') }}" class="peer sr-only" {{ old('gender', $job->gender ?? 'Semua {{ __('messages.gender') }}') == 'Semua {{ __('messages.gender') }}' ? 'checked' : '' }}>
                                             <div class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-2 text-center transition-all hover:bg-gray-50 dark:hover:bg-slate-700 peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 peer-checked:ring-1 peer-checked:ring-blue-500">
                                                 <span class="block text-xs font-medium text-gray-700 dark:text-slate-300 peer-checked:text-blue-700 dark:peer-checked:text-blue-400">Semua</span>
                                             </div>
@@ -419,11 +419,11 @@
                                 </div>
                                 
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Golongan Darah <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.blood_type') }} <span class="text-gray-400 font-normal">{{ __('messages.optional') }}</span></label>
                                     <div class="grid grid-cols-5 gap-2">
-                                        @foreach(['Semua Golongan Darah' => 'Semua', 'A' => 'A', 'B' => 'B', 'AB' => 'AB', 'O' => 'O'] as $val => $label)
+                                        @foreach(['Semua {{ __('messages.blood_type') }}' => 'Semua', 'A' => 'A', 'B' => 'B', 'AB' => 'AB', 'O' => 'O'] as $val => $label)
                                         <label class="cursor-pointer relative">
-                                            <input type="radio" name="blood_type" value="{{ $val }}" class="peer sr-only" {{ old('blood_type', $job->blood_type ?? 'Semua Golongan Darah') == $val ? 'checked' : '' }}>
+                                            <input type="radio" name="blood_type" value="{{ $val }}" class="peer sr-only" {{ old('blood_type', $job->blood_type ?? 'Semua {{ __('messages.blood_type') }}') == $val ? 'checked' : '' }}>
                                             <div class="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-2 text-center transition-all hover:bg-gray-50 dark:hover:bg-slate-700 peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 peer-checked:ring-1 peer-checked:ring-blue-500">
                                                 <span class="block text-xs font-medium text-gray-700 dark:text-slate-300 peer-checked:text-blue-700 dark:peer-checked:text-blue-400">{{ $label }}</span>
                                             </div>
@@ -433,7 +433,7 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Maksimal Umur <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.max_age') }} <span class="text-gray-400 font-normal">{{ __('messages.optional') }}</span></label>
                                     <div class="relative">
                                         <input type="number" name="max_age" value="{{ old('max_age', $job->max_age ?? '') }}" min="17" max="100" class="block w-full rounded-xl border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 pr-12 transition-colors" placeholder="Contoh: 35">
                                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
@@ -443,7 +443,7 @@
                                 </div>
 
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Bahasa yang Dikuasai <span class="text-gray-400 font-normal">(Opsional, bisa pilih lebih dari 1)</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">{{ __('messages.languages_mastered') }} <span class="text-gray-400 font-normal">(Opsional, bisa pilih lebih dari 1)</span></label>
                                     <div class="flex flex-wrap gap-3">
                                         @php $availableLangs = ['Indonesia', 'Inggris', 'Mandarin', 'Jepang', 'Korea', 'Arab', 'Jerman', 'Prancis']; @endphp
                                         @foreach($availableLangs as $lang)
@@ -458,7 +458,7 @@
                                 </div>
 
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">Rentang Gaji yang Ditawarkan <span class="text-gray-400 font-normal">(Opsional, per bulan)</span></label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.salary_range') }} <span class="text-gray-400 font-normal">(Opsional, per bulan)</span></label>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4" x-data="{
                                         salary_min: '{{ old('salary_min', (isset($job) && $job->salary_min) ? (int)$job->salary_min : '') }}',
                                         salary_max: '{{ old('salary_max', (isset($job) && $job->salary_max) ? (int)$job->salary_max : '') }}',
@@ -498,7 +498,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                     </svg>
                                 </div>
-                                Pembobotan Berkas AI
+                                {{ __('messages.ai_document_weighting') }}
                             </h3>
 
                             <div class="space-y-4">
@@ -506,9 +506,9 @@
                                     <input type="radio" id="weight_default" name="weight_option" value="default" checked class="sr-only">
                                     <div class="flex flex-1">
                                         <div class="flex flex-col">
-                                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Gunakan Referensi Admin</span>
+                                            <span class="block text-sm font-bold text-gray-900 dark:text-white">{{ __('messages.use_admin_reference') }}</span>
                                             <span class="mt-1 flex items-center text-xs text-gray-500 dark:text-slate-400">
-                                                Otomatis menggunakan pengaturan ideal dari sistem pusat.
+                                                {{ __('messages.auto_use_ideal_settings') }}
                                             </span>
                                             @if(isset($defaultWeight))
                                             <div class="mt-3 text-[10px] bg-blue-50 dark:bg-slate-700/50 text-blue-700 dark:text-blue-300 p-2.5 rounded-lg font-mono flex flex-wrap gap-1.5 shadow-inner">
@@ -532,9 +532,9 @@
                                     <input type="radio" id="weight_custom" name="weight_option" value="custom" class="sr-only">
                                     <div class="flex flex-1">
                                         <div class="flex flex-col">
-                                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Kustomisasi Bobot</span>
+                                            <span class="block text-sm font-bold text-gray-900 dark:text-white">{{ __('messages.customize_weights') }}</span>
                                             <span class="mt-1 flex items-center text-xs text-gray-500 dark:text-slate-400">
-                                                Sesuaikan prioritas bobot dokumen secara spesifik untuk posisi ini.
+                                                {{ __('messages.adjust_document_weight') }}
                                             </span>
                                         </div>
                                     </div>
@@ -548,7 +548,7 @@
 
                             <!-- Custom Weight Inputs (Hidden by default) -->
                             <div id="custom_weight_section" class="mt-4 p-5 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 hidden shadow-inner transition-all duration-300">
-                                <p class="text-[11px] font-bold text-gray-500 dark:text-slate-400 mb-4 uppercase tracking-wider">Atur Bobot Penilaian (%)</p>
+                                <p class="text-[11px] font-bold text-gray-500 dark:text-slate-400 mb-4 uppercase tracking-wider">{{ __('messages.set_assessment_weights') }}</p>
                                 <div class="space-y-3">
                                     <div class="flex items-center justify-between">
                                         <label class="text-sm font-medium text-gray-700 dark:text-slate-300">CV</label>
@@ -594,14 +594,14 @@
                             @endif
 
                             <p class="text-xs text-gray-500 dark:text-slate-400 mb-5 text-center leading-relaxed bg-slate-50 dark:bg-slate-800 p-3 rounded-lg">
-                                Pastikan informasi sudah benar. Lowongan akan langsung tayang dan dapat dilihat oleh pencari kerja.
+                                {{ __('messages.ensure_info_correct') }}
                             </p>
 
                             <button type="submit" id="submit_btn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3.5 px-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 group">
                                 <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                 </svg>
-                                Publikasikan Lowongan
+                                {{ __('messages.publish_vacancy') }}
                             </button>
                             <a href="{{ route('industry.dashboard') }}" class="block text-center w-full mt-4 text-sm text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white font-semibold transition-colors">
                                 Batal & Kembali

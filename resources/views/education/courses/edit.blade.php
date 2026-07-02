@@ -22,23 +22,23 @@
 
             <!-- Breadcrumbs -->
             <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-4">
-                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
+                <a href="{{ route('education.dashboard') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.dashboard') }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <a href="{{ route('education.courses.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Kelola Kursus</a>
+                <a href="{{ route('education.courses.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ __('messages.kelola_kursus') }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 <a href="{{ route('education.courses.show', $course) }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ Str::limit($course->title, 20) }}</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-gray-900 dark:text-white font-medium">Edit</span>
+                <span class="text-gray-900 dark:text-white font-medium">{{ __('messages.edit') }}</span>
             </nav>
 
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Kursus</h2>
-                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Perbarui informasi kursus <span class="font-semibold">{{ $course->title }}</span></p>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.edit_kursus') }}</h2>
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">{{ __('messages.perbarui_informasi_kursus') }} <span class="font-semibold">{{ $course->title }}</span></p>
                 </div>
                 <a href="{{ route('education.courses.show', $course) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
-                    &laquo; Kembali
+                    &laquo; {{ __('messages.kembali') }}
                 </a>
             </div>
 
@@ -61,20 +61,20 @@
                         <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        Informasi Dasar
+                        {{ __('messages.informasi_dasar') }}
                     </h3>
                     <div class="grid grid-cols-1 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Judul Kursus *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.judul_kursus') }} *</label>
                             <input type="text" name="title" value="{{ old('title', $course->title) }}" required class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Deskripsi *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.deskripsi') }} *</label>
                             <input type="hidden" name="description" id="description" value="{{ old('description', $course->description) }}">
                             <div id="quill-description"></div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Tujuan Pembelajaran</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.tujuan_pembelajaran') }}</label>
                             <input type="hidden" name="objectives" id="objectives" value="{{ old('objectives', $course->objectives) }}">
                             <div id="quill-objectives"></div>
                         </div>
@@ -88,27 +88,27 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        Pengaturan Kursus
+                        {{ __('messages.pengaturan_kursus') }}
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Kompetensi Terkait</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.kompetensi_terkait') }}</label>
                             <select name="competency_id" class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Pilih Kompetensi</option>
+                                <option value="">{{ __('messages.pilih_kompetensi') }}</option>
                                 @foreach($competencies as $comp)
                                 <option value="{{ $comp->id }}" {{ old('competency_id', $course->competency_id) == $comp->id ? 'selected' : '' }}>{{ $comp->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Kategori *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.kategori') }} *</label>
                             <select name="category" required class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option value="technical" {{ old('category', $course->category) === 'technical' ? 'selected' : '' }}>Teknis</option>
+                                <option value="technical" {{ old('category', $course->category) === 'technical' ? 'selected' : '' }}>{{ __('messages.teknis') }}</option>
                                 <option value="soft_skill" {{ old('category', $course->category) === 'soft_skill' ? 'selected' : '' }}>Soft Skill</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Level *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.level') }} *</label>
                             <select name="level" required class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="beginner" {{ old('level', $course->level) === 'beginner' ? 'selected' : '' }}>Beginner</option>
                                 <option value="intermediate" {{ old('level', $course->level) === 'intermediate' ? 'selected' : '' }}>Intermediate</option>
@@ -116,16 +116,16 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Durasi (jam) *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.durasi_jam') }} *</label>
                             <input type="number" name="duration_hours" value="{{ old('duration_hours', $course->duration_hours) }}" min="1" required class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Maks. Siswa per Kelas</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.maks_siswa_per_kelas') }}</label>
                             <input type="number" name="max_students" value="{{ old('max_students', $course->max_students) }}" min="0" class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Tags</label>
-                            <input type="text" name="tags" value="{{ old('tags', $course->tags ? implode(', ', $course->tags) : '') }}" placeholder="Pisahkan dengan koma" class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <input type="text" name="tags" value="{{ old('tags', $course->tags ? implode(', ', $course->tags) : '') }}" placeholder="{{ __('messages.pisahkan_dengan_koma') }}" class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                     </div>
                 </div>
@@ -136,19 +136,19 @@
                         <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Harga & Thumbnail
+                        {{ __('messages.harga_dan_thumbnail') }}
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Harga (Rp)</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.harga_rp') }}</label>
                             <label class="flex items-center gap-2 mb-2">
                                 <input type="checkbox" name="is_free" value="1" {{ old('is_free', $course->is_free) ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Gratis</span>
+                                <span class="text-sm font-medium text-gray-700 dark:text-slate-300">{{ __('messages.gratis') }}</span>
                             </label>
                             <input type="number" name="price" value="{{ old('price', $course->price) }}" min="0" step="1000" class="w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Thumbnail</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">{{ __('messages.thumbnail') }}</label>
                             @if($course->thumbnail_path)
                             <div class="mb-3">
                                 <img src="{{ asset('storage/' . $course->thumbnail_path) }}" alt="Thumbnail" class="w-40 h-24 object-cover rounded-lg border border-gray-200 dark:border-slate-700">
@@ -165,18 +165,18 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
-                        Kembali
+                        {{ __('messages.kembali') }}
                     </a>
                     <div class="flex gap-3">
                         <a href="{{ route('education.courses.index') }}" class="px-5 py-2.5 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-sm font-medium">
-                            Batal
+                            {{ __('messages.batal') }}
                         </a>
                         <button type="submit" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium shadow-sm">
                             <span class="flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Perbarui Kursus
+                                {{ __('messages.perbarui_kursus') }}
                             </span>
                         </button>
                     </div>
@@ -190,7 +190,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var quillDesc = new Quill('#quill-description', {
             theme: 'snow',
-            placeholder: 'Jelaskan secara rinci mengenai kursus ini...',
+            placeholder: '{{ __("messages.jelaskan_rinci_kursus_ini") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
@@ -205,7 +205,7 @@
 
         var quillObj = new Quill('#quill-objectives', {
             theme: 'snow',
-            placeholder: 'Apa saja kompetensi/materi utama yang akan dicapai oleh siswa?',
+            placeholder: '{{ __("messages.kompetensi_materi_utama_dicapai_siswa") }}',
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],

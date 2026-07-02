@@ -8,7 +8,7 @@
                     <li>
                         <a href="{{ route('seeker.jobs.index') }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                            Daftar Lowongan
+                            {{ __('messages.job_list') }}
                         </a>
                     </li>
                     <li><span class="text-gray-400 dark:text-gray-600">/</span></li>
@@ -57,7 +57,7 @@
                                 <div class="flex flex-col items-end gap-3 min-w-fit">
                                     @if ($matchPercentage >= 80)
                                     <div class="inline-flex flex-col items-center justify-center px-4 py-3 bg-gradient-to-b from-green-50 dark:from-green-900/30 to-white dark:to-gray-800 border border-green-200 dark:border-green-800 rounded-xl shadow-sm">
-                                        <span class="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">Match Score</span>
+                                        <span class="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-1">{{ __('messages.match_score') }}</span>
                                         <div class="flex items-baseline gap-1">
                                             <span class="text-2xl font-black text-green-700 dark:text-green-400 leading-none">{{ round($matchPercentage) }}</span>
                                             <span class="text-sm font-bold text-green-600 dark:text-green-500">%</span>
@@ -76,13 +76,13 @@
                                     <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
                                 <span class="text-gray-900 dark:text-gray-100 font-bold">
-                                    Rp {{ number_format($job->salary_min / 1000000, 0) }} Jt - {{ number_format($job->salary_max / 1000000, 0) }} Jt <span class="text-gray-500 font-normal text-sm">/ bulan</span>
+                                    Rp {{ number_format($job->salary_min / 1000000, 0) }} {{ __('messages.million') }} - {{ number_format($job->salary_max / 1000000, 0) }} {{ __('messages.million') }} <span class="text-gray-500 font-normal text-sm">/ {{ __('messages.month') }}</span>
                                 </span>
                             </div>
                             @endif
                             <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Diposting {{ \Carbon\Carbon::parse($job->posted_date)->diffForHumans() }}
+                                {{ __('messages.posted') }} {{ \Carbon\Carbon::parse($job->posted_date)->diffForHumans() }}
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
                             <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Deskripsi Pekerjaan
+                            {{ __('messages.job_description') }}
                         </h2>
                         <div class="prose prose-blue dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed">
                             {!! nl2br(e($job->description)) !!}
@@ -103,7 +103,7 @@
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
                             <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            Keahlian yang Dibutuhkan
+                            {{ __('messages.required_skills') }}
                         </h2>
                         <div class="flex flex-wrap gap-2.5">
                             @foreach ($job->required_skills as $skill)
@@ -133,10 +133,10 @@
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                                 <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                                Analisis Kecocokan Skill
+                                {{ __('messages.skill_match_analysis') }}
                             </h2>
                             <span class="px-3 py-1 rounded-full text-sm font-bold {{ $matchPercentage >= 80 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : ($matchPercentage >= 50 ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400') }}">
-                                {{ round($matchPercentage) }}% Match
+                                {{ round($matchPercentage) }}% {{ __('messages.match') }}
                             </span>
                         </div>
 
@@ -148,7 +148,7 @@
 
                         @if ($matchPercentage < 80)
                             <div class="space-y-4">
-                                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Skill yang perlu ditingkatkan</h3>
+                                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">{{ __('messages.skills_to_improve') }}</h3>
                                 <div class="grid sm:grid-cols-2 gap-3">
                                     @foreach (['Data Analysis', 'Project Management', 'Cloud Computing'] as $gapSkill)
                                     <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all group">
@@ -159,7 +159,7 @@
                                             <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $gapSkill }}</span>
                                         </div>
                                         <a href="{{ route('seeker.courses.index') }}" class="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            Pelajari <span aria-hidden="true">&rarr;</span>
+                                            {{ __('messages.learn') }} <span aria-hidden="true">&rarr;</span>
                                         </a>
                                     </div>
                                     @endforeach
@@ -168,11 +168,11 @@
                                 <!-- Upskill CTA -->
                                 <div class="mt-6 p-6 bg-gradient-to-r from-blue-50 dark:from-blue-900/20 to-indigo-50 dark:to-indigo-900/20 rounded-xl border border-blue-100 dark:border-blue-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                                     <div>
-                                        <h4 class="text-base font-bold text-blue-900 dark:text-blue-400 mb-1">Ingin tahu skill gap Anda sebenarnya?</h4>
-                                        <p class="text-sm text-blue-700/80 dark:text-blue-300">Ikuti asesmen kompetensi untuk mengetahui kekuatan dan kelemahan Anda secara presisi.</p>
+                                        <h4 class="text-base font-bold text-blue-900 dark:text-blue-400 mb-1">{{ __('messages.want_to_know_skill_gap') }}</h4>
+                                        <p class="text-sm text-blue-700/80 dark:text-blue-300">{{ __('messages.take_assessment_for_precision') }}</p>
                                     </div>
                                     <a href="{{ route('seeker.assessment.from-job', $job->id) }}" class="shrink-0 w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm text-center">
-                                        Mulai Asesmen
+                                        {{ __('messages.start_assessment') }}
                                     </a>
                                 </div>
                             </div>
@@ -180,8 +180,8 @@
                             <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 flex items-start gap-3">
                                 <svg class="w-5 h-5 text-green-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <div>
-                                    <h4 class="text-sm font-bold text-green-900 dark:text-green-400">Kandidat Sangat Cocok!</h4>
-                                    <p class="text-sm text-green-700 dark:text-green-300 mt-1">Profil Anda memenuhi kriteria utama untuk posisi ini. Peluang Anda sangat tinggi.</p>
+                                    <h4 class="text-sm font-bold text-green-900 dark:text-green-400">{{ __('messages.highly_match_candidate') }}</h4>
+                                    <p class="text-sm text-green-700 dark:text-green-300 mt-1">{{ __('messages.profile_meets_criteria') }}</p>
                                 </div>
                             </div>
                         @endif
@@ -200,10 +200,10 @@
                                     <div class="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 ring-8 ring-green-50 dark:ring-green-900/10">
                                         <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Lamaran Terkirim</h3>
-                                    <p class="text-sm text-gray-500 mb-6">Anda telah melamar posisi ini. Silakan pantau status lamaran Anda melalui dashboard.</p>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ __('messages.application_sent') }}</h3>
+                                    <p class="text-sm text-gray-500 mb-6">{{ __('messages.application_sent_desc') }}</p>
                                     <a href="{{ route('seeker.jobs.applications', ['highlight_job_id' => $job->id]) }}" class="block w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-xl transition-colors font-semibold text-center">
-                                        Lihat Status Lamaran
+                                        {{ __('messages.view_application_status') }}
                                     </a>
                                 </div>
                             @elseif (!Auth::user()->hasCompletedProfile())
@@ -211,13 +211,13 @@
                                     <div class="w-16 h-16 mx-auto bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-4 ring-8 ring-amber-50 dark:ring-amber-900/10">
                                         <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Profil Belum Lengkap</h3>
-                                    <p class="text-sm text-gray-500 mb-4">Profil Anda baru lengkap <span class="font-bold text-gray-900 dark:text-gray-100">{{ Auth::user()->profile_completion_percentage }}%</span>. Lengkapi profil hingga 100% untuk dapat melamar.</p>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ __('messages.profile_incomplete_title') }}</h3>
+                                    <p class="text-sm text-gray-500 mb-4">{{ __('messages.profile_completion_desc', ['percentage' => Auth::user()->profile_completion_percentage]) }}</p>
                                     <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 mb-6">
                                         <div class="bg-amber-500 h-1.5 rounded-full" style="width: {{ Auth::user()->profile_completion_percentage }}%"></div>
                                     </div>
                                     <a href="{{ route('dashboard') }}" class="block w-full px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl transition-colors font-semibold shadow-sm text-center">
-                                        Lengkapi Profil Sekarang
+                                        {{ __('messages.complete_profile_now') }}
                                     </a>
                                 </div>
                             @else
@@ -231,16 +231,16 @@
                                         <div class="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 ring-8 ring-red-50 dark:ring-red-900/10">
                                             <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Celah Keahlian Tinggi</h3>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Celah keahlian Anda <strong class="text-gray-900 dark:text-gray-100">{{ number_format($avgGap, 1) }}%</strong> (Batas: 30%). Silakan tingkatkan skill Anda melalui kursus yang direkomendasikan terlebih dahulu.</p>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ __('messages.high_skill_gap_title') }}</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ __('messages.high_skill_gap_desc', ['gap' => number_format($avgGap, 1)]) }}</p>
                                         <a href="{{ route('seeker.courses.index') }}" class="block w-full px-4 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-xl transition-colors font-semibold shadow-sm text-center">
-                                            Lihat Rekomendasi Kursus
+                                            {{ __('messages.view_course_recommendations') }}
                                         </a>
                                     </div>
                                 @else
                                     <div class="mb-6">
-                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">Siap untuk melamar?</h3>
-                                        <p class="text-sm text-gray-500">Kirimkan profil dan CV terbaik Anda.</p>
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{{ __('messages.ready_to_apply') }}</h3>
+                                        <p class="text-sm text-gray-500">{{ __('messages.submit_your_profile_cv') }}</p>
                                     </div>
 
                                     <form action="{{ route('seeker.jobs.apply', $job->id) }}" method="POST" class="space-y-5" x-data @submit.prevent="if({{ $job->matching_percentage ?? 0 }} < 75) { $dispatch('open-low-match-modal'); } else { $el.submit(); }">
@@ -254,28 +254,28 @@
                                                 </div>
                                                 <div class="min-w-0 flex-1">
                                                     <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">CV_{{ Auth::user()->name }}.pdf</p>
-                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Dokumen utama • Terhubung otomatis</p>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('messages.main_document_connected') }}</p>
                                                 </div>
                                             </div>
                                             <a href="{{ route('profile.edit') }}" class="absolute inset-0 z-20 flex items-center justify-center bg-gray-900/5 dark:bg-gray-900/50 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <span class="px-3 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xs font-bold rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">Ganti Dokumen</span>
+                                                <span class="px-3 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xs font-bold rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">{{ __('messages.change_document') }}</span>
                                             </a>
                                         </div>
 
                                         <!-- Note Field -->
                                         <div>
-                                            <label for="note" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Pesan untuk Recruiter <span class="text-gray-400 font-normal">(Opsional)</span></label>
-                                            <textarea name="note" id="note" rows="3" placeholder="Sebutkan alasan mengapa Anda adalah kandidat terbaik..." class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-800 transition-colors resize-none"></textarea>
+                                            <label for="note" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">{{ __('messages.message_for_recruiter') }} <span class="text-gray-400 font-normal">({{ __('messages.optional') }})</span></label>
+                                            <textarea name="note" id="note" rows="3" placeholder="{{ __('messages.why_you_are_best_candidate') }}" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white dark:focus:bg-gray-800 transition-colors resize-none"></textarea>
                                         </div>
 
                                         <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-sm hover:shadow-md transform active:scale-[0.98]">
-                                            Kirim Lamaran Sekarang
+                                            {{ __('messages.send_application_now') }}
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                         </button>
                                     </form>
 
                                     <p class="text-[11px] text-gray-400 text-center mt-4">
-                                        Dengan melamar, Anda menyetujui <a href="#" class="text-gray-600 hover:text-blue-600 underline decoration-gray-300 underline-offset-2">Syarat & Ketentuan</a> kami.
+                                        {{ __('messages.agree_to_terms', ['link' => '#']) }}
                                     </p>
                                 @endif
                             @endif
@@ -289,36 +289,36 @@
                                     <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors {{ $isSaved ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-200 dark:border-amber-800' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700' }}">
                                         @if($isSaved)
                                             <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" /></svg>
-                                            Disimpan
+                                            {{ __('messages.saved') }}
                                         @else
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-                                            Simpan Lowongan
+                                            {{ __('messages.save_job') }}
                                         @endif
                                     </button>
                                 </form>
                             @endif
                             <button type="button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-semibold transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-                                Bagikan
+                                {{ __('messages.share') }}
                             </button>
                         </div>
 
                         <!-- Company Info Mini Card -->
                         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                            <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-4">Profil Perusahaan</h3>
+                            <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-4">{{ __('messages.company_profile') }}</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Industri</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Teknologi / Software</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('messages.industry') }}</p>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ __('messages.technology_software') }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Ukuran Perusahaan</p>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">50-200 Karyawan</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('messages.company_size') }}</p>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ __('messages.company_size_value') }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Situs Web</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('messages.website') }}</p>
                                     <a href="{{ $job->application_url }}" target="_blank" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1">
-                                        {{ parse_url($job->application_url, PHP_URL_HOST) ?? 'Kunjungi Website' }}
+                                        {{ parse_url($job->application_url, PHP_URL_HOST) ?? __('messages.visit_website') }}
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                                     </a>
                                 </div>
@@ -371,21 +371,21 @@
                     </div>
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3 class="text-lg leading-6 font-bold text-gray-900 dark:text-gray-100" id="modal-title">
-                            Kecocokan Belum Memenuhi Syarat
+                            {{ __('messages.match_not_qualified') }}
                         </h3>
                         <div class="mt-2">
                             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                                Mohon maaf, tingkat kecocokan profil Anda dengan persyaratan lowongan masih di bawah 75%. Silakan lakukan asesmen kompetensi untuk meningkatkan skor Anda.
+                                {{ __('messages.match_below_75_desc') }}
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="mt-6 sm:mt-5 sm:flex sm:flex-row-reverse gap-3">
                     <a href="{{ url('/seeker/assessment') }}" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2.5 bg-blue-600 text-base font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto sm:text-sm transition-colors">
-                        Mulai Asesmen
+                        {{ __('messages.start_assessment') }}
                     </a>
                     <button type="button" @click="open = false" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2.5 bg-white dark:bg-gray-800 text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm transition-colors">
-                        Batal
+                        {{ __('messages.cancel') }}
                     </button>
                 </div>
             </div>

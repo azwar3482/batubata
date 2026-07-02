@@ -1,11 +1,11 @@
-<x-app-layout>
+﻿<x-app-layout>
     <div class="py-6 h-[calc(100vh-64px)] overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col">
             
             <!-- Page Header (hidden on mobile if chat is active) -->
             <div class="mb-4 {{ $activeConversation ? 'hidden md:block' : '' }}">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Pesan Masuk</h2>
-                <p class="text-sm text-gray-500 dark:text-slate-400">Hubungi langsung kandidat pelamar kerja Anda di sini.</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('messages.inbox') }}</h2>
+                <p class="text-sm text-gray-500 dark:text-slate-400">{{ __('messages.contact_candidates_directly') }}</p>
             </div>
 
             <!-- Info Card -->
@@ -17,7 +17,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-violet-900 dark:text-violet-200 mb-1">Tentang Pesan Langsung</h4>
+                        <h4 class="text-sm font-bold text-violet-900 dark:text-violet-200 mb-1">{{ __('messages.about_direct_messages') }}</h4>
                         <p class="text-sm text-violet-700 dark:text-violet-300 leading-relaxed">Fitur ini memungkinkan Anda <strong>berkomunikasi langsung dengan kandidat pelamar</strong>. Kirim pesan untuk menjadwalkan wawancara, memberikan informasi tambahan, atau menanyakan detail profil. Gunakan bahasa profesional dan sopan.</p>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                             @if($lastMsg)
                                                 {{ $lastMsg->sender_id === auth()->id() ? 'Anda: ' : '' }}{{ $lastMsg->message }}
                                             @else
-                                                Belum ada pesan.
+                                                {{ __('messages.no_messages_yet') }}
                                             @endif
                                         </p>
                                         @if($unread > 0)
@@ -87,8 +87,8 @@
                                 <svg class="w-12 h-12 text-gray-300 dark:text-slate-700 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                                 </svg>
-                                <p class="text-sm">Belum ada percakapan.</p>
-                                <p class="text-xs text-gray-400 mt-1">Mulai hubungi kandidat melalui halaman Detail Kandidat.</p>
+                                <p class="text-sm">{{ __('messages.no_conversations_yet') }}</p>
+                                <p class="text-xs text-gray-400 mt-1">{{ __('messages.start_contacting_via_profile') }}</p>
                             </div>
                         @endforelse
                     </div>
@@ -112,13 +112,13 @@
                                 </div>
                                 <div>
                                     <h3 class="text-sm font-bold text-gray-900 dark:text-white leading-tight">{{ $activeConversation->jobSeeker->name }}</h3>
-                                    <p class="text-xs text-gray-400 leading-none mt-1">Job Seeker</p>
+                                    <p class="text-xs text-gray-400 leading-none mt-1">{{ __('messages.job_seeker') }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <a href="{{ route('industry.candidates.show', $activeConversation->job_seeker_id) }}" 
                                    class="text-xs font-semibold px-3 py-1.5 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all shadow-sm">
-                                    Lihat Profil Seeker
+                                    {{ __('messages.view_seeker_profile') }}
                                 </a>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                         <!-- Messages Log Container -->
                         <div class="flex-1 overflow-y-auto p-6 space-y-4" id="messages-container">
                             <div class="text-center py-2">
-                                <span class="text-[10px] bg-gray-200/60 dark:bg-slate-800 text-gray-500 dark:text-slate-400 px-3 py-1 rounded-full font-medium">Awal Percakapan</span>
+                                <span class="text-[10px] bg-gray-200/60 dark:bg-slate-800 text-gray-500 dark:text-slate-400 px-3 py-1 rounded-full font-medium">{{ __('messages.conversation_start') }}</span>
                             </div>
 
                             @foreach($messages as $msg)
@@ -209,8 +209,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                                 </svg>
                             </div>
-                            <h3 class="text-base font-bold text-gray-700 dark:text-slate-300">Pilih Percakapan</h3>
-                            <p class="text-sm text-center mt-1">Pilih salah satu kandidat di sebelah kiri untuk mulai mengobrol.</p>
+                            <h3 class="text-base font-bold text-gray-700 dark:text-slate-300">{{ __('messages.select_conversation') }}</h3>
+                            <p class="text-sm text-center mt-1">{{ __('messages.select_candidate_to_chat') }}</p>
                         </div>
                     @endif
                 </div>

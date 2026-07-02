@@ -10,10 +10,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Asesmen Selesai!
+                    {{ __('messages.assessment_completed') }}
                 </div>
-                <h2 class="text-3xl font-extrabold text-gray-900">Hasil Analisis Kompetensi</h2>
-                <p class="mt-2 text-gray-600">Posisi Target: <span
+                <h2 class="text-3xl font-extrabold text-gray-900">{{ __('messages.competency_analysis_result') }}</h2>
+                <p class="mt-2 text-gray-600">{{ __('messages.target_position') }}: <span
                         class="font-bold text-blue-600">{{ $targetName }}</span></p>
             </div>
 
@@ -21,17 +21,17 @@
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-lg p-8 text-white mb-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                        <p class="text-blue-100 text-lg">Rata-rata Skill Gap Anda</p>
+                        <p class="text-blue-100 text-lg">{{ __('messages.your_average_skill_gap') }}</p>
                         <p class="text-5xl font-extrabold mt-2">
                             {{ number_format($assessment->total_gap_percentage, 1) }}%
                         </p>
                         <p class="text-blue-100 mt-2">
                             @if ($assessment->total_gap_percentage > 50)
-                            🎯 Fokus pada skill prioritas untuk meningkatkan kesiapan karir
+                            🎯 {{ __('messages.focus_priority_skills') }}
                             @elseif($assessment->total_gap_percentage > 30)
-                            ✨ Anda sudah cukup siap, tingkatkan beberapa skill kunci
+                            ✨ {{ __('messages.already_quite_ready') }}
                             @else
-                            🏆 Profil Anda sangat kompetitif! Anda siap melamar pekerjaan
+                            🏆 {{ __('messages.very_competitive_profile') }}
                             @endif
                         </p>
                     </div>
@@ -43,7 +43,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
-                            Pilih Lowongan
+                            {{ __('messages.choose_job') }}
                         </a>
                         @endif
                         <a href="{{ route('seeker.reports.assessment.pdf', $assessment->id) }}"
@@ -52,11 +52,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                             </svg>
-                            Download PDF
+                            {{ __('messages.download_pdf') }}
                         </a>
                         <a href="{{ route('dashboard') }}"
                             class="px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition">
-                            Kembali ke Dashboard
+                            {{ __('messages.back_to_dashboard') }}
                         </a>
                     </div>
                 </div>
@@ -71,24 +71,24 @@
                     <!-- Competency Table -->
                     <div class="bg-white rounded-xl shadow-md overflow-hidden">
                         <div class="p-6 border-b border-gray-200">
-                            <h3 class="text-lg font-bold text-gray-900">Detail Kesenjangan Kompetensi</h3>
-                            <p class="text-sm text-gray-500">Urutan berdasarkan prioritas perbaikan</p>
+                            <h3 class="text-lg font-bold text-gray-900">{{ __('messages.competency_gap_detail') }}</h3>
+                            <p class="text-sm text-gray-500">{{ __('messages.sorted_by_priority') }}</p>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-10">No</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-10">{{ __('messages.no') }}</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Kompetensi</th>
+                                            {{ __('messages.competency') }}</th>
                                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                                            Level Anda</th>
+                                            {{ __('messages.your_level') }}</th>
                                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                                            Target</th>
+                                            {{ __('messages.target') }}</th>
                                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                                            Gap</th>
+                                            {{ __('messages.gap') }}</th>
                                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                                            Prioritas</th>
+                                            {{ __('messages.priority') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -127,17 +127,17 @@
                                                 class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                 <span
                                                     class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5 animate-pulse"></span>
-                                                Tinggi
+                                                {{ __('messages.high') }}
                                             </span>
                                             @elseif($score->priority == 'medium')
                                             <span
                                                 class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                Sedang
+                                                {{ __('messages.medium') }}
                                             </span>
                                             @else
                                             <span
                                                 class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Rendah
+                                                {{ __('messages.low') }}
                                             </span>
                                             @endif
                                         </td>
@@ -156,12 +156,11 @@
 
                     <!-- Radar Chart Placeholder -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Visualisasi Kompetensi</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('messages.competency_visualization') }}</h3>
                         <div class="h-64 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg">
                             <canvas id="skillRadarChart"></canvas>
                         </div>
-                        <p class="text-xs text-gray-500 dark:text-slate-400 text-center mt-2">*Grafik radar menunjukkan perbandingan skill
-                            Anda vs target industri</p>
+                        <p class="text-xs text-gray-500 dark:text-slate-400 text-center mt-2">*{{ __('messages.radar_chart_description') }}</p>
                     </div>
                 </div>
 
@@ -178,9 +177,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                     </svg>
-                                    Rekomendasi Upskilling
+                                    {{ __('messages.upskilling_recommendation') }}
                                 </h3>
-                                <p class="text-indigo-100 text-sm mt-1">Kursus terpilih untuk menutup skill gap Anda</p>
+                                <p class="text-indigo-100 text-sm mt-1">{{ __('messages.selected_courses_close_gap') }}</p>
                             </div>
 
                             <div class="p-4 space-y-4 max-h-96 overflow-y-auto">
@@ -190,7 +189,7 @@
                                     <div class="flex justify-between items-start mb-2">
                                         <span
                                             class="text-xs font-semibold uppercase tracking-wide {{ $rec['priority'] == 'high' ? 'text-red-600' : 'text-yellow-600' }}">
-                                            {{ $rec['priority'] }} Priority
+                                            {{ $rec['priority'] }} {{ __('messages.priority') }}
                                         </span>
                                         <span class="text-xs text-gray-500">{{ $rec['course']->platform }}</span>
                                     </div>
@@ -201,7 +200,7 @@
                                     </p>
 
                                     <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
-                                        <span>⏱ {{ $rec['course']->duration_hours }} Jam</span>
+                                        <span>⏱ {{ $rec['course']->duration_hours }} {{ __('messages.hours') }}</span>
                                         <span
                                             class="capitalize px-2 py-0.5 rounded {{ $rec['course']->level == 'beginner' ? 'bg-green-100 text-green-700' : ($rec['course']->level == 'intermediate' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
                                             {{ $rec['course']->level }}
@@ -212,7 +211,7 @@
 
                                     <a href="{{ route('seeker.courses.show', $rec['course']->id) }}"
                                         class="block w-full text-center px-3 py-2 bg-indigo-600 text-white text-xs font-medium rounded hover:bg-indigo-700 transition">
-                                        Lihat Detail
+                                        {{ __('messages.view_detail') }}
                                     </a>
                                 </div>
                                 @empty
@@ -222,8 +221,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    <p class="mt-2 text-sm text-gray-600">🎉 Skill Anda sudah sangat baik!</p>
-                                    <p class="text-xs text-gray-500">Tidak ada rekomendasi khusus saat ini.</p>
+                                    <p class="mt-2 text-sm text-gray-600">🎉 {{ __('messages.skill_already_great') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('messages.no_recommendations_needed') }}</p>
                                 </div>
                                 @endforelse
                             </div>
@@ -231,21 +230,20 @@
                             <div class="p-4 border-t border-gray-200 bg-gray-50">
                                 <a href="{{ route('seeker.courses.index') }}"
                                     class="block w-full text-center text-sm text-indigo-600 hover:text-indigo-800 font-medium">
-                                    Jelajahi Semua Kursus →
+                                    {{ __('messages.browse_all_courses') }} →
                                 </a>
                             </div>
                         </div>
 
                         <!-- Roadmap Preview -->
                         <div class="bg-white rounded-xl shadow-md p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-1">🗓️ Roadmap 6 Bulan</h3>
-                            <p class="text-xs text-gray-500 mb-4">Rencana belajar berdasarkan {{ $assessment->scores->where('gap_percentage', '>', 0)->count() }} kompetensi yang perlu ditingkatkan</p>
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">🗓️ {{ __('messages.month_roadmap') }}</h3>
+                            <p class="text-xs text-gray-500 mb-4">{{ __('messages.learning_plan_based_on', ['count' => $assessment->scores->where('gap_percentage', '>', 0)->count()]) }}</p>
 
                             @if (($roadmapExists ?? false) && isset($roadmapMilestones) && count($roadmapMilestones) > 0)
                             <div class="space-y-3">
                                 @foreach ($roadmapMilestones as $milestone)
                                 @php
-                                    // Parse deskripsi untuk ambil info ringkas
                                     $lines = explode("\n", $milestone->milestone_description);
                                     $skillCount = 0;
                                     $focusTheme = '';
@@ -271,11 +269,11 @@
                                         @endif
                                         <div class="flex items-center gap-2 mt-1">
                                             @if($skillCount > 0)
-                                            <span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">{{ $skillCount }} kompetensi</span>
+                                            <span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">{{ $skillCount }} {{ __('messages.competencies') }}</span>
                                             @endif
                                             @if($milestone->gap_percentage)
                                             <span class="text-[10px] px-1.5 py-0.5 {{ $milestone->gap_percentage > 50 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' }} rounded">
-                                                Gap: {{ number_format($milestone->gap_percentage, 1) }}%
+                                                {{ __('messages.gap') }}: {{ number_format($milestone->gap_percentage, 1) }}%
                                             </span>
                                             @endif
                                         </div>
@@ -285,18 +283,18 @@
                             </div>
                             <a href="{{ route('seeker.roadmap.index') }}"
                                 class="mt-4 block w-full text-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
-                                Lihat Roadmap Lengkap
+                                {{ __('messages.view_full_roadmap') }}
                             </a>
                             @else
                             <div class="mb-4 p-3 bg-indigo-50 rounded-lg">
-                                <p class="text-xs text-indigo-700 font-medium">📊 Skill Gap Anda: {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
-                                <p class="text-xs text-indigo-600 mt-1">Roadmap akan mencakup <strong>{{ $assessment->scores->where('gap_percentage', '>', 0)->count() }} kompetensi</strong> yang perlu ditingkatkan</p>
+                                <p class="text-xs text-indigo-700 font-medium">📊 {{ __('messages.your_skill_gap') }}: {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
+                                <p class="text-xs text-indigo-600 mt-1">{{ __('messages.roadmap_will_cover', ['count' => $assessment->scores->where('gap_percentage', '>', 0)->count()]) }}</p>
                             </div>
                             <form action="{{ route('seeker.roadmap.generate', $assessment->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"
                                     class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
-                                    🚀 Generate Roadmap dari Skill Gap
+                                    🚀 {{ __('messages.generate_roadmap_from_skill_gap') }}
                                 </button>
                             </form>
                             @endif
@@ -310,9 +308,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    Skill Gap Rendah!
+                                    {{ __('messages.low_skill_gap') }}
                                 </h3>
-                                <p class="text-green-100 text-sm mt-1">Anda sudah siap melamar pekerjaan</p>
+                                <p class="text-green-100 text-sm mt-1">{{ __('messages.ready_to_apply') }}</p>
                             </div>
                             <div class="p-4 space-y-3">
                                 <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
@@ -323,14 +321,14 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-gray-900">Gap {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
-                                        <p class="text-xs text-gray-500">Di bawah batas aman 30%</p>
+                                        <p class="text-sm font-medium text-gray-900">{{ __('messages.gap') }} {{ number_format($assessment->total_gap_percentage, 1) }}%</p>
+                                        <p class="text-xs text-gray-500">{{ __('messages.below_safe_threshold') }}</p>
                                     </div>
                                 </div>
-                                <p class="text-sm text-gray-600">Profil kompetensi Anda sudah memenuhi syarat untuk posisi ini. Mulai jelajahi lowongan yang tersedia!</p>
+                                <p class="text-sm text-gray-600">{{ __('messages.competency_meets_requirements') }}</p>
                                 <a href="{{ route('seeker.jobs.all') }}"
                                     class="block w-full text-center px-4 py-3 bg-green-600 text-white rounded-lg text-sm font-bold hover:bg-green-700 transition">
-                                    🔍 Cari Lowongan Sekarang
+                                    🔍 {{ __('messages.search_jobs_now') }}
                                 </a>
                             </div>
                         </div>
@@ -339,33 +337,33 @@
                         <!-- Quick Tips -->
                         <div
                             class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
-                            <h4 class="font-bold text-amber-900 mb-3">💡 Tips Cepat</h4>
+                            <h4 class="font-bold text-amber-900 mb-3">💡 {{ __('messages.quick_tips') }}</h4>
                             <ul class="space-y-2 text-sm text-amber-800">
                                 @if ($assessment->total_gap_percentage > 30)
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
-                                    <span>Fokus pada skill dengan prioritas "Tinggi" terlebih dahulu</span>
+                                    <span>{{ __('messages.tip_focus_high_priority') }}</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
-                                    <span>Alokasikan 3-5 jam/minggu untuk belajar konsisten</span>
+                                    <span>{{ __('messages.tip_alloc_hours_per_week') }}</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
-                                    <span>Dokumentasikan progress di portofolio Anda</span>
+                                    <span>{{ __('messages.tip_document_progress') }}</span>
                                 </li>
                                 @else
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
-                                    <span>Perbarui CV dan portofolio Anda secara berkala</span>
+                                    <span>{{ __('messages.tip_update_cv_portfolio') }}</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
-                                    <span>Pelajari budaya perusahaan sebelum melamar</span>
+                                    <span>{{ __('messages.tip_research_company_culture') }}</span>
                                 </li>
                                 <li class="flex items-start">
                                     <span class="mr-2">✓</span>
-                                    <span>Latihan wawancara untuk meningkatkan kepercayaan diri</span>
+                                    <span>{{ __('messages.tip_practice_interview') }}</span>
                                 </li>
                                 @endif
                             </ul>
@@ -384,7 +382,6 @@
             const ctx = document.getElementById('skillRadarChart');
             if (!ctx) return;
 
-            // Data dari controller
             const radarData = @json($radarData ?? []);
 
             const chart = new Chart(ctx.getContext('2d'), {
@@ -392,7 +389,7 @@
                 data: {
                     labels: radarData.map(d => d.label),
                     datasets: [{
-                        label: 'Skill Saat Ini',
+                        label: '{{ __("messages.current_skill") }}',
                         data: radarData.map(d => d.current),
                         fill: true,
                         backgroundColor: 'rgba(59, 130, 246, 0.2)',
@@ -402,7 +399,7 @@
                         pointHoverBackgroundColor: '#fff',
                         pointHoverBorderColor: 'rgb(59, 130, 246)'
                     }, {
-                        label: 'Target Industri',
+                        label: '{{ __("messages.industry_target") }}',
                         data: radarData.map(d => d.target),
                         fill: true,
                         backgroundColor: 'rgba(147, 51, 234, 0.2)',
@@ -451,7 +448,6 @@
                 }
             });
 
-            // Dynamic Dark Mode for Chart.js Radar
             function updateChartColors(chart, isDark) {
                 const textColor = isDark ? '#9ca3af' : '#6b7280';
                 const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';

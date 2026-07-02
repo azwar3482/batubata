@@ -3,15 +3,15 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Kelola Kursus Institusi</h2>
-                    <p class="mt-2 text-gray-600 dark:text-slate-400">Buat dan kelola materi pembelajaran untuk siswa/mahasiswa.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.kelola_kursus_institusi') }}</h2>
+                    <p class="mt-2 text-gray-600 dark:text-slate-400">{{ __('messages.buat_dan_kelola_materi_pembelajaran') }}</p>
                 </div>
                 <a href="{{ route('education.courses.create') }}"
                     class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    Tambah Kursus
+                    {{ __('messages.tambah_kursus') }}
                 </a>
             </div>
 
@@ -24,11 +24,11 @@
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">Tentang Kelola Kursus</h4>
+                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-200 mb-1">{{ __('messages.tentang_kelola_kursus') }}</h4>
                         <p class="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
-                            <strong>Kursus Institusi</strong> adalah materi pembelajaran yang dibuat langsung oleh institusi pendidikan Anda.
-                            Setiap kursus memiliki <strong>modul dan materi</strong> (dokumen, video, tugas) yang dapat diakses siswa.
-                            Setelah dipublikasikan, Anda dapat membuka <strong>kelas</strong> dari kursus tersebut dan mendaftarkan siswa.
+                            <strong>{{ __('messages.kursus_institusi') }}</strong> {{ __('messages.adalah_materi_pembelajaran_dibuat_langsung') }}
+                            {{ __('messages.setiap_kursus_memiliki_modul_dan_materi') }}
+                            {{ __('messages.setelah_dipublikasikan_dapat_membuka_kelas') }}
                         </p>
                     </div>
                 </div>
@@ -45,35 +45,35 @@
                     <form action="{{ route('education.courses.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-1">
                             <input type="text" name="search" value="{{ request('search') }}" 
-                                placeholder="Cari judul kursus, deskripsi..."
+                                placeholder="{{ __('messages.cari_judul_kursus_deskripsi') }}"
                                 class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                             <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
                         </div>
                         <select name="status" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg text-sm">
-                            <option value="">Semua Status</option>
+                            <option value="">{{ __('messages.semua_status') }}</option>
                             <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
                             <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
                         </select>
                         <select name="level" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg text-sm">
-                            <option value="">Semua Level</option>
+                            <option value="">{{ __('messages.semua_level') }}</option>
                             <option value="beginner" {{ request('level') === 'beginner' ? 'selected' : '' }}>Beginner</option>
                             <option value="intermediate" {{ request('level') === 'intermediate' ? 'selected' : '' }}>Intermediate</option>
                             <option value="advanced" {{ request('level') === 'advanced' ? 'selected' : '' }}>Advanced</option>
                         </select>
                         <select name="category" class="px-4 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg text-sm">
-                            <option value="">Semua Kategori</option>
-                            <option value="technical" {{ request('category') === 'technical' ? 'selected' : '' }}>Teknis</option>
+                            <option value="">{{ __('messages.semua_kategori') }}</option>
+                            <option value="technical" {{ request('category') === 'technical' ? 'selected' : '' }}>{{ __('messages.teknis') }}</option>
                             <option value="soft_skill" {{ request('category') === 'soft_skill' ? 'selected' : '' }}>Soft Skill</option>
                         </select>
                         <div class="flex gap-2">
                             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
-                                Cari
+                                {{ __('messages.cari') }}
                             </button>
                             @if(request('search') || request('status') || request('level') || request('category'))
                             <a href="{{ route('education.courses.index') }}" class="px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition text-sm font-medium">
-                                Reset
+                                {{ __('messages.reset') }}
                             </a>
                             @endif
                         </div>
@@ -84,13 +84,13 @@
                         <thead class="bg-gray-50 dark:bg-slate-900/50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">No</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kursus</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kategori</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Level</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Modul</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kelas</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.kursus') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.kategori') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.level') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.modul') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.kelas') }}</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.status') }}</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{{ __('messages.aksi') }}</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
@@ -103,7 +103,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $course->category === 'technical' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300' }}">
-                                        {{ $course->category === 'technical' ? 'Teknis' : 'Soft Skill' }}
+                                        {{ $course->category === 'technical' ? __('messages.teknis') : 'Soft Skill' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">{{ ucfirst($course->level) }}</td>
@@ -120,13 +120,13 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-1">
-                                        <a href="{{ route('education.courses.show', $course) }}" class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 dark:text-slate-400 dark:hover:text-slate-300 rounded-lg transition-colors" title="Lihat">
+                                        <a href="{{ route('education.courses.show', $course) }}" class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 dark:text-slate-400 dark:hover:text-slate-300 rounded-lg transition-colors" title="{{ __('messages.lihat') }}">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('education.courses.edit', $course) }}" class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 rounded-lg transition-colors" title="Edit">
+                                        <a href="{{ route('education.courses.edit', $course) }}" class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 rounded-lg transition-colors" title="{{ __('messages.edit') }}">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
@@ -134,14 +134,14 @@
                                         @if($course->status === 'draft')
                                         <form action="{{ route('education.courses.publish', $course) }}" method="POST" class="inline">
                                             @csrf
-                                            <button type="submit" class="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 dark:text-green-400 rounded-lg transition-colors" title="Publikasikan">
+                                            <button type="submit" class="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 dark:text-green-400 rounded-lg transition-colors" title="{{ __('messages.publikasikan') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                             </button>
                                         </form>
                                         @endif
-                                        <form action="{{ route('education.courses.destroy', $course) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus kursus ini?')">
+                                        <form action="{{ route('education.courses.destroy', $course) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('messages.konfirmasi_hapus_kursus') }}')">
                                             @csrf @method('DELETE')
-                                            <button type="submit" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 dark:text-red-400 rounded-lg transition-colors" title="Hapus">
+                                            <button type="submit" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 dark:text-red-400 rounded-lg transition-colors" title="{{ __('messages.hapus') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
@@ -158,11 +158,11 @@
                                             <svg class="w-12 h-12 text-gray-300 dark:text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                             </svg>
-                                            <p class="font-medium">Tidak ada kursus yang sesuai dengan pencarian</p>
-                                            <p class="text-sm mt-1">Coba gunakan kata kunci yang berbeda atau <a href="{{ route('education.courses.index') }}" class="text-blue-600 hover:underline">reset pencarian</a></p>
+                                            <p class="font-medium">{{ __('messages.tidak_ada_kursus_sesuai_pencarian') }}</p>
+                                            <p class="text-sm mt-1">{{ __('messages.coba_kata_kunci_berbeda_atau') }} <a href="{{ route('education.courses.index') }}" class="text-blue-600 hover:underline">{{ __('messages.reset_pencarian') }}</a></p>
                                         </div>
                                     @else
-                                        Belum ada kursus. <a href="{{ route('education.courses.create') }}" class="text-blue-600 hover:underline">Tambahkan sekarang</a>.
+                                        {{ __('messages.belum_ada_kursus') }} <a href="{{ route('education.courses.create') }}" class="text-blue-600 hover:underline">{{ __('messages.tambahkan_sekarang') }}</a>.
                                     @endif
                                 </td>
                             </tr>

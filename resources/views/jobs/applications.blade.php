@@ -6,8 +6,8 @@
             <div class="mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Status Lamaran Saya</h2>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">Pantau progress lamaran kerja Anda dari awal hingga hasil akhir.</p>
+                        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">{{ __('messages.my_application_status') }}</h2>
+                        <p class="mt-2 text-gray-600 dark:text-gray-300">{{ __('messages.track_application_progress') }}</p>
                     </div>
                     <a href="{{ route('seeker.jobs.index') }}"
                         class="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition shadow">
@@ -15,7 +15,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        Cari Lowongan Lain
+                        {{ __('messages.search_other_jobs') }}
                     </a>
                 </div>
             </div>
@@ -27,8 +27,8 @@
                         <svg class="w-5 h-5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold text-sky-900 dark:text-sky-200 mb-1">Tentang Status Lamaran</h4>
-                        <p class="text-sm text-sky-700 dark:text-sky-300 leading-relaxed">Pantau semua lamaran kerja yang sudah Anda kirim. Status lamaran meliputi: <strong>Dikirim</strong> (menunggu review), <strong>Direview</strong> (sedang dievaluasi), <strong>Interview</strong> (dipanggil wawancara), <strong>Diterima</strong> (offered), dan <strong>Ditolak</strong>. Anda juga dapat <strong>menarik lamaran</strong> jika berubah pikiran.</p>
+                        <h4 class="text-sm font-bold text-sky-900 dark:text-sky-200 mb-1">{{ __('messages.about_application_status') }}</h4>
+                        <p class="text-sm text-sky-700 dark:text-sky-300 leading-relaxed">{!! __('messages.application_status_info') !!}</p>
                     </div>
                 </div>
             </div>
@@ -48,19 +48,19 @@
             <!-- Stats Overview -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-blue-500 dark:border-blue-600">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Total Lamaran</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.total_applications') }}</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $counts['total'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-yellow-500 dark:border-yellow-600">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Dalam Proses</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.in_process') }}</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $counts['processing'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-green-500 dark:border-green-600">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Diterima</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.accepted') }}</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $counts['offered'] }}</p>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow border-l-4 border-red-500 dark:border-red-600">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Ditolak</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('messages.rejected') }}</p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $counts['rejected'] }}</p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border dark:border-slate-700 mb-6">
                 <div class="border-b border-gray-200 dark:border-slate-700">
                     <nav class="flex px-4 overflow-x-auto" aria-label="Tabs">
-                        @php $statuses = ['all' => 'Semua', 'applied' => 'Dikirim', 'reviewed' => 'Direview', 'interviewed' => 'Interview', 'offered' => 'Diterima', 'rejected' => 'Ditolak']; @endphp
+                        @php $statuses = ['all' => __('messages.all'), 'applied' => __('messages.submitted'), 'reviewed' => __('messages.reviewed'), 'interviewed' => __('messages.interview'), 'offered' => __('messages.accepted'), 'rejected' => __('messages.rejected')]; @endphp
                         @foreach ($statuses as $key => $label)
                         <a href="{{ request()->fullUrlWithQuery(['status' => $key === 'all' ? null : $key]) }}"
                             class="py-4 px-4 border-b-2 font-medium text-sm whitespace-nowrap transition {{ request('status') == $key || (!$key && !request('status')) ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-slate-600' }}">
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <h3 class="text-lg font-bold text-gray-900 dark:text-white truncate">
-                                            {{ $app->jobListing->title ?? 'Lowongan Tidak Ditemukan' }}
+                                            {{ $app->jobListing->title ?? __('messages.job_not_found') }}
                                         </h3>
                                         <p class="text-gray-600 dark:text-gray-400 text-sm">
                                             {{ $app->jobListing->company_name ?? '-' }}
@@ -107,7 +107,7 @@
                                             @if($app->is_direct_offer)
                                             <span
                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300">
-                                                Penawaran Langsung Industri
+                                                {{ __('messages.direct_industry_offer') }}
                                             </span>
                                             @endif
                                             <span
@@ -148,39 +148,39 @@
                                                 class="text-sm font-bold text-gray-900 dark:text-white">{{ round($app->matching_percentage) }}%</span>
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Match Score</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ __('messages.match_score') }}</p>
                                 </div>
 
                                 <div>
                                     @php
                                     $statusConfig = [
                                     'saved' => [
-                                    'label' => 'Disimpan',
+                                    'label' => __('messages.saved'),
                                     'class' => 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-200',
                                     'icon' => 'bookmark',
                                     ],
                                     'applied' => [
-                                    'label' => 'Dikirim',
+                                    'label' => __('messages.submitted'),
                                     'class' => 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
                                     'icon' => 'send',
                                     ],
                                     'reviewed' => [
-                                    'label' => 'Direview',
+                                    'label' => __('messages.reviewed'),
                                     'class' => 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300',
                                     'icon' => 'eye',
                                     ],
                                     'interviewed' => [
-                                    'label' => 'Interview',
+                                    'label' => __('messages.interview'),
                                     'class' => 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
                                     'icon' => 'chat',
                                     ],
                                     'offered' => [
-                                    'label' => 'Diterima 🎉',
+                                    'label' => __('messages.accepted_offer'),
                                     'class' => 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
                                     'icon' => 'check',
                                     ],
                                     'rejected' => [
-                                    'label' => 'Ditolak',
+                                    'label' => __('messages.rejected'),
                                     'class' => 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
                                     'icon' => 'x',
                                     ],
@@ -189,19 +189,19 @@
                                     if ($app->is_direct_offer) {
                                         if ($app->direct_offer_status === 'pending') {
                                             $status = [
-                                                'label' => 'Penawaran Baru ✉️',
+                                                'label' => __('messages.new_offer'),
                                                 'class' => 'bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300',
                                                 'icon' => 'bell'
                                             ];
                                         } elseif ($app->direct_offer_status === 'accepted') {
                                             $status = [
-                                                'label' => 'Penawaran Diterima 🎉',
+                                                'label' => __('messages.offer_accepted'),
                                                 'class' => 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
                                                 'icon' => 'check'
                                             ];
                                         } elseif ($app->direct_offer_status === 'declined') {
                                             $status = [
-                                                'label' => 'Penawaran Ditolak',
+                                                'label' => __('messages.offer_declined'),
                                                 'class' => 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
                                                 'icon' => 'x'
                                             ];
@@ -241,7 +241,7 @@
 
                         <!-- Timeline Progress -->
                         <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700">
-                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3">Timeline Progress</p>
+                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3">{{ __('messages.timeline_progress') }}</p>
                             <div class="flex items-center justify-between">
                                 @php
                                 $steps = ['applied', 'reviewed', 'interviewed', 'offered'];
@@ -258,7 +258,7 @@
                                 @php
                                     $isCompleted = $index <= $currentStep;
                                     $isCurrent = $index == $currentStep;
-                                    $labels = ['Dikirim', 'Direview', 'Interview', 'Diterima'];
+                                    $labels = [__('messages.submitted'), __('messages.reviewed'), __('messages.interview'), __('messages.accepted')];
                                 @endphp
                                 <div class="flex flex-col items-center flex-1">
                                     <div
@@ -288,7 +288,7 @@
                             @if ($app->status === 'rejected' && $app->notes)
                             <div class="mt-4 p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-100 dark:border-red-900/30">
                                 <p class="text-sm text-red-700 dark:text-red-300">
-                                    <strong>Alasan:</strong> {{ $app->notes }}
+                                    <strong>{{ __('messages.reason') }}:</strong> {{ $app->notes }}
                                 </p>
                             </div>
                             @endif
@@ -305,7 +305,7 @@
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    Terima Penawaran Kerja
+                                    {{ __('messages.accept_job_offer') }}
                                 </button>
                             </form>
                             <form action="{{ route('seeker.jobs.offer-response', $app->jobListing->id) }}" method="POST" class="inline">
@@ -316,7 +316,7 @@
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
-                                    Tolak Penawaran
+                                    {{ __('messages.decline_offer') }}
                                 </button>
                             </form>
                             @elseif ($app->status === 'offered')
@@ -327,29 +327,29 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Terima Penawaran
+                                {{ __('messages.accept_offer') }}
                             </button>
                             <button
                                 class="px-4 py-2 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition">
-                                Negosiasi
+                                {{ __('messages.negotiate') }}
                             </button>
                             @elseif($app->status === 'interviewed')
                             <button
                                 class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
-                                Kirim Follow-up Email
+                                {{ __('messages.send_followup_email') }}
                             </button>
                             @elseif($app->status === 'rejected')
                             <button
                                 class="px-4 py-2 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition">
-                                Minta Feedback
+                                {{ __('messages.request_feedback') }}
                             </button>
                             <a href="{{ route('courses.index') }}"
                                 class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
-                                Tingkatkan Skill
+                                {{ __('messages.improve_skill') }}
                             </a>
                             @endif
 
-                            <form action="{{ route('seeker.jobs.withdraw', $app->jobListing->id) }}" method="POST" class="ml-auto inline" onsubmit="return confirm('Apakah Anda yakin ingin menarik lamaran Anda untuk posisi {{ $app->jobListing->title }}?')">
+                            <form action="{{ route('seeker.jobs.withdraw', $app->jobListing->id) }}" method="POST" class="ml-auto inline" onsubmit="return confirm('{{ __('messages.confirm_withdraw', ['title' => $app->jobListing->title]) }}')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -360,7 +360,7 @@
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                         </path>
                                     </svg>
-                                    Tarik Lamaran
+                                    {{ __('messages.withdraw_application') }}
                                 </button>
                             </form>
                         </div>
@@ -374,11 +374,11 @@
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                         </path>
                     </svg>
-                    <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">Belum ada lamaran</h3>
-                    <p class="mt-2 text-gray-500 dark:text-gray-400">Mulai karir Anda dengan melamar lowongan yang sesuai.</p>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">{{ __('messages.no_applications_yet') }}</h3>
+                    <p class="mt-2 text-gray-500 dark:text-gray-400">{{ __('messages.start_career_by_applying') }}</p>
                     <a href="{{ route('seeker.jobs.index') }}"
                         class="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
-                        Cari Lowongan Sekarang
+                        {{ __('messages.search_jobs_now') }}
                     </a>
                 </div>
                 @endforelse
