@@ -81,7 +81,7 @@
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Total Lulusan -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-xl hover:shadow-blue-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Lulusan</p>
@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- Rata-rata Skill Gap -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-orange-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-orange-500/20 dark:shadow-orange-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-orange-500 hover:shadow-xl hover:shadow-orange-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Rata-rata Skill Gap</p>
@@ -115,7 +115,7 @@
                 </div>
 
                 <!-- Placement Rate -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-xl hover:shadow-green-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Rate Penempatan Kerja</p>
@@ -131,7 +131,7 @@
                 </div>
 
                 <!-- Asesmen Diselesaikan -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-purple-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-purple-500/20 dark:shadow-purple-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-purple-500 hover:shadow-xl hover:shadow-purple-500/40 transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Asesmen Selesai</p>
@@ -152,7 +152,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-slate-600 pb-2">Status Lamaran Kerja Lulusan</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Total Lamaran -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-xl hover:shadow-blue-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Aplikasi</p>
@@ -168,7 +168,7 @@
                     </div>
 
                     <!-- Diproses -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-yellow-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-yellow-500/20 dark:shadow-yellow-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-yellow-500 hover:shadow-xl hover:shadow-yellow-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Sedang Diproses</p>
@@ -184,7 +184,7 @@
                     </div>
 
                     <!-- Diterima -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-xl hover:shadow-green-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Diterima Kerja</p>
@@ -200,7 +200,7 @@
                     </div>
 
                     <!-- Ditolak -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-red-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-red-500/20 dark:shadow-red-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-red-500 hover:shadow-xl hover:shadow-red-500/40 transition">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Belum Berhasil</p>
@@ -221,7 +221,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
 
                 <!-- Chart 1: Skill Gap per Jurusan -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border border-gray-200 dark:border-slate-600">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Skill Gap Rata-rata per Jurusan</h3>
                         <select
@@ -239,7 +239,7 @@
                 </div>
 
                 <!-- Chart 2: Top Kompetensi Bermasalah -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border border-gray-200 dark:border-slate-600">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Top 5 Kompetensi dengan Gap Tertinggi</h3>
                         <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">Lihat Semua</button>
@@ -254,7 +254,7 @@
             </div>
 
             <!-- Recommendations Table -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-slate-600 overflow-hidden mb-8">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-200 dark:border-slate-600 overflow-hidden mb-8">
                 <div
                     class="p-6 border-b border-gray-200 dark:border-slate-600 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">Rekomendasi Penyesuaian Kurikulum</h3>
@@ -365,7 +365,7 @@
             </div>
 
             <!-- Recent Activities -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-slate-600 overflow-hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-200 dark:border-slate-600 overflow-hidden">
                 <div class="p-6 border-b border-gray-200 dark:border-slate-600">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">Aktivitas Terbaru</h3>
                 </div>

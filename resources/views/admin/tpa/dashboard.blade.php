@@ -29,21 +29,25 @@
 
     <!-- Stat Cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/60 p-5 sm:p-6 transition-all hover:shadow-md">
+        <div class="group bg-white dark:bg-slate-800 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 p-5 sm:p-6"
+            style="border-left-color: #3b82f6 !important;">
             <div class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Soal</div>
-            <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ $totalQuestions }}</div>
+            <div class="text-3xl font-black text-blue-600 dark:text-blue-400 tracking-tight mt-1">{{ $totalQuestions }}</div>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/60 p-5 sm:p-6 transition-all hover:shadow-md">
+        <div class="group bg-white dark:bg-slate-800 rounded-2xl shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 p-5 sm:p-6"
+            style="border-left-color: #10b981 !important;">
             <div class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Tes</div>
-            <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{{ $totalTests }}</div>
+            <div class="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight mt-1">{{ $totalTests }}</div>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/60 p-5 sm:p-6 transition-all hover:shadow-md">
+        <div class="group bg-white dark:bg-slate-800 rounded-2xl shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 p-5 sm:p-6"
+            style="border-left-color: #8b5cf6 !important;">
             <div class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Peserta</div>
-            <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">{{ $stats['total_taken'] }}</div>
+            <div class="text-3xl font-black text-purple-600 dark:text-purple-400 tracking-tight mt-1">{{ $stats['total_taken'] }}</div>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/60 p-5 sm:p-6 transition-all hover:shadow-md">
+        <div class="group bg-white dark:bg-slate-800 rounded-2xl shadow-lg {{ $stats['pass_rate'] >= 60 ? 'shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30' : 'shadow-rose-500/10 dark:shadow-rose-500/20 hover:shadow-rose-500/20 dark:hover:shadow-rose-500/30' }} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 p-5 sm:p-6"
+            style="border-left-color: {{ $stats['pass_rate'] >= 60 ? '#10b981' : '#f43f5e' }} !important;">
             <div class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Tingkat Kelulusan</div>
-            <div class="text-3xl font-bold {{ $stats['pass_rate'] >= 60 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">{{ $stats['pass_rate'] }}%</div>
+            <div class="text-3xl font-black {{ $stats['pass_rate'] >= 60 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }} tracking-tight mt-1">{{ $stats['pass_rate'] }}%</div>
         </div>
     </div>
 

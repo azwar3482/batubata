@@ -46,14 +46,15 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             {{-- Total Soal --}}
-            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white shadow-sm">
+            <div class="group bg-white dark:bg-slate-800 rounded-xl p-5 shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                style="border-left-color: #3b82f6 !important;">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-blue-100 text-xs font-medium uppercase tracking-wider">Total Soal</p>
-                        <p class="text-3xl font-bold mt-1">{{ $totalAvailable }}</p>
-                        <p class="text-blue-200 text-xs mt-1">Tersedia untuk digunakan</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">Total Soal</p>
+                        <p class="text-3xl font-black text-gray-800 dark:text-white mt-1 tracking-tight">{{ $totalAvailable }}</p>
+                        <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Tersedia untuk digunakan</p>
                     </div>
-                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-500 dark:text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                         </svg>
@@ -62,15 +63,16 @@
             </div>
 
             {{-- Soal Perusahaan --}}
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-slate-700">
+            <div class="group bg-white dark:bg-slate-800 rounded-xl p-5 shadow-lg shadow-indigo-500/10 dark:shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                style="border-left-color: #6366f1 !important;">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">Soal Saya</p>
-                        <p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalMyQuestions }}</p>
+                        <p class="text-3xl font-black text-gray-800 dark:text-white mt-1 tracking-tight">{{ $totalMyQuestions }}</p>
                         <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Bisa edit & hapus</p>
                     </div>
-                    <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center text-indigo-500 dark:text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </div>
@@ -78,15 +80,16 @@
             </div>
 
             {{-- Soal Global --}}
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-slate-700">
+            <div class="group bg-white dark:bg-slate-800 rounded-xl p-5 shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                style="border-left-color: #8b5cf6 !important;">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">Soal Global</p>
-                        <p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalGlobalQuestions }}</p>
+                        <p class="text-3xl font-black text-gray-800 dark:text-white mt-1 tracking-tight">{{ $totalGlobalQuestions }}</p>
                         <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Dari admin (read-only)</p>
                     </div>
-                    <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-purple-500 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-purple-500 dark:text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
@@ -94,15 +97,16 @@
             </div>
 
             {{-- Total Tes --}}
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-slate-700">
+            <div class="group bg-white dark:bg-slate-800 rounded-xl p-5 shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                style="border-left-color: #10b981 !important;">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">Tes TPA</p>
-                        <p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">{{ \App\Models\TpaTest::where('created_by', $userId)->count() }}</p>
+                        <p class="text-3xl font-black text-gray-800 dark:text-white mt-1 tracking-tight">{{ \App\Models\TpaTest::where('created_by', $userId)->count() }}</p>
                         <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Tes yang dibuat</p>
                     </div>
-                    <div class="w-12 h-12 bg-green-50 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center text-emerald-500 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>

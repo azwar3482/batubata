@@ -23,7 +23,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Total Users -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-indigo-500/5 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-indigo-500/10 dark:shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #6366f1 !important;">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -48,7 +49,8 @@
 
                 <!-- Total Assessments -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-blue-500/5 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #3b82f6 !important;">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -72,7 +74,8 @@
 
                 <!-- Active Jobs -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-emerald-500/5 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #10b981 !important;">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div
@@ -98,7 +101,8 @@
 
                 <!-- Average Gap -->
                 <div
-                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700">
+                    class="group bg-white dark:bg-slate-800 p-1 rounded-2xl shadow-lg shadow-orange-500/10 dark:shadow-orange-500/20 hover:shadow-xl hover:shadow-orange-500/20 dark:hover:shadow-orange-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #f97316 !important;">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div

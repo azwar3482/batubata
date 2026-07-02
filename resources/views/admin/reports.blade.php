@@ -6,8 +6,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900">Laporan & Analitik Platform</h2>
-                <p class="mt-2 text-gray-600">Dashboard monitoring performa dan statistik platform KOMPASKARIR.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Laporan & Analitik Platform</h2>
+                <p class="mt-2 text-gray-600 dark:text-slate-400">Dashboard monitoring performa dan statistik platform KOMPASKARIR.</p>
             </div>
 
             @if(session('success'))
@@ -31,15 +31,15 @@
             </div>
 
             <!-- Date Range Picker -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-8 border border-transparent dark:border-slate-700">
                 <form action="{{ route('admin.reports') }}" method="GET" class="flex flex-wrap gap-4 items-end">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
-                        <input type="date" name="start_date" value="{{ $startDate }}" class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Dari Tanggal</label>
+                        <input type="date" name="start_date" value="{{ $startDate }}" class="border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
-                        <input type="date" name="end_date" value="{{ $endDate }}" class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Sampai Tanggal</label>
+                        <input type="date" name="end_date" value="{{ $endDate }}" class="border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
                     <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Generate Laporan</button>
                 </form>
@@ -47,11 +47,12 @@
 
             <!-- Key Metrics -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #3b82f6 !important;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 text-sm">Total Pengguna</div>
-                            <div class="text-3xl font-bold text-gray-900 mt-1">{{ number_format($totalUsers) }}</div>
+                            <div class="text-gray-500 dark:text-slate-400 text-sm">Total Pengguna</div>
+                            <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mt-1">{{ number_format($totalUsers) }}</div>
                         </div>
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,11 +65,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-green-500/10 dark:shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/20 dark:hover:shadow-green-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #10b981 !important;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 text-sm">Total Asesmen</div>
-                            <div class="text-3xl font-bold text-gray-900 mt-1">{{ number_format($totalAssessments) }}</div>
+                            <div class="text-gray-500 dark:text-slate-400 text-sm">Total Asesmen</div>
+                            <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mt-1">{{ number_format($totalAssessments) }}</div>
                         </div>
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,11 +83,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-orange-500/10 dark:shadow-orange-500/20 hover:shadow-xl hover:shadow-orange-500/20 dark:hover:shadow-orange-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #f97316 !important;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 text-sm">Rata-rata Skill Gap</div>
-                            <div class="text-3xl font-bold text-gray-900 mt-1">{{ number_format($avgSkillGap, 1) }}%</div>
+                            <div class="text-gray-500 dark:text-slate-400 text-sm">Rata-rata Skill Gap</div>
+                            <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mt-1">{{ number_format($avgSkillGap, 1) }}%</div>
                         </div>
                         <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,11 +99,12 @@
                     <div class="mt-4 text-sm text-gray-500">Berdasarkan hasil asesmen</div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #8b5cf6 !important;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 text-sm">Placement Rate</div>
-                            <div class="text-3xl font-bold text-gray-900 mt-1">68%</div>
+                            <div class="text-gray-500 dark:text-slate-400 text-sm">Placement Rate</div>
+                            <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mt-1">68%</div>
                         </div>
                         <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,8 +132,8 @@
             </div>
 
             <!-- Export Options -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h3 class="text-lg font-bold text-gray-900 mb-4">Export Laporan</h3>
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-700">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Export Laporan</h3>
                 <div class="flex flex-wrap gap-4">
                     <a href="{{ route('admin.reports', ['export' => 'pdf', 'start_date' => $startDate, 'end_date' => $endDate]) }}" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,7 +147,7 @@
                         </svg>
                         Download Excel
                     </a>
-                    <a href="{{ route('admin.reports.send_email', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium">
+                    <a href="{{ route('admin.reports.send_email', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition font-medium">
                         📧 Kirim via Email
                     </a>
                 </div>

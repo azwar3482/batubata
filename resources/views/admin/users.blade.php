@@ -4,8 +4,8 @@
 
             <div class="flex justify-between items-center mb-8">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900">Kelola Pengguna</h2>
-                    <p class="mt-2 text-gray-600">Manajemen semua pengguna platform KOMPASKARIR.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Kelola Pengguna</h2>
+                    <p class="mt-2 text-gray-600 dark:text-slate-400">Manajemen semua pengguna platform KOMPASKARIR.</p>
                 </div>
                 <a href="{{ route('admin.users.create') }}"
                     class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center">
@@ -31,33 +31,37 @@
 
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">Total User</div>
-                    <div class="text-2xl font-bold">{{ number_format($stats['total'] ?? 0) }}</div>
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-indigo-500/10 dark:shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #6366f1 !important;">
+                    <div class="text-gray-500 dark:text-slate-400 text-sm">Total User</div>
+                    <div class="text-2xl font-black text-gray-900 dark:text-white tracking-tight mt-1">{{ number_format($stats['total'] ?? 0) }}</div>
                 </div>
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">Job Seeker</div>
-                    <div class="text-2xl font-bold text-blue-600">{{ number_format($stats['job_seeker'] ?? 0) }}</div>
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #3b82f6 !important;">
+                    <div class="text-gray-500 dark:text-slate-400 text-sm">Job Seeker</div>
+                    <div class="text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tight mt-1">{{ number_format($stats['job_seeker'] ?? 0) }}</div>
                 </div>
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">Industry</div>
-                    <div class="text-2xl font-bold text-purple-600">{{ number_format($stats['industry'] ?? 0) }}</div>
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #8b5cf6 !important;">
+                    <div class="text-gray-500 dark:text-slate-400 text-sm">Industry</div>
+                    <div class="text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight mt-1">{{ number_format($stats['industry'] ?? 0) }}</div>
                 </div>
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">Education</div>
-                    <div class="text-2xl font-bold text-green-600">{{ number_format($stats['education'] ?? 0) }}</div>
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #10b981 !important;">
+                    <div class="text-gray-500 dark:text-slate-400 text-sm">Education</div>
+                    <div class="text-2xl font-black text-green-600 dark:text-emerald-400 tracking-tight mt-1">{{ number_format($stats['education'] ?? 0) }}</div>
                 </div>
             </div>
 
             <!-- Table -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-gray-900">Daftar Pengguna</h3>
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-transparent dark:border-slate-700 overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-slate-700 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Daftar Pengguna</h3>
                     <form action="{{ route('admin.users') }}" method="GET" class="flex gap-2">
                         <div class="relative">
                             <input type="text" name="search" value="{{ request('search') }}"
                                 placeholder="Cari nama atau email..."
-                                class="pl-10 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm w-64">
+                                class="pl-10 border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm w-64">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -66,7 +70,7 @@
                             </div>
                         </div>
                         <select name="role" onchange="this.form.submit()"
-                            class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                            class="border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                             <option value="">Semua Role</option>
                             <option value="job_seeker" {{ request('role') == 'job_seeker' ? 'selected' : '' }}>Job Seeker
                             </option>
@@ -90,23 +94,21 @@
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-50 dark:bg-slate-700/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase w-10">No</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Pelamar</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengguna</th>
-
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Terdaftar
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase w-10">No</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">ID Pelamar</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Pengguna</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Terdaftar</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Status</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
                             @forelse($users as $user)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 text-sm text-gray-500">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/30">
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">
                                         {{ $loop->iteration + ($users->firstItem() - 1) }}
                                     </td>
                                     <td class="px-6 py-4 text-sm">
@@ -122,32 +124,32 @@
 
                                         <div class="flex items-center">
                                             <div
-                                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                                                class="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold">
                                                 {{ strtoupper(substr($user->name, 0, 2)) }}
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
-                                                <div class="text-sm text-gray-500">{{ $user->email }}</div>
+                                                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $user->name }}</div>
+                                                <div class="text-sm text-gray-500 dark:text-slate-400">{{ $user->email }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <span
                                             class="px-2 py-1 text-xs font-semibold rounded-full {{ $user->isAdmin()
-                                                ? 'bg-gray-800 text-white'
+                                                ? 'bg-gray-800 text-white dark:bg-slate-700 dark:text-slate-100'
                                                 : ($user->isIndustry()
-                                                    ? 'bg-purple-100 text-purple-800'
+                                                    ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300'
                                                     : ($user->isEducation()
-                                                        ? 'bg-green-100 text-green-800'
-                                                        : 'bg-blue-100 text-blue-800')) }}">
+                                                        ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
+                                                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300')) }}">
                                             {{ str_replace('_', ' ', ucwords($user->role)) }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $user->created_at->format('d M Y') }}
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">{{ $user->created_at->format('d M Y') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <span
-                                            class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
+                                            class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">Aktif</span>
                                     </td>
                                     <td class="px-6 py-4 text-right flex justify-end gap-2">
                                         <a href="{{ route('admin.users.edit', $user) }}"
@@ -189,7 +191,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="p-6 border-t border-gray-200">
+                <div class="p-6 border-t border-gray-200 dark:border-slate-700">
                     {{ $users->links() ?? '' }}
                 </div>
             </div>

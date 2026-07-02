@@ -35,21 +35,25 @@
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-blue-500 hover:shadow-md transition-shadow">
+                <div class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                    style="border-left-color: #3b82f6 !important;">
                     <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.total_members') }}</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $teamMembers->count() }}</p>
+                    <p class="text-3xl font-black text-gray-900 dark:text-white mt-2 tracking-tight">{{ $teamMembers->count() }}</p>
                 </div>
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-green-500 hover:shadow-md transition-shadow">
+                <div class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                    style="border-left-color: #10b981 !important;">
                     <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.active_members') }}</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $teamMembers->where('status', 'active')->count() }}</p>
+                    <p class="text-3xl font-black text-gray-900 dark:text-white mt-2 tracking-tight">{{ $teamMembers->where('status', 'active')->count() }}</p>
                 </div>
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-amber-500 hover:shadow-md transition-shadow">
+                <div class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg shadow-amber-500/10 dark:shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                    style="border-left-color: #f59e0b !important;">
                     <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.pending_invitations') }}</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $teamMembers->where('status', 'invited')->count() }}</p>
+                    <p class="text-3xl font-black text-gray-900 dark:text-white mt-2 tracking-tight">{{ $teamMembers->where('status', 'invited')->count() }}</p>
                 </div>
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-800 border-l-4 border-l-purple-500 hover:shadow-md transition-shadow">
+                <div class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 dark:border-slate-700 border-l-4"
+                    style="border-left-color: #8b5cf6 !important;">
                     <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">{{ __('messages.total_roles') }}</p>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ count($availableRoles) }}</p>
+                    <p class="text-3xl font-black text-gray-900 dark:text-white mt-2 tracking-tight">{{ count($availableRoles) }}</p>
                 </div>
             </div>
 

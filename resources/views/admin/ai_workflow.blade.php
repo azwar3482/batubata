@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 bg-slate-50 min-h-screen" id="ai-workflow-page">
+    <div class="py-12 bg-slate-50 dark:bg-slate-900 min-h-screen" id="ai-workflow-page">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
             <!-- Premium Header -->
@@ -38,49 +38,53 @@
             </div>
 
             <!-- Documents Queue Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 hover:shadow-md transition">
-                    <div class="p-3.5 bg-indigo-50 text-indigo-600 rounded-xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-indigo-500/10 dark:shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 flex items-center space-x-4"
+                    style="border-left-color: #6366f1 !important;">
+                    <div class="p-3.5 bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 rounded-xl transition-colors duration-300 group-hover:bg-indigo-600 group-hover:text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-400 font-bold uppercase">Total Dokumen</p>
-                        <h4 class="text-2xl font-black text-slate-800 tracking-tight mt-1">{{ $queueStats['total_documents'] }}</h4>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase">Total Dokumen</p>
+                        <h4 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight mt-1">{{ $queueStats['total_documents'] }}</h4>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 hover:shadow-md transition">
-                    <div class="p-3.5 bg-amber-50 text-amber-600 rounded-xl">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-amber-500/10 dark:shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 flex items-center space-x-4"
+                    style="border-left-color: #f59e0b !important;">
+                    <div class="p-3.5 bg-amber-50 dark:bg-amber-900/50 text-amber-600 dark:text-amber-300 rounded-xl transition-colors duration-300 group-hover:bg-amber-600 group-hover:text-white">
                         <svg class="w-6 h-6 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-400 font-bold uppercase">Dalam Antrean</p>
-                        <h4 class="text-2xl font-black text-slate-800 tracking-tight mt-1">{{ $queueStats['pending_documents'] }}</h4>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase">Dalam Antrean</p>
+                        <h4 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight mt-1">{{ $queueStats['pending_documents'] }}</h4>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 hover:shadow-md transition">
-                    <div class="p-3.5 bg-blue-50 text-blue-600 rounded-xl">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 flex items-center space-x-4"
+                    style="border-left-color: #3b82f6 !important;">
+                    <div class="p-3.5 bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 rounded-xl transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
                         <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-400 font-bold uppercase">Diproses AI</p>
-                        <h4 class="text-2xl font-black text-slate-800 tracking-tight mt-1">{{ $queueStats['processing_documents'] }}</h4>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase">Diproses AI</p>
+                        <h4 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight mt-1">{{ $queueStats['processing_documents'] }}</h4>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4 hover:shadow-md transition">
-                    <div class="p-3.5 bg-emerald-50 text-emerald-600 rounded-xl">
+                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-slate-100 border-l-4 dark:border-slate-700 flex items-center space-x-4"
+                    style="border-left-color: #10b981 !important;">
+                    <div class="p-3.5 bg-emerald-50 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-300 rounded-xl transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-400 font-bold uppercase">Selesai Ekstrak</p>
-                        <h4 class="text-2xl font-black text-slate-800 tracking-tight mt-1">{{ $queueStats['completed_documents'] }}</h4>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase">Selesai Ekstrak</p>
+                        <h4 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight mt-1">{{ $queueStats['completed_documents'] }}</h4>
                     </div>
                 </div>
             </div>
@@ -698,7 +702,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 

@@ -48,7 +48,7 @@
             {{-- ============================================================ --}}
             {{-- SECTION 1: Welcome + Onboarding + Streak (DIGABUNGKAN) --}}
             {{-- ============================================================ --}}
-            <div class="bg-white dark:bg-slate-800 overflow-hidden rounded-xl shadow-md mb-4 sm:mb-6 border border-gray-100 dark:border-slate-700">
+            <div class="bg-white dark:bg-slate-800 overflow-hidden rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 mb-4 sm:mb-6 border border-gray-100 dark:border-slate-700">
                 <div class="p-4 sm:p-6">
                     {{-- Welcome + Streak --}}
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -264,7 +264,7 @@
             {{-- ============================================================ --}}
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6" role="region" aria-label="Statistik ringkasan">
                 {{-- Total Asesmen --}}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 border-blue-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/assessment') }}'">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 border-blue-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/assessment') }}'">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Asesmen</p>
@@ -280,7 +280,7 @@
                 </div>
 
                 {{-- Skill Gap --}}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 {{ $avgGap > 30 ? 'border-red-500' : 'border-green-500' }} hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 {{ $avgGap > 30 ? 'border-red-500' : 'border-green-500' }} hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Skill Gap</p>
@@ -308,7 +308,7 @@
                 </div>
 
                 {{-- Kursus Berjalan --}}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 border-emerald-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/courses') }}'">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 border-emerald-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/courses') }}'">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Kursus</p>
@@ -324,7 +324,7 @@
                 </div>
 
                 {{-- Rekomendasi --}}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-4 sm:p-5 border-l-4 border-amber-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/jobs') }}'">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-4 sm:p-5 border-l-4 border-amber-500 hover:shadow-lg transition cursor-pointer" onclick="window.location='{{ url('/seeker/jobs') }}'">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Lowongan Cocok</p>
@@ -347,7 +347,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
 
                 {{-- Radar Chart --}}
-                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-md lg:col-span-2 border border-gray-100 dark:border-slate-700">
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 lg:col-span-2 border border-gray-100 dark:border-slate-700">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
                         <div>
                             <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200">Analisis Kompetensi</h4>
@@ -374,7 +374,7 @@
                 </div>
 
                 {{-- Lowongan Cocok --}}
-                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-md border border-gray-100 dark:border-slate-700">
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 md:p-6 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 border border-gray-100 dark:border-slate-700">
                     <h4 class="text-base sm:text-lg font-bold text-gray-700 dark:text-slate-200 mb-3 sm:mb-4">Lowongan Cocok</h4>
                     <div class="space-y-2 sm:space-y-3">
                         @forelse($recommendedJobs as $job)
@@ -404,7 +404,7 @@
                                 </div>
                                 <p class="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-medium">Belum ada rekomendasi</p>
                                 <p class="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500 mt-1">Lengkapi profil Anda untuk mendapatkan rekomendasi lowongan</p>
-                                <a href="{{ route('profile.edit') }}" class="inline-flex items-center mt-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white text-[11px] sm:text-xs font-medium rounded-lg hover:bg-blue-700 shadow-sm hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                                <a href="{{ route('profile.edit') }}" class="inline-flex items-center mt-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white text-[11px] sm:text-xs font-medium rounded-lg hover:bg-blue-700 shadow-sm hover:shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                                     Lengkapi Profil →
                                 </a>
                             </div>

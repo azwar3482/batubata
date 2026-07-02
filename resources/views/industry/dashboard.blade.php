@@ -37,7 +37,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
                 <!-- Total Lowongan Aktif -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition cursor-pointer"
+                <div class="bg-white rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border-l-4 border-blue-500 hover:shadow-lg transition cursor-pointer"
                     onclick="window.location='{{ route('industry.jobs.create') }}'">
                     <div class="flex items-center justify-between">
                         <div>
@@ -62,7 +62,7 @@
                 </div>
 
                 <!-- Total Pelamar -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition">
+                <div class="bg-white rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border-l-4 border-green-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Pelamar</p>
@@ -80,7 +80,7 @@
                 </div>
 
                 <!-- Kandidat Match Tinggi -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition">
+                <div class="bg-white rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border-l-4 border-purple-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Match &gt; 80%</p>
@@ -106,7 +106,7 @@
                 </div>
 
                 <!-- Rata-rata Waktu Rekrutmen -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition">
+                <div class="bg-white rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border-l-4 border-orange-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Waktu Rekrutmen</p>
@@ -131,7 +131,7 @@
                 <div class="lg:col-span-2 space-y-8">
 
                     <!-- Recent Job Postings -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-white rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 overflow-hidden">
                         <div
                             class="p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <h3 class="text-lg font-bold text-gray-900">Lowongan Terbaru</h3>
@@ -276,7 +276,7 @@
                     </div>
 
                     <!-- Recruitment Analytics Chart -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6 border border-transparent dark:border-slate-800">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Analitik Rekrutmen</h3>
                             <select
@@ -351,7 +351,7 @@
                     </div>
 
                     <!-- Top Matching Candidates -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-slate-100 dark:border-slate-800">
+                    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 overflow-hidden border border-slate-100 dark:border-slate-800">
                         <div class="p-6 border-b border-gray-200 dark:border-slate-700">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Kandidat Match Tinggi</h3>
                             <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Berdasarkan lowongan aktif Anda</p>
@@ -400,7 +400,7 @@
                     </div>
 
                     <!-- Company Profile Summary -->
-                    <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="bg-white rounded-xl shadow-xl shadow-gray-200/50 dark:shadow-gray-900/50 p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4">Profil Perusahaan</h3>
                         <div class="flex items-center gap-4 mb-4">
                             <div
