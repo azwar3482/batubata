@@ -1551,6 +1551,116 @@
                         </details>
                     </div>
                     @endif
+
+                    @if(Auth::user()->isEducation() && Auth::user()->institution)
+                    <!-- Education Verification Card -->
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-300 mt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-blue-50 dark:bg-blue-950/20 rounded-lg text-blue-600 dark:text-blue-400 mr-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">Verifikasi Institusi Edukasi</h3>
+                            </div>
+                            @if(Auth::user()->institution->isVerified())
+                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full border border-green-200">Verified</span>
+                            @elseif(Auth::user()->institution->isPending())
+                                <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full border border-amber-200">Pending Review</span>
+                            @elseif(Auth::user()->institution->isRejected())
+                                <span class="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full border border-red-200">Rejected</span>
+                            @else
+                                <span class="px-2 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full border border-slate-200">Unverified</span>
+                            @endif
+                        </div>
+
+                        @if(Auth::user()->institution->isRejected())
+                            <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                                <strong>Alasan Penolakan:</strong> {{ Auth::user()->institution->rejection_reason }}
+                            </div>
+                        @endif
+
+                        <p class="text-sm text-slate-500 mb-4">Unggah dokumen legalitas institusi pendidikan untuk diverifikasi oleh Admin. Dokumen ini bersifat rahasia dan hanya dapat diakses oleh Anda dan Admin.</p>
+
+                        @php
+                            $eduDocuments = [
+                                ['key' => 'npsn', 'name' => 'NPSN / Sertifikat Akreditasi', 'path' => Auth::user()->institution->npsn_document],
+                                ['key' => 'sk_pendirian', 'name' => 'SK Pendirian / Izin Operasional', 'path' => Auth::user()->institution->sk_pendirian_document],
+                                ['key' => 'ktp_principal', 'name' => 'KTP Kepala Sekolah / Rektor', 'path' => Auth::user()->institution->ktp_principal_document],
+                            ];
+                        @endphp
+
+                        <!-- Uploaded Documents -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                            @foreach($eduDocuments as $doc)
+                                @php $status = Auth::user()->institution->getDocumentStatus($doc['key']); @endphp
+                                <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 bg-slate-50 dark:bg-slate-800/50">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                            </div>
+                                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ $doc['name'] }}</span>
+                                        </div>
+                                        @if($status === 'verified')
+                                            <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded-full">Disetujui</span>
+                                        @elseif($status === 'rejected')
+                                            <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full">Ditolak</span>
+                                        @elseif($doc['path'])
+                                            <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full">Menunggu</span>
+                                        @else
+                                            <span class="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-full">Belum Upload</span>
+                                        @endif
+                                    </div>
+                                    @if($doc['path'])
+                                        <div class="flex items-center gap-2 mt-3">
+                                            <a href="{{ Storage::url($doc['path']) }}" target="_blank" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 hover:bg-blue-100 rounded-lg transition-colors">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                                Preview
+                                            </a>
+                                        </div>
+                                        @if($status === 'rejected')
+                                            <div class="mt-2 text-[11px] text-red-600 bg-red-50 dark:bg-red-900/20 p-2 rounded-lg border border-red-100 dark:border-red-800/30">
+                                                <strong>Alasan:</strong> {{ Auth::user()->institution->getDocumentReason($doc['key']) }}
+                                            </div>
+                                        @endif
+                                    @else
+                                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">Belum ada dokumen yang diunggah.</p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Upload Form -->
+                        <details class="group">
+                            <summary class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-3">
+                                <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                Unggah / Ganti Dokumen
+                            </summary>
+                            <form action="{{ route('profile.education.verify') }}" method="POST" enctype="multipart/form-data" class="space-y-4 bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                @csrf
+                                <div class="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">NPSN / Sertifikat Akreditasi</label>
+                                        <input type="file" name="npsn_document" accept=".pdf,.jpg,.jpeg,.png" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">SK Pendirian / Izin Operasional</label>
+                                        <input type="file" name="sk_pendirian_document" accept=".pdf,.jpg,.jpeg,.png" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">KTP Kepala Sekolah / Rektor</label>
+                                        <input type="file" name="ktp_principal_document" accept=".pdf,.jpg,.jpeg,.png" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    </div>
+                                </div>
+                                <div class="pt-2">
+                                    <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm">Unggah Dokumen</button>
+                                </div>
+                            </form>
+                        </details>
+                    </div>
+                    @endif
                     <div class="flex items-center justify-end gap-3 mt-6">
                         <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 rounded-xl transition-colors">
                             Batal

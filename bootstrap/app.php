@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\CheckRole::class,
             'profile.complete' => \App\Http\Middleware\EnsureProfileIsCompleted::class,
             'company.verified' => \App\Http\Middleware\EnsureCompanyIsVerified::class,
+            'institution.verified' => \App\Http\Middleware\EnsureInstitutionIsVerified::class,
         ]);
         $middleware->validateCsrfTokens(except: [
             'logout',

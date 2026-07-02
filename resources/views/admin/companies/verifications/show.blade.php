@@ -8,8 +8,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
             <div class="flex justify-between items-center mb-6">
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('admin.companies.verifications.index') }}" class="p-2 bg-white rounded-full text-gray-500 hover:text-gray-700 shadow-sm">
+                <div class="flex items-center gap-4 mb-8">
+                    <a href="{{ route('admin.verifications.index') }}" class="p-2 text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-lg transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     </a>
                     <div>

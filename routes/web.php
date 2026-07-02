@@ -313,39 +313,45 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
         Route::get('/dashboard', [EducationDashboardController::class, 'index'])->name('dashboard');
         Route::get('/analytics', function () {
             return view('education.analytics');
-        })->name('analytics');
-        Route::get('/analytics/export/excel', [\App\Http\Controllers\Education\AnalyticsController::class, 'exportExcel'])->name('analytics.export.excel');
-        Route::get('/analytics/export/pdf', [\App\Http\Controllers\Education\AnalyticsController::class, 'exportPdf'])->name('analytics.export.pdf');
-        Route::get('/students', [\App\Http\Controllers\Education\StudentController::class, 'index'])->name('students');
-        Route::get('/students/{student}', [\App\Http\Controllers\Education\StudentController::class, 'show'])->name('students.show');
+        })->name('analytics')->middleware('institution.verified');
+        Route::get('/analytics/export/excel', [\App\Http\Controllers\Education\AnalyticsController::class, 'exportExcel'])->name('analytics.export.excel')->middleware('institution.verified');
+        Route::get('/analytics/export/pdf', [\App\Http\Controllers\Education\AnalyticsController::class, 'exportPdf'])->name('analytics.export.pdf')->middleware('institution.verified');
+        Route::get('/students', [\App\Http\Controllers\Education\StudentController::class, 'index'])->name('students')->middleware('institution.verified');
+        Route::get('/students/{student}', [\App\Http\Controllers\Education\StudentController::class, 'show'])->name('students.show')->middleware('institution.verified');
 
         // Course Management (Education role - using teacher_courses table)
-        Route::get('/courses', [\App\Http\Controllers\Education\CourseController::class, 'index'])->name('courses.index');
-        Route::get('/courses/create', [\App\Http\Controllers\Education\CourseController::class, 'create'])->name('courses.create');
-        Route::post('/courses', [\App\Http\Controllers\Education\CourseController::class, 'store'])->name('courses.store');
-        Route::get('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'show'])->name('courses.show');
-        Route::get('/courses/{course}/edit', [\App\Http\Controllers\Education\CourseController::class, 'edit'])->name('courses.edit');
-        Route::put('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'update'])->name('courses.update');
-        Route::delete('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'destroy'])->name('courses.destroy');
-        Route::post('/courses/{course}/publish', [\App\Http\Controllers\Education\CourseController::class, 'publish'])->name('courses.publish');
-        Route::post('/courses/{course}/unpublish', [\App\Http\Controllers\Education\CourseController::class, 'unpublish'])->name('courses.unpublish');
+        Route::middleware('institution.verified')->group(function() {
+            Route::get('/courses', [\App\Http\Controllers\Education\CourseController::class, 'index'])->name('courses.index');
+            Route::get('/courses/create', [\App\Http\Controllers\Education\CourseController::class, 'create'])->name('courses.create');
+            Route::post('/courses', [\App\Http\Controllers\Education\CourseController::class, 'store'])->name('courses.store');
+            Route::get('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'show'])->name('courses.show');
+            Route::get('/courses/{course}/edit', [\App\Http\Controllers\Education\CourseController::class, 'edit'])->name('courses.edit');
+            Route::put('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'update'])->name('courses.update');
+            Route::delete('/courses/{course}', [\App\Http\Controllers\Education\CourseController::class, 'destroy'])->name('courses.destroy');
+            Route::post('/courses/{course}/publish', [\App\Http\Controllers\Education\CourseController::class, 'publish'])->name('courses.publish');
+            Route::post('/courses/{course}/unpublish', [\App\Http\Controllers\Education\CourseController::class, 'unpublish'])->name('courses.unpublish');
+        });
 
         // Program Management (Education role)
-        Route::get('/programs', [App\Http\Controllers\Education\ProgramController::class, 'index'])->name('programs');
-        Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('programs.create');
-        Route::post('/programs', [App\Http\Controllers\Education\ProgramController::class, 'store'])->name('programs.store');
-        Route::get('/programs/{program}/edit', [App\Http\Controllers\Education\ProgramController::class, 'edit'])->name('programs.edit');
-        Route::put('/programs/{program}', [App\Http\Controllers\Education\ProgramController::class, 'update'])->name('programs.update');
-        Route::delete('/programs/{program}', [App\Http\Controllers\Education\ProgramController::class, 'destroy'])->name('programs.destroy');
-        Route::get('/programs/{program}/report', [App\Http\Controllers\Education\ProgramController::class, 'report'])->name('programs.report');
+        Route::middleware('institution.verified')->group(function() {
+            Route::get('/programs', [App\Http\Controllers\Education\ProgramController::class, 'index'])->name('programs');
+            Route::get('/programs/create', [App\Http\Controllers\Education\ProgramController::class, 'create'])->name('programs.create');
+            Route::post('/programs', [App\Http\Controllers\Education\ProgramController::class, 'store'])->name('programs.store');
+            Route::get('/programs/{program}/edit', [App\Http\Controllers\Education\ProgramController::class, 'edit'])->name('programs.edit');
+            Route::put('/programs/{program}', [App\Http\Controllers\Education\ProgramController::class, 'update'])->name('programs.update');
+            Route::delete('/programs/{program}', [App\Http\Controllers\Education\ProgramController::class, 'destroy'])->name('programs.destroy');
+            Route::get('/programs/{program}/report', [App\Http\Controllers\Education\ProgramController::class, 'report'])->name('programs.report');
+        });
 
         // ⭐ Partners & Collaboration Routes ⭐
-        Route::get('/partners', [\App\Http\Controllers\Education\PartnersController::class, 'index'])->name('partners');
-        Route::get('/partners/{id}', [\App\Http\Controllers\Education\PartnersController::class, 'show'])->name('partners.show');
-        Route::get('/collaboration/create', [\App\Http\Controllers\Education\CollaborationController::class, 'create'])->name('collaboration.create');
-        Route::post('/collaboration', [\App\Http\Controllers\Education\CollaborationController::class, 'store'])->name('collaboration.store');
-        Route::get('/collaboration/success', [\App\Http\Controllers\Education\CollaborationController::class, 'success'])->name('collaboration.success');
-        Route::get('/collaboration/history', [\App\Http\Controllers\Education\CollaborationController::class, 'history'])->name('collaboration.history');
+        Route::middleware('institution.verified')->group(function() {
+            Route::get('/partners', [\App\Http\Controllers\Education\PartnersController::class, 'index'])->name('partners');
+            Route::get('/partners/{id}', [\App\Http\Controllers\Education\PartnersController::class, 'show'])->name('partners.show');
+            Route::get('/collaboration/create', [\App\Http\Controllers\Education\CollaborationController::class, 'create'])->name('collaboration.create');
+            Route::post('/collaboration', [\App\Http\Controllers\Education\CollaborationController::class, 'store'])->name('collaboration.store');
+            Route::get('/collaboration/success', [\App\Http\Controllers\Education\CollaborationController::class, 'success'])->name('collaboration.success');
+            Route::get('/collaboration/history', [\App\Http\Controllers\Education\CollaborationController::class, 'history'])->name('collaboration.history');
+        });
     });
 
 
@@ -355,10 +361,14 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
 
 
     // Profile Routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profile/extract-ijazah', [ProfileController::class, 'extractIjazahData'])->name('profile.extract.ijazah');
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/profile/company-verify', [ProfileController::class, 'uploadVerificationDocuments'])->name('profile.company.verify');
+        Route::post('/profile/education-verify', [ProfileController::class, 'uploadEducationDocuments'])->name('profile.education.verify');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::post('/profile/extract-ijazah', [ProfileController::class, 'extractIjazahData'])->name('profile.extract.ijazah');
+    });
 
 
 
@@ -399,12 +409,25 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
         // Positions
         Route::resource('positions', \App\Http\Controllers\Admin\PositionController::class);
 
-        // Company Verifications
-        Route::get('/companies/verifications', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'index'])->name('companies.verifications.index');
+        // Unified Verifications Index
+        Route::get('/verifications', [\App\Http\Controllers\Admin\VerificationController::class, 'index'])->name('verifications.index');
+
+        // Company Verifications (Show, Approve, Reject)
+        // Route::get('/companies/verifications', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'index'])->name('companies.verifications.index');
+
         Route::get('/companies/verifications/{id}', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'show'])->name('companies.verifications.show');
         Route::post('/companies/verifications/{id}/approve', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'approve'])->name('companies.verifications.approve');
         Route::post('/companies/verifications/{id}/reject', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'reject'])->name('companies.verifications.reject');
-        Route::post('/companies/verifications/{id}/document/{documentType}', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'verifyDocument'])->name('companies.verifications.verify-document');
+        Route::post('/companies/verifications/{company}/verify-document/{type}', [App\Http\Controllers\Admin\CompanyVerificationController::class, 'verifyDocument'])->name('companies.verifications.verify-document');
+
+        // Education Verification (Show, Approve, Reject)
+        // Route::get('/institutions/verifications', [App\Http\Controllers\Admin\InstitutionVerificationController::class, 'index'])->name('institutions.verifications.index');
+        Route::get('/institutions/verifications/{institution}', [App\Http\Controllers\Admin\InstitutionVerificationController::class, 'show'])->name('institutions.verifications.show');
+        Route::post('/institutions/verifications/{institution}/approve', [App\Http\Controllers\Admin\InstitutionVerificationController::class, 'approve'])->name('institutions.verifications.approve');
+        Route::post('/institutions/verifications/{institution}/reject', [App\Http\Controllers\Admin\InstitutionVerificationController::class, 'reject'])->name('institutions.verifications.reject');
+        Route::post('/institutions/verifications/{institution}/verify-document/{type}', [App\Http\Controllers\Admin\InstitutionVerificationController::class, 'verifyDocument'])->name('institutions.verifications.verify-document');
+        Route::post('/institutions/verifications/{institution}/re-review', [App\Http\Controllers\Admin\InstitutionVerificationController::class, 'reReview'])->name('institutions.verifications.re-review');
+
         Route::post('/companies/verifications/{id}/re-review', [\App\Http\Controllers\Admin\CompanyVerificationController::class, 'reReview'])->name('companies.verifications.re-review');
 
         // Security Monitoring

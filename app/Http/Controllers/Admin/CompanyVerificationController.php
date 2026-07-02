@@ -32,7 +32,7 @@ class CompanyVerificationController extends Controller
         $company->rejection_reason = null;
         $company->save();
 
-        return redirect()->route('admin.companies.verifications.index')
+        return redirect()->route('admin.verifications.index')
                          ->with('success', 'Perusahaan berhasil diverifikasi.');
     }
     public function verifyDocument(Request $request, $id, $documentType)
@@ -67,7 +67,7 @@ class CompanyVerificationController extends Controller
         $company->rejection_reason = $request->rejection_reason;
         $company->save();
 
-        return redirect()->route('admin.companies.verifications.index')
+        return redirect()->route('admin.verifications.index')
                          ->with('success', 'Verifikasi perusahaan ditolak.');
     }
 

@@ -15,10 +15,19 @@ class Institution extends Model
         'type',
         'address',
         'accreditation',
+        'verification_status',
+        'document_statuses',
+        'rejection_reason',
+        'npsn_document',
+        'sk_pendirian_document',
+        'ktp_principal_document',
+        'verified_at',
+        'verified_by',
     ];
 
     protected $casts = [
-        // Tambahkan cast jika perlu
+        'document_statuses' => 'array',
+        'verified_at' => 'datetime',
     ];
 
     public function user()
@@ -29,5 +38,37 @@ class Institution extends Model
     public function students()
     {
         return $this->hasMany(User::class, 'institution_id');
+    }
+
+    public function isVerified()
+    {
+        return $this->verification_status === 'verified';
+    }
+
+    public function isPending()
+    {
+        return $this->verification_status === 'pending';
+    }
+
+    public function isRejected()
+    {
+        return $this->verification_status === 'rejected';
+    }
+
+    public function isUnverified()
+    {
+        return $this->verification_status === 'unverified';
+    }
+
+    public function getDocumentStatus($type)
+    {
+        $statuses = $this->document_statuses ?? [];
+        return $statuses[$type]['status'] ?? 'pending';
+    }
+
+    public function getDocumentReason($type)
+    {
+        $statuses = $this->document_statuses ?? [];
+        return $statuses[$type]['reason'] ?? null;
     }
 }

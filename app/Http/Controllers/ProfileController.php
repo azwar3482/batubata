@@ -177,6 +177,45 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Dokumen verifikasi berhasil diunggah. Silakan tunggu konfirmasi dari admin.');
     }
+    public function uploadEducationDocuments(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        if (!$user->isEducation() || !$user->institution) {
+            return back()->with('error', 'Akses ditolak.');
+        }
+
+        $request->validate([
+            'npsn_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'sk_pendirian_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'ktp_principal_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        ]);
+
+        $institution = $user->institution;
+        $statuses = $institution->document_statuses ?? [];
+
+        if ($request->hasFile('npsn_document')) {
+            $institution->npsn_document = $request->file('npsn_document')->store('verifications/education', 'public');
+            $statuses['npsn'] = ['status' => 'pending', 'reason' => null];
+        }
+        if ($request->hasFile('sk_pendirian_document')) {
+            $institution->sk_pendirian_document = $request->file('sk_pendirian_document')->store('verifications/education', 'public');
+            $statuses['sk_pendirian'] = ['status' => 'pending', 'reason' => null];
+        }
+        if ($request->hasFile('ktp_principal_document')) {
+            $institution->ktp_principal_document = $request->file('ktp_principal_document')->store('verifications/education', 'public');
+            $statuses['ktp_principal'] = ['status' => 'pending', 'reason' => null];
+        }
+
+        $institution->document_statuses = $statuses;
+        if ($institution->verification_status === 'unverified' || $institution->verification_status === 'rejected') {
+            $institution->verification_status = 'pending';
+        }
+        
+        $institution->save();
+
+        return back()->with('success', 'Dokumen verifikasi berhasil diunggah. Silakan tunggu konfirmasi dari admin.');
+    }
 
     public function deleteDocument($id): RedirectResponse
     {

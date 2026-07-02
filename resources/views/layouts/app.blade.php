@@ -1312,6 +1312,7 @@
                         <div class="menu-tooltip">{{ __('messages.dashboard') }}</div>
                     </a>
 
+                    @if(Auth::user()->institution && Auth::user()->institution->isVerified())
                     <a href="{{ route('education.analytics') }}"
                         class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('education.analytics*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('education.analytics*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1368,6 +1369,7 @@
                         <span class="sidebar-text transition-opacity duration-300">Mitra Industri</span>
                         <div class="menu-tooltip">Mitra Industri</div>
                     </a>
+                    @endif
 
                     @elseif(Auth::user()->role === 'admin')
                     <!-- Menu Admin -->
@@ -1397,13 +1399,13 @@
 
                     <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-opacity duration-300">Manajemen Utama</div>
 
-                    <a href="{{ route('admin.companies.verifications.index') }}"
-                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('admin.companies.verifications*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.companies.verifications*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('admin.verifications.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('admin.verifications.*') || request()->routeIs('admin.companies.verifications.*') || request()->routeIs('admin.institutions.verifications.*') ? 'bg-gradient-to-r from-blue-50 to-indigo-50/50 text-blue-700 font-semibold border-l-4 border-blue-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('admin.verifications.*') || request()->routeIs('admin.companies.verifications.*') || request()->routeIs('admin.institutions.verifications.*') ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span class="sidebar-text transition-opacity duration-300">Verifikasi Industri</span>
-                        <div class="menu-tooltip">Verifikasi Industri</div>
+                        <span class="sidebar-text transition-opacity duration-300">Verifikasi Pengguna</span>
+                        <div class="menu-tooltip">Verifikasi Pengguna</div>
                     </a>
 
                     <a href="{{ route('admin.users') }}"

@@ -33,6 +33,37 @@
                     </a>
                 </div>
             </div>
+            <!-- Peringatan Verifikasi Institusi -->
+            @if(Auth::user()->institution && !Auth::user()->institution->isVerified())
+                <div class="mb-8 bg-amber-50 border border-amber-200 rounded-xl p-6 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-24 h-24 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <div class="relative z-10 flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                        <div class="flex-shrink-0 bg-amber-100 rounded-full p-3">
+                            <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <div class="flex-grow">
+                            @if(Auth::user()->institution->isRejected())
+                                <h3 class="text-lg font-bold text-red-800">Verifikasi Institusi Ditolak</h3>
+                                <p class="text-sm text-red-700 mt-1 mb-2">Pengajuan verifikasi dokumen Anda ditolak. Alasan penolakan: <strong>{{ Auth::user()->institution->rejection_reason }}</strong></p>
+                                <p class="text-sm text-red-600">Silakan periksa kembali dokumen yang diunggah dan lengkapi sesuai persyaratan.</p>
+                            @elseif(Auth::user()->institution->isPending())
+                                <h3 class="text-lg font-bold text-amber-800">Menunggu Verifikasi Admin</h3>
+                                <p class="text-sm text-amber-700 mt-1">Dokumen Anda sedang ditinjau oleh tim kami. Anda akan mendapatkan akses ke semua fitur institusi setelah diverifikasi.</p>
+                            @else
+                                <h3 class="text-lg font-bold text-amber-800">Profil Institusi Belum Lengkap</h3>
+                                <p class="text-sm text-amber-700 mt-1">Anda harus mengunggah dokumen legalitas (NPSN, SK Pendirian, KTP Kepala Sekolah) agar dapat menggunakan fitur edukasi secara penuh.</p>
+                            @endif
+                        </div>
+                        <div class="flex-shrink-0 mt-4 sm:mt-0">
+                            <a href="{{ route('profile.edit') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                                Lengkapi Dokumen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <!-- Info Card -->
             <div class="mb-6 p-5 bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 border border-teal-100 dark:border-teal-800/50 rounded-xl">
@@ -50,14 +81,14 @@
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Total Lulusan -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Lulusan</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ number_format($stats['total_students']) }}</p>
-                            <p class="text-sm text-gray-500 mt-1">Terdaftar di sistem</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Lulusan</p>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_students']) }}</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Terdaftar di sistem</p>
                         </div>
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                             </svg>
@@ -66,16 +97,16 @@
                 </div>
 
                 <!-- Rata-rata Skill Gap -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-orange-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Rata-rata Skill Gap</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['avg_skill_gap'] }}%</p>
-                            <p class="text-sm {{ $stats['avg_skill_gap'] > 30 ? 'text-red-600' : 'text-green-600' }} mt-1">
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Rata-rata Skill Gap</p>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['avg_skill_gap'] }}%</p>
+                            <p class="text-sm {{ $stats['avg_skill_gap'] > 30 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }} mt-1">
                                 {{ $stats['avg_skill_gap'] > 30 ? 'Perlu perhatian' : 'Dalam batas aman' }}
                             </p>
                         </div>
-                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                        <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center text-orange-600 dark:text-orange-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                             </svg>
@@ -84,14 +115,14 @@
                 </div>
 
                 <!-- Placement Rate -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Rate Penempatan Kerja</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['placement_rate'] }}%</p>
-                            <p class="text-sm text-gray-500 mt-1">dari total lamaran</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Rate Penempatan Kerja</p>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['placement_rate'] }}%</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">dari total lamaran</p>
                         </div>
-                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
@@ -100,14 +131,14 @@
                 </div>
 
                 <!-- Asesmen Diselesaikan -->
-                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-purple-500 hover:shadow-lg transition">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Asesmen Selesai</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">{{ number_format($stats['total_assessments']) }}</p>
-                            <p class="text-sm text-gray-500 mt-1">Total asesmen lulusan</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Asesmen Selesai</p>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($stats['total_assessments']) }}</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Total asesmen lulusan</p>
                         </div>
-                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>
@@ -118,17 +149,17 @@
 
             <!-- Status Lamaran Kerja Siswa -->
             <div class="mb-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-4 border-b pb-2">Status Lamaran Kerja Lulusan</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-slate-600 pb-2">Status Lamaran Kerja Lulusan</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Total Lamaran -->
-                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-lg transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Aplikasi</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['total_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 mt-1">Lamaran terkirim</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Total Aplikasi</p>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['total_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Lamaran terkirim</p>
                             </div>
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
@@ -137,14 +168,14 @@
                     </div>
 
                     <!-- Diproses -->
-                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-yellow-500 hover:shadow-lg transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Sedang Diproses</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $stats['processing_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 mt-1">Dalam tahap seleksi</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Sedang Diproses</p>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['processing_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Dalam tahap seleksi</p>
                             </div>
-                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600">
+                            <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center text-yellow-600 dark:text-yellow-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
@@ -153,14 +184,14 @@
                     </div>
 
                     <!-- Diterima -->
-                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-lg transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Diterima Kerja</p>
-                                <p class="text-3xl font-bold text-green-600 mt-2">{{ $stats['accepted_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 mt-1">Berhasil mendapat penawaran</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Diterima Kerja</p>
+                                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{ $stats['accepted_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Berhasil mendapat penawaran</p>
                             </div>
-                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
@@ -169,14 +200,14 @@
                     </div>
 
                     <!-- Ditolak -->
-                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500 hover:shadow-lg transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-red-500 hover:shadow-lg transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Belum Berhasil</p>
-                                <p class="text-3xl font-bold text-red-600 mt-2">{{ $stats['rejected_applications'] ?? 0 }}</p>
-                                <p class="text-sm text-gray-500 mt-1">Ditolak oleh industri</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">Belum Berhasil</p>
+                                <p class="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{{ $stats['rejected_applications'] ?? 0 }}</p>
+                                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Ditolak oleh industri</p>
                             </div>
-                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
+                            <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center text-red-600 dark:text-red-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
@@ -190,7 +221,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
 
                 <!-- Chart 1: Skill Gap per Jurusan -->
-                <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Skill Gap Rata-rata per Jurusan</h3>
                         <select
@@ -208,7 +239,7 @@
                 </div>
 
                 <!-- Chart 2: Top Kompetensi Bermasalah -->
-                <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-transparent dark:border-slate-800">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-slate-600">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Top 5 Kompetensi dengan Gap Tertinggi</h3>
                         <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">Lihat Semua</button>
@@ -223,13 +254,13 @@
             </div>
 
             <!-- Recommendations Table -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-slate-600 overflow-hidden mb-8">
                 <div
-                    class="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <h3 class="text-lg font-bold text-gray-900">Rekomendasi Penyesuaian Kurikulum</h3>
+                    class="p-6 border-b border-gray-200 dark:border-slate-600 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Rekomendasi Penyesuaian Kurikulum</h3>
                     <div class="flex gap-2">
                         <button
-                            class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">Filter</button>
+                            class="px-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-gray-700 dark:text-slate-300">Filter</button>
                         <button
                             class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Export
                             CSV</button>
@@ -243,20 +274,20 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
                                     Kompetensi</th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
                                     Jurusan</th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
                                     Gap Rata-rata</th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
                                     Rekomendasi</th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">
                                     Prioritas</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-600">
                             @forelse($curriculumRecommendations as $index => $rec)
                             <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-slate-400">{{ $index + 1 }}</td>
@@ -264,27 +295,27 @@
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $rec['name'] }}</div>
                                     <div class="text-xs text-gray-500 dark:text-slate-400">{{ $rec['category'] }}</div>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">{{ $rec['major'] }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">{{ $rec['major'] }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                        <div class="w-24 bg-gray-200 dark:bg-slate-600 rounded-full h-2 mr-3">
                                             <div class="{{ $rec['avg_gap'] > 50 ? 'bg-red-500' : ($rec['avg_gap'] > 25 ? 'bg-yellow-500' : 'bg-green-500') }} h-2 rounded-full" style="width: {{ $rec['avg_gap'] }}%"></div>
                                         </div>
                                         <span class="text-sm font-medium {{ $rec['avg_gap'] > 50 ? 'text-red-600' : ($rec['avg_gap'] > 25 ? 'text-yellow-600' : 'text-green-600') }}">{{ $rec['avg_gap'] }}%</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-300">
                                     {{ $rec['recommendation'] }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $rec['priority'] === 'Tinggi' ? 'bg-red-100 text-red-800' : ($rec['priority'] === 'Sedang' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $rec['priority'] === 'Tinggi' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' : ($rec['priority'] === 'Sedang' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300') }}">
                                         {{ $rec['priority'] }}
                                     </span>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center text-gray-500 text-sm">
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400 text-sm">
                                     Belum ada data rekomendasi kurikulum. Data akan muncul setelah lulusan melakukan asesmen kompetensi.
                                 </td>
                             </tr>
@@ -334,13 +365,13 @@
             </div>
 
             <!-- Recent Activities -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-900">Aktivitas Terbaru</h3>
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-slate-600 overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-slate-600">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Aktivitas Terbaru</h3>
                 </div>
-                <div class="divide-y divide-gray-200">
+                <div class="divide-y divide-gray-200 dark:divide-slate-600">
                     @forelse($recentActivities as $activity)
-                    <div class="p-6 flex items-start gap-4 hover:bg-gray-50 transition">
+                    <div class="p-6 flex items-start gap-4 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition">
                         <div
                             class="w-10 h-10 {{ $activity['color'] === 'blue' ? 'bg-blue-100 text-blue-600' : ($activity['color'] === 'green' ? 'bg-green-100 text-green-600' : ($activity['color'] === 'red' ? 'bg-red-100 text-red-600' : 'bg-yellow-100 text-yellow-600')) }} rounded-full flex items-center justify-center flex-shrink-0">
                             @if($activity['icon'] === 'assessment')
@@ -358,22 +389,22 @@
                             @endif
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
                                 {{ $activity['title'] }}
                             </p>
-                            <p class="text-sm text-gray-500 mt-1">
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
                                 {{ $activity['detail'] }}
                             </p>
-                            <p class="text-xs text-gray-400 mt-2">{{ $activity['time'] }}</p>
+                            <p class="text-xs text-gray-400 dark:text-slate-500 mt-2">{{ $activity['time'] }}</p>
                         </div>
                     </div>
                     @empty
                     <div class="p-12 text-center">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p class="mt-2 text-sm text-gray-500">Belum ada aktivitas terbaru</p>
-                        <p class="text-xs text-gray-400 mt-1">Aktivitas akan muncul setelah lulusan mulai menggunakan platform</p>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">Belum ada aktivitas terbaru</p>
+                        <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">Aktivitas akan muncul setelah lulusan mulai menggunakan platform</p>
                     </div>
                     @endforelse
                 </div>
