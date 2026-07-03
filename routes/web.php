@@ -163,6 +163,10 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
         Route::put('/courses/{id}/progress', [CourseController::class, 'updateProgress'])->name('courses.update-progress');
         Route::post('/courses/{id}/complete', [CourseController::class, 'complete'])->name('courses.complete');
 
+        // Course Payment
+        Route::get('/courses/{id}/payment', [App\Http\Controllers\CoursePaymentController::class, 'payment'])->name('courses.payment');
+        Route::post('/courses/payments/{id}/process', [App\Http\Controllers\CoursePaymentController::class, 'processPayment'])->name('courses.process-payment');
+
         // Reports
         Route::get('/reports/assessment/{id}/pdf', [ReportController::class, 'downloadAssessment'])->name('reports.assessment.pdf');
 
@@ -501,7 +505,22 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->group(function () {
         Route::get('/tpa/results/{result}/pdf', [\App\Http\Controllers\Admin\TpaController::class, 'downloadPdf'])->name('tpa.results.pdf');
     });
 
+    // =====================
+    // VENDOR ROUTES
+    // =====================
+    Route::middleware(['auth', 'verified', 'role:course_vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Vendor\VendorDashboardController::class, 'index'])->name('dashboard');
 
+        // Teachers Management
+        Route::get('/teachers', [\App\Http\Controllers\Vendor\TeacherController::class, 'index'])->name('teachers.index');
+        Route::post('/teachers/invite', [\App\Http\Controllers\Vendor\TeacherController::class, 'invite'])->name('teachers.invite');
+        Route::patch('/teachers/{id}/status', [\App\Http\Controllers\Vendor\TeacherController::class, 'toggleStatus'])->name('teachers.status');
+
+        // Payments Management
+        Route::get('/payments', [\App\Http\Controllers\Vendor\PaymentController::class, 'index'])->name('payments.index');
+        Route::get('/payments/{id}', [\App\Http\Controllers\Vendor\PaymentController::class, 'show'])->name('payments.show');
+        Route::post('/payments/{id}/verify', [\App\Http\Controllers\Vendor\PaymentController::class, 'verify'])->name('payments.verify');
+    });
 
     // =====================
     // COMMON ROUTES

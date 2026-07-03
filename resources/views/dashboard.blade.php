@@ -511,24 +511,24 @@
             const skeleton = document.getElementById('chart-skeleton');
             const data = @json($radarData);
             
-            const isDarkMode = () => document.documentElement.classList.contains('dark') || window.matchMedia('(prefers-color-scheme: dark)').matches;
-
+            const isDarkMode = () => document.documentElement.classList.contains('dark');
+            
             const getChartOptions = (isDark) => ({
                 elements: { line: { borderWidth: 3 } },
                 plugins: {
                     legend: {
                         labels: {
-                            color: isDark ? '#f8fafc' : '#374151',
+                            color: isDark ? '#f8fafc' : '#0f172a',
                             font: { size: 13, weight: 'bold' }
                         }
                     }
                 },
                 scales: {
                     r: {
-                        angleLines: { display: true, color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)' },
-                        grid: { color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)' },
-                        pointLabels: { color: isDark ? '#e2e8f0' : '#374151', font: { size: 12, weight: '500' } },
-                        ticks: { backdropColor: 'transparent', color: isDark ? '#cbd5e1' : '#6b7280', font: { size: 10 } },
+                        angleLines: { display: true, color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(100, 116, 139, 0.4)' },
+                        grid: { color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(100, 116, 139, 0.4)' },
+                        pointLabels: { color: isDark ? '#e2e8f0' : '#0f172a', font: { size: 12, weight: '700' } },
+                        ticks: { backdropColor: 'transparent', color: isDark ? '#cbd5e1' : '#334155', font: { size: 10, weight: 'bold' } },
                         suggestedMin: 0,
                         suggestedMax: 5
                     }

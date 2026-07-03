@@ -165,9 +165,14 @@
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <a href="{{ route('seeker.courses.show', ['id' => $tCourse->id]) }}?type=teacher" class="flex-1 text-center px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition text-sm font-medium">
+                                    <a href="{{ route('seeker.courses.show', ['id' => $tCourse->id, 'type' => 'teacher']) }}" class="flex-1 text-center px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition text-sm font-medium">
                                         {{ __('messages.view_detail') }}
                                     </a>
+                                    @if(!$tCourse->is_free)
+                                    <a href="{{ route('seeker.courses.payment', ['id' => $tCourse->id, 'type' => 'teacher']) }}" class="flex-1 text-center px-4 py-2 border border-orange-500 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition text-sm font-bold">
+                                        Beli
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -215,9 +220,16 @@
                                         {{ $tCourse->is_free ? __('messages.free') : 'Rp ' . number_format($tCourse->price) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('seeker.courses.show', ['id' => $tCourse->id]) }}?type=teacher" class="text-violet-600 dark:text-violet-400 hover:text-violet-900 dark:hover:text-violet-300 font-bold">
-                                            {{ __('messages.view_detail') }}
-                                        </a>
+                                        <div class="flex items-center justify-end gap-3">
+                                            <a href="{{ route('seeker.courses.show', ['id' => $tCourse->id, 'type' => 'teacher']) }}" class="text-violet-600 dark:text-violet-400 hover:text-violet-900 dark:hover:text-violet-300 font-bold">
+                                                {{ __('messages.detail') }}
+                                            </a>
+                                            @if(!$tCourse->is_free)
+                                            <a href="{{ route('seeker.courses.payment', ['id' => $tCourse->id, 'type' => 'teacher']) }}" class="text-orange-600 dark:text-orange-400 hover:text-orange-900 dark:hover:text-orange-300 font-bold">
+                                                Beli
+                                            </a>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -498,12 +510,18 @@
                                     {{ __('messages.view_detail') }}
                                 </a>
                                 @if (!in_array($course->id, $myProgress ?? []))
-                                <form action="{{ route('seeker.courses.enroll', $course->id) }}" method="POST" class="flex-1">
-                                    @csrf
-                                    <button type="submit" class="w-full px-4 py-2 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/40 transition text-sm font-medium">
-                                        {{ __('messages.enroll') }}
-                                    </button>
-                                </form>
+                                    @if(!$course->is_free)
+                                    <a href="{{ route('seeker.courses.payment', $course->id) }}" class="flex-1 text-center px-4 py-2 border border-orange-500 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition text-sm font-bold">
+                                        Beli
+                                    </a>
+                                    @else
+                                    <form action="{{ route('seeker.courses.enroll', $course->id) }}" method="POST" class="flex-1">
+                                        @csrf
+                                        <button type="submit" class="w-full px-4 py-2 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/40 transition text-sm font-medium">
+                                            {{ __('messages.enroll') }}
+                                        </button>
+                                    </form>
+                                    @endif
                                 @else
                                 <a href="{{ route('seeker.courses.show', $course->id) }}" class="flex-1 text-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">
                                     {{ __('messages.continue') }}
@@ -584,25 +602,31 @@
                                     <span class="text-xs text-gray-400">-</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex items-center justify-end gap-3">
-                                        <a href="{{ route('seeker.courses.show', $course->id) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-bold">
-                                            {{ __('messages.detail') }}
-                                        </a>
-                                        @if (!in_array($course->id, $myProgress ?? []))
-                                        <form action="{{ route('seeker.courses.enroll', $course->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300 font-bold focus:outline-none">
-                                                {{ __('messages.enroll') }}
-                                            </button>
-                                        </form>
-                                        @else
-                                        <a href="{{ route('seeker.courses.show', $course->id) }}" class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 font-bold">
-                                            {{ __('messages.continue') }}
-                                        </a>
-                                        @endif
-                                    </div>
-                                </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <div class="flex items-center justify-end gap-3">
+                                            <a href="{{ route('seeker.courses.show', $course->id) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-bold">
+                                                {{ __('messages.detail') }}
+                                            </a>
+                                            @if (!in_array($course->id, $myProgress ?? []))
+                                                @if(!$course->is_free)
+                                                <a href="{{ route('seeker.courses.payment', $course->id) }}" class="text-orange-600 dark:text-orange-400 hover:text-orange-900 dark:hover:text-orange-300 font-bold">
+                                                    Beli
+                                                </a>
+                                                @else
+                                                <form action="{{ route('seeker.courses.enroll', $course->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="submit" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300 font-bold focus:outline-none">
+                                                        {{ __('messages.enroll') }}
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            @else
+                                            <a href="{{ route('seeker.courses.show', $course->id) }}" class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 font-bold">
+                                                {{ __('messages.continue') }}
+                                            </a>
+                                            @endif
+                                        </div>
+                                    </td>
                             </tr>
                             @empty
                             <tr>

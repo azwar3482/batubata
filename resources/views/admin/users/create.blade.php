@@ -45,7 +45,7 @@ window.searchableDropdown = function(config) {
         <div class="flex justify-between items-center mb-6 anim-1">
             <div>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Pengguna Baru</h2>
-                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Buat akun untuk Job Seeker, Industry, Education, atau Admin.</p>
+                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Buat akun untuk Job Seeker, Industry, Education, Course Vendor, Teacher, atau Admin.</p>
             </div>
             <a href="{{ route('admin.users') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition shadow-sm">
                 &laquo; Kembali
@@ -69,7 +69,7 @@ window.searchableDropdown = function(config) {
                 {{-- Role Radio Cards --}}
                 <div class="md:col-span-2" x-data="{ role: '{{ old('role', 'job_seeker') }}' }">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role <span class="text-red-500">*</span></label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         <!-- Job Seeker -->
                         <label class="relative flex flex-col p-4 border rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50 transition duration-155"
                             :class="role === 'job_seeker' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'">
@@ -90,6 +90,20 @@ window.searchableDropdown = function(config) {
                             <input type="radio" name="role" value="education" class="sr-only" x-model="role" required>
                             <span class="block text-sm font-bold text-gray-900 dark:text-white">Education</span>
                             <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Institusi Pendidikan</span>
+                        </label>
+                        <!-- Course Vendor -->
+                        <label class="relative flex flex-col p-4 border rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50 transition duration-155"
+                            :class="role === 'course_vendor' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'">
+                            <input type="radio" name="role" value="course_vendor" class="sr-only" x-model="role" required>
+                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Course Vendor</span>
+                            <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Penyedia Kursus</span>
+                        </label>
+                        <!-- Teacher -->
+                        <label class="relative flex flex-col p-4 border rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50 transition duration-155"
+                            :class="role === 'teacher' ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-slate-600'">
+                            <input type="radio" name="role" value="teacher" class="sr-only" x-model="role" required>
+                            <span class="block text-sm font-bold text-gray-900 dark:text-white">Teacher</span>
+                            <span class="block text-[10px] text-gray-500 dark:text-gray-400 mt-1">Pengajar/Dosen</span>
                         </label>
                         <!-- Admin -->
                         <label class="relative flex flex-col p-4 border rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700/50 transition duration-155"

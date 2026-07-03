@@ -81,7 +81,7 @@
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Total Lulusan -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-xl hover:shadow-blue-500/40 transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-blue-500/40 transition" style="border-left-color: #3b82f6 !important;">
                     <div class="flex items-center justify-between">
                         <div>
                              <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.total_graduates') }}</p>
@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- Rata-rata Skill Gap -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-orange-500/20 dark:shadow-orange-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-orange-500 hover:shadow-xl hover:shadow-orange-500/40 transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-orange-500/20 dark:shadow-orange-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-orange-500/40 transition" style="border-left-color: #f97316 !important;">
                     <div class="flex items-center justify-between">
                         <div>
                              <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.average_skill_gap') }}</p>
@@ -115,7 +115,7 @@
                 </div>
 
                 <!-- Placement Rate -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-xl hover:shadow-green-500/40 transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-green-500/40 transition" style="border-left-color: #22c55e !important;">
                     <div class="flex items-center justify-between">
                         <div>
                              <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.placement_rate') }}</p>
@@ -131,7 +131,7 @@
                 </div>
 
                 <!-- Asesmen Diselesaikan -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-purple-500/20 dark:shadow-purple-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-purple-500 hover:shadow-xl hover:shadow-purple-500/40 transition">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-purple-500/20 dark:shadow-purple-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-purple-500/40 transition" style="border-left-color: #a855f7 !important;">
                     <div class="flex items-center justify-between">
                         <div>
                              <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.completed_assessments') }}</p>
@@ -152,7 +152,7 @@
                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-slate-600 pb-2">{{ __('messages.graduate_job_application_status') }}</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Total Lamaran -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-blue-500 hover:shadow-xl hover:shadow-blue-500/40 transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-blue-500/20 dark:shadow-blue-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-blue-500/40 transition" style="border-left-color: #3b82f6 !important;">
                         <div class="flex items-center justify-between">
                             <div>
                                  <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.total_applications') }}</p>
@@ -168,7 +168,7 @@
                     </div>
 
                     <!-- Diproses -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-yellow-500/20 dark:shadow-yellow-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-yellow-500 hover:shadow-xl hover:shadow-yellow-500/40 transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-yellow-500/20 dark:shadow-yellow-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-yellow-500/40 transition" style="border-left-color: #eab308 !important;">
                         <div class="flex items-center justify-between">
                             <div>
                                  <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.being_processed') }}</p>
@@ -184,7 +184,7 @@
                     </div>
 
                     <!-- Diterima -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-green-500 hover:shadow-xl hover:shadow-green-500/40 transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-green-500/20 dark:shadow-green-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-green-500/40 transition" style="border-left-color: #22c55e !important;">
                         <div class="flex items-center justify-between">
                             <div>
                                  <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.hired') }}</p>
@@ -200,7 +200,7 @@
                     </div>
 
                     <!-- Ditolak -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-red-500/20 dark:shadow-red-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 border-l-red-500 hover:shadow-xl hover:shadow-red-500/40 transition">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-red-500/20 dark:shadow-red-500/20 p-6 border border-gray-200 dark:border-slate-600 border-l-4 hover:shadow-xl hover:shadow-red-500/40 transition" style="border-left-color: #ef4444 !important;">
                         <div class="flex items-center justify-between">
                             <div>
                                  <p class="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide">{{ __('messages.not_successful') }}</p>

@@ -24,32 +24,37 @@
                     </div>
                     <div>
                         <h4 class="text-sm font-bold text-violet-900 dark:text-violet-200 mb-1">Tentang Kelola Pengguna</h4>
-                        <p class="text-sm text-violet-700 dark:text-violet-300 leading-relaxed">Kelola semua pengguna platform KompasKarir. Anda dapat <strong>menambah pengguna baru</strong>, <strong>mengedit profil</strong>, <strong>mengubah role</strong> (Admin, Job Seeker, Industri, Pendidikan), dan <strong>menghapus akun</strong> yang tidak diperlukan.</p>
+                        <p class="text-sm text-violet-700 dark:text-violet-300 leading-relaxed">Kelola semua pengguna platform KompasKarir. Anda dapat <strong>menambah pengguna baru</strong>, <strong>mengedit profil</strong>, <strong>mengubah role</strong> (Admin, Job Seeker, Industri, Pendidikan, Course Vendor, Teacher), dan <strong>menghapus akun</strong> yang tidak diperlukan.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-indigo-500/10 dark:shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                <div class="group bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-lg shadow-indigo-500/10 dark:shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
                     style="border-left-color: #6366f1 !important;">
-                    <div class="text-gray-500 dark:text-slate-400 text-sm">Total User</div>
-                    <div class="text-2xl font-black text-gray-900 dark:text-white tracking-tight mt-1">{{ number_format($stats['total'] ?? 0) }}</div>
+                    <div class="text-gray-500 dark:text-slate-400 text-xs">Total User</div>
+                    <div class="text-xl font-black text-gray-900 dark:text-white tracking-tight mt-1">{{ number_format($stats['total'] ?? 0) }}</div>
                 </div>
-                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                <div class="group bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-lg shadow-blue-500/10 dark:shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
                     style="border-left-color: #3b82f6 !important;">
-                    <div class="text-gray-500 dark:text-slate-400 text-sm">Job Seeker</div>
-                    <div class="text-2xl font-black text-blue-600 dark:text-blue-400 tracking-tight mt-1">{{ number_format($stats['job_seeker'] ?? 0) }}</div>
+                    <div class="text-gray-500 dark:text-slate-400 text-xs">Job Seeker</div>
+                    <div class="text-xl font-black text-blue-600 dark:text-blue-400 tracking-tight mt-1">{{ number_format($stats['job_seeker'] ?? 0) }}</div>
                 </div>
-                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                <div class="group bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
                     style="border-left-color: #8b5cf6 !important;">
-                    <div class="text-gray-500 dark:text-slate-400 text-sm">Industry</div>
-                    <div class="text-2xl font-black text-purple-600 dark:text-purple-400 tracking-tight mt-1">{{ number_format($stats['industry'] ?? 0) }}</div>
+                    <div class="text-gray-500 dark:text-slate-400 text-xs">Industry</div>
+                    <div class="text-xl font-black text-purple-600 dark:text-purple-400 tracking-tight mt-1">{{ number_format($stats['industry'] ?? 0) }}</div>
                 </div>
-                <div class="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                <div class="group bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-lg shadow-emerald-500/10 dark:shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
                     style="border-left-color: #10b981 !important;">
-                    <div class="text-gray-500 dark:text-slate-400 text-sm">Education</div>
-                    <div class="text-2xl font-black text-green-600 dark:text-emerald-400 tracking-tight mt-1">{{ number_format($stats['education'] ?? 0) }}</div>
+                    <div class="text-gray-500 dark:text-slate-400 text-xs">Education</div>
+                    <div class="text-xl font-black text-green-600 dark:text-emerald-400 tracking-tight mt-1">{{ number_format($stats['education'] ?? 0) }}</div>
+                </div>
+                <div class="group bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-lg shadow-amber-500/10 dark:shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-l-4 dark:border-slate-700"
+                    style="border-left-color: #f59e0b !important;">
+                    <div class="text-gray-500 dark:text-slate-400 text-xs">Course Vendor</div>
+                    <div class="text-xl font-black text-amber-600 dark:text-amber-400 tracking-tight mt-1">{{ number_format($stats['course_vendor'] ?? 0) }}</div>
                 </div>
             </div>
 
@@ -72,12 +77,11 @@
                         <select name="role" onchange="this.form.submit()"
                             class="border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                             <option value="">Semua Role</option>
-                            <option value="job_seeker" {{ request('role') == 'job_seeker' ? 'selected' : '' }}>Job Seeker
-                            </option>
-                            <option value="industry" {{ request('role') == 'industry' ? 'selected' : '' }}>Industry
-                            </option>
-                            <option value="education" {{ request('role') == 'education' ? 'selected' : '' }}>Education
-                            </option>
+                            <option value="job_seeker" {{ request('role') == 'job_seeker' ? 'selected' : '' }}>Job Seeker</option>
+                            <option value="industry" {{ request('role') == 'industry' ? 'selected' : '' }}>Industry</option>
+                            <option value="education" {{ request('role') == 'education' ? 'selected' : '' }}>Education</option>
+                            <option value="course_vendor" {{ request('role') == 'course_vendor' ? 'selected' : '' }}>Course Vendor</option>
+                            <option value="teacher" {{ request('role') == 'teacher' ? 'selected' : '' }}>Teacher</option>
                             <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                         </select>
                         @if (request()->has('search') || request()->has('role'))
@@ -141,7 +145,9 @@
                                                     ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300'
                                                     : ($user->isEducation()
                                                         ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
-                                                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300')) }}">
+                                                        : ($user->isVendor()
+                                                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300'
+                                                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300'))) }}">
                                             {{ str_replace('_', ' ', ucwords($user->role)) }}
                                         </span>
                                     </td>

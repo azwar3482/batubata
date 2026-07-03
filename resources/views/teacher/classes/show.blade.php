@@ -51,6 +51,7 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
                                 <thead class="bg-gray-50 dark:bg-slate-900/50">
                                     <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">No</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.student') }}</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.progress') }}</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">{{ __('messages.status') }}</th>
@@ -59,8 +60,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
-                                    @forelse($class->enrollments as $enrollment)
+                                    @forelse($enrollments as $enrollment)
                                     <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50" x-data="{ showStatus: false }">
+                                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-slate-400 font-medium">
+                                            {{ $loop->iteration + ($enrollments->currentPage() - 1) * $enrollments->perPage() }}
+                                        </td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $enrollment->user->name }}</div>
                                             <div class="text-xs text-gray-500 dark:text-slate-400">{{ $enrollment->user->email }}</div>
@@ -83,31 +87,53 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $enrollment->final_score ?? '-' }}</td>
-                                        <td class="px-6 py-4 text-right">
-                                            <button @click="showStatus = !showStatus" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 text-sm font-medium">{{ __('messages.manage') }}</button>
-                                            <div x-show="showStatus" x-transition class="absolute right-4 mt-2 p-4 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg z-10 w-72">
-                                                <form action="{{ route('teacher.classes.update-student', $enrollment) }}" method="POST" class="space-y-3">
+                                        <td class="px-6 py-4 text-right relative">
+                                            <button @click="showStatus = !showStatus" class="inline-flex items-center px-3 py-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-semibold transition duration-150">
+                                                {{ __('messages.manage') }}
+                                                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                            </button>
+                                            <div x-show="showStatus" @click.away="showStatus = false" x-transition class="absolute right-0 mt-2 p-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 w-72 text-left" style="display: none;">
+                                                <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-3 border-b pb-1.5 border-slate-100 dark:border-slate-700">Kelola Status Siswa</h4>
+                                                <form action="{{ route('teacher.classes.update-student', $enrollment) }}" method="POST" class="space-y-3.5">
                                                     @csrf @method('PUT')
-                                                    <select name="status" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
-                                                        <option value="active" {{ $enrollment->status === 'active' ? 'selected' : '' }}>{{ __('messages.active') }}</option>
-                                                        <option value="completed" {{ $enrollment->status === 'completed' ? 'selected' : '' }}>{{ __('messages.completed') }}</option>
-                                                        <option value="dropped" {{ $enrollment->status === 'dropped' ? 'selected' : '' }}>{{ __('messages.dropped') }}</option>
-                                                    </select>
-                                                    <input type="number" name="final_score" value="{{ $enrollment->final_score }}" placeholder="{{ __('messages.score_0_100') }}" min="0" max="100" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">
-                                                    <textarea name="notes" rows="2" placeholder="{{ __('messages.notes_placeholder') }}" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 rounded-md">{{ $enrollment->notes }}</textarea>
-                                                    <button type="submit" class="w-full px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">{{ __('messages.save') }}</button>
+                                                    <div>
+                                                        <label class="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1">Status Keaktifan</label>
+                                                        <select name="status" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                            <option value="active" {{ $enrollment->status === 'active' ? 'selected' : '' }}>{{ __('messages.active') }}</option>
+                                                            <option value="completed" {{ $enrollment->status === 'completed' ? 'selected' : '' }}>{{ __('messages.completed') }}</option>
+                                                            <option value="dropped" {{ $enrollment->status === 'dropped' ? 'selected' : '' }}>{{ __('messages.dropped') }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1">Nilai Akhir (0-100)</label>
+                                                        <input type="number" name="final_score" value="{{ $enrollment->final_score }}" placeholder="Masukkan nilai..." min="0" max="100" class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1">Catatan Evaluasi</label>
+                                                        <textarea name="notes" rows="2" placeholder="Tulis catatan jika ada..." class="w-full text-sm border-gray-300 dark:border-slate-600 dark:bg-slate-900 text-gray-900 dark:text-white rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ $enrollment->notes }}</textarea>
+                                                    </div>
+                                                    <div class="flex gap-2 pt-1.5">
+                                                        <button type="button" @click="showStatus = false" class="w-1/2 py-2 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 text-xs font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition">Batal</button>
+                                                        <button type="submit" class="w-1/2 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition shadow">Simpan</button>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">{{ __('messages.no_students_enrolled') }}</td>
+                                        <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-slate-400">{{ __('messages.no_students_enrolled') }}</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
+
+                        @if($enrollments->hasPages())
+                        <div class="p-6 border-t border-gray-150 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/10">
+                            {{ $enrollments->links() }}
+                        </div>
+                        @endif
                     </div>
                 </div>
 

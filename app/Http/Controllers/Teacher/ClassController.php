@@ -77,11 +77,17 @@ class ClassController extends Controller
             abort(403);
         }
 
-        $class->load(['course.modules.materials', 'enrollments.user', 'enrollments.submissions']);
+        $class->load(['course.modules.materials']);
 
         $totalModules = $class->course->modules()->count();
 
-        return view('teacher.classes.show', compact('class', 'totalModules'));
+        // Paginate enrollments
+        $enrollments = $class->enrollments()
+            ->with(['user', 'submissions'])
+            ->latest()
+            ->paginate(10);
+
+        return view('teacher.classes.show', compact('class', 'totalModules', 'enrollments'));
     }
 
     public function edit(TeacherClass $class)

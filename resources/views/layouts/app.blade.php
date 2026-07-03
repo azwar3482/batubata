@@ -5,6 +5,7 @@
         elseif (Auth::user()->isIndustryOrStaff()) $dashboardRoute = route('industry.dashboard');
         elseif (Auth::user()->isTeacher()) $dashboardRoute = route('teacher.dashboard');
         elseif (Auth::user()->isEducation()) $dashboardRoute = route('education.dashboard');
+        elseif (Auth::user()->isVendor()) $dashboardRoute = route('vendor.dashboard');
     }
 @endphp
 <!DOCTYPE html>
@@ -1371,6 +1372,47 @@
                     </a>
                     @endif
 
+                    @elseif(Auth::user()->isVendor())
+                    <!-- Menu Course Vendor -->
+                    <div class="pt-2 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-opacity duration-300">Ringkasan</div>
+
+                    <a href="{{ route('vendor.dashboard') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('vendor.dashboard*') ? 'bg-gradient-to-r from-amber-50 to-orange-50/50 text-amber-700 font-semibold border-l-4 border-amber-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('vendor.dashboard*') ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-opacity duration-300">{{ __('messages.dashboard') }}</span>
+                        <div class="menu-tooltip">{{ __('messages.dashboard') }}</div>
+                    </a>
+
+                    <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-opacity duration-300">Manajemen</div>
+
+                    <a href="{{ route('vendor.teachers.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('vendor.teachers*') ? 'bg-gradient-to-r from-amber-50 to-orange-50/50 text-amber-700 font-semibold border-l-4 border-amber-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('vendor.teachers*') ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-opacity duration-300">Pengajar</span>
+                        <div class="menu-tooltip">Pengajar</div>
+                    </a>
+
+                    <div class="pt-3 sm:pt-4 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-opacity duration-300">Keuangan</div>
+
+                    <a href="{{ route('vendor.payments.index') }}"
+                        class="group flex items-center menu-link px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl  {{ request()->routeIs('vendor.payments*') ? 'bg-gradient-to-r from-amber-50 to-orange-50/50 text-amber-700 font-semibold border-l-4 border-amber-600 shadow-sm' : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900' }}">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 transition-transform duration-300 group-hover:scale-110 sidebar-icon {{ request()->routeIs('vendor.payments*') ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text transition-opacity duration-300">Pembayaran</span>
+                        <div class="menu-tooltip">Pembayaran</div>
+                    </a>
+
                     @elseif(Auth::user()->role === 'admin')
                     <!-- Menu Admin -->
                     <div class="pt-2 pb-1.5 sm:pb-2 px-3 sm:px-4 text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest sidebar-text transition-opacity duration-300">Ringkasan</div>
@@ -1897,13 +1939,14 @@
                 sidebarNav.addEventListener('click', function(e) {
                     var link = e.target.closest('a');
                     if (link && link.href) {
-                        e.preventDefault();
-                        if (window.innerWidth < 1024) {
-                            localStorage.setItem('sidebarOpen', 'false');
+                        // Let the browser handle standard navigation naturally (bubbling phase)
+                        if (!e.ctrlKey && !e.metaKey && !e.shiftKey && e.button !== 1) {
+                            if (window.innerWidth < 1024) {
+                                localStorage.setItem('sidebarOpen', 'false');
+                            }
                         }
-                        window.location.href = link.href;
                     }
-                }, true);
+                });
             }
         });
     </script>
@@ -1934,6 +1977,11 @@
                 </a>
             @elseif(Auth::user()->role === 'education')
                 <a href="{{ route('education.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('education.dashboard*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <span class="text-[10px] mt-0.5">Home</span>
+                </a>
+            @elseif(Auth::user()->isVendor())
+                <a href="{{ route('vendor.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('vendor.dashboard*') ? 'active' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span class="text-[10px] mt-0.5">Home</span>
                 </a>
@@ -1973,6 +2021,11 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     <span class="text-[10px] mt-0.5">Siswa</span>
                 </a>
+            @elseif(Auth::user()->isVendor())
+                <a href="{{ route('vendor.teachers.index') }}" class="bottom-nav-item {{ request()->routeIs('vendor.teachers*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span class="text-[10px] mt-0.5">Pengajar</span>
+                </a>
             @elseif(Auth::user()->role === 'admin')
                 <a href="{{ route('admin.users') }}" class="bottom-nav-item {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
@@ -2004,6 +2057,11 @@
                 <a href="{{ route('education.courses.index') }}" class="bottom-nav-item {{ request()->routeIs('education.courses*') ? 'active' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     <span class="text-[10px] mt-0.5">Kursus</span>
+                </a>
+            @elseif(Auth::user()->isVendor())
+                <a href="{{ route('vendor.payments.index') }}" class="bottom-nav-item {{ request()->routeIs('vendor.payments*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span class="text-[10px] mt-0.5">Bayar</span>
                 </a>
             @elseif(Auth::user()->role === 'admin')
                 <a href="{{ route('admin.reports') }}" class="bottom-nav-item {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">

@@ -124,6 +124,20 @@
                                 <span class="font-medium text-gray-900 dark:text-white">{{ $course->classes->where('status', 'active')->count() }}</span>
                             </div>
                         </div>
+
+                        <div class="mt-6 space-y-3">
+                            @if($course->is_free)
+                            <p class="text-center text-sm text-green-600 dark:text-green-400 font-medium">Kursus ini gratis</p>
+                            @elseif($hasPaid)
+                            <p class="text-center text-sm text-green-600 dark:text-green-400 font-bold">Pembayaran sudah dilakukan</p>
+                            @else
+                            <a href="{{ route('seeker.courses.payment', ['id' => $course->id, 'type' => 'teacher']) }}"
+                                class="block w-full text-center px-4 py-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white rounded-lg transition font-bold shadow-lg">
+                                <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                                Beli Sekarang - Rp {{ number_format($course->price) }}
+                            </a>
+                            @endif
+                        </div>
                     </div>
 
                     <!-- Teacher Info -->

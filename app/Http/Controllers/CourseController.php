@@ -97,11 +97,17 @@ class CourseController extends Controller
                 ->findOrFail($id);
             $progress = null;
 
-            if ($request->expectsJson()) {
-                return response()->json(['success' => true, 'data' => $course, 'progress' => $progress]);
+            $hasPaid = true;
+            if (!$course->is_free) {
+                $paymentService = app(\App\Services\CoursePaymentService::class);
+                $hasPaid = $paymentService->hasPaidForTeacherCourse(Auth::id(), $id);
             }
 
-            return view('courses.show_teacher', compact('course', 'progress'));
+            if ($request->expectsJson()) {
+                return response()->json(['success' => true, 'data' => $course, 'progress' => $progress, 'has_paid' => $hasPaid]);
+            }
+
+            return view('courses.show_teacher', compact('course', 'progress', 'hasPaid'));
         }
 
         // Admin course with chapters
@@ -109,15 +115,22 @@ class CourseController extends Controller
         $progress = $this->courseService->getUserCourseProgress(Auth::id(), $course->id);
         $completedMaterialIds = $progress ? $this->courseService->getCompletedMaterialIds(Auth::id(), $course->id) : [];
 
+        $hasPaid = true;
+        if (!$course->is_free) {
+            $paymentService = app(\App\Services\CoursePaymentService::class);
+            $hasPaid = $paymentService->hasPaidForCourse(Auth::id(), $id);
+        }
+
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'data' => $course,
-                'progress' => $progress
+                'progress' => $progress,
+                'has_paid' => $hasPaid
             ]);
         }
 
-        return view('courses.show', compact('course', 'progress', 'completedMaterialIds'));
+        return view('courses.show', compact('course', 'progress', 'completedMaterialIds', 'hasPaid'));
     }
 
     public function learn($id, Request $request)
@@ -327,6 +340,22 @@ class CourseController extends Controller
 
     public function enroll($id, Request $request)
     {
+        $course = \App\Models\Course::findOrFail($id);
+
+        if (!$course->is_free) {
+            $paymentService = app(\App\Services\CoursePaymentService::class);
+            if (!$paymentService->hasPaidForCourse(Auth::id(), $id)) {
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Anda harus membayar kursus ini terlebih dahulu.',
+                    ], 403);
+                }
+                return redirect()->route('seeker.courses.payment', $id)
+                    ->with('error', 'Anda harus membayar kursus ini terlebih dahulu.');
+            }
+        }
+
         $progress = $this->courseService->enrollUser(Auth::id(), $id);
 
         if ($request->expectsJson()) {

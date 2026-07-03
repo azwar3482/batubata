@@ -32,7 +32,8 @@ class UserController extends Controller
             COUNT(*) as total,
             SUM(CASE WHEN role = 'job_seeker' THEN 1 ELSE 0 END) as job_seeker,
             SUM(CASE WHEN role = 'industry' THEN 1 ELSE 0 END) as industry,
-            SUM(CASE WHEN role = 'education' THEN 1 ELSE 0 END) as education
+            SUM(CASE WHEN role = 'education' THEN 1 ELSE 0 END) as education,
+            SUM(CASE WHEN role = 'course_vendor' THEN 1 ELSE 0 END) as course_vendor
         ")->first();
 
         $stats = [
@@ -40,6 +41,7 @@ class UserController extends Controller
             'job_seeker' => $statData->job_seeker,
             'industry' => $statData->industry,
             'education' => $statData->education,
+            'course_vendor' => $statData->course_vendor,
         ];
 
         return view('admin.users', compact('users', 'stats'));
@@ -56,7 +58,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'role' => 'required|in:job_seeker,industry,education,admin',
+            'role' => 'required|in:job_seeker,industry,education,admin,teacher,course_vendor',
             'password' => 'required|min:8|confirmed',
         ]);
 
@@ -77,7 +79,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|in:job_seeker,industry,education,admin',
+            'role' => 'required|in:job_seeker,industry,education,admin,teacher,course_vendor',
             'password' => 'nullable|min:8|confirmed',
         ]);
 

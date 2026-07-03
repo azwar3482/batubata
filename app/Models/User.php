@@ -16,6 +16,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'role',
+        'status',
         'provider',
         'provider_id',
         'password',
@@ -169,6 +171,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Company::class);
     }
 
+    public function vendor()
+    {
+        return $this->belongsTo(CourseVendor::class, 'vendor_id');
+    }
+
+    public function ownedVendor()
+    {
+        return $this->hasOne(CourseVendor::class, 'user_id');
+    }
+
     public function teacherProfile()
     {
         return $this->hasOne(TeacherProfile::class);
@@ -240,6 +252,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isTeacher()
     {
         return $this->role === 'teacher';
+    }
+    public function isVendor()
+    {
+        return $this->role === 'course_vendor';
     }
     public function isStaff()
     {

@@ -209,14 +209,29 @@
                                 <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 {{ $progress->status === 'completed' ? __('messages.relearn') : __('messages.continue_learning') }}
                             </a>
-                            @else
+                            @elseif($course->is_free)
                             <form action="{{ route('seeker.courses.enroll', $course->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"
                                     class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg transition font-medium shadow-lg">
-                                    {{ $course->is_free ? __('messages.start_free_learning') : __('messages.register_course') }}
+                                    {{ __('messages.start_free_learning') }}
                                 </button>
                             </form>
+                            @elseif($hasPaid)
+                            <form action="{{ route('seeker.courses.enroll', $course->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition font-bold shadow-lg">
+                                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    Daftar Kursus Ini
+                                </button>
+                            </form>
+                            @else
+                            <a href="{{ route('seeker.courses.payment', $course->id) }}"
+                                class="block w-full text-center px-4 py-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white rounded-lg transition font-bold shadow-lg">
+                                <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                                Beli Sekarang - Rp {{ number_format($course->price) }}
+                            </a>
                             @endif
 
                             @if($course->url)

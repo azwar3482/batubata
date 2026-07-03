@@ -148,6 +148,7 @@
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">No</th>
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.title') }}</th>
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.vacancy') }}</th>
                                 <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.question_detail') }}</th>
@@ -158,6 +159,7 @@
                         <tbody class="divide-y divide-gray-100">
                             @foreach($tests as $test)
                             <tr class="hover:bg-blue-50/50 transition-colors">
+                                <td class="px-6 py-4 text-center text-sm text-gray-500">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">
                                     <div class="font-medium text-gray-900">{{ $test->title }}</div>
                                     <div class="text-xs text-gray-500 mt-1">{{ __('messages.passing_grade') }} {{ $test->passing_score }}%</div>
@@ -665,6 +667,7 @@
                     <table class="w-full">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">No</th>
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.candidate_info') }}</th>
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tes & Lowongan</th>
                                 <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ __('messages.status') }}</th>
@@ -676,6 +679,7 @@
                         <tbody class="divide-y divide-gray-100">
                             @foreach($sentSessions as $session)
                             <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 text-center text-sm text-gray-500">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">
                                     <div class="font-medium text-gray-900">{{ $session->user->name ?? 'Kandidat Dihapus' }}</div>
                                     <div class="text-xs text-gray-500 mt-0.5">{{ $session->user->email ?? '-' }}</div>
@@ -755,7 +759,10 @@
                                         ->exists() : false;
                                         @endphp
                                         @if($application && !$hasActiveSession)
-                                        <form action="{{ route('industry.tpa.invite', $session->tpaTest) }}" method="POST" onsubmit="return confirm('Kirim ulang undangan TPA ke {{ $session->user->name ?? '{{ __('messages.candidates') }}' }}?')">
+                                        @php
+                                            $displayName = $session->user->name ?? __('messages.candidates');
+                                        @endphp
+                                        <form action="{{ route('industry.tpa.invite', $session->tpaTest) }}" method="POST" onsubmit="return confirm('Kirim ulang undangan TPA ke {{ $displayName }}?')">
                                             @csrf
                                             <input type="hidden" name="application_id" value="{{ $application->id }}">
                                             <button type="submit" class="text-purple-600 hover:text-purple-800 hover:bg-purple-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-purple-200 hover:border-purple-300 inline-flex items-center">
